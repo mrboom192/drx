@@ -4,6 +4,7 @@ export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen name="index" />
+      <Tabs.Screen name="doctors" />
     </Tabs>
   );
 }

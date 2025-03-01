@@ -1,0 +1,98 @@
+[
+  {
+    "id": "D1001",
+    "profile_url": "https://www.zocdoc.com/doctor/john-smith-md",
+    "name": "Dr. John Smith",
+    "specialty": "Cardiology",
+    "summary": "Board-certified cardiologist with over 15 years of experience in treating heart disease.",
+    "description": "Dr. John Smith specializes in cardiovascular health, including heart disease prevention, hypertension management, and cholesterol control. He is affiliated with New York-Presbyterian Hospital and has received multiple awards for excellence in patient care.",
+    "experience_years": 15,
+    "hospital_affiliation": "New York-Presbyterian Hospital",
+    "hospital_address": "525 E 68th St, New York, NY 10065",
+    "hospital_coordinates": {
+      "latitude": 40.765103,
+      "longitude": -73.954196
+    },
+    "education": "Harvard Medical School",
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": true,
+    "rating": 4.9,
+    "reviews": 128,
+    "consultation_price": 250,
+    "currency": "USD",
+    "phone": "+1 212-555-6789",
+    "email": "dr.johnsmith@hospital.org",
+    "availability": {
+      "monday": "9 AM - 5 PM",
+      "tuesday": "9 AM - 5 PM",
+      "wednesday": "9 AM - 5 PM",
+      "thursday": "9 AM - 5 PM",
+      "friday": "9 AM - 3 PM"
+    },
+    "photo_url": "https://www.ouhealth.com/cms/thumbnails/00/400x500//images/physicians/LigiAbraham.jpg"
+  },
+  {
+    "id": "D1002",
+    "profile_url": "https://www.zocdoc.com/doctor/lisa-chen-md",
+    "name": "Dr. Lisa Chen",
+    "specialty": "Pediatrics",
+    "summary": "Compassionate pediatrician dedicated to providing top-quality care for children.",
+    "description": "Dr. Lisa Chen has been caring for children for over 12 years. She focuses on preventive healthcare, vaccinations, and childhood development. She is known for her warm bedside manner and excellent communication with parents.",
+    "experience_years": 12,
+    "hospital_affiliation": "Children's Hospital Los Angeles",
+    "hospital_address": "4650 Sunset Blvd, Los Angeles, CA 90027",
+    "hospital_coordinates": {
+      "latitude": 34.098342,
+      "longitude": -118.291902
+    },
+    "education": "Stanford University School of Medicine",
+    "languages_spoken": ["English", "Mandarin"],
+    "accepts_insurance": true,
+    "rating": 4.8,
+    "reviews": 98,
+    "consultation_price": 180,
+    "currency": "USD",
+    "phone": "+1 310-555-2345",
+    "email": "dr.lisachen@chla.org",
+    "availability": {
+      "monday": "8 AM - 4 PM",
+      "tuesday": "8 AM - 4 PM",
+      "wednesday": "8 AM - 4 PM",
+      "thursday": "8 AM - 4 PM",
+      "friday": "8 AM - 1 PM"
+    },
+    "photo_url": "https://images.unsplash.com/photo-1537368910025-700350fe46c7"
+  },
+  {
+    "id": "D1003",
+    "profile_url": "https://www.zocdoc.com/doctor/ahmed-patel-md",
+    "name": "Dr. Ahmed Patel",
+    "specialty": "Neurology",
+    "summary": "Highly experienced neurologist specializing in stroke prevention and brain disorders.",
+    "description": "Dr. Ahmed Patel has over 20 years of experience diagnosing and treating neurological conditions, including stroke recovery, Parkinson’s disease, and multiple sclerosis. He practices at the Chicago Neurology Institute.",
+    "experience_years": 20,
+    "hospital_affiliation": "Chicago Neurology Institute",
+    "hospital_address": "1725 W Harrison St, Chicago, IL 60612",
+    "hospital_coordinates": {
+      "latitude": 41.87397,
+      "longitude": -87.669993
+    },
+    "education": "Johns Hopkins University",
+    "languages_spoken": ["English", "Hindi", "Arabic"],
+    "accepts_insurance": true,
+    "rating": 4.7,
+    "reviews": 85,
+    "consultation_price": 300,
+    "currency": "USD",
+    "phone": "+1 312-555-4567",
+    "email": "dr.ahmedpatel@cni.org",
+    "availability": {
+      "monday": "9 AM - 5 PM",
+      "tuesday": "9 AM - 5 PM",
+      "wednesday": "9 AM - 5 PM",
+      "thursday": "9 AM - 5 PM",
+      "friday": "9 AM - 3 PM"
+    },
+    "photo_url": "https://www.ouhealth.com/cms/thumbnails/00/400x500//images/physicians/Kacy_Aderhold1.jpg"
+  }
+]

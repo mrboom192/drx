@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Page = () => {
+const DoctorCard = () => {
   return (
     <View>
-      <Text>doctors</Text>
+      <Text>DoctorCard</Text>
     </View>
   );
 };
 
-export default Page;
+export default DoctorCard;

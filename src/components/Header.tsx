@@ -116,10 +116,10 @@ const categories = [
 ];
 
 interface Props {
-  onCategoryChange: (category: string) => void;
+  onSpecialtyChange: (specialty: string) => void;
 }
 
-const DoctorsHeader = ({ onCategoryChange }: Props) => {
+const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   const scrollRef = useRef<ScrollView | null>(null);
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -137,7 +137,7 @@ const DoctorsHeader = ({ onCategoryChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onCategoryChange(categories[index].name);
+    onSpecialtyChange(categories[index].name);
   };
 
   return (

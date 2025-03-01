@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import React, { memo } from "react";
-import { Marker } from "react-native-maps";
+import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { defaultStyles } from "@/constants/Styles";
 import { useRouter } from "expo-router";
 import MapView from "react-native-map-clustering"; // Easy way to do map clustering

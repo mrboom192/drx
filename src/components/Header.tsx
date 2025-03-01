@@ -155,9 +155,11 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             </TouchableOpacity>
           </Link>
 
-          <TouchableOpacity style={styles.filterBtn}>
-            <Ionicons name="options-outline" size={24} />
-          </TouchableOpacity>
+          <Link href={"/(modals)/filter"} asChild>
+            <TouchableOpacity style={styles.filterBtn}>
+              <Ionicons name="options-outline" size={24} />
+            </TouchableOpacity>
+          </Link>
         </View>
 
         <ScrollView
@@ -206,7 +208,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    height: 140,
+    height: 132, // Gotta fix this
   },
   actionRow: {
     flexDirection: "row",

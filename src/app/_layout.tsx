@@ -5,13 +5,15 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { SessionProvider } from "../contexts/AuthContext";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,6 +54,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
 
   // Need to make a header function that looks good!!
@@ -61,9 +64,27 @@ function RootLayoutNav() {
         <Stack
           screenOptions={{
             navigationBarColor: "#FFF",
-            headerShown: false,
           }}
-        />
+        >
+          <Stack.Screen
+            name="(modals)/filter"
+            options={{
+              title: "Filters",
+              headerTitleStyle: {
+                fontFamily: "dm-sb",
+              },
+              presentation: "modal",
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Ionicons name="close-outline" size={24} />
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="signup" options={{ headerShown: false }} />
+        </Stack>
       </SessionProvider>
     </ThemeProvider>
   );

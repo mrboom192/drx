@@ -63,7 +63,7 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
       : themedStyles.darkTextSecondary;
 
   const renderRow: ListRenderItem<Doctor> = ({ item }) => (
-    <Link href={`/`} asChild>
+    <Link href={`/doctor/${item.id}`} asChild>
       <TouchableOpacity>
         <Animated.View
           style={[
@@ -132,8 +132,8 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
 const styles = StyleSheet.create({
   listing: {
     padding: 16,
-    marginHorizontal: 8,
-    marginVertical: 4,
+    marginHorizontal: 16,
+    marginVertical: 8,
     flexDirection: "row",
     borderRadius: 16,
     justifyContent: "space-between",

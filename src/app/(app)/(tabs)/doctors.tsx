@@ -1,11 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React, { useMemo, useState } from "react";
-import { Link, Stack, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import DoctorsHeader from "@/components/Header";
-import { TouchableOpacity } from "react-native";
-import * as Haptics from "expo-haptics";
 import doctorsData from "@/../assets/data/doctors.json";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DoctorMap from "@/components/DoctorMap";
 import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";

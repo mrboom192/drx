@@ -1,0 +1,18 @@
+[
+  {
+    "id": "C20401231",
+    "patient_id": "U1231",
+    "doctor_id": "D1200",
+    "created_at": 1709304000,
+    "last_message": "Sure, happy to help! What's your question?",
+    "last_updated": 1709307600,
+    "messages": [
+      {
+        "sent_date": 1709304000,
+        "sender_id": "U1231",
+        "sender_role": "patient",
+        "content": "Hey Dr. Evans, I had a question about my prescription."
+      }
+    ]
+  }
+]

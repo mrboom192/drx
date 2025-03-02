@@ -47,7 +47,7 @@ const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
             : Colors.dark.background,
       }}
       snapPoints={snapPoints}
-      index={1}
+      index={2}
       ref={bottomSheetRef}
       handleIndicatorStyle={{ backgroundColor: Colors.light.grey }}
       enablePanDownToClose={false}

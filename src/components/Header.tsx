@@ -1,12 +1,19 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+} from "./Themed";
+import { Link, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import { ScrollView } from "react-native";
 import * as Haptics from "expo-haptics";
+import { themedStyles } from "@/constants/Styles";
+import Rating from "./Rating";
 
 const categories = [
   {
@@ -121,8 +128,25 @@ interface Props {
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   const scrollRef = useRef<ScrollView | null>(null);
+  const router = useRouter();
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const themeTextStylePrimary =
+    colorScheme === "light"
+      ? themedStyles.lightTextPrimary
+      : themedStyles.darkTextPrimary;
+
+  const themeTextStyleSecondary =
+    colorScheme === "light"
+      ? themedStyles.lightTextSecondary
+      : themedStyles.darkTextSecondary;
+
+  const themeBorderStyle =
+    colorScheme === "light"
+      ? themedStyles.lightBorder
+      : themedStyles.darkBorder;
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
@@ -141,58 +165,87 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.actionRow}>
-          <Link href={"/"} asChild>
-            <TouchableOpacity style={styles.searchBtn}>
-              <Ionicons name="search" size={24} />
-              <View>
-                <Text style={{ fontFamily: "dm-sb" }}>
-                  Find the perfect doctor
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </Link>
+          {/* Search container */}
+          <TouchableOpacity
+            onPress={() => router.push("/")}
+            style={[themeBorderStyle, styles.searchBtn]}
+          >
+            <Ionicons
+              name="search"
+              size={24}
+              s
+              color={
+                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+              }
+            />
+            <View>
+              <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
+                Find the perfect doctor
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-          <Link href={"/(modals)/filter"} asChild>
-            <TouchableOpacity style={styles.filterBtn}>
-              <Ionicons name="options-outline" size={24} />
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity
+            onPress={() => router.push("/(modals)/filter")}
+            style={[themeBorderStyle, styles.filterBtn]}
+          >
+            <Ionicons
+              name="options-outline"
+              size={24}
+              color={
+                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+              }
+            />
+          </TouchableOpacity>
         </View>
 
         <ScrollView
           ref={scrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: "center",
-            gap: 30,
-            paddingHorizontal: 16, // 1:29:00
-          }}
+          contentContainerStyle={[
+            themeBorderStyle,
+            {
+              borderWidth: 0,
+              borderBottomWidth: 1,
+              alignItems: "center",
+              gap: 30,
+              paddingHorizontal: 16,
+              paddingBottom: 16,
+            },
+          ]}
         >
           {categories.map((item, index) => (
             <TouchableOpacity
               onPress={() => selectCategory(index)}
               key={index}
               ref={(el) => (itemsRef.current[index] = el)}
-              style={
-                activeIndex === index
-                  ? styles.categoriesBtnActive
-                  : styles.categoriesBtn
-              }
+              style={{
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 4,
+              }}
             >
               <MaterialIcons
                 name={item.icon as any}
-                color={activeIndex === index ? "#000" : Colors.grey}
+                color={
+                  activeIndex === index
+                    ? Colors.primary
+                    : colorScheme === "light"
+                    ? Colors.light.grey
+                    : Colors.dark.grey
+                }
                 size={24}
               />
               <Text
                 style={
                   activeIndex === index
-                    ? styles.categoryTextActive
-                    : styles.categoryText
+                    ? { color: Colors.primary, fontFamily: "dm-sb" }
+                    : [themeTextStyleSecondary, { fontFamily: "dm-sb" }]
                 }
               >
                 {item.name}
@@ -207,66 +260,32 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    height: 132, // Gotta fix this
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
   actionRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 24,
-    paddingBottom: 24,
-    gap: 10,
+    marginBottom: 16,
+    gap: 16,
   },
   filterBtn: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: Colors.grey,
-    borderRadius: 24,
+    height: 56,
+    width: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 9999,
   },
   searchBtn: {
     flexDirection: "row",
     alignItems: "center",
+    height: 56,
     gap: 10,
-    borderColor: "#c2c2c2",
-    borderWidth: StyleSheet.hairlineWidth,
     flex: 1,
     padding: 14,
     borderRadius: 30,
-    backgroundColor: "#fff",
-
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-  },
-  categoryText: {
-    fontSize: 14,
-    fontFamily: "dm-sb",
-    color: Colors.grey,
-  },
-  categoryTextActive: {
-    fontSize: 14,
-    fontFamily: "dm-sb",
-    color: "#000",
-  },
-  categoriesBtn: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingBottom: 8,
-  },
-  categoriesBtnActive: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomColor: "#000",
-    borderBottomWidth: 2,
-    paddingBottom: 8,
   },
 });
 

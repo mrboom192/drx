@@ -12,7 +12,7 @@ import { useState } from "react";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import LabeledInput from "../components/LabeledInput";
-import { useSession } from "@/src/contexts/AuthContext";
+import { useSession } from "@/contexts/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 

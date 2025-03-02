@@ -7,9 +7,10 @@ import {
   StyleSheet,
   Image,
   Touchable,
+  useColorScheme,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { defaultStyles } from "@/constants/Styles";
+import { defaultStyles, themedStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
@@ -18,6 +19,8 @@ import {
   BottomSheetFlatListMethods,
 } from "@gorhom/bottom-sheet";
 import { Doctor } from "@/types/doctor";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Rating from "./Rating";
 
 interface Props {
   doctors: Doctor[];
@@ -28,6 +31,7 @@ interface Props {
 const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
   const [loading, setLoading] = useState(false);
   const listRef = useRef<BottomSheetFlatListMethods>(null);
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (refresh) {
@@ -43,26 +47,68 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
     }, 200);
   }, [specialty]);
 
+  const themeBorderStyle =
+    colorScheme === "light"
+      ? themedStyles.lightBorder
+      : themedStyles.darkBorder;
+
+  const themeTextStylePrimary =
+    colorScheme === "light"
+      ? themedStyles.lightTextPrimary
+      : themedStyles.darkTextPrimary;
+
+  const themeTextStyleSecondary =
+    colorScheme === "light"
+      ? themedStyles.lightTextSecondary
+      : themedStyles.darkTextSecondary;
+
   const renderRow: ListRenderItem<Doctor> = ({ item }) => (
     <Link href={`/`} asChild>
       <TouchableOpacity>
         <Animated.View
-          style={styles.listing}
+          style={[
+            {
+              backgroundColor:
+                colorScheme === "light"
+                  ? Colors.light.background
+                  : Colors.dark.background,
+            },
+            themeBorderStyle,
+            styles.listing,
+          ]}
           entering={FadeInRight}
           exiting={FadeOutLeft}
         >
           {/* Image */}
-          <Image source={{ uri: item.photo_url }} style={styles.image} />
+          <View style={{ flexDirection: "row", gap: 16 }}>
+            <Image source={{ uri: item.photo_url }} style={styles.image} />
 
-          <View style={styles.info}>
-            <View>
-              <Text style={{ fontFamily: "dm-sb" }}>{item.name}</Text>
-              <Text
-                style={{ fontFamily: "dm", color: "#6E6E6E", fontSize: 12 }}
-              >
-                {item.specialty}
-              </Text>
+            <View style={styles.info}>
+              <View>
+                <Text
+                  style={[
+                    themeTextStylePrimary,
+                    { fontFamily: "dm-sb", fontSize: 16 },
+                  ]}
+                >
+                  {item.name}
+                </Text>
+                <Text style={[themeTextStyleSecondary, { fontFamily: "dm" }]}>
+                  {item.specialty}
+                </Text>
+              </View>
+              <Rating rating={4.5} reviews={223} />
             </View>
+          </View>
+          <View style={[themeBorderStyle, styles.price]}>
+            <Text
+              style={[
+                themeTextStylePrimary,
+                { fontFamily: "dm-sb", fontSize: 20 },
+              ]}
+            >
+              ${item.consultation_price}
+            </Text>
           </View>
         </Animated.View>
       </TouchableOpacity>
@@ -70,30 +116,27 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F8F8F8" }}>
-      <BottomSheetFlatList
-        renderItem={renderRow}
-        data={loading ? [] : items}
-        ref={listRef}
-        ListHeaderComponent={
-          <Text style={styles.info}>{items.length} doctors</Text>
-        }
-      />
-    </View>
+    <BottomSheetFlatList
+      renderItem={renderRow}
+      data={loading ? [] : items}
+      ref={listRef}
+      // ListHeaderComponent={
+      //   <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
+      //     {items.length} doctors
+      //   </Text>
+      // }
+    />
   );
 };
 
 const styles = StyleSheet.create({
   listing: {
     padding: 16,
-    gap: 16,
     marginHorizontal: 8,
     marginVertical: 4,
     flexDirection: "row",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "#DDDDDD",
     borderRadius: 16,
-    backgroundColor: "#FFF",
+    justifyContent: "space-between",
   },
   image: {
     width: 64,
@@ -101,10 +144,15 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
   },
   info: {
-    textAlign: "center",
-    fontFamily: "dm-sb",
-    fontSize: 16,
-    marginTop: 4,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  price: {
+    height: 64,
+    width: 64,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

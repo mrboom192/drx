@@ -39,7 +39,34 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderTopColor: Colors.grey,
+    borderTopColor: Colors.light.grey,
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+});
+
+export const themedStyles = StyleSheet.create({
+  lightTextPrimary: {
+    color: "#000",
+    fontFamily: "dm",
+  },
+  lightTextSecondary: {
+    color: Colors.light.grey,
+    fontFamily: "dm",
+  },
+  darkTextPrimary: {
+    color: "#FFF",
+    fontFamily: "dm",
+  },
+  darkTextSecondary: {
+    color: Colors.dark.grey,
+    fontFamily: "dm",
+  },
+  lightBorder: {
+    borderWidth: 1,
+    borderColor: Colors.light.faintGrey,
+  },
+  darkBorder: {
+    borderWidth: 1,
+    borderColor: Colors.dark.faintGrey,
   },
 });

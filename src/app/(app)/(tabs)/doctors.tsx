@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link, Stack, useRouter } from "expo-router";
 import DoctorsHeader from "@/components/Header";
 import { TouchableOpacity } from "react-native";
 import * as Haptics from "expo-haptics";
-import doctors from "@/../assets/data/doctors.json";
+import doctorsData from "@/../assets/data/doctors.json";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DoctorMap from "@/components/DoctorMap";
@@ -12,6 +12,7 @@ import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";
 
 const Page = () => {
   const router = useRouter();
+  const doctors = useMemo(() => doctorsData as any, []);
   const [specialty, setSpecialty] = useState("General Practice");
 
   const onDataChanged = (specialty: string) => {
@@ -20,7 +21,7 @@ const Page = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View style={{ flex: 1, marginTop: 60 }}>
+      <View style={{ flex: 1 }}>
         <Stack.Screen
           options={{
             header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,

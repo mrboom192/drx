@@ -1,13 +1,14 @@
 import {
-  View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   Image,
+  useColorScheme,
 } from "react-native";
+import { View } from "@/components/Themed";
 import React, { useState } from "react";
-import { defaultStyles } from "@/constants/Styles";
+import { defaultStyles, themedStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -40,6 +41,8 @@ const Page = () => {
   const router = useRouter();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
 
+  const colorScheme = useColorScheme();
+
   const handleLanguageSelect = (abbr: string) => {
     setLanguageFilter(
       (prevFilters) =>
@@ -49,9 +52,26 @@ const Page = () => {
     );
   };
 
+  const themeTextStylePrimary =
+    colorScheme === "light"
+      ? themedStyles.lightTextPrimary
+      : themedStyles.darkTextPrimary;
+
+  const themeTextStyleSecondary =
+    colorScheme === "light"
+      ? themedStyles.lightTextSecondary
+      : themedStyles.darkTextSecondary;
+
+  const themeBorderStyle =
+    colorScheme === "light"
+      ? themedStyles.lightBorder
+      : themedStyles.darkBorder;
+
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: "dm-sb", fontSize: 24 }}>
+      <Text
+        style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
+      >
         Provider language
       </Text>
       <View
@@ -70,24 +90,32 @@ const Page = () => {
               padding: 16,
               flexDirection: "row",
               gap: 16,
-              borderWidth: languageFilter.includes(language.abbr)
-                ? 2
-                : StyleSheet.hairlineWidth,
+              borderWidth: 1,
               borderColor: languageFilter.includes(language.abbr)
-                ? "#000"
-                : "#DDD",
+                ? Colors.primary
+                : colorScheme === "light"
+                ? Colors.light.faintGrey
+                : Colors.dark.faintGrey,
               borderRadius: 16,
               alignItems: "center",
               justifyContent: "center",
               flex: 1,
-              backgroundColor: languageFilter.includes(language.abbr)
-                ? "#F8F8F8"
-                : "#FFF",
             }}
             onPress={() => handleLanguageSelect(language.abbr)}
           >
             <Image source={language.icon} style={styles.image} />
-            <Text style={{ fontFamily: "dm-sb" }}>{language.name}</Text>
+            <Text
+              style={{
+                fontFamily: "dm-sb",
+                color: languageFilter.includes(language.abbr)
+                  ? Colors.primary
+                  : colorScheme === "light"
+                  ? "#000"
+                  : "#FFF",
+              }}
+            >
+              {language.name}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -100,34 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     gap: 16,
-    backgroundColor: "#fff",
     padding: 26,
-  },
-  seperatorView: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    marginVertical: 30,
-  },
-  seperator: {
-    fontFamily: "mon-sb",
-    color: Colors.grey,
-  },
-  btnOutline: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: Colors.grey,
-    height: 50,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingHorizontal: 10,
-  },
-  btnOutlineText: {
-    color: "#000",
-    fontSize: 16,
-    fontFamily: "mon-sb",
   },
   image: {
     width: 64,

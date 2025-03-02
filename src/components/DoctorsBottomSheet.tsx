@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import React, { useMemo, useRef, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -14,8 +20,9 @@ interface Props {
 
 const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const colorScheme = useColorScheme();
   const [refresh, setRefresh] = useState(0);
-  const snapPoints = useMemo(() => ["10%", "100%"], []);
+  const snapPoints = useMemo(() => ["4%", "100%"], []);
 
   const showMap = () => {
     bottomSheetRef.current?.collapse(); // Collapses bottom sheet, showing map
@@ -24,12 +31,25 @@ const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
 
   return (
     <BottomSheet
-      style={styles.sheetContainer}
-      backgroundStyle={{ backgroundColor: "#F8F8F8" }}
+      style={[
+        {
+          backgroundColor:
+            colorScheme === "light"
+              ? Colors.light.background
+              : Colors.dark.background,
+        },
+        styles.sheetContainer,
+      ]}
+      backgroundStyle={{
+        backgroundColor:
+          colorScheme === "light"
+            ? Colors.light.background
+            : Colors.dark.background,
+      }}
       snapPoints={snapPoints}
       index={1}
       ref={bottomSheetRef}
-      handleIndicatorStyle={{ backgroundColor: Colors.grey }}
+      handleIndicatorStyle={{ backgroundColor: Colors.light.grey }}
       enablePanDownToClose={false}
     >
       <View style={{ flex: 1 }}>
@@ -65,8 +85,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   sheetContainer: {
-    backgroundColor: "#F8F8F8",
-    borderRadius: 10,
+    borderRadius: 0,
     elevation: 4,
     shadowColor: "#000",
     shadowOpacity: 0.3,

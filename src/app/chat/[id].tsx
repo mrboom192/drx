@@ -1,13 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
 
-const Page = () => {
+const Chat = () => {
   return (
     <View>
-      <Text>doctors</Text>
+      <Text>Chat</Text>
     </View>
   );
 };
 
-export default Page;
+export default Chat;

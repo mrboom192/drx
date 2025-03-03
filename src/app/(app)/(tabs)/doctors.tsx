@@ -1,11 +1,13 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { View } from "@/components/Themed";
 import React, { useMemo, useState } from "react";
 import { Stack, useRouter } from "expo-router";
-import DoctorsHeader from "@/components/Header";
+import DoctorsHeader from "@/components/DoctorsHeader";
 import doctorsData from "@/../assets/data/doctors.json";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DoctorMap from "@/components/DoctorMap";
 import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";
+import Colors from "@/constants/Colors";
 
 const Page = () => {
   const router = useRouter();

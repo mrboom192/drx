@@ -1,7 +1,6 @@
 import { StyleSheet, useColorScheme } from "react-native";
 import React, { useRef, useState } from "react";
-import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -9,22 +8,22 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "./Themed";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { themedStyles } from "@/constants/Styles";
-import Rating from "./Rating";
 
 const tabs = [
   {
     name: "all",
   },
   {
-    name: "doctors",
+    name: "ongoing",
   },
   {
-    name: "alerts",
+    name: "finished",
   },
+  { name: "pending" },
 ];
 
 interface Props {}

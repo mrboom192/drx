@@ -22,6 +22,7 @@ export default function TabLayout() {
         name="doctors"
         options={{
           tabBarLabel: "Doctors",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="stethoscope" color={color} size={size} />
           ),

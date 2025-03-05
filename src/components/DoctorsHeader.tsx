@@ -170,6 +170,18 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
         <View style={styles.actionRow}>
           {/* Search container */}
           <TouchableOpacity
+            onPress={() => router.back()}
+            style={[themeBorderStyle, styles.filterBtn]}
+          >
+            <Ionicons
+              name="chevron-back"
+              size={24}
+              color={
+                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => router.push("/")}
             style={[themeBorderStyle, styles.searchBtn]}
           >

@@ -12,6 +12,7 @@ import { defaultStyles, themedStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 
 // 1:11:09
 
@@ -40,8 +41,7 @@ const languages = [
 const Page = () => {
   const router = useRouter();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
-
-  const colorScheme = useColorScheme();
+  const { colorScheme, themeTextStylePrimary } = useThemedStyles();
 
   const handleLanguageSelect = (abbr: string) => {
     setLanguageFilter(
@@ -51,21 +51,6 @@ const Page = () => {
           : [...prevFilters, abbr] // Add if not selected
     );
   };
-
-  const themeTextStylePrimary =
-    colorScheme === "light"
-      ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
-
-  const themeTextStyleSecondary =
-    colorScheme === "light"
-      ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
-
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
 
   return (
     <View style={styles.container}>

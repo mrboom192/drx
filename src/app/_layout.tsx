@@ -10,10 +10,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { SessionProvider } from "../contexts/AuthContext";
-
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useColorScheme } from "@/components/useColorScheme";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,7 +56,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const router = useRouter();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useThemedStyles();
 
   // Need to make a header function that looks good!!
   return (
@@ -76,7 +77,11 @@ function RootLayoutNav() {
               presentation: "modal",
               headerLeft: () => (
                 <TouchableOpacity onPress={() => router.back()}>
-                  <Ionicons name="close-outline" size={24} />
+                  <Ionicons
+                    name="close-outline"
+                    size={24}
+                    color={colorScheme === "light" ? "#000" : "#FFF"}
+                  />
                 </TouchableOpacity>
               ),
             }}

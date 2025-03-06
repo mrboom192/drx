@@ -1,0 +1,15 @@
+{
+  "name": "Trevor Philips",
+  "role": "Patient",
+  "profileImage": "https://pbs.twimg.com/profile_images/846473690816630784/wYaB0Tba_200x200.jpg",
+  "gender": "Male",
+  "age": 27,
+  "weight": {
+    "value": 72,
+    "unit": "kg"
+  },
+  "height": {
+    "value": 176,
+    "unit": "cm"
+  }
+}

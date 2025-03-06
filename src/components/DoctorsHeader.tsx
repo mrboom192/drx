@@ -1,4 +1,4 @@
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,11 +9,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "./Themed";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
-import { themedStyles } from "@/constants/Styles";
-import Rating from "./Rating";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 
 const categories = [
   {
@@ -130,23 +129,9 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   const scrollRef = useRef<ScrollView | null>(null);
   const router = useRouter();
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
-  const colorScheme = useColorScheme();
+  const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
+    useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const themeTextStylePrimary =
-    colorScheme === "light"
-      ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
-
-  const themeTextStyleSecondary =
-    colorScheme === "light"
-      ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
-
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];

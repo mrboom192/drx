@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { SafeAreaView } from "@/components/Themed";
 import Colors from "@/constants/Colors";
+import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import InfoBottomSheet from "@/components/InfoBottomSheet";
 
 const Page = () => {
   const {
@@ -12,6 +14,12 @@ const Page = () => {
     themeTextStylePrimary,
     themeTextStyleSecondary,
   } = useThemedStyles();
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openSheet = () => {
+    bottomSheetRef.current?.present(); // Collapses bottom sheet, showing map
+  };
 
   return (
     <SafeAreaView
@@ -74,7 +82,59 @@ const Page = () => {
             </TouchableOpacity>
           </Link>
         </View>
+
+        {/* Card */}
+        <View
+          style={{
+            flexDirection: "column",
+            backgroundColor: "#000",
+            borderRadius: 16,
+            padding: 16,
+            margin: 16,
+            gap: 14,
+          }}
+        >
+          <Text
+            style={[
+              themeTextStylePrimary,
+              { fontFamily: "dm-sb", fontSize: 20 },
+            ]}
+          >
+            Second Opinion
+          </Text>
+
+          {/* Description */}
+          <Text
+            style={[themeTextStylePrimary, { fontFamily: "dm", fontSize: 16 }]}
+          >
+            Need a second opinion? Find a doctor to support your care.
+          </Text>
+
+          {/* Inner Button */}
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              borderRadius: 32,
+              borderWidth: 1,
+              borderColor: "#FFF",
+              justifyContent: "center",
+            }}
+            onPress={openSheet}
+          >
+            <Text
+              style={[
+                themeTextStylePrimary,
+                { textAlign: "center", fontFamily: "dm-sb", fontSize: 16 },
+              ]}
+            >
+              Learn More
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
+      <InfoBottomSheet ref={bottomSheetRef} />
     </SafeAreaView>
   );
 };
@@ -82,8 +142,6 @@ const Page = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
   },
   actionRow: {
     flexDirection: "row",

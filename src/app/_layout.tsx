@@ -1,4 +1,3 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
   DefaultTheme,
@@ -10,11 +9,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { SessionProvider } from "../contexts/AuthContext";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { useColorScheme } from "@/components/useColorScheme";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -60,37 +59,43 @@ function RootLayoutNav() {
 
   // Need to make a header function that looks good!!
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <SessionProvider>
-        <Stack
-          screenOptions={{
-            navigationBarColor: "#FFF",
-          }}
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack.Screen
-            name="(modals)/filter"
-            options={{
-              title: "Filters",
-              headerTitleStyle: {
-                fontFamily: "dm-sb",
-              },
-              presentation: "modal",
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => router.back()}>
-                  <Ionicons
-                    name="close-outline"
-                    size={24}
-                    color={colorScheme === "light" ? "#000" : "#FFF"}
-                  />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="signup" options={{ headerShown: false }} />
-        </Stack>
-      </SessionProvider>
-    </ThemeProvider>
+          <SessionProvider>
+            <Stack
+              screenOptions={{
+                navigationBarColor: "#FFF",
+              }}
+            >
+              <Stack.Screen
+                name="(modals)/filter"
+                options={{
+                  title: "Filters",
+                  headerTitleStyle: {
+                    fontFamily: "dm-sb",
+                  },
+                  presentation: "modal",
+                  headerLeft: () => (
+                    <TouchableOpacity onPress={() => router.back()}>
+                      <Ionicons
+                        name="close-outline"
+                        size={24}
+                        color={colorScheme === "light" ? "#000" : "#FFF"}
+                      />
+                    </TouchableOpacity>
+                  ),
+                }}
+              />
+              <Stack.Screen name="(app)" options={{ headerShown: false }} />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="signup" options={{ headerShown: false }} />
+            </Stack>
+          </SessionProvider>
+        </ThemeProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

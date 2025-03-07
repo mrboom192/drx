@@ -4,6 +4,7 @@ import {
   FontAwesome6,
   Ionicons,
 } from "@expo/vector-icons";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet/lib/typescript/contexts";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {

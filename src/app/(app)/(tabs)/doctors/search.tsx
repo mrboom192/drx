@@ -19,25 +19,19 @@ const Page = () => {
   };
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <Stack.Screen
-          options={{
-            header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,
-          }}
-        />
-        <DoctorMap doctors={doctors} />
-        <DoctorsBottomSheet doctors={doctors} specialty={specialty} />
-      </View>
-    </GestureHandlerRootView>
+    <View style={{ flex: 1 }}>
+      <Stack.Screen
+        options={{
+          header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,
+        }}
+      />
+      <DoctorMap doctors={doctors} />
+      <DoctorsBottomSheet doctors={doctors} specialty={specialty} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
   button: {
     marginTop: 20,
     paddingVertical: 10,

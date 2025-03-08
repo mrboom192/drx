@@ -1,16 +1,15 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { defaultStyles } from "@/constants/Styles";
 import { useRouter } from "expo-router";
-import MapView from "react-native-map-clustering"; // Easy way to do map clustering
+import MapView from "react-native-map-clustering"; // For efficient clustering
 import { Doctor } from "@/types/doctor";
 
 interface Props {
-  doctors: any;
+  doctors: Doctor[];
+  onRegionChangeComplete: (region: any) => void;
 }
-
-// 2:58:47
 
 const INITIAL_REGION = {
   latitude: 37.33,
@@ -19,17 +18,18 @@ const INITIAL_REGION = {
   longitudeDelta: 9,
 };
 
-// Memoize map component to prevent it from rerendering, making it alot faster
-const DoctorMap = memo(({ doctors }: Props) => {
+// Memoized component for performance optimization
+const DoctorMap = memo(({ doctors, onRegionChangeComplete }: Props) => {
   const router = useRouter();
 
-  const onMarkerSelected = (item: Doctor) => {
-    //   router.push(`/listing/${item.properties.id}`);
+  const onMarkerSelected = (doctor: Doctor) => {
+    // Navigate to doctor details page when clicked (if needed)
+    console.log("Doctor Selected:", doctor.name);
   };
 
-  const renderCluster = (cluster: any) => {
+  // Memoized function for cluster rendering
+  const renderCluster = useCallback((cluster: any) => {
     const { id, geometry, onPress, properties } = cluster;
-
     const points = properties.point_count;
 
     return (
@@ -37,30 +37,21 @@ const DoctorMap = memo(({ doctors }: Props) => {
         key={`cluster-${id}`}
         onPress={onPress}
         coordinate={{
+          latitude: geometry.coordinates[1], // Ensure latitude is second
           longitude: geometry.coordinates[0],
-          latitude: geometry.coordinates[1],
         }}
       >
-        <TouchableOpacity style={styles.marker}>
-          <Text
-            style={{
-              color: "#000",
-              textAlign: "center",
-              fontFamily: "dm-sb",
-            }}
-          >
-            {points}
-          </Text>
+        <TouchableOpacity style={styles.clusterMarker}>
+          <Text style={styles.clusterText}>{points}</Text>
         </TouchableOpacity>
       </Marker>
     );
-  };
+  }, []);
 
-  // When deploying, using Apple Maps or Google Maps will require additional configuration
-  // showsMyLocationButton button only appears on PROVIDER_GOOGLE, which is bugged for expo go
   return (
     <View style={defaultStyles.container}>
       <MapView
+        // provider={PROVIDER_GOOGLE} // Ensures Google Maps provider is used
         animationEnabled={false}
         clusterColor="#FFF"
         clusterTextColor="#000"
@@ -69,21 +60,33 @@ const DoctorMap = memo(({ doctors }: Props) => {
         showsUserLocation
         initialRegion={INITIAL_REGION}
         renderCluster={renderCluster}
+        onRegionChangeComplete={onRegionChangeComplete}
       >
-        {doctors.map((item: Doctor) => (
-          <Marker
-            key={item.id}
-            onPress={() => onMarkerSelected(item)}
-            coordinate={{
-              latitude: +item.hospital_coordinates.latitude, // + converts to number type
-              longitude: +item.hospital_coordinates.longitude,
-            }}
-          >
-            <View style={styles.marker}>
-              <Text style={styles.markerText}>$ {item.consultation_price}</Text>
-            </View>
-          </Marker>
-        ))}
+        {doctors.map((doctor: Doctor) => {
+          if (
+            doctor.hospital_coordinates?.latitude == null ||
+            doctor.hospital_coordinates?.longitude == null
+          ) {
+            return null;
+          }
+
+          return (
+            <Marker
+              key={doctor.id}
+              onPress={() => onMarkerSelected(doctor)}
+              coordinate={{
+                latitude: Number(doctor.hospital_coordinates.latitude),
+                longitude: Number(doctor.hospital_coordinates.longitude),
+              }}
+            >
+              <View style={styles.marker}>
+                <Text style={styles.markerText}>
+                  ${doctor.consultation_price}
+                </Text>
+              </View>
+            </Marker>
+          );
+        })}
       </MapView>
     </View>
   );
@@ -103,30 +106,26 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    shadowOffset: {
-      width: 1,
-      height: 10,
-    },
+    shadowOffset: { width: 1, height: 10 },
   },
   markerText: {
     fontSize: 14,
     fontFamily: "dm-sb",
   },
-  locateBtn: {
-    position: "absolute",
-    top: 70,
-    right: 20,
-    backgroundColor: "#fff",
+  clusterMarker: {
+    backgroundColor: "#FFF",
     padding: 10,
-    borderRadius: 10,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    shadowOffset: {
-      width: 1,
-      height: 10,
-    },
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: "#000",
+  },
+  clusterText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#000",
   },
 });
 

@@ -16,6 +16,10 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 
 const categories = [
   {
+    name: "All",
+    icon: "user",
+  },
+  {
     name: "General Practice",
     icon: "stethoscope",
   },
@@ -173,7 +177,6 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             <Ionicons
               name="search"
               size={24}
-              s
               color={
                 colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
               }
@@ -227,7 +230,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
                 gap: 4,
               }}
             >
-              <MaterialIcons
+              {/* <MaterialIcons
                 name={item.icon as any}
                 color={
                   activeIndex === index
@@ -237,7 +240,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
                     : Colors.dark.grey
                 }
                 size={24}
-              />
+              /> */}
               <Text
                 style={
                   activeIndex === index

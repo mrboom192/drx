@@ -2,1601 +2,1861 @@
   {
     "id": "D1001",
     "profile_url": "https://www.zocdoc.com/doctor/raymond-jennings-1001",
-    "name": "Dr. Raymond Jennings",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Raymond Jennings offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 30,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
+    "title": "Dr.",
+    "name": "Raymond Jennings",
+    "specialty": ["Cardiology", "Internal Medicine"],
+    "description": "Raymond Jennings provides top-tier medical care in Plastic Surgery, ensuring the best outcomes for patients.",
+    "experience_years": 31,
+    "hospital_name": "Jordan Hospital",
     "hospital_coordinates": {
-      "latitude": 31.956794,
-      "longitude": 35.910438
+      "latitude": 31.114249,
+      "longitude": 35.84902
     },
-    "education": "Stanford University",
-    "languages_spoken": ["Arabic", "Mandarin"],
-    "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 118,
-    "consultation_price": 187,
+    "education": [
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "1982-01T00:00:00.000Z",
+        "end_date": "1988-07T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Michigan",
+        "start_date": "1985-03T00:00:00.000Z",
+        "end_date": "1991-12T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "French"],
+    "accepts_insurance": false,
+    "rating": 3.9,
+    "reviews": 379,
+    "consultation_price": 134,
     "currency": "JOD",
-    "phone": "(321)370-9210x9743",
+    "phone": "(340)356-8147x3741",
     "email": "raymond.jennings@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/40.jpg"
   },
   {
     "id": "D1002",
-    "profile_url": "https://www.zocdoc.com/doctor/danielle-brown-1002",
-    "name": "Dr. Danielle Brown",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Danielle Brown offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 29,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
+    "profile_url": "https://www.zocdoc.com/doctor/sarah-carter-1002",
+    "title": "Dr.",
+    "name": "Sarah Carter",
+    "specialty": ["Rheumatology"],
+    "description": "Sarah Carter provides top-tier medical care in Plastic Surgery, ensuring the best outcomes for patients.",
+    "experience_years": 27,
+    "hospital_name": "Jordan Hospital",
     "hospital_coordinates": {
-      "latitude": 29.999673,
-      "longitude": 31.21593
+      "latitude": 31.209197,
+      "longitude": 35.468268
     },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["French", "Spanish"],
+    "education": [
+      {
+        "institution": "University of Michigan",
+        "start_date": "1986-06T00:00:00.000Z",
+        "end_date": "1991-06T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Michigan",
+        "start_date": "1994-10T00:00:00.000Z",
+        "end_date": "1999-12T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English"],
     "accepts_insurance": false,
-    "rating": 4.5,
-    "reviews": 75,
-    "consultation_price": 245,
-    "currency": "EGP",
-    "phone": "3761710684",
-    "email": "danielle.brown@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
+    "rating": 4.2,
+    "reviews": 484,
+    "consultation_price": 168,
+    "currency": "JOD",
+    "phone": "(349)936-6808x9297",
+    "email": "sarah.carter@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/26.jpg"
   },
   {
     "id": "D1003",
-    "profile_url": "https://www.zocdoc.com/doctor/melissa-carr-1003",
-    "name": "Dr. Melissa Carr",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Melissa Carr offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Zarqa Governmental Hospital",
-    "hospital_address": "King Abdullah II St., Zarqa, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/michael-nguyen-1003",
+    "title": "Dr.",
+    "name": "Michael Nguyen",
+    "specialty": ["Pulmonology"],
+    "description": "Michael Nguyen provides top-tier medical care in Endocrinology, ensuring the best outcomes for patients.",
+    "experience_years": 12,
+    "hospital_name": "Jordan Hospital",
     "hospital_coordinates": {
-      "latitude": 32.066978,
-      "longitude": 36.102767
+      "latitude": 31.260736,
+      "longitude": 35.913992
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": true,
-    "rating": 4.6,
-    "reviews": 22,
-    "consultation_price": 246,
-    "currency": "JOD",
-    "phone": "(583)961-8782x3886",
-    "email": "melissa.carr@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
-  },
-  {
-    "id": "D1004",
-    "profile_url": "https://www.zocdoc.com/doctor/michael-smith-1004",
-    "name": "Dr. Michael Smith",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Michael Smith offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 22,
-    "hospital_affiliation": "New York-Presbyterian Hospital",
-    "hospital_address": "525 E 68th St, New York, NY 10065",
-    "hospital_coordinates": {
-      "latitude": 40.755893,
-      "longitude": -73.944038
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["Mandarin", "French", "English"],
-    "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 134,
-    "consultation_price": 185,
-    "currency": "USD",
-    "phone": "574-525-0815",
-    "email": "michael.smith@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
-  },
-  {
-    "id": "D1005",
-    "profile_url": "https://www.zocdoc.com/doctor/tanya-buchanan-1005",
-    "name": "Dr. Tanya Buchanan",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Tanya Buchanan offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 8,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
-    "hospital_coordinates": {
-      "latitude": 31.944413,
-      "longitude": 35.920599
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Spanish", "English"],
-    "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 158,
-    "consultation_price": 128,
-    "currency": "JOD",
-    "phone": "+1-452-308-0253x478",
-    "email": "tanya.buchanan@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
-  },
-  {
-    "id": "D1006",
-    "profile_url": "https://www.zocdoc.com/doctor/david-moore-1006",
-    "name": "Dr. David Moore",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "David Moore offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 14,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.555008,
-      "longitude": 35.857679
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["English", "Arabic", "Spanish"],
-    "accepts_insurance": false,
-    "rating": 4.6,
-    "reviews": 38,
-    "consultation_price": 256,
-    "currency": "JOD",
-    "phone": "001-178-314-3650x0243",
-    "email": "david.moore@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "id": "D1007",
-    "profile_url": "https://www.zocdoc.com/doctor/angela-maxwell-1007",
-    "name": "Dr. Angela Maxwell",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Angela Maxwell offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 6,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.555882,
-      "longitude": 35.866349
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.3,
-    "reviews": 33,
-    "consultation_price": 274,
-    "currency": "JOD",
-    "phone": "+1-792-653-9971x6352",
-    "email": "angela.maxwell@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
-  },
-  {
-    "id": "D1008",
-    "profile_url": "https://www.zocdoc.com/doctor/yvonne-robinson-1008",
-    "name": "Dr. Yvonne Robinson",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Yvonne Robinson offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 23,
-    "hospital_affiliation": "Kasr El Aini Hospital",
-    "hospital_address": "El Manial, Cairo, Egypt",
-    "hospital_coordinates": {
-      "latitude": 30.038448,
-      "longitude": 31.223918
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Mandarin", "Spanish", "English"],
-    "accepts_insurance": true,
-    "rating": 4.5,
-    "reviews": 82,
-    "consultation_price": 184,
-    "currency": "EGP",
-    "phone": "798.767.4121",
-    "email": "yvonne.robinson@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
-  },
-  {
-    "id": "D1009",
-    "profile_url": "https://www.zocdoc.com/doctor/darryl-nelson-1009",
-    "name": "Dr. Darryl Nelson",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Darryl Nelson offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 5,
-    "hospital_affiliation": "Alexandria University Hospital",
-    "hospital_address": "Champollion St., Alexandria, Egypt",
-    "hospital_coordinates": {
-      "latitude": 31.187094,
-      "longitude": 29.90588
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["French", "Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.5,
-    "reviews": 75,
-    "consultation_price": 186,
-    "currency": "EGP",
-    "phone": "001-941-752-5801",
-    "email": "darryl.nelson@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1010",
-    "profile_url": "https://www.zocdoc.com/doctor/paul-padilla-1010",
-    "name": "Dr. Paul Padilla",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Paul Padilla offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
-    "hospital_coordinates": {
-      "latitude": 29.990043,
-      "longitude": 31.20059
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["Mandarin", "Spanish", "English"],
-    "accepts_insurance": false,
-    "rating": 4.2,
-    "reviews": 53,
-    "consultation_price": 175,
-    "currency": "EGP",
-    "phone": "983-089-2278",
-    "email": "paul.padilla@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "id": "D1011",
-    "profile_url": "https://www.zocdoc.com/doctor/mr.-joel-west-1011",
-    "name": "Dr. Mr. Joel West",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Mr. Joel West offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 18,
-    "hospital_affiliation": "Cedars-Sinai Medical Center",
-    "hospital_address": "8700 Beverly Blvd, Los Angeles, CA 90048",
-    "hospital_coordinates": {
-      "latitude": 34.064868,
-      "longitude": -118.365331
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["English", "Arabic", "French"],
-    "accepts_insurance": false,
-    "rating": 4.8,
-    "reviews": 191,
-    "consultation_price": 238,
-    "currency": "USD",
-    "phone": "136-946-4267x091",
-    "email": "mr..joel.west@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1012",
-    "profile_url": "https://www.zocdoc.com/doctor/herbert-dyer-1012",
-    "name": "Dr. Herbert Dyer",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Herbert Dyer offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 13,
-    "hospital_affiliation": "Kasr El Aini Hospital",
-    "hospital_address": "El Manial, Cairo, Egypt",
-    "hospital_coordinates": {
-      "latitude": 30.044179,
-      "longitude": 31.223132
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["Arabic"],
-    "accepts_insurance": true,
-    "rating": 5.0,
-    "reviews": 186,
-    "consultation_price": 110,
-    "currency": "EGP",
-    "phone": "(976)729-1723",
-    "email": "herbert.dyer@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
-  },
-  {
-    "id": "D1013",
-    "profile_url": "https://www.zocdoc.com/doctor/patrick-nichols-1013",
-    "name": "Dr. Patrick Nichols",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Patrick Nichols offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 16,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
-    "hospital_coordinates": {
-      "latitude": 29.976091,
-      "longitude": 31.19958
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["English", "Arabic"],
-    "accepts_insurance": true,
-    "rating": 4.6,
-    "reviews": 41,
-    "consultation_price": 184,
-    "currency": "EGP",
-    "phone": "332.601.0717x389",
-    "email": "patrick.nichols@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1014",
-    "profile_url": "https://www.zocdoc.com/doctor/lydia-jenkins-1014",
-    "name": "Dr. Lydia Jenkins",
-    "specialty": "Pediatrics",
-    "summary": "Leading specialist in pediatrics with a focus on patient-centered care.",
-    "description": "Lydia Jenkins offers comprehensive expertise in pediatrics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 19,
-    "hospital_affiliation": "Northwestern Memorial Hospital",
-    "hospital_address": "251 E Huron St, Chicago, IL 60611",
-    "hospital_coordinates": {
-      "latitude": 41.908194,
-      "longitude": -87.613049
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Spanish"],
-    "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 77,
-    "consultation_price": 91,
-    "currency": "USD",
-    "phone": "+1-326-444-3771x247",
-    "email": "lydia.jenkins@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/7.jpg"
-  },
-  {
-    "id": "D1015",
-    "profile_url": "https://www.zocdoc.com/doctor/steven-hodge-1015",
-    "name": "Dr. Steven Hodge",
-    "specialty": "Pediatrics",
-    "summary": "Leading specialist in pediatrics with a focus on patient-centered care.",
-    "description": "Steven Hodge offers comprehensive expertise in pediatrics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 30,
-    "hospital_affiliation": "Zarqa Governmental Hospital",
-    "hospital_address": "King Abdullah II St., Zarqa, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.066939,
-      "longitude": 36.081077
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["French"],
-    "accepts_insurance": false,
-    "rating": 4.9,
-    "reviews": 23,
-    "consultation_price": 235,
-    "currency": "JOD",
-    "phone": "090.314.3693x089",
-    "email": "steven.hodge@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "id": "D1016",
-    "profile_url": "https://www.zocdoc.com/doctor/mark-williams-1016",
-    "name": "Dr. Mark Williams",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Mark Williams offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 6,
-    "hospital_affiliation": "Zarqa Governmental Hospital",
-    "hospital_address": "King Abdullah II St., Zarqa, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.059965,
-      "longitude": 36.100109
-    },
-    "education": "Harvard Medical School",
+    "education": [
+      {
+        "institution": "Stanford University",
+        "start_date": "1992-03T00:00:00.000Z",
+        "end_date": "1997-04T00:00:00.000Z"
+      },
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "2006-11T00:00:00.000Z",
+        "end_date": "2010-02T00:00:00.000Z"
+      }
+    ],
     "languages_spoken": ["English", "French"],
     "accepts_insurance": true,
     "rating": 4.2,
-    "reviews": 193,
-    "consultation_price": 136,
+    "reviews": 353,
+    "consultation_price": 125,
     "currency": "JOD",
-    "phone": "(749)493-9426x16265",
-    "email": "mark.williams@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
+    "phone": "(379)818-7558x3434",
+    "email": "michael.nguyen@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/96.jpg"
+  },
+  {
+    "id": "D1004",
+    "profile_url": "https://www.zocdoc.com/doctor/jessica-patel-1004",
+    "title": "Dr.",
+    "name": "Jessica Patel",
+    "specialty": ["Hematology"],
+    "description": "Jessica Patel provides top-tier medical care in Nephrology, ensuring the best outcomes for patients.",
+    "experience_years": 17,
+    "hospital_name": "Metropolitan General Hospital",
+    "hospital_coordinates": {
+      "latitude": 31.261193,
+      "longitude": 35.872366
     },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
+    "education": [
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "2002-10T00:00:00.000Z",
+        "end_date": "2006-08T00:00:00.000Z"
+      },
+      {
+        "institution": "Duke University",
+        "start_date": "1981-03T00:00:00.000Z",
+        "end_date": "1985-06T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "French"],
+    "accepts_insurance": true,
+    "rating": 3.5,
+    "reviews": 228,
+    "consultation_price": 236,
+    "currency": "JOD",
+    "phone": "(307)396-4522x9811",
+    "email": "jessica.patel@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/55.jpg"
+  },
+  {
+    "id": "D1005",
+    "profile_url": "https://www.zocdoc.com/doctor/david-smith-1005",
+    "title": "Dr.",
+    "name": "David Smith",
+    "specialty": ["Endocrinology"],
+    "description": "David Smith provides top-tier medical care in Pulmonology, ensuring the best outcomes for patients.",
+    "experience_years": 22,
+    "hospital_name": "New Hope Clinic",
+    "hospital_coordinates": {
+      "latitude": 31.425312,
+      "longitude": 35.569636
+    },
+    "education": [
+      {
+        "institution": "Columbia University",
+        "start_date": "1996-09T00:00:00.000Z",
+        "end_date": "2001-10T00:00:00.000Z"
+      },
+      {
+        "institution": "University of California, San Francisco",
+        "start_date": "1998-01T00:00:00.000Z",
+        "end_date": "2002-02T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Mandarin"],
+    "accepts_insurance": false,
+    "rating": 4.4,
+    "reviews": 499,
+    "consultation_price": 201,
+    "currency": "JOD",
+    "phone": "(320)486-6457x1964",
+    "email": "david.smith@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/36.jpg"
+  },
+  {
+    "id": "D1006",
+    "profile_url": "https://www.zocdoc.com/doctor/emily-johnson-1006",
+    "title": "Dr.",
+    "name": "Emily Johnson",
+    "specialty": ["Gastroenterology"],
+    "description": "Emily Johnson provides top-tier medical care in Cardiology, ensuring the best outcomes for patients.",
+    "experience_years": 18,
+    "hospital_name": "New Hope Clinic",
+    "hospital_coordinates": {
+      "latitude": 31.963265,
+      "longitude": 35.202917
+    },
+    "education": [
+      {
+        "institution": "Stanford University",
+        "start_date": "2006-02T00:00:00.000Z",
+        "end_date": "2012-05T00:00:00.000Z"
+      },
+      {
+        "institution": "Stanford University",
+        "start_date": "1986-09T00:00:00.000Z",
+        "end_date": "1991-03T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": false,
+    "rating": 4.2,
+    "reviews": 179,
+    "consultation_price": 170,
+    "currency": "JOD",
+    "phone": "(371)873-1180x5566",
+    "email": "emily.johnson@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
+  },
+  {
+    "id": "D1007",
+    "profile_url": "https://www.zocdoc.com/doctor/christopher-lee-1007",
+    "title": "Dr.",
+    "name": "Christopher Lee",
+    "specialty": ["Sports Medicine"],
+    "description": "Christopher Lee provides top-tier medical care in Sports Medicine, ensuring the best outcomes for patients.",
+    "experience_years": 29,
+    "hospital_name": "Sunrise Health Institute",
+    "hospital_coordinates": {
+      "latitude": 31.802477,
+      "longitude": 35.328425
+    },
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "2009-05T00:00:00.000Z",
+        "end_date": "2013-11T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Michigan",
+        "start_date": "1993-11T00:00:00.000Z",
+        "end_date": "1998-05T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English"],
+    "accepts_insurance": false,
+    "rating": 4.3,
+    "reviews": 144,
+    "consultation_price": 249,
+    "currency": "JOD",
+    "phone": "(366)844-9635x7199",
+    "email": "christopher.lee@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/17.jpg"
+  },
+  {
+    "id": "D1008",
+    "profile_url": "https://www.zocdoc.com/doctor/sophia-martinez-1008",
+    "title": "Dr.",
+    "name": "Sophia Martinez",
+    "specialty": ["Psychiatry"],
+    "description": "Sophia Martinez provides top-tier medical care in Dermatology, ensuring the best outcomes for patients.",
+    "experience_years": 36,
+    "hospital_name": "Sunrise Health Institute",
+    "hospital_coordinates": {
+      "latitude": 31.751515,
+      "longitude": 35.056447
+    },
+    "education": [
+      {
+        "institution": "Yale University",
+        "start_date": "2008-04T00:00:00.000Z",
+        "end_date": "2014-02T00:00:00.000Z"
+      },
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "2001-04T00:00:00.000Z",
+        "end_date": "2005-02T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": true,
+    "rating": 4.1,
+    "reviews": 383,
+    "consultation_price": 236,
+    "currency": "JOD",
+    "phone": "(392)830-6988x9958",
+    "email": "sophia.martinez@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/26.jpg"
+  },
+  {
+    "id": "D1009",
+    "profile_url": "https://www.zocdoc.com/doctor/daniel-kim-1009",
+    "title": "Dr.",
+    "name": "Daniel Kim",
+    "specialty": ["Rheumatology"],
+    "description": "Daniel Kim provides top-tier medical care in Ophthalmology, ensuring the best outcomes for patients.",
+    "experience_years": 7,
+    "hospital_name": "Sunrise Health Institute",
+    "hospital_coordinates": {
+      "latitude": 31.831108,
+      "longitude": 35.415407
+    },
+    "education": [
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "2010-02T00:00:00.000Z",
+        "end_date": "2016-06T00:00:00.000Z"
+      },
+      {
+        "institution": "Stanford University",
+        "start_date": "2008-03T00:00:00.000Z",
+        "end_date": "2014-10T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "French"],
+    "accepts_insurance": true,
+    "rating": 4.5,
+    "reviews": 497,
+    "consultation_price": 122,
+    "currency": "JOD",
+    "phone": "(302)114-2376x8817",
+    "email": "daniel.kim@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/89.jpg"
+  },
+  {
+    "id": "D1010",
+    "profile_url": "https://www.zocdoc.com/doctor/olivia-brown-1010",
+    "title": "Dr.",
+    "name": "Olivia Brown",
+    "specialty": ["Plastic Surgery"],
+    "description": "Olivia Brown provides top-tier medical care in Pediatrics, ensuring the best outcomes for patients.",
+    "experience_years": 18,
+    "hospital_name": "New Hope Clinic",
+    "hospital_coordinates": {
+      "latitude": 31.658162,
+      "longitude": 35.684423
+    },
+    "education": [
+      {
+        "institution": "University of Michigan",
+        "start_date": "2002-04T00:00:00.000Z",
+        "end_date": "2008-04T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "1984-08T00:00:00.000Z",
+        "end_date": "1988-12T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Mandarin"],
+    "accepts_insurance": false,
+    "rating": 4.0,
+    "reviews": 423,
+    "consultation_price": 187,
+    "currency": "JOD",
+    "phone": "(303)524-3074x4632",
+    "email": "olivia.brown@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/19.jpg"
+  },
+  {
+    "id": "D1011",
+    "profile_url": "https://www.zocdoc.com/doctor/ethan-wilson-1011",
+    "title": "Dr.",
+    "name": "Ethan Wilson",
+    "specialty": ["Dermatology", "Cosmetic Surgery"],
+    "description": "Ethan Wilson provides top-tier medical care in Nephrology, ensuring the best outcomes for patients.",
+    "experience_years": 19,
+    "hospital_name": "Metropolitan General Hospital",
+    "hospital_coordinates": {
+      "latitude": 31.823913,
+      "longitude": 35.793079
+    },
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "2000-01T00:00:00.000Z",
+        "end_date": "2004-05T00:00:00.000Z"
+      },
+      {
+        "institution": "Yale University",
+        "start_date": "2003-01T00:00:00.000Z",
+        "end_date": "2008-05T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": false,
+    "rating": 4.5,
+    "reviews": 186,
+    "consultation_price": 195,
+    "currency": "JOD",
+    "phone": "(309)520-2295x5202",
+    "email": "ethan.wilson@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/41.jpg"
+  },
+  {
+    "id": "D1012",
+    "profile_url": "https://www.zocdoc.com/doctor/ava-anderson-1012",
+    "title": "Dr.",
+    "name": "Ava Anderson",
+    "specialty": ["Plastic Surgery"],
+    "description": "Ava Anderson provides top-tier medical care in Cardiology, ensuring the best outcomes for patients.",
+    "experience_years": 33,
+    "hospital_name": "New Hope Clinic",
+    "hospital_coordinates": {
+      "latitude": 31.280814,
+      "longitude": 35.776188
+    },
+    "education": [
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "2012-05T00:00:00.000Z",
+        "end_date": "2017-11T00:00:00.000Z"
+      },
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "1996-08T00:00:00.000Z",
+        "end_date": "2002-09T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Arabic"],
+    "accepts_insurance": false,
+    "rating": 3.6,
+    "reviews": 440,
+    "consultation_price": 203,
+    "currency": "JOD",
+    "phone": "(378)614-7536x6667",
+    "email": "ava.anderson@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/55.jpg"
+  },
+  {
+    "id": "D1013",
+    "profile_url": "https://www.zocdoc.com/doctor/liam-thompson-1013",
+    "title": "Dr.",
+    "name": "Liam Thompson",
+    "specialty": ["Geriatrics"],
+    "description": "Liam Thompson provides top-tier medical care in Oncology, ensuring the best outcomes for patients.",
+    "experience_years": 21,
+    "hospital_name": "Greenfield Medical Center",
+    "hospital_coordinates": {
+      "latitude": 31.4196,
+      "longitude": 35.952028
+    },
+    "education": [
+      {
+        "institution": "Duke University",
+        "start_date": "2012-11T00:00:00.000Z",
+        "end_date": "2016-12T00:00:00.000Z"
+      },
+      {
+        "institution": "Columbia University",
+        "start_date": "2012-01T00:00:00.000Z",
+        "end_date": "2016-09T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": false,
+    "rating": 4.9,
+    "reviews": 293,
+    "consultation_price": 222,
+    "currency": "JOD",
+    "phone": "(367)314-2426x9371",
+    "email": "liam.thompson@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/13.jpg"
+  },
+  {
+    "id": "D1014",
+    "profile_url": "https://www.zocdoc.com/doctor/mia-rodriguez-1014",
+    "title": "Dr.",
+    "name": "Mia Rodriguez",
+    "specialty": ["Oncology"],
+    "description": "Mia Rodriguez provides top-tier medical care in Endocrinology, ensuring the best outcomes for patients.",
+    "experience_years": 30,
+    "hospital_name": "Metropolitan General Hospital",
+    "hospital_coordinates": {
+      "latitude": 31.823266,
+      "longitude": 35.654865
+    },
+    "education": [
+      {
+        "institution": "Stanford University",
+        "start_date": "1999-07T00:00:00.000Z",
+        "end_date": "2004-02T00:00:00.000Z"
+      },
+      {
+        "institution": "University of California, San Francisco",
+        "start_date": "1992-09T00:00:00.000Z",
+        "end_date": "1998-05T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": true,
+    "rating": 4.6,
+    "reviews": 151,
+    "consultation_price": 295,
+    "currency": "JOD",
+    "phone": "(335)642-3357x1808",
+    "email": "mia.rodriguez@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/7.jpg"
+  },
+  {
+    "id": "D1015",
+    "profile_url": "https://www.zocdoc.com/doctor/noah-garcia-1015",
+    "title": "Dr.",
+    "name": "Noah Garcia",
+    "specialty": ["Nephrology"],
+    "description": "Noah Garcia provides top-tier medical care in Cardiology, ensuring the best outcomes for patients.",
+    "experience_years": 30,
+    "hospital_name": "Jordan Hospital",
+    "hospital_coordinates": {
+      "latitude": 31.660186,
+      "longitude": 35.908911
+    },
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "2012-05T00:00:00.000Z",
+        "end_date": "2018-04T00:00:00.000Z"
+      },
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "2014-07T00:00:00.000Z",
+        "end_date": "2019-10T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Arabic"],
+    "accepts_insurance": true,
+    "rating": 4.7,
+    "reviews": 438,
+    "consultation_price": 231,
+    "currency": "JOD",
+    "phone": "(326)526-1381x7996",
+    "email": "noah.garcia@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/87.jpg"
+  },
+  {
+    "id": "D1016",
+    "profile_url": "https://www.zocdoc.com/doctor/emma-harris-1016",
+    "title": "Dr.",
+    "name": "Emma Harris",
+    "specialty": ["Rheumatology"],
+    "description": "Emma Harris provides top-tier medical care in Anesthesiology, ensuring the best outcomes for patients.",
+    "experience_years": 35,
+    "hospital_name": "Sunrise Health Institute",
+    "hospital_coordinates": {
+      "latitude": 31.342103,
+      "longitude": 35.743443
+    },
+    "education": [
+      {
+        "institution": "Stanford University",
+        "start_date": "1982-11T00:00:00.000Z",
+        "end_date": "1987-09T00:00:00.000Z"
+      },
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "2005-05T00:00:00.000Z",
+        "end_date": "2009-12T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Mandarin"],
+    "accepts_insurance": false,
+    "rating": 4.9,
+    "reviews": 495,
+    "consultation_price": 295,
+    "currency": "JOD",
+    "phone": "(339)442-9916x3096",
+    "email": "emma.harris@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/63.jpg"
   },
   {
     "id": "D1017",
-    "profile_url": "https://www.zocdoc.com/doctor/dustin-howe-1017",
-    "name": "Dr. Dustin Howe",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Dustin Howe offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 17,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/lucas-clark-1017",
+    "title": "Dr.",
+    "name": "Lucas Clark",
+    "specialty": ["Anesthesiology"],
+    "description": "Lucas Clark provides top-tier medical care in Neurology, ensuring the best outcomes for patients.",
+    "experience_years": 13,
+    "hospital_name": "Metropolitan General Hospital",
     "hospital_coordinates": {
-      "latitude": 32.55004,
-      "longitude": 35.851235
+      "latitude": 31.514684,
+      "longitude": 35.242845
     },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["English"],
+    "education": [
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "1992-09T00:00:00.000Z",
+        "end_date": "1997-12T00:00:00.000Z"
+      },
+      {
+        "institution": "Stanford University",
+        "start_date": "1995-04T00:00:00.000Z",
+        "end_date": "2001-02T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "German"],
     "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 28,
-    "consultation_price": 173,
+    "rating": 5.0,
+    "reviews": 472,
+    "consultation_price": 241,
     "currency": "JOD",
-    "phone": "001-419-151-6421x7916",
-    "email": "dustin.howe@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
+    "phone": "(379)825-2467x4739",
+    "email": "lucas.clark@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
     "id": "D1018",
-    "profile_url": "https://www.zocdoc.com/doctor/grant-miller-1018",
-    "name": "Dr. Grant Miller",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Grant Miller offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 9,
-    "hospital_affiliation": "Northwestern Memorial Hospital",
-    "hospital_address": "251 E Huron St, Chicago, IL 60611",
+    "profile_url": "https://www.zocdoc.com/doctor/isabella-lewis-1018",
+    "title": "Dr.",
+    "name": "Isabella Lewis",
+    "specialty": ["Orthopedics"],
+    "description": "Isabella Lewis provides top-tier medical care in Sports Medicine, ensuring the best outcomes for patients.",
+    "experience_years": 6,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 41.882179,
-      "longitude": -87.619635
+      "latitude": 31.303891,
+      "longitude": 35.164549
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["Mandarin", "French", "Arabic"],
+    "education": [
+      {
+        "institution": "University of Chicago",
+        "start_date": "1984-09T00:00:00.000Z",
+        "end_date": "1988-05T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "1987-05T00:00:00.000Z",
+        "end_date": "1993-11T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "German"],
     "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 83,
-    "consultation_price": 152,
-    "currency": "USD",
-    "phone": "460-759-0368",
-    "email": "grant.miller@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
+    "rating": 4.9,
+    "reviews": 316,
+    "consultation_price": 250,
+    "currency": "JOD",
+    "phone": "(331)742-5634x5706",
+    "email": "isabella.lewis@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/29.jpg"
   },
   {
     "id": "D1019",
-    "profile_url": "https://www.zocdoc.com/doctor/michelle-buckley-1019",
-    "name": "Dr. Michelle Buckley",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Michelle Buckley offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 6,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
+    "profile_url": "https://www.zocdoc.com/doctor/mason-walker-1019",
+    "title": "Dr.",
+    "name": "Mason Walker",
+    "specialty": ["Plastic Surgery"],
+    "description": "Mason Walker provides top-tier medical care in Ophthalmology, ensuring the best outcomes for patients.",
+    "experience_years": 31,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 29.974365,
-      "longitude": 31.227613
+      "latitude": 31.89067,
+      "longitude": 35.259984
     },
-    "education": "Stanford University",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.9,
-    "reviews": 67,
-    "consultation_price": 230,
-    "currency": "EGP",
-    "phone": "660.154.0837x7163",
-    "email": "michelle.buckley@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "1989-08T00:00:00.000Z",
+        "end_date": "1993-10T00:00:00.000Z"
+      },
+      {
+        "institution": "Yale University",
+        "start_date": "1994-04T00:00:00.000Z",
+        "end_date": "1998-07T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": true,
+    "rating": 3.7,
+    "reviews": 303,
+    "consultation_price": 145,
+    "currency": "JOD",
+    "phone": "(335)110-2332x1894",
+    "email": "mason.walker@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/36.jpg"
   },
   {
     "id": "D1020",
-    "profile_url": "https://www.zocdoc.com/doctor/john-ibarra-1020",
-    "name": "Dr. John Ibarra",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "John Ibarra offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 13,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/charlotte-hall-1020",
+    "title": "Dr.",
+    "name": "Charlotte Hall",
+    "specialty": ["Geriatrics"],
+    "description": "Charlotte Hall provides top-tier medical care in Cardiology, ensuring the best outcomes for patients.",
+    "experience_years": 23,
+    "hospital_name": "New Hope Clinic",
     "hospital_coordinates": {
-      "latitude": 31.95315,
-      "longitude": 35.915329
+      "latitude": 31.973521,
+      "longitude": 35.427049
     },
-    "education": "Cairo University",
-    "languages_spoken": ["Arabic"],
+    "education": [
+      {
+        "institution": "University of Michigan",
+        "start_date": "1995-11T00:00:00.000Z",
+        "end_date": "2001-09T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Michigan",
+        "start_date": "1998-07T00:00:00.000Z",
+        "end_date": "2002-03T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Mandarin"],
     "accepts_insurance": false,
-    "rating": 4.2,
-    "reviews": 93,
-    "consultation_price": 159,
+    "rating": 3.6,
+    "reviews": 364,
+    "consultation_price": 205,
     "currency": "JOD",
-    "phone": "+1-660-082-1758x5273",
-    "email": "john.ibarra@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
+    "phone": "(398)526-2410x5851",
+    "email": "charlotte.hall@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/23.jpg"
   },
   {
     "id": "D1021",
-    "profile_url": "https://www.zocdoc.com/doctor/douglas-moreno-1021",
-    "name": "Dr. Douglas Moreno",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Douglas Moreno offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 16,
-    "hospital_affiliation": "New York-Presbyterian Hospital",
-    "hospital_address": "525 E 68th St, New York, NY 10065",
+    "profile_url": "https://www.zocdoc.com/doctor/elijah-allen-1021",
+    "title": "Dr.",
+    "name": "Elijah Allen",
+    "specialty": ["Pulmonology"],
+    "description": "Elijah Allen provides top-tier medical care in Anesthesiology, ensuring the best outcomes for patients.",
+    "experience_years": 11,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 40.75404,
-      "longitude": -73.95342
+      "latitude": 31.205964,
+      "longitude": 35.366024
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["Mandarin"],
+    "education": [
+      {
+        "institution": "Columbia University",
+        "start_date": "1984-07T00:00:00.000Z",
+        "end_date": "1989-06T00:00:00.000Z"
+      },
+      {
+        "institution": "Duke University",
+        "start_date": "2007-04T00:00:00.000Z",
+        "end_date": "2012-11T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
     "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 92,
-    "consultation_price": 223,
-    "currency": "USD",
-    "phone": "+1-142-681-5950x460",
-    "email": "douglas.moreno@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/7.jpg"
+    "rating": 4.1,
+    "reviews": 471,
+    "consultation_price": 275,
+    "currency": "JOD",
+    "phone": "(378)479-7080x5620",
+    "email": "elijah.allen@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/75.jpg"
   },
   {
     "id": "D1022",
-    "profile_url": "https://www.zocdoc.com/doctor/stephen-whitaker-1022",
-    "name": "Dr. Stephen Whitaker",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Stephen Whitaker offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 30,
-    "hospital_affiliation": "Houston Methodist Hospital",
-    "hospital_address": "6565 Fannin St, Houston, TX 77030",
+    "profile_url": "https://www.zocdoc.com/doctor/amelia-young-1022",
+    "title": "Dr.",
+    "name": "Amelia Young",
+    "specialty": ["Nephrology"],
+    "description": "Amelia Young provides top-tier medical care in Rheumatology, ensuring the best outcomes for patients.",
+    "experience_years": 5,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 29.718436,
-      "longitude": -95.398421
+      "latitude": 31.386603,
+      "longitude": 35.745663
     },
-    "education": "Cairo University",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": true,
-    "rating": 4.1,
-    "reviews": 79,
-    "consultation_price": 256,
-    "currency": "USD",
-    "phone": "001-679-421-7032x31265",
-    "email": "stephen.whitaker@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
+    "education": [
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "1981-08T00:00:00.000Z",
+        "end_date": "1985-02T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Chicago",
+        "start_date": "2003-04T00:00:00.000Z",
+        "end_date": "2007-10T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Arabic"],
+    "accepts_insurance": false,
+    "rating": 3.6,
+    "reviews": 277,
+    "consultation_price": 160,
+    "currency": "JOD",
+    "phone": "(357)837-3460x4511",
+    "email": "amelia.young@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/49.jpg"
   },
   {
     "id": "D1023",
-    "profile_url": "https://www.zocdoc.com/doctor/brian-chen-1023",
-    "name": "Dr. Brian Chen",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Brian Chen offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 14,
-    "hospital_affiliation": "Cedars-Sinai Medical Center",
-    "hospital_address": "8700 Beverly Blvd, Los Angeles, CA 90048",
+    "profile_url": "https://www.zocdoc.com/doctor/james-king-1023",
+    "title": "Dr.",
+    "name": "James King",
+    "specialty": ["Psychiatry"],
+    "description": "James King provides top-tier medical care in Neurology, ensuring the best outcomes for patients.",
+    "experience_years": 28,
+    "hospital_name": "Greenfield Medical Center",
     "hospital_coordinates": {
-      "latitude": 34.077953,
-      "longitude": -118.370542
+      "latitude": 31.702928,
+      "longitude": 35.805109
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["French", "Arabic"],
+    "education": [
+      {
+        "institution": "Duke University",
+        "start_date": "2002-07T00:00:00.000Z",
+        "end_date": "2007-11T00:00:00.000Z"
+      },
+      {
+        "institution": "Yale University",
+        "start_date": "1997-07T00:00:00.000Z",
+        "end_date": "2001-05T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Mandarin"],
     "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 200,
-    "consultation_price": 102,
-    "currency": "USD",
-    "phone": "001-786-716-9224x48709",
-    "email": "brian.chen@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
+    "rating": 3.8,
+    "reviews": 204,
+    "consultation_price": 142,
+    "currency": "JOD",
+    "phone": "(313)388-6332x2040",
+    "email": "james.king@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
     "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "D1024",
-    "profile_url": "https://www.zocdoc.com/doctor/susan-perez-dds-1024",
-    "name": "Dr. Susan Perez DDS",
-    "specialty": "Pediatrics",
-    "summary": "Leading specialist in pediatrics with a focus on patient-centered care.",
-    "description": "Susan Perez DDS offers comprehensive expertise in pediatrics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 28,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/harper-wright-1024",
+    "title": "Dr.",
+    "name": "Harper Wright",
+    "specialty": ["Orthopedics"],
+    "description": "Harper Wright provides top-tier medical care in Neurology, ensuring the best outcomes for patients.",
+    "experience_years": 37,
+    "hospital_name": "Metropolitan General Hospital",
     "hospital_coordinates": {
-      "latitude": 32.542999,
-      "longitude": 35.857168
+      "latitude": 31.649435,
+      "longitude": 35.639026
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.3,
-    "reviews": 192,
-    "consultation_price": 57,
+    "education": [
+      {
+        "institution": "University of California, San Francisco",
+        "start_date": "2010-02T00:00:00.000Z",
+        "end_date": "2016-04T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Chicago",
+        "start_date": "2007-10T00:00:00.000Z",
+        "end_date": "2013-07T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "French"],
+    "accepts_insurance": true,
+    "rating": 4.7,
+    "reviews": 232,
+    "consultation_price": 223,
     "currency": "JOD",
-    "phone": "183.915.1322",
-    "email": "susan.perez.dds@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
+    "phone": "(366)675-6633x4400",
+    "email": "harper.wright@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/28.jpg"
   },
   {
     "id": "D1025",
-    "profile_url": "https://www.zocdoc.com/doctor/ruben-jones-1025",
-    "name": "Dr. Ruben Jones",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Ruben Jones offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/benjamin-scott-1025",
+    "title": "Dr.",
+    "name": "Benjamin Scott",
+    "specialty": ["Ophthalmology"],
+    "description": "Benjamin Scott provides top-tier medical care in Plastic Surgery, ensuring the best outcomes for patients.",
+    "experience_years": 31,
+    "hospital_name": "New Hope Clinic",
     "hospital_coordinates": {
-      "latitude": 31.95451,
-      "longitude": 35.918263
+      "latitude": 31.395999,
+      "longitude": 35.964371
     },
-    "education": "Stanford University",
-    "languages_spoken": ["Spanish"],
-    "accepts_insurance": true,
-    "rating": 4.2,
-    "reviews": 29,
-    "consultation_price": 248,
+    "education": [
+      {
+        "institution": "Duke University",
+        "start_date": "2009-01T00:00:00.000Z",
+        "end_date": "2014-09T00:00:00.000Z"
+      },
+      {
+        "institution": "Stanford University",
+        "start_date": "2002-05T00:00:00.000Z",
+        "end_date": "2008-07T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
+    "accepts_insurance": false,
+    "rating": 4.1,
+    "reviews": 411,
+    "consultation_price": 148,
     "currency": "JOD",
-    "phone": "001-838-695-2037x73366",
-    "email": "ruben.jones@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
+    "phone": "(341)378-2668x4849",
+    "email": "benjamin.scott@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/86.jpg"
   },
   {
     "id": "D1026",
-    "profile_url": "https://www.zocdoc.com/doctor/bradley-wood-1026",
-    "name": "Dr. Bradley Wood",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Bradley Wood offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 27,
-    "hospital_affiliation": "Alexandria University Hospital",
-    "hospital_address": "Champollion St., Alexandria, Egypt",
+    "profile_url": "https://www.zocdoc.com/doctor/evelyn-green-1026",
+    "title": "Dr.",
+    "name": "Evelyn Green",
+    "specialty": ["Plastic Surgery"],
+    "description": "Evelyn Green provides top-tier medical care in Neurology, ensuring the best outcomes for patients.",
+    "experience_years": 10,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 31.206729,
-      "longitude": 29.92554
+      "latitude": 31.07572,
+      "longitude": 35.693858
     },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Arabic", "Mandarin"],
+    "education": [
+      {
+        "institution": "Columbia University",
+        "start_date": "1987-03T00:00:00.000Z",
+        "end_date": "1991-01T00:00:00.000Z"
+      },
+      {
+        "institution": "Duke University",
+        "start_date": "1985-05T00:00:00.000Z",
+        "end_date": "1990-08T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
     "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 164,
-    "consultation_price": 92,
-    "currency": "EGP",
-    "phone": "001-831-723-9273x1648",
-    "email": "bradley.wood@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
+    "rating": 4.0,
+    "reviews": 53,
+    "consultation_price": 132,
+    "currency": "JOD",
+    "phone": "(312)947-1172x7612",
+    "email": "evelyn.green@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/1.jpg"
   },
   {
     "id": "D1027",
-    "profile_url": "https://www.zocdoc.com/doctor/john-king-1027",
-    "name": "Dr. John King",
-    "specialty": "Pediatrics",
-    "summary": "Leading specialist in pediatrics with a focus on patient-centered care.",
-    "description": "John King offers comprehensive expertise in pediatrics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Houston Methodist Hospital",
-    "hospital_address": "6565 Fannin St, Houston, TX 77030",
+    "profile_url": "https://www.zocdoc.com/doctor/henry-adams-1027",
+    "title": "Dr.",
+    "name": "Henry Adams",
+    "specialty": ["Cardiology", "Internal Medicine"],
+    "description": "Henry Adams provides top-tier medical care in Oncology, ensuring the best outcomes for patients.",
+    "experience_years": 10,
+    "hospital_name": "Metropolitan General Hospital",
     "hospital_coordinates": {
-      "latitude": 29.702948,
-      "longitude": -95.403398
+      "latitude": 31.424051,
+      "longitude": 35.109703
     },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["English"],
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "2008-11T00:00:00.000Z",
+        "end_date": "2014-06T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "1980-06T00:00:00.000Z",
+        "end_date": "1985-09T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Spanish"],
     "accepts_insurance": false,
-    "rating": 4.1,
-    "reviews": 122,
-    "consultation_price": 197,
-    "currency": "USD",
-    "phone": "288.643.6960x378",
-    "email": "john.king@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/7.jpg"
+    "rating": 5.0,
+    "reviews": 68,
+    "consultation_price": 266,
+    "currency": "JOD",
+    "phone": "(354)891-4527x9824",
+    "email": "henry.adams@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/9.jpg"
   },
   {
     "id": "D1028",
-    "profile_url": "https://www.zocdoc.com/doctor/jennifer-horton-1028",
-    "name": "Dr. Jennifer Horton",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Jennifer Horton offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 5,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
+    "profile_url": "https://www.zocdoc.com/doctor/abigail-nelson-1028",
+    "title": "Dr.",
+    "name": "Abigail Nelson",
+    "specialty": ["Orthopedics"],
+    "description": "Abigail Nelson provides top-tier medical care in Rheumatology, ensuring the best outcomes for patients.",
+    "experience_years": 21,
+    "hospital_name": "Sunrise Health Institute",
     "hospital_coordinates": {
-      "latitude": 29.985057,
-      "longitude": 31.224199
+      "latitude": 31.859026,
+      "longitude": 35.914806
     },
-    "education": "Stanford University",
-    "languages_spoken": ["English", "Spanish"],
-    "accepts_insurance": false,
-    "rating": 4.5,
-    "reviews": 131,
-    "consultation_price": 269,
-    "currency": "EGP",
-    "phone": "605-104-7455x56296",
-    "email": "jennifer.horton@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
+    "education": [
+      {
+        "institution": "Johns Hopkins University",
+        "start_date": "1988-03T00:00:00.000Z",
+        "end_date": "1994-06T00:00:00.000Z"
+      },
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "2002-04T00:00:00.000Z",
+        "end_date": "2007-01T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English"],
+    "accepts_insurance": true,
+    "rating": 4.7,
+    "reviews": 258,
+    "consultation_price": 283,
+    "currency": "JOD",
+    "phone": "(305)163-4936x5195",
+    "email": "abigail.nelson@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T15:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/42.jpg"
   },
   {
     "id": "D1029",
-    "profile_url": "https://www.zocdoc.com/doctor/brittney-tanner-1029",
-    "name": "Dr. Brittney Tanner",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Brittney Tanner offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 30,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
+    "profile_url": "https://www.zocdoc.com/doctor/alexander-baker-1029",
+    "title": "Dr.",
+    "name": "Alexander Baker",
+    "specialty": ["Cardiology", "Internal Medicine"],
+    "description": "Alexander Baker provides top-tier medical care in Ophthalmology, ensuring the best outcomes for patients.",
+    "experience_years": 38,
+    "hospital_name": "Greenfield Medical Center",
     "hospital_coordinates": {
-      "latitude": 31.964542,
-      "longitude": 35.926512
+      "latitude": 31.277604,
+      "longitude": 35.323707
     },
-    "education": "University of Jordan",
-    "languages_spoken": ["Arabic", "English"],
+    "education": [
+      {
+        "institution": "University of Chicago",
+        "start_date": "2008-02T00:00:00.000Z",
+        "end_date": "2013-01T00:00:00.000Z"
+      },
+      {
+        "institution": "University of Michigan",
+        "start_date": "2011-02T00:00:00.000Z",
+        "end_date": "2017-12T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "German"],
     "accepts_insurance": true,
-    "rating": 4.7,
-    "reviews": 157,
-    "consultation_price": 258,
+    "rating": 3.7,
+    "reviews": 355,
+    "consultation_price": 232,
     "currency": "JOD",
-    "phone": "+1-776-733-3930x04406",
-    "email": "brittney.tanner@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
+    "phone": "(336)175-9547x4255",
+    "email": "alexander.baker@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T15:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T15:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T17:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/men/71.jpg"
   },
   {
     "id": "D1030",
-    "profile_url": "https://www.zocdoc.com/doctor/patrick-simmons-1030",
-    "name": "Dr. Patrick Simmons",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Patrick Simmons offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 16,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
-    "hospital_coordinates": {
-      "latitude": 31.96229,
-      "longitude": 35.901113
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["Spanish", "Mandarin", "English"],
-    "accepts_insurance": true,
-    "rating": 4.1,
-    "reviews": 31,
-    "consultation_price": 112,
-    "currency": "JOD",
-    "phone": "+1-474-347-3651x640",
-    "email": "patrick.simmons@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
-  },
-  {
-    "id": "D1031",
-    "profile_url": "https://www.zocdoc.com/doctor/christina-morales-1031",
-    "name": "Dr. Christina Morales",
-    "specialty": "Dermatology",
-    "summary": "Leading specialist in dermatology with a focus on patient-centered care.",
-    "description": "Christina Morales offers comprehensive expertise in dermatology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 16,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.569672,
-      "longitude": 35.861156
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["French", "Arabic"],
-    "accepts_insurance": false,
-    "rating": 4.4,
-    "reviews": 196,
-    "consultation_price": 244,
-    "currency": "JOD",
-    "phone": "(542)778-8384",
-    "email": "christina.morales@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
-  },
-  {
-    "id": "D1032",
-    "profile_url": "https://www.zocdoc.com/doctor/mary-smith-1032",
-    "name": "Dr. Mary Smith",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Mary Smith offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 12,
-    "hospital_affiliation": "Northwestern Memorial Hospital",
-    "hospital_address": "251 E Huron St, Chicago, IL 60611",
-    "hospital_coordinates": {
-      "latitude": 41.88127,
-      "longitude": -87.619618
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["English"],
-    "accepts_insurance": false,
-    "rating": 4.8,
-    "reviews": 50,
-    "consultation_price": 229,
-    "currency": "USD",
-    "phone": "293.502.6249x10610",
-    "email": "mary.smith@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1033",
-    "profile_url": "https://www.zocdoc.com/doctor/erika-watts-1033",
-    "name": "Dr. Erika Watts",
-    "specialty": "Pediatrics",
-    "summary": "Leading specialist in pediatrics with a focus on patient-centered care.",
-    "description": "Erika Watts offers comprehensive expertise in pediatrics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 27,
-    "hospital_affiliation": "Kasr El Aini Hospital",
-    "hospital_address": "El Manial, Cairo, Egypt",
-    "hospital_coordinates": {
-      "latitude": 30.042011,
-      "longitude": 31.234616
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["French"],
-    "accepts_insurance": true,
-    "rating": 4.9,
-    "reviews": 26,
-    "consultation_price": 148,
-    "currency": "EGP",
-    "phone": "985-016-1852x412",
-    "email": "erika.watts@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
-  },
-  {
-    "id": "D1034",
-    "profile_url": "https://www.zocdoc.com/doctor/heather-miller-1034",
-    "name": "Dr. Heather Miller",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Heather Miller offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.542302,
-      "longitude": 35.853951
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["English", "French", "Arabic"],
-    "accepts_insurance": false,
-    "rating": 4.6,
-    "reviews": 196,
-    "consultation_price": 206,
-    "currency": "JOD",
-    "phone": "001-637-537-4192x631",
-    "email": "heather.miller@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "id": "D1035",
-    "profile_url": "https://www.zocdoc.com/doctor/mark-velez-1035",
-    "name": "Dr. Mark Velez",
-    "specialty": "Oncology",
-    "summary": "Leading specialist in oncology with a focus on patient-centered care.",
-    "description": "Mark Velez offers comprehensive expertise in oncology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 28,
-    "hospital_affiliation": "Houston Methodist Hospital",
-    "hospital_address": "6565 Fannin St, Houston, TX 77030",
-    "hospital_coordinates": {
-      "latitude": 29.713704,
-      "longitude": -95.387023
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["French", "English"],
-    "accepts_insurance": true,
-    "rating": 4.5,
-    "reviews": 24,
-    "consultation_price": 157,
-    "currency": "USD",
-    "phone": "554.799.6756",
-    "email": "mark.velez@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
-  },
-  {
-    "id": "D1036",
-    "profile_url": "https://www.zocdoc.com/doctor/tracey-miller-1036",
-    "name": "Dr. Tracey Miller",
-    "specialty": "Oncology",
-    "summary": "Leading specialist in oncology with a focus on patient-centered care.",
-    "description": "Tracey Miller offers comprehensive expertise in oncology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 29,
-    "hospital_affiliation": "New York-Presbyterian Hospital",
-    "hospital_address": "525 E 68th St, New York, NY 10065",
-    "hospital_coordinates": {
-      "latitude": 40.768848,
-      "longitude": -73.967898
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["Spanish", "French", "Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.0,
-    "reviews": 59,
-    "consultation_price": 61,
-    "currency": "USD",
-    "phone": "921-373-8967x39772",
-    "email": "tracey.miller@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
-  },
-  {
-    "id": "D1037",
-    "profile_url": "https://www.zocdoc.com/doctor/sarah-stein-1037",
-    "name": "Dr. Sarah Stein",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Sarah Stein offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 11,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.554957,
-      "longitude": 35.863941
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["French", "English", "Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 74,
-    "consultation_price": 110,
-    "currency": "JOD",
-    "phone": "+1-308-475-7266",
-    "email": "sarah.stein@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1038",
-    "profile_url": "https://www.zocdoc.com/doctor/rebecca-chen-1038",
-    "name": "Dr. Rebecca Chen",
-    "specialty": "Oncology",
-    "summary": "Leading specialist in oncology with a focus on patient-centered care.",
-    "description": "Rebecca Chen offers comprehensive expertise in oncology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 13,
-    "hospital_affiliation": "Alexandria University Hospital",
-    "hospital_address": "Champollion St., Alexandria, Egypt",
-    "hospital_coordinates": {
-      "latitude": 31.191092,
-      "longitude": 29.913429
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["French", "Arabic", "English"],
-    "accepts_insurance": false,
-    "rating": 4.7,
-    "reviews": 108,
-    "consultation_price": 144,
-    "currency": "EGP",
-    "phone": "2741167378",
-    "email": "rebecca.chen@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/5.jpg"
-  },
-  {
-    "id": "D1039",
-    "profile_url": "https://www.zocdoc.com/doctor/lauren-hoffman-1039",
-    "name": "Dr. Lauren Hoffman",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Lauren Hoffman offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
+    "profile_url": "https://www.zocdoc.com/doctor/madison-hill-1030",
+    "title": "Dr.",
+    "name": "Madison Hill",
+    "specialty": ["Anesthesiology"],
+    "description": "Madison Hill provides top-tier medical care in Psychiatry, ensuring the best outcomes for patients.",
     "experience_years": 10,
-    "hospital_affiliation": "Jordan Hospital",
-    "hospital_address": "Al-Saadeh St., Amman, Jordan",
+    "hospital_name": "Jordan Hospital",
     "hospital_coordinates": {
-      "latitude": 31.94408,
-      "longitude": 35.911596
+      "latitude": 31.934453,
+      "longitude": 35.581827
     },
-    "education": "Stanford University",
-    "languages_spoken": ["Spanish", "English", "Arabic"],
+    "education": [
+      {
+        "institution": "University of Pennsylvania",
+        "start_date": "1982-08T00:00:00.000Z",
+        "end_date": "1988-10T00:00:00.000Z"
+      },
+      {
+        "institution": "University of California, San Francisco",
+        "start_date": "2014-11T00:00:00.000Z",
+        "end_date": "2018-03T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["English", "Arabic"],
     "accepts_insurance": false,
-    "rating": 4.6,
-    "reviews": 183,
-    "consultation_price": 299,
+    "rating": 5.0,
+    "reviews": 84,
+    "consultation_price": 104,
     "currency": "JOD",
-    "phone": "038-474-0432x2559",
-    "email": "lauren.hoffman@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
-  },
-  {
-    "id": "D1040",
-    "profile_url": "https://www.zocdoc.com/doctor/daniel-sellers-1040",
-    "name": "Dr. Daniel Sellers",
-    "specialty": "Gastroenterology",
-    "summary": "Leading specialist in gastroenterology with a focus on patient-centered care.",
-    "description": "Daniel Sellers offers comprehensive expertise in gastroenterology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 29,
-    "hospital_affiliation": "Houston Methodist Hospital",
-    "hospital_address": "6565 Fannin St, Houston, TX 77030",
-    "hospital_coordinates": {
-      "latitude": 29.707703,
-      "longitude": -95.400081
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["Spanish", "Arabic", "Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.6,
-    "reviews": 48,
-    "consultation_price": 200,
-    "currency": "USD",
-    "phone": "(711)802-5372x8410",
-    "email": "daniel.sellers@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
-  },
-  {
-    "id": "D1041",
-    "profile_url": "https://www.zocdoc.com/doctor/taylor-edwards-1041",
-    "name": "Dr. Taylor Edwards",
-    "specialty": "Oncology",
-    "summary": "Leading specialist in oncology with a focus on patient-centered care.",
-    "description": "Taylor Edwards offers comprehensive expertise in oncology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 6,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.560567,
-      "longitude": 35.839075
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["English"],
-    "accepts_insurance": true,
-    "rating": 4.2,
-    "reviews": 92,
-    "consultation_price": 129,
-    "currency": "JOD",
-    "phone": "(942)726-7994",
-    "email": "taylor.edwards@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "id": "D1042",
-    "profile_url": "https://www.zocdoc.com/doctor/jennifer-morris-1042",
-    "name": "Dr. Jennifer Morris",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Jennifer Morris offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 25,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.557966,
-      "longitude": 35.847319
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["Arabic", "English"],
-    "accepts_insurance": true,
-    "rating": 4.6,
-    "reviews": 21,
-    "consultation_price": 226,
-    "currency": "JOD",
-    "phone": "898-219-4041",
-    "email": "jennifer.morris@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/4.jpg"
-  },
-  {
-    "id": "D1043",
-    "profile_url": "https://www.zocdoc.com/doctor/victor-bennett-1043",
-    "name": "Dr. Victor Bennett",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Victor Bennett offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 21,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.548406,
-      "longitude": 35.844188
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["English"],
-    "accepts_insurance": true,
-    "rating": 4.1,
-    "reviews": 193,
-    "consultation_price": 290,
-    "currency": "JOD",
-    "phone": "+1-407-265-4049x77886",
-    "email": "victor.bennett@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
-  },
-  {
-    "id": "D1044",
-    "profile_url": "https://www.zocdoc.com/doctor/david-avery-1044",
-    "name": "Dr. David Avery",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "David Avery offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 22,
-    "hospital_affiliation": "New York-Presbyterian Hospital",
-    "hospital_address": "525 E 68th St, New York, NY 10065",
-    "hospital_coordinates": {
-      "latitude": 40.777028,
-      "longitude": -73.939881
-    },
-    "education": "Johns Hopkins University",
-    "languages_spoken": ["French"],
-    "accepts_insurance": false,
-    "rating": 4.9,
-    "reviews": 56,
-    "consultation_price": 261,
-    "currency": "USD",
-    "phone": "+1-923-692-4616x50273",
-    "email": "david.avery@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/8.jpg"
-  },
-  {
-    "id": "D1045",
-    "profile_url": "https://www.zocdoc.com/doctor/julian-white-1045",
-    "name": "Dr. Julian White",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Julian White offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 29,
-    "hospital_affiliation": "Kasr El Aini Hospital",
-    "hospital_address": "El Manial, Cairo, Egypt",
-    "hospital_coordinates": {
-      "latitude": 30.038053,
-      "longitude": 31.240133
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["Spanish"],
-    "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 68,
-    "consultation_price": 154,
-    "currency": "EGP",
-    "phone": "159.822.8962",
-    "email": "julian.white@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
-  },
-  {
-    "id": "D1046",
-    "profile_url": "https://www.zocdoc.com/doctor/emily-collins-1046",
-    "name": "Dr. Emily Collins",
-    "specialty": "Cardiology",
-    "summary": "Leading specialist in cardiology with a focus on patient-centered care.",
-    "description": "Emily Collins offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 14,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
-    "hospital_coordinates": {
-      "latitude": 29.997468,
-      "longitude": 31.203883
-    },
-    "education": "Cairo University",
-    "languages_spoken": ["Mandarin"],
-    "accepts_insurance": true,
-    "rating": 4.8,
-    "reviews": 184,
-    "consultation_price": 198,
-    "currency": "EGP",
-    "phone": "+1-877-014-7563",
-    "email": "emily.collins@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/7.jpg"
-  },
-  {
-    "id": "D1047",
-    "profile_url": "https://www.zocdoc.com/doctor/jennifer-jordan-1047",
-    "name": "Dr. Jennifer Jordan",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Jennifer Jordan offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 30,
-    "hospital_affiliation": "Giza General Hospital",
-    "hospital_address": "El Haram St., Giza, Egypt",
-    "hospital_coordinates": {
-      "latitude": 29.988267,
-      "longitude": 31.203679
-    },
-    "education": "University of Jordan",
-    "languages_spoken": ["Arabic", "Mandarin"],
-    "accepts_insurance": false,
-    "rating": 4.5,
-    "reviews": 195,
-    "consultation_price": 143,
-    "currency": "EGP",
-    "phone": "049.654.3467",
-    "email": "jennifer.jordan@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
-  },
-  {
-    "id": "D1048",
-    "profile_url": "https://www.zocdoc.com/doctor/amber-miller-1048",
-    "name": "Dr. Amber Miller",
-    "specialty": "Oncology",
-    "summary": "Leading specialist in oncology with a focus on patient-centered care.",
-    "description": "Amber Miller offers comprehensive expertise in oncology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 7,
-    "hospital_affiliation": "Alexandria University Hospital",
-    "hospital_address": "Champollion St., Alexandria, Egypt",
-    "hospital_coordinates": {
-      "latitude": 31.207213,
-      "longitude": 29.923387
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Spanish", "French", "English"],
-    "accepts_insurance": true,
-    "rating": 4.7,
-    "reviews": 150,
-    "consultation_price": 95,
-    "currency": "EGP",
-    "phone": "+1-776-550-7069x5889",
-    "email": "amber.miller@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/7.jpg"
-  },
-  {
-    "id": "D1049",
-    "profile_url": "https://www.zocdoc.com/doctor/travis-lynch-1049",
-    "name": "Dr. Travis Lynch",
-    "specialty": "Neurology",
-    "summary": "Leading specialist in neurology with a focus on patient-centered care.",
-    "description": "Travis Lynch offers comprehensive expertise in neurology, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 21,
-    "hospital_affiliation": "Prince Basma Hospital",
-    "hospital_address": "University St., Irbid, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.544951,
-      "longitude": 35.840061
-    },
-    "education": "Harvard Medical School",
-    "languages_spoken": ["Spanish"],
-    "accepts_insurance": true,
-    "rating": 4.7,
-    "reviews": 122,
-    "consultation_price": 115,
-    "currency": "JOD",
-    "phone": "141-507-2736x5528",
-    "email": "travis.lynch@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "id": "D1050",
-    "profile_url": "https://www.zocdoc.com/doctor/mark-smith-1050",
-    "name": "Dr. Mark Smith",
-    "specialty": "Orthopedics",
-    "summary": "Leading specialist in orthopedics with a focus on patient-centered care.",
-    "description": "Mark Smith offers comprehensive expertise in orthopedics, ensuring the highest standard of medical treatment with a personal touch.",
-    "experience_years": 9,
-    "hospital_affiliation": "Zarqa Governmental Hospital",
-    "hospital_address": "King Abdullah II St., Zarqa, Jordan",
-    "hospital_coordinates": {
-      "latitude": 32.079364,
-      "longitude": 36.096229
-    },
-    "education": "Stanford University",
-    "languages_spoken": ["English"],
-    "accepts_insurance": true,
-    "rating": 4.2,
-    "reviews": 108,
-    "consultation_price": 155,
-    "currency": "JOD",
-    "phone": "740-102-9265",
-    "email": "mark.smith@hospital.org",
-    "availability": {
-      "monday": "9 AM - 5 PM",
-      "tuesday": "9 AM - 5 PM",
-      "wednesday": "9 AM - 5 PM",
-      "thursday": "9 AM - 5 PM",
-      "friday": "9 AM - 3 PM"
-    },
-    "photo_url": "https://randomuser.me/api/portraits/men/1.jpg"
+    "phone": "(356)201-1587x7941",
+    "email": "madison.hill@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2025-03-03T09:00:00.000Z",
+        "end_time": "2025-03-03T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2025-03-04T09:00:00.000Z",
+        "end_time": "2025-03-04T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2025-03-05T09:00:00.000Z",
+        "end_time": "2025-03-05T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2025-03-06T09:00:00.000Z",
+        "end_time": "2025-03-06T15:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2025-03-07T09:00:00.000Z",
+        "end_time": "2025-03-07T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/85.jpg"
   }
 ]

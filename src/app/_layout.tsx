@@ -59,7 +59,7 @@ function RootLayoutNav() {
 
   // Need to make a header function that looks good!!
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}

@@ -31,7 +31,7 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, Props>(
       (props: any) => (
         <BottomSheetBackdrop
           {...props}
-          disappearsOnIndex={0}
+          disappearsOnIndex={-1}
           appearsOnIndex={1}
         />
       ),

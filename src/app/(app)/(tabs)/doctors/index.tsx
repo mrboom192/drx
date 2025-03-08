@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Link } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { SafeAreaView } from "@/components/Themed";
@@ -15,11 +15,11 @@ const Page = () => {
     themeTextStyleSecondary,
   } = useThemedStyles();
 
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const openSheet = () => {
-    bottomSheetRef.current?.present(); // Collapses bottom sheet, showing map
-  };
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
+  }, []);
 
   return (
     <SafeAreaView
@@ -43,19 +43,12 @@ const Page = () => {
             gap: 14,
           }}
         >
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontFamily: "dm-sb", fontSize: 20 },
-            ]}
-          >
+          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
             Online Consultations
           </Text>
 
           {/* Description */}
-          <Text
-            style={[themeTextStylePrimary, { fontFamily: "dm", fontSize: 16 }]}
-          >
+          <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
             Find specialist doctors who can consult, diagnose, and prescribe
           </Text>
 
@@ -72,10 +65,12 @@ const Page = () => {
               }}
             >
               <Text
-                style={[
-                  themeTextStylePrimary,
-                  { textAlign: "center", fontFamily: "dm-sb", fontSize: 16 },
-                ]}
+                style={{
+                  color: "#FFF",
+                  textAlign: "center",
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
               >
                 Search
               </Text>
@@ -94,19 +89,12 @@ const Page = () => {
             gap: 14,
           }}
         >
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontFamily: "dm-sb", fontSize: 20 },
-            ]}
-          >
+          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
             Second Opinion
           </Text>
 
           {/* Description */}
-          <Text
-            style={[themeTextStylePrimary, { fontFamily: "dm", fontSize: 16 }]}
-          >
+          <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
             Need a second opinion? Find a doctor to support your care.
           </Text>
 
@@ -120,13 +108,15 @@ const Page = () => {
               borderColor: "#FFF",
               justifyContent: "center",
             }}
-            onPress={openSheet}
+            onPress={handlePresentModalPress}
           >
             <Text
-              style={[
-                themeTextStylePrimary,
-                { textAlign: "center", fontFamily: "dm-sb", fontSize: 16 },
-              ]}
+              style={{
+                color: "#FFF",
+                textAlign: "center",
+                fontFamily: "dm-sb",
+                fontSize: 16,
+              }}
             >
               Learn More
             </Text>
@@ -134,7 +124,7 @@ const Page = () => {
         </View>
       </View>
 
-      <InfoBottomSheet ref={bottomSheetRef} />
+      <InfoBottomSheet ref={bottomSheetModalRef} />
     </SafeAreaView>
   );
 };

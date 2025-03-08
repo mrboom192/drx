@@ -8,10 +8,11 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { router } from "expo-router";
+import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, data: object) => Promise<void>;
   signOut: () => Promise<void>;
   session?: string | null;
   isLoading: boolean;
@@ -38,7 +39,7 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
 
-  async function signUp(email: string, password: string) {
+  async function signUp(email: string, password: string, data: object) {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -47,8 +48,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
       );
       const user = userCredential.user;
 
+      // Store user information in Firestore, merging user-specific data
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        uid: user.uid,
+        ...data, // Spread additional user information
+      });
+
       setSession(user.uid); // Save the new user ID or token to the session
-      router.replace("/"); // Lets go home!!!
+      router.replace("/"); // Navigate to home page
     } catch (e: any) {
       const err = e as FirebaseError;
       alert("Registration failed: " + err.message);

@@ -1,0 +1,64 @@
+[
+  {
+    "id": "D1001",
+    "profile_url": "https://www.zocdoc.com/doctor/raymond-jennings-1001",
+    "title": "Dr.",
+    "name": "Raymond Jennings",
+    "specialty": ["Cardiology", "Internal Medicine"],
+    "description": "Raymond Jennings offers comprehensive expertise in cardiology, ensuring the highest standard of medical treatment with a personal touch.",
+    "experience_years": 30,
+    "hospital_name": "Jordan Hospital",
+    "hospital_coordinates": {
+      "latitude": 31.956794,
+      "longitude": 35.910438
+    },
+    "education": [
+      {
+        "institution": "Stanford University",
+        "start_date": "1985-09T00:00:00.000Z",
+        "end_date": "1989-06T00:00:00.000Z"
+      },
+      {
+        "institution": "Harvard Medical School",
+        "start_date": "1990-09T00:00:00.000Z",
+        "end_date": "1994-06T00:00:00.000Z"
+      }
+    ],
+    "languages_spoken": ["Arabic", "English"],
+    "accepts_insurance": true,
+    "rating": 4.8,
+    "reviews": 118,
+    "consultation_price": 187,
+    "currency": "JOD",
+    "phone": "(321)370-9210x9743",
+    "email": "raymond.jennings@hospital.org",
+    "availability": [
+      {
+        "day": "Monday",
+        "start_time": "2023-03-06T09:00:00.000Z",
+        "end_time": "2023-03-06T17:00:00.000Z"
+      },
+      {
+        "day": "Tuesday",
+        "start_time": "2023-03-07T09:00:00.000Z",
+        "end_time": "2023-03-07T17:00:00.000Z"
+      },
+      {
+        "day": "Wednesday",
+        "start_time": "2023-03-08T09:00:00.000Z",
+        "end_time": "2023-03-08T17:00:00.000Z"
+      },
+      {
+        "day": "Thursday",
+        "start_time": "2023-03-09T09:00:00.000Z",
+        "end_time": "2023-03-09T17:00:00.000Z"
+      },
+      {
+        "day": "Friday",
+        "start_time": "2023-03-10T09:00:00.000Z",
+        "end_time": "2023-03-10T15:00:00.000Z"
+      }
+    ],
+    "photo_url": "https://randomuser.me/api/portraits/women/2.jpg"
+  }
+]

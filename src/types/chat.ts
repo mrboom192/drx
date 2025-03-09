@@ -9,4 +9,6 @@ export interface Chat {
   last_message: string;
   last_sender_name: string;
   last_updated: number;
+  patient_is_online: boolean;
+  doctor_is_online: boolean;
 }

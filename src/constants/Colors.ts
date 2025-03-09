@@ -4,6 +4,7 @@ const tintColorDark = "#7846FF"; // same as primary
 export default {
   primary: "#7846FF", // purple
   yellow: "#FFB650", // stars/ratings
+  green: "#47DE8D",
   light: {
     text: "#000000", // primary text
     grey: "#595959", // secondary text/disabled icons

@@ -19,10 +19,10 @@ import {
   BottomSheetFlatListMethods,
 } from "@gorhom/bottom-sheet";
 import { Doctor } from "@/types/doctor";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import Rating from "./Rating";
 import { Chat } from "@/types/chat";
 import { format } from "date-fns";
+import Colors from "@/constants/Colors";
 
 interface Props {
   chats: Chat[];
@@ -80,10 +80,13 @@ const ChatsList = ({ chats }: Props) => {
             },
           ]}
         >
-          <Image
-            source={{ uri: item.doctor_profile_url }}
-            style={styles.image}
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: item.doctor_profile_url }}
+              style={styles.image}
+            />
+            {item.doctor_is_online && <View style={styles.onlineIndicator} />}
+          </View>
 
           <View style={{ flex: 1 }}>
             <Text
@@ -151,6 +154,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  imageContainer: {
+    position: "relative", // Allows absolute positioning inside
+  },
+  onlineIndicator: {
+    position: "absolute",
+    bottom: 2,
+    right: 2,
+    width: 16,
+    height: 16,
+    backgroundColor: Colors.green, // Green for online
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderColor: Colors.light.background, // Border to make it stand out
   },
 });
 

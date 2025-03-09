@@ -1,11 +1,18 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import React, { useCallback, useRef } from "react";
-import { Link } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { SafeAreaView } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
+import HomeHeader from "@/components/HomeHeader";
 
 const Page = () => {
   const {
@@ -31,6 +38,11 @@ const Page = () => {
             : Colors.dark.background,
       }}
     >
+      <Stack.Screen
+        options={{
+          header: () => <HomeHeader />,
+        }}
+      />
       <View style={styles.container}>
         {/* Card */}
         <View
@@ -78,50 +90,155 @@ const Page = () => {
           </Link>
         </View>
 
-        {/* Card */}
-        <View
-          style={{
-            flexDirection: "column",
-            backgroundColor: "#000",
-            borderRadius: 16,
-            padding: 16,
-            margin: 16,
-            gap: 14,
-          }}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={[
+            themeBorderStyle,
+            {
+              height: 200,
+              borderWidth: 0,
+              borderBottomWidth: 1,
+              alignItems: "center",
+              gap: 16,
+              paddingHorizontal: 16,
+              paddingBottom: 16,
+            },
+          ]}
         >
-          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
-            Second Opinion
-          </Text>
-
-          {/* Description */}
-          <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
-            Need a second opinion? Find a doctor to support your care.
-          </Text>
-
-          {/* Inner Button */}
-          <TouchableOpacity
+          {/* Card */}
+          <View
             style={{
-              paddingHorizontal: 24,
-              paddingVertical: 12,
-              borderRadius: 32,
-              borderWidth: 1,
-              borderColor: "#FFF",
-              justifyContent: "center",
+              flexDirection: "column",
+              width: 200,
+              backgroundColor: "#000",
+              borderRadius: 16,
+              padding: 16,
+              gap: 14,
             }}
-            onPress={handlePresentModalPress}
           >
-            <Text
-              style={{
-                color: "#FFF",
-                textAlign: "center",
-                fontFamily: "dm-sb",
-                fontSize: 16,
-              }}
-            >
-              Learn More
+            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
+              Second Opinion
             </Text>
-          </TouchableOpacity>
-        </View>
+
+            {/* Description */}
+            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
+              Need a second opinion? Find a doctor to support your care.
+            </Text>
+
+            {/* Inner Button */}
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                borderRadius: 32,
+                borderWidth: 1,
+                borderColor: "#FFF",
+                justifyContent: "center",
+              }}
+              onPress={handlePresentModalPress}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  textAlign: "center",
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Learn More
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* Card */}
+          <View
+            style={{
+              flexDirection: "column",
+              width: 200,
+              backgroundColor: "#000",
+              borderRadius: 16,
+              padding: 16,
+              gap: 14,
+            }}
+          >
+            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
+              Second Opinion
+            </Text>
+
+            {/* Description */}
+            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
+              Need a second opinion? Find a doctor to support your care.
+            </Text>
+
+            {/* Inner Button */}
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                borderRadius: 32,
+                borderWidth: 1,
+                borderColor: "#FFF",
+                justifyContent: "center",
+              }}
+              onPress={handlePresentModalPress}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  textAlign: "center",
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Learn More
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* Card */}
+          <View
+            style={{
+              flexDirection: "column",
+              width: 200,
+              backgroundColor: "#000",
+              borderRadius: 16,
+              padding: 16,
+              gap: 14,
+            }}
+          >
+            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
+              Second Opinion
+            </Text>
+
+            {/* Description */}
+            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
+              Need a second opinion? Find a doctor to support your care.
+            </Text>
+
+            {/* Inner Button */}
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                borderRadius: 32,
+                borderWidth: 1,
+                borderColor: "#FFF",
+                justifyContent: "center",
+              }}
+              onPress={handlePresentModalPress}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  textAlign: "center",
+                  fontFamily: "dm-sb",
+                  fontSize: 16,
+                }}
+              >
+                Learn More
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
 
       <InfoBottomSheet ref={bottomSheetModalRef} />

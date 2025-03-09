@@ -9,7 +9,9 @@
     "created_at": 1709250000,
     "last_message": "I'll send over the prescription shortly.",
     "last_sender_name": "Dr. Olivia Smith",
-    "last_updated": 1709253600
+    "last_updated": 1709253600,
+    "patient_is_online": true,
+    "doctor_is_online": true
   },
   {
     "id": "Kl12Mn34Op56Qr78St90",
@@ -21,7 +23,9 @@
     "created_at": 1709240000,
     "last_message": "Make sure to drink plenty of fluids.",
     "last_sender_name": "Dr. James Lee",
-    "last_updated": 1709243600
+    "last_updated": 1709243600,
+    "patient_is_online": true,
+    "doctor_is_online": false
   },
   {
     "id": "Wx12Yz34Ab56Cd78Ef90",
@@ -33,7 +37,9 @@
     "created_at": 1709230000,
     "last_message": "Try resting for a couple of days.",
     "last_sender_name": "Dr. Sophia Davis",
-    "last_updated": 1709233600
+    "last_updated": 1709233600,
+    "patient_is_online": true,
+    "doctor_is_online": false
   },
   {
     "id": "Gh12Ij34Kl56Mn78Op90",
@@ -45,7 +51,9 @@
     "created_at": 1709220000,
     "last_message": "Let's schedule a follow-up next week.",
     "last_sender_name": "Dr. William Martinez",
-    "last_updated": 1709223600
+    "last_updated": 1709223600,
+    "patient_is_online": true,
+    "doctor_is_online": true
   },
   {
     "id": "Np12Qr34St56Uv78Wx90",
@@ -57,6 +65,8 @@
     "created_at": 1709210000,
     "last_message": "Please update me if symptoms persist.",
     "last_sender_name": "Dr. Emily Johnson",
-    "last_updated": 1709213600
+    "last_updated": 1709213600,
+    "patient_is_online": true,
+    "doctor_is_online": true
   }
 ]

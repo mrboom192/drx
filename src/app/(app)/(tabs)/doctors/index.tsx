@@ -93,18 +93,14 @@ const Page = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[
-            themeBorderStyle,
-            {
-              height: 200,
-              borderWidth: 0,
-              borderBottomWidth: 1,
-              alignItems: "center",
-              gap: 16,
-              paddingHorizontal: 16,
-              paddingBottom: 16,
-            },
-          ]}
+          contentContainerStyle={{
+            height: 200,
+            borderWidth: 0,
+            alignItems: "center",
+            gap: 16,
+            paddingHorizontal: 16,
+            paddingBottom: 16,
+          }}
         >
           {/* Card */}
           <View
@@ -112,7 +108,7 @@ const Page = () => {
               flexDirection: "column",
               width: 200,
               backgroundColor: "#000",
-              borderRadius: 16,
+              borderRadius: 32,
               padding: 16,
               gap: 14,
             }}
@@ -156,7 +152,7 @@ const Page = () => {
               flexDirection: "column",
               width: 200,
               backgroundColor: "#000",
-              borderRadius: 16,
+              borderRadius: 32,
               padding: 16,
               gap: 14,
             }}
@@ -200,7 +196,7 @@ const Page = () => {
               flexDirection: "column",
               width: 200,
               backgroundColor: "#000",
-              borderRadius: 16,
+              borderRadius: 32,
               padding: 16,
               gap: 14,
             }}

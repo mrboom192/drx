@@ -19,6 +19,8 @@ import Animated, {
   FadeOutLeft,
   FadeInLeft,
   FadeOutRight,
+  SlideInRight,
+  SlideOutLeft,
 } from "react-native-reanimated";
 
 interface Props {}
@@ -74,8 +76,8 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, Props>(
         <BottomSheetView style={{ flex: 1, alignItems: "center" }}>
           <Animated.View
             key={page} // Ensures animation is triggered on state change
-            entering={FadeInRight}
-            exiting={FadeOutLeft}
+            entering={SlideInRight}
+            exiting={SlideOutLeft}
           >
             {page === 1 ? (
               /** Page 1 - Info */

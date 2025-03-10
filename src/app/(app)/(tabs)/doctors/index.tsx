@@ -23,6 +23,8 @@ import Emergency from "@/components/icons/Emergency";
 import OnlineConsultation from "@/components/HomeTabs/OnlineConsultation";
 import SecondOpinion from "@/components/HomeTabs/SecondOpinion";
 import RadiologyImages from "@/components/HomeTabs/RadiologyImages";
+import WeightManagement from "@/components/HomeTabs/WeightManagement";
+import RemoteManagement from "@/components/HomeTabs/RemoteManagement";
 
 const tabs = [
   {
@@ -86,8 +88,8 @@ const Page = () => {
     "Online\nConsultation": <OnlineConsultation />,
     "Second\nOpinion": <SecondOpinion />,
     "Radiology\nImages": <RadiologyImages />,
-    "Weight\nManagement": <Text>Weight Management</Text>,
-    "Remote ICU\nManagement": <Text>Remote ICU Management</Text>,
+    "Weight\nManagement": <WeightManagement />,
+    "Remote ICU\nManagement": <RemoteManagement />,
   };
 
   return (

@@ -19,6 +19,27 @@ import Avatar from "../Avatar";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Spinner from "../icons/Spinner";
+import Dot from "../icons/Dot";
+import Bookmark from "../icons/Bookmark";
+
+const mockTags = [
+  {
+    name: "Speaks Arabic",
+    color: "#8EFFC3",
+  },
+  {
+    name: "Highly Rated (4.4)",
+    color: "#FFCD87",
+  },
+  {
+    name: "Low Cost",
+    color: "#FF86B2",
+  },
+  {
+    name: "USA",
+    color: "#B7DEFF",
+  },
+];
 
 const OnlineConsultation = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
@@ -139,21 +160,34 @@ const OnlineConsultation = () => {
             ]}
           >
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
-              Total Consultations
+              Total Consultation Time
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>10</Text>
+            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>134 mins</Text>
           </View>
         </View>
       </View>
 
       {/* Recommended doctors */}
-      <View style={{ flexDirection: "column", gap: 16 }}>
+      <View
+        style={[
+          themeBorderStyle,
+          {
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "space-between",
+            marginHorizontal: 16,
+            marginBottom: 16,
+            borderRadius: 16,
+            overflow: "hidden",
+          },
+        ]}
+      >
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginHorizontal: 16,
+            margin: 16,
           }}
         >
           <Text
@@ -164,93 +198,194 @@ const OnlineConsultation = () => {
           >
             Suggested doctors
           </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 8,
+              paddingHorizontal: 12,
+              paddingVertical: 4,
+              borderRadius: 9999,
+              borderWidth: 1,
+              borderColor: Colors.green,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Dot color={Colors.green} size={8} />
+            <Text
+              style={{
+                color: Colors.green,
+                textAlign: "center",
+                fontFamily: "dm-sb",
+                fontSize: 12,
+              }}
+            >
+              3302 Online
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={[
+            themeBorderStyle,
+            { borderLeftWidth: 0, borderRightWidth: 0, paddingVertical: 16 },
+          ]}
+        >
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: "center",
+              gap: 8,
+              paddingHorizontal: 16,
+            }}
+          >
+            {doctors.map((item, index) => (
+              <Link href={`/doctor/${item.id}`} key={item.id} asChild>
+                <TouchableOpacity
+                  style={{
+                    width: 300,
+                    padding: 16,
+                    borderWidth: 1,
+                    borderColor: Colors.light.faintGrey,
+                    borderRadius: 16,
+                    flexDirection: "column",
+                    gap: 16,
+                    alignItems: "center",
+                  }}
+                >
+                  {/* Doctor General Information */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 16,
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                  >
+                    <Avatar size={40} uri={item.photo_url} />
+                    <View style={{ flexDirection: "column", flex: 1 }}>
+                      <Text
+                        style={[
+                          themeTextStylePrimary,
+                          { fontFamily: "dm-sb", fontSize: 16 },
+                        ]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
+                        {item.title} {item.name}
+                      </Text>
+
+                      <Text
+                        style={[
+                          themeTextStyleSecondary,
+                          { fontFamily: "dm", fontSize: 12 },
+                        ]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
+                        {item.specialty.join(", ")}
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        themeTextStylePrimary,
+                        { fontFamily: "dm-sb", fontSize: 20 },
+                      ]}
+                    >
+                      ${item.consultation_price}
+                      {/* {item.currency} */}
+                    </Text>
+                  </View>
+
+                  {/* Tags */}
+                  <View
+                    style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
+                  >
+                    {mockTags.map((item, index) => (
+                      <Tag key={index} name={item.name} color={item.color} />
+                    ))}
+                  </View>
+                </TouchableOpacity>
+              </Link>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Buttons */}
+        <View style={{ flexDirection: "column", gap: 8, margin: 16 }}>
+          <TouchableOpacity
+            style={{
+              borderColor: Colors.dark.background,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              borderWidth: 1,
+              borderRadius: 8,
+              backgroundColor: "#FFF",
+
+              paddingHorizontal: 16,
+              paddingVertical: 16,
+            }}
+          >
+            <Bookmark color={Colors.dark.background} size={20} />
+            <Text
+              style={{
+                color: Colors.dark.background,
+                fontFamily: "dm-sb",
+                fontSize: 16,
+                textAlign: "center",
+              }}
+            >
+              View bookmarked (6)
+            </Text>
+          </TouchableOpacity>
           <Link href={`/(app)/(tabs)/doctors/search`} asChild>
             <TouchableOpacity
               style={{
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                borderRadius: 32,
+                borderColor: Colors.dark.background,
                 borderWidth: 1,
-                borderColor: Colors.light.grey,
-                justifyContent: "center",
+                borderRadius: 8,
+                backgroundColor: Colors.dark.background,
+                paddingHorizontal: 16,
+                paddingVertical: 16,
               }}
             >
               <Text
                 style={{
-                  color: Colors.light.grey,
-                  textAlign: "center",
+                  color: "#FFF",
                   fontFamily: "dm-sb",
-                  fontSize: 12,
+                  fontSize: 16,
+                  textAlign: "center",
                 }}
               >
-                View All
+                Search all doctors
               </Text>
             </TouchableOpacity>
           </Link>
         </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: "center",
-            gap: 8,
-            paddingHorizontal: 16,
-          }}
-        >
-          {doctors.map((item, index) => (
-            <Link href={`/doctor/${item.id}`} key={item.id} asChild>
-              <TouchableOpacity
-                style={{
-                  width: 200,
-                  padding: 16,
-                  borderWidth: 1,
-                  borderColor: Colors.light.faintGrey,
-                  borderRadius: 16,
-                  flexDirection: "column",
-                  gap: 16,
-                  alignItems: "center",
-                }}
-              >
-                <Avatar size={64} uri={item.photo_url} />
-                <View style={{ flexDirection: "column" }}>
-                  <Text
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 16 },
-                    ]}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.title} {item.name}
-                  </Text>
-
-                  <Text
-                    style={[
-                      themeTextStyleSecondary,
-                      { fontFamily: "dm", fontSize: 12 },
-                    ]}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.specialty.join(", ")}
-                  </Text>
-                </View>
-
-                <Text
-                  style={[
-                    themeTextStylePrimary,
-                    { fontFamily: "dm-sb", fontSize: 20 },
-                  ]}
-                >
-                  {item.consultation_price} {item.currency}
-                </Text>
-              </TouchableOpacity>
-            </Link>
-          ))}
-        </ScrollView>
       </View>
 
       <InfoBottomSheet ref={bottomSheetModalRef} />
+    </View>
+  );
+};
+
+const Tag = ({ name, color }: { name: string; color: string }) => {
+  return (
+    <View
+      style={{
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 4,
+        backgroundColor: color,
+      }}
+    >
+      <Text style={{ color: "#000", fontSize: 14, fontFamily: "dm" }}>
+        {name}
+      </Text>
     </View>
   );
 };

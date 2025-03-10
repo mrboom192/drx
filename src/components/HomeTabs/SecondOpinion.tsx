@@ -164,9 +164,9 @@ const SecondOpinion = () => {
             ]}
           >
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
-              Second Opinions
+              Number of Opinions
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>2</Text>
+            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>1</Text>
           </View>
         </View>
       </View>
@@ -259,18 +259,17 @@ const SecondOpinion = () => {
           >
             {mockCases.map((item) => (
               <Link href={`/(app)/(tabs)`} key={item.id} asChild>
-                <Pressable
+                <TouchableOpacity
                   style={{
                     borderWidth: 1,
                     borderColor: Colors.light.faintGrey,
                     padding: 16,
                     flexDirection: "column",
-                    width: 150,
-                    height: 150,
+                    width: 155,
+                    height: 155,
                     backgroundColor: "#FFF",
                     justifyContent: "space-between",
                     borderRadius: 8,
-                    gap: 16,
                   }}
                 >
                   <Text
@@ -285,7 +284,7 @@ const SecondOpinion = () => {
                   </Text>
                   <Text
                     ellipsizeMode="tail"
-                    numberOfLines={1}
+                    numberOfLines={2}
                     style={[
                       themeTextStyleSecondary,
                       { fontFamily: "dm", fontSize: 12 },
@@ -297,7 +296,7 @@ const SecondOpinion = () => {
                     <View
                       style={{
                         flexDirection: "row",
-                        gap: "8",
+                        gap: "4",
                         alignItems: "center",
                       }}
                     >
@@ -309,14 +308,14 @@ const SecondOpinion = () => {
                           fontSize: 12,
                         }}
                       >
-                        Reviewed
+                        Reviewed by 1
                       </Text>
                     </View>
                   ) : (
                     <View
                       style={{
                         flexDirection: "row",
-                        gap: "8",
+                        gap: "4",
                         alignItems: "center",
                       }}
                     >
@@ -332,7 +331,7 @@ const SecondOpinion = () => {
                       </Text>
                     </View>
                   )}
-                </Pressable>
+                </TouchableOpacity>
               </Link>
             ))}
           </ScrollView>

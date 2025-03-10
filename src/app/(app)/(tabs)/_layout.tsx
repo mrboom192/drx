@@ -14,18 +14,9 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="doctors"
-        options={{
-          tabBarLabel: "Doctors",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="stethoscope" color={color} size={size} />
+            <Ionicons name="home" color={color} size={size} />
           ),
         }}
       />

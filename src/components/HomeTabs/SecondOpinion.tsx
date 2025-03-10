@@ -214,7 +214,7 @@ const SecondOpinion = () => {
               1/2 Cases reviewed
             </Text>
           </View>
-          <Link href={`/(app)/(tabs)`} asChild>
+          <Link href={`/(app)/(tabs)/index`} asChild>
             <TouchableOpacity
               style={{
                 paddingHorizontal: 16,
@@ -258,7 +258,7 @@ const SecondOpinion = () => {
             ]}
           >
             {mockCases.map((item) => (
-              <Link href={`/(app)/(tabs)`} key={item.id} asChild>
+              <Link href={`/(app)/(tabs)/index`} key={item.id} asChild>
                 <TouchableOpacity
                   style={{
                     borderWidth: 1,

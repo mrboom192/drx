@@ -335,7 +335,7 @@ const OnlineConsultation = () => {
               View bookmarked (6)
             </Text>
           </TouchableOpacity>
-          <Link href={`/(app)/(tabs)/doctors/search`} asChild>
+          <Link href={`/(app)/(tabs)/search` as any} asChild>
             <TouchableOpacity
               style={{
                 borderColor: Colors.dark.background,

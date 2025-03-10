@@ -225,93 +225,86 @@ const OnlineConsultation = () => {
           </View>
         </View>
 
-        <View
-          style={[
-            themeBorderStyle,
-            { borderLeftWidth: 0, borderRightWidth: 0, paddingVertical: 16 },
-          ]}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            gap: 8,
+            paddingHorizontal: 16,
+          }}
         >
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: "center",
-              gap: 8,
-              paddingHorizontal: 16,
-            }}
-          >
-            {doctors.map((item, index) => (
-              <Link href={`/doctor/${item.id}`} key={item.id} asChild>
-                <TouchableOpacity
+          {doctors.map((item, index) => (
+            <Link href={`/doctor/${item.id}`} key={item.id} asChild>
+              <TouchableOpacity
+                style={{
+                  width: 300,
+                  padding: 16,
+                  borderWidth: 1,
+                  borderColor: Colors.light.faintGrey,
+                  borderRadius: 16,
+                  flexDirection: "column",
+                  gap: 16,
+                  alignItems: "center",
+                }}
+              >
+                {/* Doctor General Information */}
+                <View
                   style={{
-                    width: 300,
-                    padding: 16,
-                    borderWidth: 1,
-                    borderColor: Colors.light.faintGrey,
-                    borderRadius: 16,
-                    flexDirection: "column",
+                    flexDirection: "row",
                     gap: 16,
                     alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
                   }}
                 >
-                  {/* Doctor General Information */}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      gap: 16,
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
-                    }}
-                  >
-                    <Avatar size={40} uri={item.photo_url} />
-                    <View style={{ flexDirection: "column", flex: 1 }}>
-                      <Text
-                        style={[
-                          themeTextStylePrimary,
-                          { fontFamily: "dm-sb", fontSize: 16 },
-                        ]}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        {item.title} {item.name}
-                      </Text>
-
-                      <Text
-                        style={[
-                          themeTextStyleSecondary,
-                          { fontFamily: "dm", fontSize: 12 },
-                        ]}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        {item.specialty.join(", ")}
-                      </Text>
-                    </View>
+                  <Avatar size={40} uri={item.photo_url} />
+                  <View style={{ flexDirection: "column", flex: 1 }}>
                     <Text
                       style={[
                         themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 20 },
+                        { fontFamily: "dm-sb", fontSize: 16 },
                       ]}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
                     >
-                      ${item.consultation_price}
-                      {/* {item.currency} */}
+                      {item.title} {item.name}
+                    </Text>
+
+                    <Text
+                      style={[
+                        themeTextStyleSecondary,
+                        { fontFamily: "dm", fontSize: 12 },
+                      ]}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.specialty.join(", ")}
                     </Text>
                   </View>
-
-                  {/* Tags */}
-                  <View
-                    style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
+                  <Text
+                    style={[
+                      themeTextStylePrimary,
+                      { fontFamily: "dm-sb", fontSize: 20 },
+                    ]}
                   >
-                    {mockTags.map((item, index) => (
-                      <Tag key={index} name={item.name} color={item.color} />
-                    ))}
-                  </View>
-                </TouchableOpacity>
-              </Link>
-            ))}
-          </ScrollView>
-        </View>
+                    ${item.consultation_price}
+                    {/* {item.currency} */}
+                  </Text>
+                </View>
+
+                {/* Tags */}
+                <View
+                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
+                >
+                  {mockTags.map((item, index) => (
+                    <Tag key={index} name={item.name} color={item.color} />
+                  ))}
+                </View>
+              </TouchableOpacity>
+            </Link>
+          ))}
+        </ScrollView>
 
         {/* Buttons */}
         <View style={{ flexDirection: "column", gap: 8, margin: 16 }}>

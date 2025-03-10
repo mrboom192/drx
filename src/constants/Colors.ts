@@ -5,6 +5,22 @@ export default {
   primary: "#7846FF", // purple
   yellow: "#FFB650", // stars/ratings
   green: "#47DE8D",
+
+  onlineConsultation: "#FF8E43", // orange
+  onlineConsultationBackground: "#FFECD9", // peach
+
+  secondOpinion: "#43C0FF", // sky blue
+  secondOpinionBackground: "#D9F4FF", // light blue
+
+  radiologyImages: "#FF4346", // red
+  radiologyImagesBackground: "#FFEDEF", // blush pink
+
+  weightManagement: "#D556FF", // magenta
+  weightManagementBackground: "#FBEDFD", // light lavender
+
+  remoteICUManagement: "#998AFF", // periwinkle
+  remoteICUManagementBackground: "#EDEFFE", // soft lilac
+
   light: {
     text: "#000000", // primary text
     grey: "#595959", // secondary text/disabled icons

@@ -5,22 +5,48 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  Image,
 } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import ArrowOutward from "../icons/ArrowOutward";
-import HealthShield from "../icons/HealthShield";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
-import { Doctor } from "@/types/doctor";
 import { Link } from "expo-router";
 import Colors from "@/constants/Colors";
 import Avatar from "../Avatar";
-import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
-import Spinner from "../icons/Spinner";
+import Filter from "../icons/Filter";
 
-const OnlineConsultation = () => {
+const rays = [
+  {
+    id: "9cb0b261f4f2e023702957c6e18f072232fa677102",
+    name: "Jason's Axial Brain Scan 1",
+    image:
+      "https://prod-images-static.radiopaedia.org/images/70135739/469cb0b261f4f2e023702957c6e18f072232fa677102f6a4a33e81298d771514.jpg",
+  },
+  {
+    id: "9627b5a21c339c68ef79e4bf68460115cbc6aa",
+    name: "Jason's Sagittal PD Fat Sat 1",
+    image:
+      "https://prod-images-static.radiopaedia.org/images/70138750/e53c56e62c59627b5a21c339c68ef79e4bf68460115cbc6aa9cf8cab63497392.png",
+  },
+  {
+    id: "9d92da281dc44781873f73a31209fc6102e6580a29",
+    name: "Jason's Frontal Wrist Scan 1",
+    image:
+      "https://prod-images-static.radiopaedia.org/images/70138719/0dbfe385c2be13c1529d92da281dc44781873f73a31209fc6102e6580a29ba23_big_gallery.jpeg",
+  },
+  {
+    id: "63a0af8aeddba3c133e630f598658b5bc69a5e",
+    name: "Jason's Sagittal Scan T1 1",
+    image:
+      "https://prod-images-static.radiopaedia.org/images/69774601/aeea82f41d466e7dc6c363a0af8aeddba3c133e630f598658b5bc69a5e812e1c.png",
+  },
+];
+
+const RadiologyImages = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
     useThemedStyles();
   const [loading, setLoading] = useState(true);
@@ -76,14 +102,14 @@ const OnlineConsultation = () => {
         <Text
           style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
         >
-          Online Consultations
+          Radiology Images
         </Text>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
               onPress={handlePresentModalPress}
               style={[
-                { backgroundColor: Colors.onlineConsultationBackground },
+                { backgroundColor: Colors.radiologyImagesBackground },
                 {
                   borderRadius: 16,
                   padding: 16,
@@ -115,20 +141,20 @@ const OnlineConsultation = () => {
                 },
               ]}
             >
-              <HealthShield size={24} color={"#FF4346"} />
+              <Filter size={24} color={"#000"} />
               <Text
                 style={[
                   themeTextStylePrimary,
                   { fontSize: 16, fontFamily: "dm-sb" },
                 ]}
               >
-                View medical record
+                Provider preferences
               </Text>
             </TouchableOpacity>
           </View>
           <View
             style={[
-              { backgroundColor: Colors.onlineConsultationBackground },
+              { backgroundColor: Colors.radiologyImagesBackground },
               {
                 flex: 1,
                 borderRadius: 16,
@@ -139,32 +165,57 @@ const OnlineConsultation = () => {
             ]}
           >
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
-              Total Consultations
+              Images Reviewed
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>10</Text>
+            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>133</Text>
           </View>
         </View>
       </View>
 
-      {/* Recommended doctors */}
-      <View style={{ flexDirection: "column", gap: 16 }}>
+      {/* Upload a new ray scan */}
+      <View
+        style={[
+          themeBorderStyle,
+          {
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "space-between",
+            marginHorizontal: 16,
+            marginBottom: 16,
+            borderRadius: 16,
+            overflow: "hidden",
+          },
+        ]}
+      >
+        {/* Title */}
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginHorizontal: 16,
+            padding: 16,
+            width: "100%",
           }}
         >
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 20, fontFamily: "dm-sb" },
-            ]}
-          >
-            Suggested doctors
-          </Text>
-          <Link href={`/(app)/(tabs)/doctors/search`} asChild>
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <Text
+              style={[
+                themeTextStylePrimary,
+                { fontFamily: "dm-sb", fontSize: 20 },
+              ]}
+            >
+              Uploads
+            </Text>
+            <Text
+              style={[
+                themeTextStyleSecondary,
+                { fontFamily: "dm", fontSize: 16 },
+              ]}
+            >
+              63/67 images reviewed
+            </Text>
+          </View>
+          <Link href={`/(app)/(tabs)`} asChild>
             <TouchableOpacity
               style={{
                 paddingHorizontal: 16,
@@ -188,66 +239,77 @@ const OnlineConsultation = () => {
             </TouchableOpacity>
           </Link>
         </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: "center",
-            gap: 8,
-            paddingHorizontal: 16,
-          }}
-        >
-          {doctors.map((item, index) => (
-            <Link href={`/doctor/${item.id}`} key={item.id} asChild>
-              <TouchableOpacity
-                style={{
-                  width: 200,
-                  padding: 16,
-                  borderWidth: 1,
-                  borderColor: Colors.light.faintGrey,
-                  borderRadius: 16,
-                  flexDirection: "column",
-                  gap: 16,
-                  alignItems: "center",
-                }}
-              >
-                <Avatar size={64} uri={item.photo_url} />
-                <View style={{ flexDirection: "column" }}>
-                  <Text
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 16 },
-                    ]}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.title} {item.name}
-                  </Text>
 
+        {/* Ray Uploads */}
+        <View
+          style={[
+            themeBorderStyle,
+            { borderLeftWidth: 0, borderRightWidth: 0, paddingVertical: 16 },
+          ]}
+        >
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={[
+              {
+                alignItems: "center",
+                gap: 16,
+                paddingHorizontal: 16,
+              },
+            ]}
+          >
+            {rays.map((item) => (
+              <Link href={`/(app)/(tabs)`} key={item.id} asChild>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "column",
+                    gap: 16,
+                    width: 125,
+                  }}
+                >
+                  <Image
+                    source={{ uri: item.image }}
+                    style={{ width: 125, height: 125, borderRadius: 8 }}
+                  />
                   <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
                     style={[
                       themeTextStyleSecondary,
                       { fontFamily: "dm", fontSize: 12 },
                     ]}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
                   >
-                    {item.specialty.join(", ")}
+                    {item.name}
                   </Text>
-                </View>
+                </TouchableOpacity>
+              </Link>
+            ))}
+          </ScrollView>
+        </View>
 
-                <Text
-                  style={[
-                    themeTextStylePrimary,
-                    { fontFamily: "dm-sb", fontSize: 20 },
-                  ]}
-                >
-                  {item.consultation_price} {item.currency}
-                </Text>
-              </TouchableOpacity>
-            </Link>
-          ))}
-        </ScrollView>
+        {/* Button */}
+        <TouchableOpacity
+          style={{
+            borderColor: "#000",
+            borderWidth: 1,
+            borderRadius: 8,
+            backgroundColor: Colors.dark.background,
+            margin: 16,
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFF",
+              fontFamily: "dm-sb",
+              fontSize: 16,
+              textAlign: "center",
+            }}
+          >
+            Upload
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <InfoBottomSheet ref={bottomSheetModalRef} />
@@ -255,4 +317,4 @@ const OnlineConsultation = () => {
   );
 };
 
-export default OnlineConsultation;
+export default RadiologyImages;

@@ -21,32 +21,34 @@ import Radiology from "@/components/icons/Radiology";
 import MonitorWeight from "@/components/icons/MonitorWeight";
 import Emergency from "@/components/icons/Emergency";
 import OnlineConsultation from "@/components/HomeTabs/OnlineConsultation";
+import SecondOpinion from "@/components/HomeTabs/SecondOpinion";
+import RadiologyImages from "@/components/HomeTabs/RadiologyImages";
 
 const tabs = [
   {
     name: "Online\nConsultation",
-    icon: <Stethoscope size={24} color={"#FF8E43"} />,
-    backgroundColor: "#FFECD9",
+    icon: <Stethoscope size={24} color={Colors.onlineConsultation} />,
+    backgroundColor: Colors.onlineConsultationBackground,
   },
   {
     name: "Second\nOpinion",
-    icon: <PsychologyAlt size={24} color={"#43C0FF"} />,
-    backgroundColor: "#D9F4FF",
+    icon: <PsychologyAlt size={24} color={Colors.secondOpinion} />,
+    backgroundColor: Colors.secondOpinionBackground,
   },
   {
     name: "Radiology\nImages",
-    icon: <Radiology size={24} color={"#FF4346"} />,
-    backgroundColor: "#FFEDEF",
+    icon: <Radiology size={24} color={Colors.radiologyImages} />,
+    backgroundColor: Colors.radiologyImagesBackground,
   },
   {
     name: "Weight\nManagement",
-    icon: <MonitorWeight size={24} color={"#D556FF"} />,
-    backgroundColor: "#FBEDFD",
+    icon: <MonitorWeight size={24} color={Colors.weightManagement} />,
+    backgroundColor: Colors.weightManagementBackground,
   },
   {
     name: "Remote ICU\nManagement",
-    icon: <Emergency size={24} color={"#998AFF"} />,
-    backgroundColor: "#EDEFFE",
+    icon: <Emergency size={24} color={Colors.remoteICUManagement} />,
+    backgroundColor: Colors.remoteICUManagementBackground,
   },
 ];
 
@@ -62,9 +64,17 @@ const Page = () => {
   const prevIndex = tabs.findIndex((t) => t.name === prevTab);
 
   const onTabChange = (newTab: string) => {
-    setPrevTab(tab); // Store previous tab before switching
-    setTab(newTab); // Update tab immediately
-    setIsForward(tabs.findIndex((t) => t.name === newTab) > currentIndex); // Calculate direction dynamically
+    if (newTab === tab) return; // No-op if you're already on that tab
+
+    const oldIndex = tabs.findIndex((t) => t.name === tab);
+    const newIndex = tabs.findIndex((t) => t.name === newTab);
+
+    // Calculate forward vs. backward using these stable indices
+    const goingForward = newIndex > oldIndex;
+
+    setIsForward(goingForward);
+    setPrevTab(tab);
+    setTab(newTab);
   };
 
   // Log direction when tab changes
@@ -74,8 +84,8 @@ const Page = () => {
 
   const tabComponents: Record<string, ReactElement> = {
     "Online\nConsultation": <OnlineConsultation />,
-    "Second\nOpinion": <Text>Second Opinion</Text>,
-    "Radiology\nImages": <Text>Radiology Images</Text>,
+    "Second\nOpinion": <SecondOpinion />,
+    "Radiology\nImages": <RadiologyImages />,
     "Weight\nManagement": <Text>Weight Management</Text>,
     "Remote ICU\nManagement": <Text>Remote ICU Management</Text>,
   };
@@ -97,9 +107,9 @@ const Page = () => {
       />
       <View style={styles.container}>
         <Animated.View
-          key={tab} // 🔥 Forces a re-render when the tab changes
+          key={tab}
           entering={isForward ? FadeInRight : FadeInLeft}
-          exiting={isForward ? FadeOutLeft : FadeOutRight}
+          // exiting={isForward ? FadeOutLeft : FadeOutRight}
           style={styles.animatedContainer}
         >
           {tabComponents[tab] || <Text>Tab not found</Text>}

@@ -1,97 +1,158 @@
-import { StyleSheet, Image } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import {
   View,
   Text,
-  SafeAreaView,
+  StyleSheet,
+  Image,
   TouchableOpacity,
   ScrollView,
-} from "./Themed";
+  Pressable,
+} from "react-native";
+import React, { useMemo, useRef, useState } from "react";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
+import { SafeAreaView } from "./Themed";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
-
 import userData from "@/../assets/data/user.json";
 import { User } from "@/types/user";
+import { Tab } from "@/types/tab";
+import Avatar from "./Avatar";
 
-interface Props {}
-
-const HomeHeader = ({}: Props) => {
-  const { themeBorderStyle, colorScheme } = useThemedStyles();
+const Header = ({ tabs }: { tabs: Tab[] }) => {
+  const { themeBorderStyle, themeTextStyleSecondary, colorScheme } =
+    useThemedStyles();
   const user = useMemo(() => userData as User, []);
+
+  const scrollRef = useRef<ScrollView | null>(null);
+  const router = useRouter();
+  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectCategory = (index: number) => {
+    const selected = itemsRef.current[index];
+    setActiveIndex(index);
+
+    selected?.measure((x: number) => {
+      scrollRef.current?.scrollTo({
+        x: x - 16,
+        y: 0,
+        animated: true,
+      });
+    });
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // onSpecialtyChange(categories[index].name);
+  };
 
   return (
     <SafeAreaView>
-      <View style={[themeBorderStyle, styles.container]}>
-        <TouchableOpacity>
-          <Image
-            source={{ uri: user.profileImage }}
-            style={[themeBorderStyle, styles.image]}
-          />
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.userRow}>
+          <WelcomeMessage name={"Jason Nguyen"} />
+          <Avatar size={40} uri={user.profileImage} />
+        </View>
 
-        {/* Title */}
-        <Text
-          style={{ fontFamily: "dm-sb", color: Colors.primary, fontSize: 32 }}
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            paddingHorizontal: 16,
+            gap: 8,
+            paddingBottom: 16,
+          }}
         >
-          Patient
-        </Text>
-
-        <TouchableOpacity>
-          <Ionicons
-            name="notifications-outline"
-            color={colorScheme === "light" ? "#000" : "#FFF"}
-            size={24}
-          />
-        </TouchableOpacity>
+          {tabs.map((item, index) => (
+            <Pressable
+              onPress={() => selectCategory(index)}
+              key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
+              style={{
+                flexDirection: "column",
+                width: 80,
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <View
+                style={{
+                  width: 64,
+                  height: 64,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 9999,
+                  backgroundColor: item.backgroundColor,
+                }}
+              >
+                {item.icon}
+              </View>
+              <Text
+                style={[
+                  activeIndex === index
+                    ? { color: "#000", fontFamily: "dm-sb" }
+                    : [themeTextStyleSecondary, { fontFamily: "dm" }],
+                  { fontSize: 12, textAlign: "center" },
+                ]}
+              >
+                {item.name}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
 };
 
+const WelcomeMessage = ({ name }: { name: string }) => {
+  const { themeTextStyleSecondary } = useThemedStyles();
+
+  return (
+    <View>
+      <Text
+        style={[
+          themeTextStyleSecondary,
+          {
+            fontFamily: "dm",
+            fontSize: 14,
+          },
+        ]}
+      >
+        Welcome back,
+      </Text>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>{name}</Text>
+        <Text
+          style={{
+            fontFamily: "dm-sb",
+            fontSize: 12,
+            color: Colors.primary,
+          }}
+        >
+          Patient
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  userRow: {
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    // backgroundColor: "#FF00FF",
-    borderWidth: 0,
-    borderBottomWidth: 1,
-  },
-  actionRow: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 24,
-    marginBottom: 16,
-    gap: 16,
-  },
-  filterBtn: {
-    height: 56,
-    width: 56,
-    justifyContent: "center",
     alignItems: "center",
-    borderRadius: 9999,
   },
-  searchBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 56,
+  container: {
+    flexDirection: "column",
     gap: 10,
-    flex: 1,
-    padding: 14,
-    borderRadius: 30,
-  },
-  image: {
-    width: 40,
-    height: 40,
-    borderRadius: 9999,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 
-export default HomeHeader;
+export default Header;

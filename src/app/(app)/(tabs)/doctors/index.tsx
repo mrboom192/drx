@@ -13,6 +13,43 @@ import Colors from "@/constants/Colors";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import HomeHeader from "@/components/HomeHeader";
+import Animated from "react-native-reanimated";
+import Stethoscope from "@/components/icons/Stethoscope";
+import PsychologyAlt from "@/components/icons/PsychologyAlt";
+import Radiology from "@/components/icons/Radiology";
+import MonitorWeight from "@/components/icons/MonitorWeight";
+import Emergency from "@/components/icons/Emergency";
+import ArrowOutward from "@/components/icons/ArrowOutward";
+import HealthShield from "@/components/icons/HealthShield";
+import OnlineConsultation from "@/components/HomeTabs/OnlineConsultation";
+
+const tabs = [
+  {
+    name: "Online\nConsultation",
+    icon: <Stethoscope size={24} color={"#FF8E43"} />,
+    backgroundColor: "#FFECD9",
+  },
+  {
+    name: "Second\nOpinion",
+    icon: <PsychologyAlt size={24} color={"#43C0FF"} />,
+    backgroundColor: "#D9F4FF",
+  },
+  {
+    name: "Radiology\nImages",
+    icon: <Radiology size={24} color={"#FF4346"} />,
+    backgroundColor: "#FFEDEF",
+  },
+  {
+    name: "Weight\nManagement",
+    icon: <MonitorWeight size={24} color={"#D556FF"} />,
+    backgroundColor: "#FBEDFD",
+  },
+  {
+    name: "Remote ICU\nManagement",
+    icon: <Emergency size={24} color={"#998AFF"} />,
+    backgroundColor: "#EDEFFE",
+  },
+];
 
 const Page = () => {
   const {
@@ -40,202 +77,12 @@ const Page = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <HomeHeader />,
+          header: () => <HomeHeader tabs={tabs} />,
         }}
       />
-      <View style={styles.container}>
-        {/* Card */}
-        <View
-          style={{
-            flexDirection: "column",
-            backgroundColor: Colors.primary,
-            borderRadius: 16,
-            padding: 16,
-            margin: 16,
-            gap: 14,
-          }}
-        >
-          <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
-            Online Consultations
-          </Text>
-
-          {/* Description */}
-          <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
-            Find specialist doctors who can consult, diagnose, and prescribe
-          </Text>
-
-          {/* Inner Button */}
-          <Link href={`/(app)/(tabs)/doctors/search`} asChild>
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 24,
-                paddingVertical: 12,
-                borderRadius: 32,
-                borderWidth: 1,
-                borderColor: "#FFF",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: "#FFF",
-                  textAlign: "center",
-                  fontFamily: "dm-sb",
-                  fontSize: 16,
-                }}
-              >
-                Search
-              </Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            height: 200,
-            borderWidth: 0,
-            alignItems: "center",
-            gap: 16,
-            paddingHorizontal: 16,
-            paddingBottom: 16,
-          }}
-        >
-          {/* Card */}
-          <View
-            style={{
-              flexDirection: "column",
-              width: 200,
-              backgroundColor: "#000",
-              borderRadius: 32,
-              padding: 16,
-              gap: 14,
-            }}
-          >
-            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
-              Second Opinion
-            </Text>
-
-            {/* Description */}
-            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
-              Need a second opinion? Find a doctor to support your care.
-            </Text>
-
-            {/* Inner Button */}
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 24,
-                paddingVertical: 12,
-                borderRadius: 32,
-                borderWidth: 1,
-                borderColor: "#FFF",
-                justifyContent: "center",
-              }}
-              onPress={handlePresentModalPress}
-            >
-              <Text
-                style={{
-                  color: "#FFF",
-                  textAlign: "center",
-                  fontFamily: "dm-sb",
-                  fontSize: 16,
-                }}
-              >
-                Learn More
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/* Card */}
-          <View
-            style={{
-              flexDirection: "column",
-              width: 200,
-              backgroundColor: "#000",
-              borderRadius: 32,
-              padding: 16,
-              gap: 14,
-            }}
-          >
-            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
-              Second Opinion
-            </Text>
-
-            {/* Description */}
-            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
-              Need a second opinion? Find a doctor to support your care.
-            </Text>
-
-            {/* Inner Button */}
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 24,
-                paddingVertical: 12,
-                borderRadius: 32,
-                borderWidth: 1,
-                borderColor: "#FFF",
-                justifyContent: "center",
-              }}
-              onPress={handlePresentModalPress}
-            >
-              <Text
-                style={{
-                  color: "#FFF",
-                  textAlign: "center",
-                  fontFamily: "dm-sb",
-                  fontSize: 16,
-                }}
-              >
-                Learn More
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/* Card */}
-          <View
-            style={{
-              flexDirection: "column",
-              width: 200,
-              backgroundColor: "#000",
-              borderRadius: 32,
-              padding: 16,
-              gap: 14,
-            }}
-          >
-            <Text style={{ color: "#FFF", fontFamily: "dm-sb", fontSize: 20 }}>
-              Second Opinion
-            </Text>
-
-            {/* Description */}
-            <Text style={{ color: "#FFF", fontFamily: "dm", fontSize: 16 }}>
-              Need a second opinion? Find a doctor to support your care.
-            </Text>
-
-            {/* Inner Button */}
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 24,
-                paddingVertical: 12,
-                borderRadius: 32,
-                borderWidth: 1,
-                borderColor: "#FFF",
-                justifyContent: "center",
-              }}
-              onPress={handlePresentModalPress}
-            >
-              <Text
-                style={{
-                  color: "#FFF",
-                  textAlign: "center",
-                  fontFamily: "dm-sb",
-                  fontSize: 16,
-                }}
-              >
-                Learn More
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+      <Animated.View style={styles.container}>
+        <OnlineConsultation />
+      </Animated.View>
 
       <InfoBottomSheet ref={bottomSheetModalRef} />
     </SafeAreaView>
@@ -245,30 +92,6 @@ const Page = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  actionRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    marginBottom: 16,
-    gap: 16,
-  },
-  filterBtn: {
-    height: 56,
-    width: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 9999,
-  },
-  searchBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 56,
-    gap: 10,
-    flex: 1,
-    padding: 14,
-    borderRadius: 30,
   },
   image: {
     width: 64,

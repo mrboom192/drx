@@ -4,8 +4,9 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  StyleSheet,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import ArrowOutward from "../icons/ArrowOutward";
 import HealthShield from "../icons/HealthShield";
@@ -15,6 +16,9 @@ import { Doctor } from "@/types/doctor";
 import { Link } from "expo-router";
 import Colors from "@/constants/Colors";
 import Avatar from "../Avatar";
+import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import InfoBottomSheet from "@/components/InfoBottomSheet";
+import Spinner from "../icons/Spinner";
 
 const OnlineConsultation = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
@@ -22,6 +26,12 @@ const OnlineConsultation = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [doctors, setDoctors] = useState<any[]>([]);
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
+  }, []);
 
   const fetchRandomDoctors = useCallback(async () => {
     setLoading(true);
@@ -71,6 +81,7 @@ const OnlineConsultation = () => {
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
+              onPress={handlePresentModalPress}
               style={[
                 { backgroundColor: "#FFECD9" },
                 {
@@ -238,6 +249,8 @@ const OnlineConsultation = () => {
           ))}
         </ScrollView>
       </View>
+
+      <InfoBottomSheet ref={bottomSheetModalRef} />
     </View>
   );
 };

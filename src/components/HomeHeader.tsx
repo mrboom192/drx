@@ -18,7 +18,13 @@ import { User } from "@/types/user";
 import { Tab } from "@/types/tab";
 import Avatar from "./Avatar";
 
-const Header = ({ tabs }: { tabs: Tab[] }) => {
+const Header = ({
+  tabs,
+  onTabChange,
+}: {
+  tabs: Tab[];
+  onTabChange: (tabName: string) => void;
+}) => {
   const { themeBorderStyle, themeTextStyleSecondary, colorScheme } =
     useThemedStyles();
   const user = useMemo(() => userData as User, []);
@@ -42,7 +48,7 @@ const Header = ({ tabs }: { tabs: Tab[] }) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // onSpecialtyChange(categories[index].name);
+    onTabChange(tabs[index].name);
   };
 
   return (

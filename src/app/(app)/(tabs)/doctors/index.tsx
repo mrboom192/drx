@@ -1,26 +1,25 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
-import React, { useCallback, useRef } from "react";
-import { Link, Stack } from "expo-router";
+import { View, Text, StyleSheet } from "react-native";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Stack } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { SafeAreaView } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
-import InfoBottomSheet from "@/components/InfoBottomSheet";
 import HomeHeader from "@/components/HomeHeader";
-import Animated from "react-native-reanimated";
+import Animated, {
+  SlideInRight,
+  SlideOutLeft,
+  SlideInLeft,
+  SlideOutRight,
+  FadeInRight,
+  FadeInLeft,
+  FadeOutRight,
+  FadeOutLeft,
+} from "react-native-reanimated";
 import Stethoscope from "@/components/icons/Stethoscope";
 import PsychologyAlt from "@/components/icons/PsychologyAlt";
 import Radiology from "@/components/icons/Radiology";
 import MonitorWeight from "@/components/icons/MonitorWeight";
 import Emergency from "@/components/icons/Emergency";
-import ArrowOutward from "@/components/icons/ArrowOutward";
-import HealthShield from "@/components/icons/HealthShield";
 import OnlineConsultation from "@/components/HomeTabs/OnlineConsultation";
 
 const tabs = [
@@ -52,18 +51,34 @@ const tabs = [
 ];
 
 const Page = () => {
-  const {
-    colorScheme,
-    themeBorderStyle,
-    themeTextStylePrimary,
-    themeTextStyleSecondary,
-  } = useThemedStyles();
+  const [tab, setTab] = useState("Online\nConsultation");
+  const [prevTab, setPrevTab] = useState("Online\nConsultation");
+  const [isForward, setIsForward] = useState(false);
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const { colorScheme } = useThemedStyles();
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
-  }, []);
+  // Get tab index dynamically
+  const currentIndex = tabs.findIndex((t) => t.name === tab);
+  const prevIndex = tabs.findIndex((t) => t.name === prevTab);
+
+  const onTabChange = (newTab: string) => {
+    setPrevTab(tab); // Store previous tab before switching
+    setTab(newTab); // Update tab immediately
+    setIsForward(tabs.findIndex((t) => t.name === newTab) > currentIndex); // Calculate direction dynamically
+  };
+
+  // Log direction when tab changes
+  useEffect(() => {
+    console.log(isForward);
+  }, [isForward]);
+
+  const tabComponents: Record<string, ReactElement> = {
+    "Online\nConsultation": <OnlineConsultation />,
+    "Second\nOpinion": <Text>Second Opinion</Text>,
+    "Radiology\nImages": <Text>Radiology Images</Text>,
+    "Weight\nManagement": <Text>Weight Management</Text>,
+    "Remote ICU\nManagement": <Text>Remote ICU Management</Text>,
+  };
 
   return (
     <SafeAreaView
@@ -77,14 +92,19 @@ const Page = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <HomeHeader tabs={tabs} />,
+          header: () => <HomeHeader onTabChange={onTabChange} tabs={tabs} />,
         }}
       />
-      <Animated.View style={styles.container}>
-        <OnlineConsultation />
-      </Animated.View>
-
-      <InfoBottomSheet ref={bottomSheetModalRef} />
+      <View style={styles.container}>
+        <Animated.View
+          key={tab} // 🔥 Forces a re-render when the tab changes
+          entering={isForward ? FadeInRight : FadeInLeft}
+          exiting={isForward ? FadeOutLeft : FadeOutRight}
+          style={styles.animatedContainer}
+        >
+          {tabComponents[tab] || <Text>Tab not found</Text>}
+        </Animated.View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -93,10 +113,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  image: {
-    width: 64,
-    height: 64,
-    borderRadius: 9999,
+  animatedContainer: {
+    flex: 1,
   },
 });
 

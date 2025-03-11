@@ -166,7 +166,7 @@ const WeightManagement = () => {
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
               Pounds lost
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>12 lbs</Text>
+            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>12 lbs</Text>
           </View>
         </View>
       </View>

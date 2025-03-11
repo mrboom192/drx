@@ -164,8 +164,8 @@ const RemoteManagement = () => {
             ]}
           >
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>ICU Time</Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>
-              1hr 28 mins
+            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>
+              1hr 28mins
             </Text>
           </View>
         </View>

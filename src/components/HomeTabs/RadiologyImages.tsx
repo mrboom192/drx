@@ -167,7 +167,7 @@ const RadiologyImages = () => {
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
               Images Reviewed
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>133</Text>
+            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>133</Text>
           </View>
         </View>
       </View>

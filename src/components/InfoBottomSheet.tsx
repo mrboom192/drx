@@ -1,5 +1,5 @@
-import { View, StyleSheet, Pressable } from "react-native";
-import React, { forwardRef, useCallback, useMemo } from "react";
+import { View, Pressable } from "react-native";
+import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
 import Colors from "@/constants/Colors";
 import Close from "./icons/Close";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
@@ -9,10 +9,8 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 
-interface Props {}
-
-const InfoBottomSheet = forwardRef<BottomSheetModal, Props>(
-  ({}: Props, ref) => {
+const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
+  ({ content = <></> }, ref) => {
     const { themeBorderStyle, colorScheme } = useThemedStyles();
     const snapPoints = useMemo(() => ["65%"], []);
 
@@ -30,7 +28,17 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, Props>(
 
     return (
       <BottomSheetModal
-        style={styles.sheetContainer}
+        style={{
+          borderRadius: 999,
+          elevation: 4,
+          shadowColor: "#000",
+          shadowOpacity: 0.3,
+          shadowRadius: 4,
+          shadowOffset: {
+            width: 1,
+            height: 1,
+          },
+        }}
         backgroundStyle={{
           backgroundColor:
             colorScheme === "light"
@@ -57,29 +65,16 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, Props>(
           >
             <Pressable
               onPress={() => ref!.current?.dismiss()}
-              style={[themeBorderStyle, { padding: 8, borderRadius: 9999 }]}
+              style={[themeBorderStyle, { padding: 4, borderRadius: 9999 }]}
             >
               <Close size={24} color={"#000"} />
             </Pressable>
           </View>
+          {content}
         </BottomSheetView>
       </BottomSheetModal>
     );
   }
 );
-
-const styles = StyleSheet.create({
-  sheetContainer: {
-    borderRadius: 999,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-  },
-});
 
 export default InfoBottomSheet;

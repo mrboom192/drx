@@ -166,7 +166,7 @@ const SecondOpinion = () => {
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
               Number of Opinions
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>1</Text>
+            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>1</Text>
           </View>
         </View>
       </View>

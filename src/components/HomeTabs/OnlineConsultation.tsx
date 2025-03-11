@@ -1,24 +1,15 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import ArrowOutward from "../icons/ArrowOutward";
 import HealthShield from "../icons/HealthShield";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
-import { Doctor } from "@/types/doctor";
 import { Link } from "expo-router";
 import Colors from "@/constants/Colors";
 import Avatar from "../Avatar";
-import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
-import Spinner from "../icons/Spinner";
 import Dot from "../icons/Dot";
 import Bookmark from "../icons/Bookmark";
 
@@ -32,7 +23,7 @@ const mockTags = [
     color: "#FFCD87",
   },
   {
-    name: "Low Cost",
+    name: "15+ years experience",
     color: "#FF86B2",
   },
   {
@@ -82,6 +73,65 @@ const OnlineConsultation = () => {
   useEffect(() => {
     fetchRandomDoctors();
   }, [fetchRandomDoctors]);
+
+  const renderDetails = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          padding: 16,
+          marginBottom: 48,
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "column", gap: 8 }}>
+          <Text
+            style={[
+              themeTextStylePrimary,
+              { fontSize: 20, fontFamily: "dm-sb" },
+            ]}
+          >
+            Online Consultations
+          </Text>
+          <Text>
+            Our Online Consultation service brings healthcare directly to you,
+            offering convenient and secure virtual appointments with licensed
+            medical professionals. Whether you need a routine check-up, expert
+            medical advice, or a prescription refill, our platform connects you
+            with doctors, specialists, and healthcare providers from the comfort
+            of your home. With real-time video calls and chat support, you can
+            discuss your health concerns, receive personalized treatment plans,
+            and even get e-prescriptions—all without the need to visit a clinic.
+            Our telehealth service ensures quick access, confidentiality, and
+            quality care anytime, anywhere. Skip the waiting room and get the
+            medical attention you need—on your schedule. Your health, your way!
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => bottomSheetModalRef.current?.close()}
+          style={{
+            borderRadius: 16,
+            backgroundColor: Colors.dark.background,
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFF",
+              fontFamily: "dm-sb",
+              fontSize: 16,
+              textAlign: "center",
+            }}
+          >
+            Ok!
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -162,7 +212,7 @@ const OnlineConsultation = () => {
             <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
               Total Consultation Time
             </Text>
-            <Text style={{ fontSize: 32, fontFamily: "dm-sb" }}>134 mins</Text>
+            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>134 mins</Text>
           </View>
         </View>
       </View>
@@ -361,7 +411,7 @@ const OnlineConsultation = () => {
         </View>
       </View>
 
-      <InfoBottomSheet ref={bottomSheetModalRef} />
+      <InfoBottomSheet content={renderDetails()} ref={bottomSheetModalRef} />
     </View>
   );
 };

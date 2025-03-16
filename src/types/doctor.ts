@@ -2,7 +2,7 @@ export interface Doctor {
   id: string;
   profile_url: string;
   name: string;
-  specialty: string;
+  specialty: string[];
   summary: string;
   description: string;
   experience_years: number;

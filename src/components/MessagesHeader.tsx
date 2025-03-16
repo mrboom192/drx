@@ -76,7 +76,7 @@ const MessagesHeader = ({}: Props) => {
               { fontSize: 32, fontFamily: "dm-sb" },
             ]}
           >
-            Messages
+            Consultations
           </Text>
 
           <TouchableOpacity

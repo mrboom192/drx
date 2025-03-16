@@ -53,58 +53,112 @@ const Page = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text
-        style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
-      >
-        Provider language
-      </Text>
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
-        {languages.map((language: any) => (
-          <TouchableOpacity
-            key={language.abbr}
-            style={{
-              padding: 16,
-              flexDirection: "row",
-              gap: 16,
-              borderWidth: 1,
-              borderColor: languageFilter.includes(language.abbr)
-                ? Colors.primary
-                : colorScheme === "light"
-                ? Colors.light.faintGrey
-                : Colors.dark.faintGrey,
-              borderRadius: 16,
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
-            }}
-            onPress={() => handleLanguageSelect(language.abbr)}
-          >
-            <Image source={language.icon} style={styles.image} />
-            <Text
+    <>
+      <View style={styles.container}>
+        <Text
+          style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
+        >
+          Provider language
+        </Text>
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+          }}
+        >
+          {languages.map((language: any) => (
+            <TouchableOpacity
+              key={language.abbr}
               style={{
-                fontFamily: "dm-sb",
-                color: languageFilter.includes(language.abbr)
+                padding: 16,
+                flexDirection: "row",
+                gap: 16,
+                borderWidth: 1,
+                borderColor: languageFilter.includes(language.abbr)
                   ? Colors.primary
                   : colorScheme === "light"
-                  ? "#000"
-                  : "#FFF",
+                  ? Colors.light.faintGrey
+                  : Colors.dark.faintGrey,
+                borderRadius: 16,
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
               }}
+              onPress={() => handleLanguageSelect(language.abbr)}
             >
-              {language.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
+              <Image source={language.icon} style={styles.image} />
+              <Text
+                style={{
+                  fontFamily: "dm-sb",
+                  color: languageFilter.includes(language.abbr)
+                    ? Colors.primary
+                    : colorScheme === "light"
+                    ? "#000"
+                    : "#FFF",
+                }}
+              >
+                {language.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
-    </View>
+      <View style={styles.container}>
+        <Text
+          style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
+        >
+          Provider nationality
+        </Text>
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+          }}
+        >
+          {languages.map((language: any) => (
+            <TouchableOpacity
+              key={language.abbr}
+              style={{
+                padding: 16,
+                flexDirection: "row",
+                gap: 16,
+                borderWidth: 1,
+                borderColor: languageFilter.includes(language.abbr)
+                  ? Colors.primary
+                  : colorScheme === "light"
+                  ? Colors.light.faintGrey
+                  : Colors.dark.faintGrey,
+                borderRadius: 16,
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+              }}
+              onPress={() => handleLanguageSelect(language.abbr)}
+            >
+              <Image source={language.icon} style={styles.image} />
+              <Text
+                style={{
+                  fontFamily: "dm-sb",
+                  color: languageFilter.includes(language.abbr)
+                    ? Colors.primary
+                    : colorScheme === "light"
+                    ? "#000"
+                    : "#FFF",
+                }}
+              >
+                {language.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </>
   );
 };
 

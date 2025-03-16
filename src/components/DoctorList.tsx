@@ -94,7 +94,7 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
                   {item.name}
                 </Text>
                 <Text style={[themeTextStyleSecondary, { fontFamily: "dm" }]}>
-                  {item.specialty}
+                  {item.specialty.join(", ")}
                 </Text>
               </View>
               <Rating rating={4.5} reviews={223} />

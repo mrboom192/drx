@@ -62,7 +62,8 @@ const Page = () => {
     setLoading(true);
     try {
       const userData: any = {
-        name: `${data.firstName} ${data.lastName}`,
+        firstName: `${data.firstName}`,
+        lastName: `${data.lastName}`,
         role: userType,
         gender,
         age: Number(data.age),
@@ -84,7 +85,7 @@ const Page = () => {
       await signUp(data.email, data.password, userData);
 
       if (auth.currentUser) {
-        router.replace("/");
+        router.replace("../");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

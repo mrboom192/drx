@@ -30,7 +30,7 @@ const tabs = [
   {
     name: "Online\nConsultation",
     icon: <Stethoscope size={24} color={Colors.onlineConsultation} />,
-    backgroundColor: Colors.onlineConsultationBackground,
+    backgroundColor: Colors.peach,
   },
   {
     name: "Second\nOpinion",
@@ -45,7 +45,7 @@ const tabs = [
   {
     name: "Weight\nManagement",
     icon: <MonitorWeight size={24} color={Colors.weightManagement} />,
-    backgroundColor: Colors.weightManagementBackground,
+    backgroundColor: Colors.lightLavender,
   },
   {
     name: "Remote ICU\nManagement",

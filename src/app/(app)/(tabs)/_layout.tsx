@@ -24,6 +24,7 @@ export default function TabLayout() {
         name="messages"
         options={{
           tabBarLabel: "Messages",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Feather name="message-circle" color={color} size={size} />
           ),

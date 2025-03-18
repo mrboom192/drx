@@ -154,7 +154,7 @@ const OnlineConsultation = () => {
             <TouchableOpacity
               onPress={handlePresentModalPress}
               style={[
-                { backgroundColor: Colors.onlineConsultationBackground },
+                { backgroundColor: Colors.peach },
                 {
                   borderRadius: 16,
                   padding: 16,
@@ -199,7 +199,7 @@ const OnlineConsultation = () => {
           </View>
           <View
             style={[
-              { backgroundColor: Colors.onlineConsultationBackground },
+              { backgroundColor: Colors.peach },
               {
                 flex: 1,
                 borderRadius: 16,

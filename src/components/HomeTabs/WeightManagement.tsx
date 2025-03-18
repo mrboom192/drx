@@ -108,7 +108,7 @@ const WeightManagement = () => {
             <TouchableOpacity
               onPress={handlePresentModalPress}
               style={[
-                { backgroundColor: Colors.weightManagementBackground },
+                { backgroundColor: Colors.lightLavender },
                 {
                   borderRadius: 16,
                   padding: 16,
@@ -153,7 +153,7 @@ const WeightManagement = () => {
           </View>
           <View
             style={[
-              { backgroundColor: Colors.weightManagementBackground },
+              { backgroundColor: Colors.lightLavender },
               {
                 flex: 1,
                 borderRadius: 16,

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import { View } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 
 interface Message {
@@ -39,13 +40,15 @@ const Chat = () => {
   }, []);
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
+    </View>
   );
 };
 

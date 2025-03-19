@@ -3,7 +3,7 @@ import { View } from "@/components/Themed";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { Stack, useRouter } from "expo-router";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
-import { db } from "../../../../../firebaseConfig";
+import { db } from "../../../../firebaseConfig";
 import DoctorsHeader from "@/components/DoctorsHeader";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DoctorMap from "@/components/DoctorMap";

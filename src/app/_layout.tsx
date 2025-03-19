@@ -70,26 +70,7 @@ function RootLayoutNav() {
                 navigationBarColor: "#FFF",
               }}
             >
-              <Stack.Screen
-                name="(modals)/filter"
-                options={{
-                  title: "Filters",
-                  headerTitleStyle: {
-                    fontFamily: "dm-sb",
-                  },
-                  presentation: "modal",
-                  headerLeft: () => (
-                    <TouchableOpacity onPress={() => router.back()}>
-                      <Ionicons
-                        name="close-outline"
-                        size={24}
-                        color={colorScheme === "light" ? "#000" : "#FFF"}
-                      />
-                    </TouchableOpacity>
-                  ),
-                }}
-              />
-              <Stack.Screen name="(app)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="login" options={{ headerShown: false }} />
               <Stack.Screen name="signup" options={{ headerShown: false }} />
             </Stack>

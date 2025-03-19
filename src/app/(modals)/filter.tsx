@@ -1,17 +1,9 @@
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  useColorScheme,
-} from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { View } from "@/components/Themed";
 import React, { useState } from "react";
-import { defaultStyles, themedStyles } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 
 // 1:11:09
@@ -31,13 +23,6 @@ const languages = [
   },
 ];
 
-// interface Props {
-//   languageFilter: string[];
-//   setLanguageFilter: () => void;
-// }
-
-//  { languageFilter, setLanguageFilter }: Props
-
 const Page = () => {
   const router = useRouter();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
@@ -55,6 +40,24 @@ const Page = () => {
   return (
     <>
       <View style={styles.container}>
+        <Stack.Screen
+          options={{
+            title: "Filters",
+            headerTitleStyle: {
+              fontFamily: "dm-sb",
+            },
+            presentation: "modal",
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons
+                  name="close-outline"
+                  size={24}
+                  color={colorScheme === "light" ? "#000" : "#FFF"}
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        />
         <Text
           style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
         >

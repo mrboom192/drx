@@ -1,3 +1,5 @@
+import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 import { Text } from "react-native";
 import { Redirect, Stack } from "expo-router";
 import { useSession } from "@/contexts/AuthContext";
@@ -5,7 +7,7 @@ import { auth } from "@/../firebaseConfig";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
-export default function AppLayout() {
+export default function TabLayout() {
   const { signOut, session, isLoading } = useSession();
   const [isAuthReady, setIsAuthReady] = useState(false);
 
@@ -35,8 +37,43 @@ export default function AppLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack screenOptions={{ navigationBarColor: "#FFF" }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <Tabs
+      screenOptions={({ route }) => ({
+        tabBarStyle: {
+          display: route.name === "chats" ? "none" : "flex",
+        },
+      })}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          tabBarLabel: "Home",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          tabBarLabel: "Messages",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="message-circle" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarLabel: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6 name="user" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }

@@ -1,6 +1,8 @@
+import Colors from "@/constants/Colors";
+import { Stack } from "expo-router";
 import React, { useState, useCallback, useEffect } from "react";
-import { View } from "react-native";
-import { GiftedChat } from "react-native-gifted-chat";
+import { View, Text } from "react-native";
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
 
 interface Message {
   _id: number;
@@ -46,6 +48,26 @@ const Chat = () => {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
+        }}
+        renderBubble={(props) => {
+          return (
+            <Bubble
+              {...props}
+              textStyle={{
+                right: {
+                  color: "#000",
+                },
+              }}
+              wrapperStyle={{
+                left: {
+                  backgroundColor: Colors.peach,
+                },
+                right: {
+                  backgroundColor: Colors.lightLavender,
+                },
+              }}
+            />
+          );
         }}
       />
     </View>

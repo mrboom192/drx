@@ -34,6 +34,7 @@ const MessagesHeader = ({}: Props) => {
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
+  console.log(activeIndex);
 
   const themeTextStylePrimary =
     colorScheme === "light"
@@ -131,7 +132,7 @@ const MessagesHeader = ({}: Props) => {
                       ? colorScheme === "light"
                         ? "#000"
                         : "#fff"
-                      : "none",
+                      : "transparent",
                 },
                 styles.filterPill,
               ]}

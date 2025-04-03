@@ -38,130 +38,76 @@ const Page = () => {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <Stack.Screen
-          options={{
-            title: "Filters",
-            headerTitleStyle: {
-              fontFamily: "dm-sb",
-            },
-            presentation: "modal",
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => router.back()}>
-                <Ionicons
-                  name="close-outline"
-                  size={24}
-                  color={colorScheme === "light" ? "#000" : "#FFF"}
-                />
-              </TouchableOpacity>
-            ),
-          }}
-        />
-        <Text
-          style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
-        >
-          Provider language
-        </Text>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 16,
-          }}
-        >
-          {languages.map((language: any) => (
-            <TouchableOpacity
-              key={language.abbr}
+    <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          title: "Filters",
+          headerTitleStyle: {
+            fontFamily: "dm-sb",
+          },
+          presentation: "modal",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons
+                name="close-outline"
+                size={24}
+                color={colorScheme === "light" ? "#000" : "#FFF"}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Text
+        style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
+      >
+        Provider language
+      </Text>
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 16,
+        }}
+      >
+        {languages.map((language: any) => (
+          <TouchableOpacity
+            key={language.abbr}
+            style={{
+              padding: 16,
+              flexDirection: "row",
+              gap: 16,
+              borderWidth: 1,
+              borderColor: languageFilter.includes(language.abbr)
+                ? Colors.primary
+                : colorScheme === "light"
+                ? Colors.light.faintGrey
+                : Colors.dark.faintGrey,
+              borderRadius: 16,
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 1,
+            }}
+            onPress={() => handleLanguageSelect(language.abbr)}
+          >
+            <Image source={language.icon} style={styles.image} />
+            <Text
               style={{
-                padding: 16,
-                flexDirection: "row",
-                gap: 16,
-                borderWidth: 1,
-                borderColor: languageFilter.includes(language.abbr)
+                fontFamily: "dm-sb",
+                color: languageFilter.includes(language.abbr)
                   ? Colors.primary
                   : colorScheme === "light"
-                  ? Colors.light.faintGrey
-                  : Colors.dark.faintGrey,
-                borderRadius: 16,
-                alignItems: "center",
-                justifyContent: "center",
-                flex: 1,
+                  ? "#000"
+                  : "#FFF",
               }}
-              onPress={() => handleLanguageSelect(language.abbr)}
             >
-              <Image source={language.icon} style={styles.image} />
-              <Text
-                style={{
-                  fontFamily: "dm-sb",
-                  color: languageFilter.includes(language.abbr)
-                    ? Colors.primary
-                    : colorScheme === "light"
-                    ? "#000"
-                    : "#FFF",
-                }}
-              >
-                {language.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+              {language.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
-      <View style={styles.container}>
-        <Text
-          style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
-        >
-          Provider nationality
-        </Text>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 16,
-          }}
-        >
-          {languages.map((language: any) => (
-            <TouchableOpacity
-              key={language.abbr}
-              style={{
-                padding: 16,
-                flexDirection: "row",
-                gap: 16,
-                borderWidth: 1,
-                borderColor: languageFilter.includes(language.abbr)
-                  ? Colors.primary
-                  : colorScheme === "light"
-                  ? Colors.light.faintGrey
-                  : Colors.dark.faintGrey,
-                borderRadius: 16,
-                alignItems: "center",
-                justifyContent: "center",
-                flex: 1,
-              }}
-              onPress={() => handleLanguageSelect(language.abbr)}
-            >
-              <Image source={language.icon} style={styles.image} />
-              <Text
-                style={{
-                  fontFamily: "dm-sb",
-                  color: languageFilter.includes(language.abbr)
-                    ? Colors.primary
-                    : colorScheme === "light"
-                    ? "#000"
-                    : "#FFF",
-                }}
-              >
-                {language.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-    </>
+    </View>
   );
 };
 

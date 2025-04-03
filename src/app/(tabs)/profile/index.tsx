@@ -30,7 +30,15 @@ const Profile = () => {
           headerShown: false,
         }}
       />
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          marginHorizontal: 16,
+        }}
+      >
+        <View></View>
         <View
           style={[
             themeBorderStyle,
@@ -160,12 +168,6 @@ const Profile = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    marginHorizontal: 16,
-  },
   actionRow: {
     flexDirection: "row",
     alignItems: "center",

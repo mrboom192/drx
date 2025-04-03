@@ -7,8 +7,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { router } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import { doc, setDoc } from "firebase/firestore";
+import { PathString } from "react-hook-form";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
@@ -56,7 +57,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
       });
 
       setSession(user.uid); // Save the new user ID or token to the session
-      router.replace("/"); // Navigate to home page
+      router.replace("/" as RelativePathString); // Navigate to home page
     } catch (e: any) {
       const err = e as FirebaseError;
       alert("Registration failed: " + err.message);
@@ -74,7 +75,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
       // Save the user UID or token to session state
       setSession(user.uid); // Or user.email or user.getIdToken() for token
-      router.replace("/"); // Lets go home!!!
+      router.replace("/" as RelativePathString); // Lets go home!!!
     } catch (error) {
       console.error("Error signing in:", error);
       throw error; // Re-throw to handle errors in the UI

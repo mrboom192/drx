@@ -70,7 +70,7 @@ const Profile = () => {
           style={{
             width: "100%",
             backgroundColor: "#FFF",
-            marginBottom: 16,
+            marginVertical: 16,
 
             paddingVertical: 32,
             flexDirection: "row",

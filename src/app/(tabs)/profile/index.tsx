@@ -38,7 +38,14 @@ const Profile = () => {
           marginHorizontal: 16,
         }}
       >
-        <View></View>
+        <View
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: "#FF00FF",
+            marginBottom: 50,
+          }}
+        ></View>
         <View
           style={[
             themeBorderStyle,

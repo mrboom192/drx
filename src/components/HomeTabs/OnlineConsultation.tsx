@@ -12,6 +12,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Dot from "../icons/Dot";
 import Bookmark from "../icons/Bookmark";
+import LottieView from "lottie-react-native";
 
 const mockTags = [
   {
@@ -86,6 +87,16 @@ const OnlineConsultation = () => {
         }}
       >
         <View style={{ flexDirection: "column", gap: 8 }}>
+          <LottieView
+            source={require("@/../assets/lottie/doctorWave.json")}
+            loop={true}
+            autoPlay={true}
+            speed={1}
+            style={{
+              height: 200,
+              pointerEvents: "none",
+            }}
+          />
           <Text
             style={[
               themeTextStylePrimary,
@@ -97,15 +108,7 @@ const OnlineConsultation = () => {
           <Text>
             Our Online Consultation service brings healthcare directly to you,
             offering convenient and secure virtual appointments with licensed
-            medical professionals. Whether you need a routine check-up, expert
-            medical advice, or a prescription refill, our platform connects you
-            with doctors, specialists, and healthcare providers from the comfort
-            of your home. With real-time video calls and chat support, you can
-            discuss your health concerns, receive personalized treatment plans,
-            and even get e-prescriptions—all without the need to visit a clinic.
-            Our telehealth service ensures quick access, confidentiality, and
-            quality care anytime, anywhere. Skip the waiting room and get the
-            medical attention you need—on your schedule. Your health, your way!
+            medical professionals.
           </Text>
         </View>
 

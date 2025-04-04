@@ -76,6 +76,7 @@ const Page = () => {
     <ScrollView
       contentContainerStyle={{
         padding: 20,
+        flex: 1,
         backgroundColor:
           colorScheme === "light"
             ? Colors.light.background

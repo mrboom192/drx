@@ -5,16 +5,7 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { SafeAreaView } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import HomeHeader from "@/components/HomeHeader";
-import Animated, {
-  SlideInRight,
-  SlideOutLeft,
-  SlideInLeft,
-  SlideOutRight,
-  FadeInRight,
-  FadeInLeft,
-  FadeOutRight,
-  FadeOutLeft,
-} from "react-native-reanimated";
+import Animated, { FadeInRight, FadeInLeft } from "react-native-reanimated";
 import Stethoscope from "@/components/icons/Stethoscope";
 import PsychologyAlt from "@/components/icons/PsychologyAlt";
 import Radiology from "@/components/icons/Radiology";

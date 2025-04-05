@@ -61,8 +61,9 @@ const DoctorMap = memo(({ doctors }: Props) => {
   // showsMyLocationButton button only appears on PROVIDER_GOOGLE, which is bugged for expo go
   return (
     <View style={defaultStyles.container}>
-      <MapView
+      {/* <MapView
         animationEnabled={false}
+        provider={PROVIDER_GOOGLE}
         clusterColor="#FFF"
         clusterTextColor="#000"
         clusterFontFamily="dm-sb"
@@ -86,7 +87,7 @@ const DoctorMap = memo(({ doctors }: Props) => {
             </View>
           </Marker>
         ))}
-      </MapView>
+      </MapView> */}
     </View>
   );
 });

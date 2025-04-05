@@ -5,6 +5,7 @@ export default {
   primary: "#7846FF", // purple
   yellow: "#FFB650", // stars/ratings
   green: "#47DE8D",
+  pink: "#FF2776",
 
   onlineConsultation: "#FF8E43", // orange
   peach: "#FFECD9", // peach

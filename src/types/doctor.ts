@@ -1,6 +1,7 @@
 export interface Doctor {
   id: string;
   profile_url: string;
+  verified: boolean;
   name: string;
   specialty: string[];
   summary: string;

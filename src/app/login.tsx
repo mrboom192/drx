@@ -1,189 +1,214 @@
+import Colors from "@/constants/Colors";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Pressable,
+  TextInput,
+  SafeAreaView,
   KeyboardAvoidingView,
-  ActivityIndicator,
+  Platform,
   TouchableOpacity,
-  StyleSheet,
 } from "react-native";
-import { Link } from "expo-router";
-import { useState } from "react";
-import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import LabeledInput from "../components/LabeledInput";
-import { useSession } from "@/contexts/AuthContext";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CountryPicker, {
+  Country,
+  CountryCode,
+} from "react-native-country-picker-modal";
+// import { auth } from "../../firebaseConfig";
+import auth from "@react-native-firebase/auth";
+import { getAuth, signInWithPhoneNumber } from "@react-native-firebase/auth";
+import { getApp } from "@react-native-firebase/app";
 
-const SignIn = () => {
-  const { signIn } = useSession();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function App() {
+  const [countryCode, setCountryCode] = useState<CountryCode>("US");
+  const [callingCode, setCallingCode] = useState("1");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  async function handleSignIn() {
-    try {
-      await signIn(email, password);
-    } catch (error) {
-      console.error("Sign-in failed");
+  const [confirm, setConfirm] = useState<any>(null);
+  const [code, setCode] = useState("");
+
+  const auth = getAuth(getApp());
+  signInWithPhoneNumber(auth, "+16505553434");
+
+  // This line disables app verification during testing
+  auth.settings.appVerificationDisabledForTesting = true;
+
+  const handleSelect = (country: Country) => {
+    setCountryCode(country.cca2);
+    setCallingCode(country.callingCode[0]);
+  };
+
+  const fullPhoneNumber = `+${callingCode}${phoneNumber}`;
+
+  useEffect(() => {
+    const subscriber = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User is signed in:", user.phoneNumber);
+        // Navigate to home or hide OTP input
+      }
+    });
+    return subscriber;
+  }, []);
+
+  const handleContinue = async () => {
+    const cleanedNumber = `+${callingCode}${phoneNumber.replace(
+      /[^0-9]/g,
+      ""
+    )}`;
+
+    if (!cleanedNumber || cleanedNumber.length < 10) {
+      alert("Please enter a valid phone number.");
+      return;
     }
-  }
+
+    console.log(cleanedNumber);
+
+    try {
+      const confirmation = await auth.signInWithPhoneNumber(cleanedNumber);
+      setConfirm(confirmation);
+    } catch (error) {
+      console.error("SMS not sent:", error);
+      alert("Something went wrong. Please double-check your number.");
+    }
+  };
+
+  const confirmCode = async () => {
+    try {
+      await confirm.confirm(code);
+      console.log("Code confirmed!");
+    } catch (error) {
+      console.log("Invalid code:", error);
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.innerContainer}>
-        <KeyboardAvoidingView style={styles.keyboardView} behavior="padding">
-          <Text style={styles.title}>DrX</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.subtitle}>Have an account?</Text>
-            <LabeledInput
-              label="Email"
-              placeholder="Email"
-              iconLeft={
-                <Ionicons name="mail-outline" size={16} color="#717171" />
-              }
-              value={email}
-              onChangeText={setEmail}
-            />
-            <LabeledInput
-              label="Password"
-              placeholder="Password"
-              iconLeft={
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={16}
-                  color="#717171"
-                />
-              }
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-              labelRight={
-                <Link href="/">
-                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </Link>
-              }
-            />
-          </View>
-          {loading ? (
-            <ActivityIndicator size="small" style={styles.loadingIndicator} />
-          ) : (
-            <TouchableOpacity
-              style={styles.signInButton}
-              onPress={handleSignIn}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1, margin: 16, justifyContent: "center" }}
+      >
+        <Text
+          style={{
+            fontSize: 24,
+            marginBottom: 16,
+            textAlign: "center",
+            fontFamily: "dm-sb",
+          }}
+        >
+          Log in or sign up for DrX
+        </Text>
+
+        {!confirm ? (
+          <>
+            <Text style={{ marginBottom: 8, fontFamily: "dm" }}>
+              Mobile Number
+            </Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 8,
+                paddingHorizontal: 12,
+                paddingVertical: 10,
+                marginBottom: 24,
+              }}
             >
-              <Text style={styles.text}>Sign in</Text>
+              <CountryPicker
+                countryCode={countryCode}
+                withFlag
+                withCallingCode
+                withFilter
+                withEmoji
+                onSelect={handleSelect}
+                containerButtonStyle={{ marginRight: 6 }}
+              />
+              <Text style={{ fontSize: 16, marginRight: 6, fontFamily: "dm" }}>
+                +{callingCode}
+              </Text>
+              <TextInput
+                style={{ flex: 1, fontSize: 16, fontFamily: "dm" }}
+                keyboardType="phone-pad"
+                placeholder="(201) 555-0123"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+              />
+            </View>
+
+            <TouchableOpacity
+              onPress={handleContinue}
+              style={{
+                backgroundColor: "#000",
+                paddingVertical: 16,
+                borderRadius: 8,
+                alignItems: "center",
+                marginBottom: 48,
+              }}
+            >
+              <Text
+                style={{ color: "#fff", fontSize: 16, fontFamily: "dm-sb" }}
+              >
+                Continue
+              </Text>
             </TouchableOpacity>
-          )}
-        </KeyboardAvoidingView>
-        <View style={styles.separatorContainer}>
-          <View style={styles.separator} />
-          <Text>Or</Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.newAccountContainer}>
-          <Text style={styles.newAccountText}>
-            New here? Create an account in minutes!
-          </Text>
-          <Link href="/signup" asChild>
-            <TouchableOpacity style={styles.createAccountButton}>
-              <Text style={styles.text}>Create account</Text>
+
+            <Text style={{ color: Colors.light.grey, fontFamily: "dm" }}>
+              By proceeding, you consent to get calls, WhatsApp or SMS/RCS
+              messages, including by automated dialer, from DrX and its
+              affiliates to the number provided. Text "STOP" to 89203 to opt
+              out.
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: "dm-sb",
+                marginBottom: 12,
+                textAlign: "center",
+              }}
+            >
+              Enter the verification code sent to{" "}
+              <Text style={{ fontFamily: "dm" }}>{fullPhoneNumber}</Text>
+            </Text>
+
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 8,
+                padding: 12,
+                fontSize: 16,
+                fontFamily: "dm",
+                marginBottom: 24,
+              }}
+              keyboardType="number-pad"
+              placeholder="123456"
+              value={code}
+              onChangeText={setCode}
+            />
+
+            <TouchableOpacity
+              onPress={confirmCode}
+              style={{
+                backgroundColor: "#000",
+                paddingVertical: 16,
+                borderRadius: 8,
+                alignItems: "center",
+                marginBottom: 24,
+              }}
+            >
+              <Text
+                style={{ color: "#fff", fontSize: 16, fontFamily: "dm-sb" }}
+              >
+                Confirm Code
+              </Text>
             </TouchableOpacity>
-          </Link>
-        </View>
-      </View>
+          </>
+        )}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
-};
-
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    textTransform: "capitalize",
-    fontWeight: "500",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-  },
-  innerContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginHorizontal: 32,
-    marginTop: 16,
-    marginBottom: 64,
-  },
-  keyboardView: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  title: {
-    color: "#660066",
-    fontSize: 32,
-    fontWeight: "500",
-  },
-  inputContainer: {
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 4,
-  },
-  subtitle: {
-    color: "#475569",
-    fontSize: 20,
-    fontWeight: "400",
-  },
-  forgotPassword: {
-    color: "#475569",
-    fontSize: 12,
-    fontWeight: "500",
-    textDecorationLine: "underline",
-  },
-  loadingIndicator: {
-    margin: 28,
-  },
-  signInButton: {
-    alignSelf: "stretch",
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-  separatorContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-    alignSelf: "stretch",
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#AAA",
-  },
-  newAccountContainer: {
-    alignSelf: "stretch",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 16,
-  },
-  newAccountText: {
-    color: "#475569",
-  },
-  createAccountButton: {
-    alignSelf: "stretch",
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-});
-
-export default SignIn;
+}

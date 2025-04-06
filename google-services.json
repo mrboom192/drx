@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "459117120227",
+    "project_id": "doctorx-8f72d",
+    "storage_bucket": "doctorx-8f72d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459117120227:android:65ff6eb0181b42976a53d6",
+        "android_client_info": {
+          "package_name": "com.anonymous.drx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7N8YsNjsuLGgitTmccwAvsmbMKub5d2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,189 +1,293 @@
 import {
   View,
   Text,
-  Pressable,
-  KeyboardAvoidingView,
-  ActivityIndicator,
+  TextInput,
   TouchableOpacity,
-  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
 } from "react-native";
-import { Link } from "expo-router";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import LabeledInput from "../components/LabeledInput";
+import Colors from "@/constants/Colors";
+import { useSignUp } from "@/contexts/SignupContext";
+import { router } from "expo-router";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 import { useSession } from "@/contexts/AuthContext";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
+  const { signUpData, setSignUpData } = useSignUp();
   const { signIn } = useSession();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [checking, setChecking] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  async function handleSignIn() {
-    try {
-      await signIn(email, password);
-    } catch (error) {
-      console.error("Sign-in failed");
+  const validateEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const handleContinue = async () => {
+    if (!validateEmail(signUpData.email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
     }
-  }
+
+    setEmailError("");
+    setChecking(true);
+
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, signUpData.email);
+
+      if (methods.length > 0) {
+        setShowPasswordInput(true);
+      } else {
+        router.push("/signup");
+      }
+    } catch (error) {
+      console.error("Firebase check error:", error);
+      setEmailError("Something went wrong. Please try again.");
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const handleRecover = () => {
+    console.log("Recover account");
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.innerContainer}>
-        <KeyboardAvoidingView style={styles.keyboardView} behavior="padding">
-          <Text style={styles.title}>DrX</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.subtitle}>Have an account?</Text>
-            <LabeledInput
-              label="Email"
-              placeholder="Email"
-              iconLeft={
-                <Ionicons name="mail-outline" size={16} color="#717171" />
-              }
-              value={email}
-              onChangeText={setEmail}
-            />
-            <LabeledInput
-              label="Password"
-              placeholder="Password"
-              iconLeft={
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={16}
-                  color="#717171"
-                />
-              }
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-              labelRight={
-                <Link href="/">
-                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </Link>
-              }
-            />
-          </View>
-          {loading ? (
-            <ActivityIndicator size="small" style={styles.loadingIndicator} />
-          ) : (
-            <TouchableOpacity
-              style={styles.signInButton}
-              onPress={handleSignIn}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        justifyContent: "space-between",
+        paddingHorizontal: 24,
+        paddingTop: 32,
+        paddingBottom: 16,
+      }}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1, justifyContent: "flex-start" }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontFamily: "dm-sb",
+            textAlign: "center",
+            marginBottom: 32,
+          }}
+        >
+          Log in or sign up into DrX
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <Text style={{ fontFamily: "dm", fontSize: 16 }}>Email</Text>
+          <TextInput
+            editable={!checking}
+            style={{
+              borderColor: Colors.light.faintGrey,
+              borderWidth: 1,
+              borderRadius: 8,
+              paddingHorizontal: 16,
+              paddingVertical: 14,
+              fontSize: 16,
+              fontFamily: "dm",
+            }}
+            placeholder="myemail@email.com"
+            placeholderTextColor={Colors.light.grey}
+            value={signUpData.email}
+            onChangeText={(text) => {
+              setSignUpData({ email: text });
+              if (emailError) setEmailError("");
+              setShowPasswordInput(false); // reset on email change
+            }}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          {emailError ? (
+            <Text
+              style={{
+                color: Colors.pink,
+                fontSize: 14,
+                fontFamily: "dm",
+                marginTop: 4,
+              }}
             >
-              <Text style={styles.text}>Sign in</Text>
-            </TouchableOpacity>
-          )}
-        </KeyboardAvoidingView>
-        <View style={styles.separatorContainer}>
-          <View style={styles.separator} />
-          <Text>Or</Text>
-          <View style={styles.separator} />
+              {emailError}
+            </Text>
+          ) : null}
         </View>
-        <View style={styles.newAccountContainer}>
-          <Text style={styles.newAccountText}>
-            New here? Create an account in minutes!
+
+        {showPasswordInput && (
+          <View style={{ marginTop: 24, opacity: checking ? 0.5 : 1 }}>
+            <Text style={{ fontFamily: "dm", fontSize: 16, marginBottom: 8 }}>
+              Password
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderColor: Colors.light.faintGrey,
+                borderWidth: 1,
+                borderRadius: 8,
+                paddingHorizontal: 16,
+                paddingVertical: 4,
+              }}
+            >
+              <TextInput
+                editable={!checking}
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  fontFamily: "dm",
+                  paddingVertical: 10,
+                }}
+                placeholder="Password"
+                placeholderTextColor={Colors.light.grey}
+                secureTextEntry={!showPassword}
+                value={signUpData.password}
+                onChangeText={(text) => setSignUpData({ password: text })}
+              />
+              <TouchableOpacity
+                disabled={checking}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={20}
+                  color="#888"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              disabled={checking}
+              style={{
+                marginTop: 16,
+                backgroundColor: "#000",
+                borderRadius: 8,
+                paddingVertical: 16,
+                alignItems: "center",
+              }}
+              onPress={() => signIn(signUpData.email, signUpData.password)}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 16,
+                  fontFamily: "dm-sb",
+                }}
+              >
+                Log in
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!showPasswordInput && (
+          <TouchableOpacity
+            disabled={checking}
+            style={{
+              backgroundColor: "#000",
+              borderRadius: 8,
+              paddingVertical: 16,
+              alignItems: "center",
+              marginTop: 20,
+            }}
+            onPress={handleContinue}
+          >
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 16,
+                fontFamily: "dm-sb",
+              }}
+            >
+              {checking ? "Loading..." : "Continue"}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {/* OR Separator */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 24,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              height: 1,
+              backgroundColor: Colors.light.faintGrey,
+            }}
+          />
+          <Text
+            style={{
+              marginHorizontal: 12,
+              fontSize: 16,
+              color: "#444",
+              fontFamily: "dm-sb",
+            }}
+          >
+            or
           </Text>
-          <Link href="/signup" asChild>
-            <TouchableOpacity style={styles.createAccountButton}>
-              <Text style={styles.text}>Create account</Text>
-            </TouchableOpacity>
-          </Link>
+          <View
+            style={{
+              flex: 1,
+              height: 1,
+              backgroundColor: Colors.light.faintGrey,
+            }}
+          />
         </View>
-      </View>
+
+        {/* Recover link */}
+        <TouchableOpacity
+          disabled={checking}
+          onPress={handleRecover}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <Ionicons name="search-outline" size={16} color="#000" />
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#000",
+              fontFamily: "dm-sb",
+            }}
+          >
+            Recover my account
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+
+      <Text
+        style={{
+          fontSize: 12,
+          color: "#666",
+          textAlign: "center",
+          lineHeight: 16,
+          fontFamily: "dm",
+        }}
+      >
+        By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
+        including by automated dialer, from DrX and its affiliates to the number
+        provided. Text "STOP" to 89203 to opt out.
+      </Text>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    textTransform: "capitalize",
-    fontWeight: "500",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-  },
-  innerContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginHorizontal: 32,
-    marginTop: 16,
-    marginBottom: 64,
-  },
-  keyboardView: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  title: {
-    color: "#660066",
-    fontSize: 32,
-    fontWeight: "500",
-  },
-  inputContainer: {
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 4,
-  },
-  subtitle: {
-    color: "#475569",
-    fontSize: 20,
-    fontWeight: "400",
-  },
-  forgotPassword: {
-    color: "#475569",
-    fontSize: 12,
-    fontWeight: "500",
-    textDecorationLine: "underline",
-  },
-  loadingIndicator: {
-    margin: 28,
-  },
-  signInButton: {
-    alignSelf: "stretch",
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-  separatorContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-    alignSelf: "stretch",
-  },
-  separator: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#AAA",
-  },
-  newAccountContainer: {
-    alignSelf: "stretch",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 16,
-  },
-  newAccountText: {
-    color: "#475569",
-  },
-  createAccountButton: {
-    alignSelf: "stretch",
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-});
 
 export default SignIn;

@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { SignUpProvider } from "@/contexts/SignupContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -65,15 +66,17 @@ function RootLayoutNav() {
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
           <SessionProvider>
-            <Stack
-              screenOptions={{
-                navigationBarColor: "#FFF",
-              }}
-            >
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="login" options={{ headerShown: false }} />
-              <Stack.Screen name="signup" options={{ headerShown: false }} />
-            </Stack>
+            <SignUpProvider>
+              <Stack
+                screenOptions={{
+                  navigationBarColor: "#FFF",
+                }}
+              >
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="signup" options={{ headerShown: false }} />
+              </Stack>
+            </SignUpProvider>
           </SessionProvider>
         </ThemeProvider>
       </BottomSheetModalProvider>

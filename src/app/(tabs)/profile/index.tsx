@@ -1,13 +1,12 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
-import React, { useMemo } from "react";
+import React from "react";
 import { Link, Stack } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
-import userData from "@/../assets/data/user.json";
-import { User } from "@/types/user";
 import Colors from "@/constants/Colors";
 import Avatar from "@/components/Avatar";
 import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 
 const items = [
   {
@@ -37,9 +36,13 @@ const items = [
 ];
 
 const Profile = () => {
-  const user = useMemo(() => userData as User, []);
   const { colorScheme } = useThemedStyles();
   const { signOut } = useSession();
+  const { data, loading } = useUser();
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <SafeAreaView
@@ -89,15 +92,18 @@ const Profile = () => {
             elevation: 10, // android
           }}
         >
-          <Avatar size={64} initials={`${user.name[0]}`} />
+          <Avatar
+            size={64}
+            initials={`${data.firstName[0]}${data.lastName[0]}`}
+          />
           <View>
             <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
-              {user.name}
+              {data.firstName}
             </Text>
             <Text
               style={{ fontFamily: "dm", fontSize: 16, color: Colors.primary }}
             >
-              {user.role ? user.role : "Patient"}
+              {data.role ? data.role : "Role not found"}
             </Text>
           </View>
         </View>

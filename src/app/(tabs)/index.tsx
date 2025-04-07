@@ -16,6 +16,7 @@ import SecondOpinion from "@/components/HomeTabs/SecondOpinion";
 import RadiologyImages from "@/components/HomeTabs/RadiologyImages";
 import WeightManagement from "@/components/HomeTabs/WeightManagement";
 import RemoteManagement from "@/components/HomeTabs/RemoteManagement";
+import { useUser } from "@/contexts/UserContext";
 
 const tabs = [
   {
@@ -49,6 +50,7 @@ const Page = () => {
   const [tab, setTab] = useState("Online\nConsultation");
   const [prevTab, setPrevTab] = useState("Online\nConsultation");
   const [isForward, setIsForward] = useState(false);
+  const { data, loading } = useUser();
 
   const { colorScheme } = useThemedStyles();
 
@@ -83,6 +85,10 @@ const Page = () => {
     "Remote ICU\nManagement": <RemoteManagement />,
   };
 
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -95,7 +101,9 @@ const Page = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <HomeHeader onTabChange={onTabChange} tabs={tabs} />,
+          header: () => (
+            <HomeHeader onTabChange={onTabChange} tabs={tabs} data={data} />
+          ),
         }}
       />
       <View style={styles.container}>

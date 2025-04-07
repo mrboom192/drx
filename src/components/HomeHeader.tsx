@@ -19,9 +19,11 @@ import { Tab } from "@/types/tab";
 import Avatar from "./Avatar";
 
 const Header = ({
+  data,
   tabs,
   onTabChange,
 }: {
+  data: any;
   tabs: Tab[];
   onTabChange: (tabName: string) => void;
 }) => {
@@ -31,7 +33,7 @@ const Header = ({
 
   const scrollRef = useRef<ScrollView | null>(null);
   const router = useRouter();
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -39,7 +41,7 @@ const Header = ({
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
+    (selected as any)?.measure((x: number) => {
       scrollRef.current?.scrollTo({
         x: x - 16,
         y: 0,
@@ -74,7 +76,7 @@ const Header = ({
             <Pressable
               onPress={() => selectCategory(index)}
               key={index}
-              ref={(el) => (itemsRef.current[index] = el)}
+              ref={(el) => ((itemsRef as any).current[index] = el)}
               style={{
                 flexDirection: "column",
                 width: 80,

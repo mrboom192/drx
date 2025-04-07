@@ -4,17 +4,16 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { SessionProvider } from "../contexts/AuthContext";
-import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { SignUpProvider } from "@/contexts/SignupContext";
+import { UserProvider } from "@/contexts/UserContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,7 +54,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
   const { colorScheme } = useThemedStyles();
 
   // Need to make a header function that looks good!!
@@ -66,17 +64,25 @@ function RootLayoutNav() {
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
           <SessionProvider>
-            <SignUpProvider>
-              <Stack
-                screenOptions={{
-                  navigationBarColor: "#FFF",
-                }}
-              >
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-                <Stack.Screen name="signup" options={{ headerShown: false }} />
-              </Stack>
-            </SignUpProvider>
+            <UserProvider>
+              <SignUpProvider>
+                <Stack
+                  screenOptions={{
+                    navigationBarColor: "#FFF",
+                  }}
+                >
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="login" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="signup"
+                    options={{ headerShown: false }}
+                  />
+                </Stack>
+              </SignUpProvider>
+            </UserProvider>
           </SessionProvider>
         </ThemeProvider>
       </BottomSheetModalProvider>

@@ -29,12 +29,10 @@ const tabs = [
 interface Props {}
 
 const MessagesHeader = ({}: Props) => {
-  const scrollRef = useRef<ScrollView | null>(null);
-  const router = useRouter();
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const scrollRef = useRef<typeof ScrollView | null>(null);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log(activeIndex);
 
   const themeTextStylePrimary =
     colorScheme === "light"
@@ -55,8 +53,8 @@ const MessagesHeader = ({}: Props) => {
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
-      scrollRef.current?.scrollTo({
+    (selected as any)?.measure((x: number) => {
+      (scrollRef.current as any)?.scrollTo({
         x: x - 16,
         y: 0,
         animated: true,
@@ -97,7 +95,7 @@ const MessagesHeader = ({}: Props) => {
         </View>
 
         <ScrollView
-          ref={scrollRef}
+          ref={scrollRef as any}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[

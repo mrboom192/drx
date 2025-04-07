@@ -24,8 +24,6 @@ export default function TabLayout() {
     return <Text>Loading...</Text>;
   }
 
-  console.log(session);
-
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
   if (!session || auth.currentUser === null) {

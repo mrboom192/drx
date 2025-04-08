@@ -1,37 +1,44 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import React from "react";
-import { Link, Stack } from "expo-router";
+import { Link, RelativePathString, Stack } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserContext";
 import UserAvatar from "@/components/UserAvatar";
+import { PathString } from "react-hook-form";
 
 const items = [
   {
     icon: "person-outline",
     label: "Manage your personal information",
+    url: "/(tabs)/profile/personal",
   },
   {
     icon: "medkit-outline",
     label: "View your medical records",
+    url: "/(tabs)/profile",
   },
   {
     icon: "cloud-upload-outline",
     label: "Manage uploaded images and files",
+    url: "/(tabs)/profile",
   },
   {
     icon: "call-outline",
     label: "Contact customer support",
+    url: "/(tabs)/profile",
   },
   {
     icon: "notifications-outline",
     label: "Notifications",
+    url: "/(tabs)/profile",
   },
   {
     icon: "shield-checkmark-outline",
     label: "View privacy policy and terms of service",
+    url: "/(tabs)/profile",
   },
 ];
 
@@ -125,7 +132,7 @@ const Profile = () => {
             >
               {items.slice(rowIdx * 2, rowIdx * 2 + 2).map((item, idx) => (
                 // The links themselves
-                <Link key={idx} href={"/(tabs)/profile"} asChild>
+                <Link key={idx} href={item.url as RelativePathString} asChild>
                   <TouchableOpacity
                     style={{
                       flex: 1,

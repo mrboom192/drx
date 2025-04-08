@@ -51,7 +51,8 @@
     "react-native-web": "~0.19.13",
     "expo-dev-client": "~5.0.19",
     "lottie-react-native": "7.1.0",
-    "@react-native-community/datetimepicker": "8.2.0"
+    "@react-native-community/datetimepicker": "8.2.0",
+    "expo-image-picker": "~16.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

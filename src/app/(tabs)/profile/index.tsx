@@ -3,10 +3,10 @@ import React from "react";
 import { Link, Stack } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import Colors from "@/constants/Colors";
-import Avatar from "@/components/Avatar";
 import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserContext";
+import UserAvatar from "@/components/UserAvatar";
 
 const items = [
   {
@@ -92,13 +92,10 @@ const Profile = () => {
             elevation: 10, // android
           }}
         >
-          <Avatar
-            size={64}
-            initials={`${data.firstName[0]}${data.lastName[0]}`}
-          />
+          <UserAvatar size={64} canUpload={true} />
           <View>
             <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
-              {data.firstName}
+              {data.firstName + " " + data.lastName}
             </Text>
             <Text
               style={{ fontFamily: "dm", fontSize: 16, color: Colors.primary }}

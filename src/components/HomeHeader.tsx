@@ -2,19 +2,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
-import { useRouter } from "expo-router";
+import React, { useRef, useState } from "react";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { SafeAreaView } from "./Themed";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
-import userData from "@/../assets/data/user.json";
-import { User } from "@/types/user";
 import { Tab } from "@/types/tab";
 import Avatar from "./Avatar";
 
@@ -27,12 +23,9 @@ const Header = ({
   tabs: Tab[];
   onTabChange: (tabName: string) => void;
 }) => {
-  const { themeBorderStyle, themeTextStyleSecondary, colorScheme } =
-    useThemedStyles();
-  const user = useMemo(() => userData as User, []);
+  const { themeTextStyleSecondary } = useThemedStyles();
 
   const scrollRef = useRef<ScrollView | null>(null);
-  const router = useRouter();
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -57,8 +50,15 @@ const Header = ({
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.userRow}>
-          <WelcomeMessage name={"Jason Nguyen"} />
-          <Avatar size={40} uri={user.profileImage} />
+          <WelcomeMessage
+            name={data.firstName + " " + data.lastName}
+            role={data.role}
+          />
+          <Avatar
+            size={40}
+            initials={`${data.firstName[0]}${data.lastName[0]}`}
+            uri={data.image ? data.image : null}
+          />
         </View>
 
         <ScrollView
@@ -115,7 +115,7 @@ const Header = ({
   );
 };
 
-const WelcomeMessage = ({ name }: { name: string }) => {
+const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
   const { themeTextStyleSecondary } = useThemedStyles();
 
   return (
@@ -140,7 +140,7 @@ const WelcomeMessage = ({ name }: { name: string }) => {
             color: Colors.primary,
           }}
         >
-          Patient
+          {role}
         </Text>
       </View>
     </View>

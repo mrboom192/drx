@@ -62,14 +62,17 @@ const SignIn = () => {
         flex: 1,
         backgroundColor: "#fff",
         justifyContent: "space-between",
-        paddingHorizontal: 24,
-        paddingTop: 32,
-        paddingBottom: 16,
       }}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1, justifyContent: "flex-start" }}
+        style={{
+          flex: 1,
+          justifyContent: "flex-start",
+          paddingHorizontal: 24,
+          paddingTop: 32,
+          paddingBottom: 16,
+        }}
       >
         <Text
           style={{

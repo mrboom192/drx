@@ -49,14 +49,16 @@ const SignUp = () => {
       style={{
         flex: 1,
         backgroundColor: "#fff",
-        paddingHorizontal: 24,
-        paddingTop: 32,
-        paddingBottom: 16,
       }}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+        style={{
+          flex: 1,
+          paddingHorizontal: 24,
+          paddingTop: 32,
+          paddingBottom: 16,
+        }}
       >
         <TouchableOpacity
           onPress={() => {

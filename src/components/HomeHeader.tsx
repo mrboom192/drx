@@ -24,10 +24,8 @@ const Header = ({
   onTabChange: (tabName: string) => void;
 }) => {
   const { themeTextStyleSecondary } = useThemedStyles();
-
   const scrollRef = useRef<ScrollView | null>(null);
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const selectCategory = (index: number) => {
@@ -117,6 +115,7 @@ const Header = ({
 
 const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
   const { themeTextStyleSecondary } = useThemedStyles();
+  const color = role === "patient" ? Colors.primary : Colors.gold;
 
   return (
     <View>
@@ -137,7 +136,7 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
           style={{
             fontFamily: "dm-sb",
             fontSize: 12,
-            color: Colors.primary,
+            color,
           }}
         >
           {role}

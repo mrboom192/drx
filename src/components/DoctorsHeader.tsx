@@ -130,9 +130,9 @@ interface Props {
 }
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
-  const scrollRef = useRef<ScrollView | null>(null);
+  const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
     useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -141,8 +141,8 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
-      scrollRef.current?.scrollTo({
+    (selected as any)?.measure((x: number) => {
+      (scrollRef.current as any)?.scrollTo({
         x: x - 16,
         y: 0,
         animated: true,
@@ -203,7 +203,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
         </View>
 
         <ScrollView
-          ref={scrollRef}
+          ref={scrollRef as any}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[

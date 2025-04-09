@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserContext";
 import UserAvatar from "@/components/UserAvatar";
-import { PathString } from "react-hook-form";
 
 const items = [
   {
@@ -46,6 +45,7 @@ const Profile = () => {
   const { colorScheme } = useThemedStyles();
   const { signOut } = useSession();
   const { data, loading } = useUser();
+  const color = data.role === "patient" ? Colors.primary : Colors.gold;
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -105,7 +105,11 @@ const Profile = () => {
               {data.firstName + " " + data.lastName}
             </Text>
             <Text
-              style={{ fontFamily: "dm", fontSize: 16, color: Colors.primary }}
+              style={{
+                fontFamily: "dm",
+                fontSize: 16,
+                color,
+              }}
             >
               {data.role ? data.role : "Role not found"}
             </Text>
@@ -148,7 +152,7 @@ const Profile = () => {
                     <Ionicons
                       name={item.icon as keyof typeof Ionicons.glyphMap}
                       size={24}
-                      color={Colors.primary}
+                      color={color}
                       style={{ marginBottom: 12 }}
                     />
                     <Text style={{ fontSize: 12, color: Colors.light.grey }}>
@@ -168,7 +172,7 @@ const Profile = () => {
             marginTop: 24,
             paddingVertical: 12,
             paddingHorizontal: 32,
-            backgroundColor: Colors.primary,
+            backgroundColor: color,
             borderRadius: 8,
           }}
         >

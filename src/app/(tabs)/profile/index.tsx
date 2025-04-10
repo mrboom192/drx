@@ -118,7 +118,7 @@ const Profile = () => {
 
         {/* Main Message */}
         <Text style={{ fontFamily: "dm-sb", fontSize: 20, marginBottom: 16 }}>
-          How can we help you, Trevor?
+          How can we help you, {data.firstName}?
         </Text>
 
         {/* Links */}

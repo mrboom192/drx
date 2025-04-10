@@ -11,28 +11,24 @@ const Personal = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: Colors.light.background,
+        backgroundColor: "#FFF",
       }}
     >
       <Stack.Screen
         options={{
           title: "Personal Info",
-          headerTitleStyle: {
-            fontFamily: "dm-sb",
-          },
         }}
       />
-
-      <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+      <View style={{ paddingHorizontal: 20 }}>
         {/* Row 1: Account Info */}
         <TouchableOpacity
           onPress={() => {
-            // router.push("/account-info")
+            router.push("/(tabs)/profile/account-info");
           }}
           style={{
             paddingVertical: 16,
             borderBottomWidth: 1,
-            borderColor: "#eee",
+            borderColor: Colors.light.faintGrey,
           }}
         >
           <View
@@ -59,19 +55,19 @@ const Personal = () => {
                 Manage your personal account information
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#888" />
+            <Ionicons name="chevron-forward" size={16} color="#000" />
           </View>
         </TouchableOpacity>
 
         {/* Row 2: Public Profile */}
         <TouchableOpacity
           onPress={() => {
-            // router.push("/public-profile");
+            router.push("/public-profile");
           }}
           style={{
             paddingVertical: 16,
             borderBottomWidth: 1,
-            borderColor: "#eee",
+            borderColor: Colors.light.faintGrey,
           }}
         >
           <View
@@ -98,7 +94,7 @@ const Personal = () => {
                 Set up your public profile which will be visible to patients
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#888" />
+            <Ionicons name="chevron-forward" size={16} color="#000" />
           </View>
         </TouchableOpacity>
       </View>

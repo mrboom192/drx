@@ -7,6 +7,11 @@ const ProfileLayout = () => {
     <Stack
       screenOptions={{
         navigationBarColor: "#FFF",
+        headerTitleStyle: {
+          fontFamily: "dm-sb",
+        },
+        headerTitleAlign: "center",
+        headerShadowVisible: false,
       }}
     />
   );

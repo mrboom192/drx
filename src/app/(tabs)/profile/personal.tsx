@@ -62,7 +62,7 @@ const Personal = () => {
         {/* Row 2: Public Profile */}
         <TouchableOpacity
           onPress={() => {
-            router.push("/public-profile");
+            router.push("/(tabs)/profile/public-profile");
           }}
           style={{
             paddingVertical: 16,

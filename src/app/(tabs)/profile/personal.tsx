@@ -1,9 +1,12 @@
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 const Personal = () => {
+  const router = useRouter();
+
   return (
     <SafeAreaView
       style={{
@@ -13,14 +16,92 @@ const Personal = () => {
     >
       <Stack.Screen
         options={{
-          title: "Filters",
+          title: "Personal Info",
           headerTitleStyle: {
             fontFamily: "dm-sb",
           },
-          presentation: "modal",
         }}
       />
-      <Text>Personal information</Text>
+
+      <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+        {/* Row 1: Account Info */}
+        <TouchableOpacity
+          onPress={() => {
+            // router.push("/account-info")
+          }}
+          style={{
+            paddingVertical: 16,
+            borderBottomWidth: 1,
+            borderColor: "#eee",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <Text
+                style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}
+              >
+                Account info
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "dm",
+                  fontSize: 14,
+                  color: "#555",
+                  marginTop: 2,
+                }}
+              >
+                Manage your personal account information
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#888" />
+          </View>
+        </TouchableOpacity>
+
+        {/* Row 2: Public Profile */}
+        <TouchableOpacity
+          onPress={() => {
+            // router.push("/public-profile");
+          }}
+          style={{
+            paddingVertical: 16,
+            borderBottomWidth: 1,
+            borderColor: "#eee",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <Text
+                style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}
+              >
+                Public profile
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "dm",
+                  fontSize: 14,
+                  color: "#555",
+                  marginTop: 2,
+                }}
+              >
+                Set up your public profile which will be visible to patients
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#888" />
+          </View>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

@@ -1,4 +1,3 @@
-// hooks/useImagePicker.ts
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -8,7 +7,7 @@ import { auth, storage } from "../../firebaseConfig";
 export function useImagePicker() {
   const [isUploading, setIsUploading] = useState(false);
 
-  const pickAndUploadImage = async () => {
+  const pickImage = async () => {
     if (isUploading) return; // prevent spamming while uploading or during picker load
 
     setIsUploading(true); // lock interaction before picker opens
@@ -30,8 +29,7 @@ export function useImagePicker() {
           { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
         );
 
-        const url = await uploadImage(manipulated.uri);
-        return url;
+        return manipulated.uri;
       }
     } catch (err) {
       console.error("Image picking failed:", err);
@@ -40,14 +38,14 @@ export function useImagePicker() {
     }
   };
 
-  async function uploadImage(imageUri: string) {
+  async function uploadImage(imageUri: string, path: string) {
     let uploadedImageURL: string | null = null;
     const uid = auth.currentUser?.uid;
 
     if (!uid || !imageUri) return null;
 
     // Upload image if exists
-    const fileRef = ref(storage, `users/${uid}.jpg`);
+    const fileRef = ref(storage, path);
 
     const blob: Blob = await new Promise<Blob>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -78,5 +76,5 @@ export function useImagePicker() {
     return uploadedImageURL;
   }
 
-  return { pickAndUploadImage, isUploading };
+  return { pickImage, uploadImage, isUploading };
 }

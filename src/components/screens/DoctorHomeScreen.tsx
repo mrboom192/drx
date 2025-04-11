@@ -16,7 +16,9 @@ const DoctorHomeScreen = () => {
     >
       <Stack.Screen options={{ title: "Doctor" }} />
 
-      {!data.isVerifiedDoctor && <VerificationAlert />}
+      {(data.verification === "unverified" || !data.verification) && (
+        <VerificationAlert />
+      )}
       <Text>DoctorHomeScreen</Text>
     </SafeAreaView>
   );

@@ -129,11 +129,19 @@ const Personal = () => {
                     Doctor verification
                   </Text>
 
-                  {!data.isVerifiedDoctor && (
+                  {(data.verification === "unverified" ||
+                    !data.verification) && (
                     <Ionicons
                       name="alert-circle-outline"
                       size={20}
                       color={Colors.pink}
+                    />
+                  )}
+                  {data.verification === "pending" && (
+                    <Ionicons
+                      name="time-outline"
+                      size={20}
+                      color={Colors.onlineConsultation}
                     />
                   )}
                 </View>

@@ -15,12 +15,14 @@ const UserAvatar = ({
   canUpload?: boolean;
 }) => {
   const { data } = useUser();
-  const { pickAndUploadImage, isUploading } = useImagePicker();
+  const { pickImage, uploadImage, isUploading } = useImagePicker();
   const [isUpdatingUserDoc, setIsUpdatingUserDoc] = useState(false);
+  const uid = auth.currentUser?.uid;
 
   const handleUpload = async () => {
     setIsUpdatingUserDoc(true);
-    const imageURL = await pickAndUploadImage();
+    const uri = await pickImage();
+    const imageURL = await uploadImage(uri as string, `users/${uid}.jpg`);
 
     if (!imageURL) {
       setIsUpdatingUserDoc(false);
@@ -28,7 +30,7 @@ const UserAvatar = ({
     }
 
     // Update or set the user document in Firestore
-    const userRef = doc(db, "users", auth.currentUser?.uid as string);
+    const userRef = doc(db, "users", uid as string);
 
     try {
       const userSnap = await getDoc(userRef);

@@ -1,13 +1,11 @@
 import Avatar from "./Avatar";
 import React, { useState } from "react";
 import { useUser } from "@/contexts/UserContext";
-import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator";
-import { auth, db, storage } from "../../firebaseConfig";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useImagePicker } from "@/hooks/useImagePicker";
 
 const UserAvatar = ({
   size,
@@ -17,76 +15,20 @@ const UserAvatar = ({
   canUpload?: boolean;
 }) => {
   const { data } = useUser();
-  const [isUploading, setIsUploading] = useState(false);
+  const { pickAndUploadImage, isUploading } = useImagePicker();
+  const [isUpdatingUserDoc, setIsUpdatingUserDoc] = useState(false);
 
-  const pickImage = async () => {
-    if (isUploading) return; // prevent spamming while uploading or during picker load
-    setIsUploading(true); // lock interaction before picker opens
+  const handleUpload = async () => {
+    setIsUpdatingUserDoc(true);
+    const imageURL = await pickAndUploadImage();
 
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ["images", "videos"],
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.01,
-      });
-
-      if (!result.canceled) {
-        const uri = result.assets[0].uri;
-
-        const manipulated = await ImageManipulator.manipulateAsync(
-          uri,
-          [{ resize: { width: 200, height: 200 } }],
-          { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
-        );
-
-        await uploadImage(manipulated.uri);
-      }
-    } catch (err) {
-      console.error("Image picking failed:", err);
-    } finally {
-      setIsUploading(false); // unlock after picker closes or error
-    }
-  };
-
-  async function uploadImage(imageUri: string) {
-    let uploadedImageURL: string | null = null;
-    const uid = auth.currentUser?.uid;
-
-    // Upload image if exists
-    if (imageUri) {
-      const fileRef = ref(storage, `users/${uid}.jpg`);
-
-      const blob: Blob = await new Promise<Blob>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function (e) {
-          console.log(e);
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", imageUri, true);
-        xhr.send(null);
-      });
-
-      try {
-        await uploadBytes(fileRef, blob);
-        console.log("Ran"); // Only logs if successful
-      } catch (error) {
-        console.error("uploadBytes failed:", error);
-      }
-
-      // Clean up blob (optional chaining for safety)
-      // @ts-ignore
-      blob.close?.();
-
-      uploadedImageURL = await getDownloadURL(fileRef);
+    if (!imageURL) {
+      setIsUpdatingUserDoc(false);
+      return;
     }
 
     // Update or set the user document in Firestore
-    const userRef = doc(db, "users", uid as string);
+    const userRef = doc(db, "users", auth.currentUser?.uid as string);
 
     try {
       const userSnap = await getDoc(userRef);
@@ -94,15 +36,14 @@ const UserAvatar = ({
       if (userSnap.exists()) {
         // Update existing user document
         await updateDoc(userRef, {
-          image: uploadedImageURL,
+          image: imageURL,
         });
       }
+      setIsUpdatingUserDoc(false);
     } catch (error) {
       console.error("Error updating Firestore user doc:", error);
     }
-
-    setIsUploading(false);
-  }
+  };
 
   return (
     <View
@@ -116,8 +57,8 @@ const UserAvatar = ({
         size={size}
         initials={`${data.firstName[0]}${data.lastName[0]}`}
         uri={data.image || null}
-        onPress={canUpload ? pickImage : null}
-        loading={isUploading}
+        onPress={canUpload ? handleUpload : null}
+        loading={isUploading || isUpdatingUserDoc}
       />
 
       {canUpload && !isUploading && (

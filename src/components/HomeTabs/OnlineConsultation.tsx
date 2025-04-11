@@ -288,7 +288,11 @@ const OnlineConsultation = () => {
           }}
         >
           {doctors.map((item, index) => (
-            <Link href={`/doctor/${item.id}`} key={item.id} asChild>
+            <Link
+              href={`/doctor-profile/${item.id}` as any}
+              key={item.id}
+              asChild
+            >
               <TouchableOpacity
                 style={{
                   width: 300,

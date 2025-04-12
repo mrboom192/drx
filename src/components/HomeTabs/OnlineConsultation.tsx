@@ -51,7 +51,7 @@ const OnlineConsultation = () => {
     setError(null); // Reset error state before fetching
 
     try {
-      const doctorsRef = collection(db, "public_profiles");
+      const doctorsRef = collection(db, "publicProfiles");
 
       // Fetch up to 50 doctors (to allow better randomness)
       const q = query(doctorsRef, limit(7));

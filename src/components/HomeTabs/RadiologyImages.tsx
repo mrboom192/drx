@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import ArrowOutward from "../icons/ArrowOutward";
@@ -14,7 +6,6 @@ import { collection, getDocs, limit, query } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { Link } from "expo-router";
 import Colors from "@/constants/Colors";
-import Avatar from "../Avatar";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Filter from "../icons/Filter";
@@ -64,7 +55,7 @@ const RadiologyImages = () => {
     setError(null); // Reset error state before fetching
 
     try {
-      const doctorsRef = collection(db, "public_profiles");
+      const doctorsRef = collection(db, "publicProfiles");
 
       // Fetch up to 50 doctors (to allow better randomness)
       const q = query(doctorsRef, limit(7));

@@ -63,7 +63,7 @@ const WeightManagement = () => {
     setError(null); // Reset error state before fetching
 
     try {
-      const doctorsRef = collection(db, "public_profiles");
+      const doctorsRef = collection(db, "publicProfiles");
 
       // Fetch up to 50 doctors (to allow better randomness)
       const q = query(doctorsRef, limit(7));
@@ -214,7 +214,7 @@ const WeightManagement = () => {
               1/2 Cases reviewed
             </Text>
           </View>
-          <Link href={`/(app)/(tabs)/index`} asChild>
+          <Link href={`/(tabs)`} asChild>
             <TouchableOpacity
               style={{
                 paddingHorizontal: 16,
@@ -258,7 +258,7 @@ const WeightManagement = () => {
             ]}
           >
             {mockCases.map((item) => (
-              <Link href={`/(app)/(tabs)/index`} key={item.id} asChild>
+              <Link href={`/(tabs)`} key={item.id} asChild>
                 <TouchableOpacity
                   style={{
                     borderWidth: 1,

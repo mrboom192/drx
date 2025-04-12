@@ -80,6 +80,10 @@ function RootLayoutNav() {
                     name="signup"
                     options={{ headerShown: false }}
                   />
+                  <Stack.Screen
+                    name="doctor-profile"
+                    options={{ headerShown: false }}
+                  />
                 </Stack>
               </SignUpProvider>
             </UserProvider>

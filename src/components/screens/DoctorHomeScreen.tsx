@@ -25,6 +25,7 @@ const DoctorHomeScreen = () => {
       {(data.verification === "pending" || !data.verification) && (
         <PendingAlert />
       )}
+      {!data.hasPublicProfile && <MissingPublicProfileAlert />}
     </SafeAreaView>
   );
 };
@@ -125,6 +126,42 @@ const PendingAlert = () => {
       >
         We are currently working to review your license. We’ll notify you once
         it’s approved.
+      </Text>
+    </View>
+  );
+};
+
+const MissingPublicProfileAlert = () => {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FDECEA",
+        padding: 12,
+        margin: 16,
+        borderColor: "#F5C6CB",
+        borderWidth: 1,
+        borderRadius: 12,
+      }}
+    >
+      <Ionicons
+        name="alert-circle-outline"
+        size={20}
+        color="#E53935"
+        style={{ marginRight: 8 }}
+      />
+      <Text
+        style={{
+          fontFamily: "dm",
+          color: "#B71C1C",
+          fontSize: 14,
+          flex: 1,
+          marginRight: 16,
+        }}
+      >
+        Your public profile is not yet set up. Set it up now so that patients
+        can find you. you.
       </Text>
     </View>
   );

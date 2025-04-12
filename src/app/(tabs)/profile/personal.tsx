@@ -61,112 +61,141 @@ const Personal = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Public Profile */}
-        <TouchableOpacity
-          onPress={() => {
-            router.push("/(tabs)/profile/public-profile");
-          }}
-          style={{
-            paddingVertical: 16,
-            borderBottomWidth: 1,
-            borderColor: Colors.light.faintGrey,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <View>
-              <Text
-                style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}
-              >
-                Public profile
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "dm",
-                  fontSize: 14,
-                  color: "#555",
-                  marginTop: 2,
-                }}
-              >
-                Set up your public profile which will be visible to patients
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color="#000" />
-          </View>
-        </TouchableOpacity>
-
         {/* Doctor verification */}
         {data.role === "doctor" && (
-          <TouchableOpacity
-            onPress={() => {
-              router.push("/(tabs)/profile/doctor-verification");
-            }}
-            style={{
-              paddingVertical: 16,
-              borderBottomWidth: 1,
-              borderColor: Colors.light.faintGrey,
-            }}
-          >
-            <View
+          <>
+            {/* Public Profile */}
+            <TouchableOpacity
+              onPress={() => {
+                router.push("/(tabs)/profile/public-profile");
+              }}
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                paddingVertical: 16,
+                borderBottomWidth: 1,
+                borderColor: Colors.light.faintGrey,
               }}
             >
-              <View>
-                <View
-                  style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
-                >
-                  <Text
-                    style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                    }}
                   >
-                    Doctor verification
+                    <Text
+                      style={{
+                        fontFamily: "dm-sb",
+                        fontSize: 16,
+                        color: "#000",
+                      }}
+                    >
+                      Public profile
+                    </Text>
+                    {!data.hasPublicProfile && (
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={20}
+                        color={Colors.onlineConsultation}
+                      />
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      fontFamily: "dm",
+                      fontSize: 14,
+                      color: "#555",
+                      marginTop: 2,
+                    }}
+                  >
+                    Manage your public-facing profile which will be visible to
+                    patients
                   </Text>
-
-                  {(data.verification === "unverified" ||
-                    !data.verification) && (
-                    <Ionicons
-                      name="alert-circle-outline"
-                      size={20}
-                      color={Colors.pink}
-                    />
-                  )}
-                  {data.verification === "pending" && (
-                    <Ionicons
-                      name="time-outline"
-                      size={20}
-                      color={Colors.onlineConsultation}
-                    />
-                  )}
-                  {data.verification === "verified" && (
-                    <Ionicons
-                      name="checkmark-circle-outline"
-                      size={20}
-                      color={Colors.green}
-                    />
-                  )}
                 </View>
-                <Text
-                  style={{
-                    fontFamily: "dm",
-                    fontSize: 14,
-                    color: "#555",
-                    marginTop: 2,
-                  }}
-                >
-                  Verify your doctor account in order for you to be visible to
-                  patients
-                </Text>
+                <Ionicons name="chevron-forward" size={16} color="#000" />
               </View>
-              <Ionicons name="chevron-forward" size={16} color="#000" />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                router.push("/(tabs)/profile/doctor-verification");
+              }}
+              style={{
+                paddingVertical: 16,
+                borderBottomWidth: 1,
+                borderColor: Colors.light.faintGrey,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: "dm-sb",
+                        fontSize: 16,
+                        color: "#000",
+                      }}
+                    >
+                      Doctor verification
+                    </Text>
+
+                    {(data.verification === "unverified" ||
+                      !data.verification) && (
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={20}
+                        color={Colors.pink}
+                      />
+                    )}
+                    {data.verification === "pending" && (
+                      <Ionicons
+                        name="time-outline"
+                        size={20}
+                        color={Colors.onlineConsultation}
+                      />
+                    )}
+                    {data.verification === "verified" && (
+                      <Ionicons
+                        name="checkmark-circle-outline"
+                        size={20}
+                        color={Colors.green}
+                      />
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      fontFamily: "dm",
+                      fontSize: 14,
+                      color: "#555",
+                      marginTop: 2,
+                    }}
+                  >
+                    Verify your doctor account in order for you to be visible to
+                    patients
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color="#000" />
+              </View>
+            </TouchableOpacity>
+          </>
         )}
       </View>
     </SafeAreaView>

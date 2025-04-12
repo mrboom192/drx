@@ -22,7 +22,8 @@ const DoctorVerification = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uri, setUri] = useState<string | null>(null);
 
-  const isPending = data?.verification === "pending"; // <- flag for conditional UI
+  const isPending = data?.verification === "pending";
+  const isVerified = data?.verification === "verified";
 
   const handlePickImage = async () => {
     const imageUri = await pickImage();
@@ -69,7 +70,32 @@ const DoctorVerification = () => {
         }}
       />
 
-      {isPending ? (
+      {isVerified ? (
+        <View style={{ alignItems: "center", marginTop: 40 }}>
+          <Text
+            style={{
+              fontFamily: "dm-sb",
+              fontSize: 18,
+              color: Colors.green,
+              textAlign: "center",
+              marginBottom: 10,
+            }}
+          >
+            You're verified!
+          </Text>
+          <Text
+            style={{
+              fontFamily: "dm",
+              fontSize: 14,
+              color: "#444",
+              textAlign: "center",
+              maxWidth: 280,
+            }}
+          >
+            You’ve already been approved and are visible to patients.
+          </Text>
+        </View>
+      ) : isPending ? (
         <View style={{ alignItems: "center", marginTop: 40 }}>
           <Text
             style={{

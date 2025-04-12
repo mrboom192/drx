@@ -1,25 +1,21 @@
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Pressable,
 } from "react-native";
 import React, { useRef, useState } from "react";
-import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { SafeAreaView } from "./Themed";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Tab } from "@/types/tab";
-import Avatar from "./Avatar";
+import UserRow from "./UserRow";
 
-const Header = ({
-  data,
+export const PatientHomeHeader = ({
   tabs,
   onTabChange,
 }: {
-  data: any;
   tabs: Tab[];
   onTabChange: (tabName: string) => void;
 }) => {
@@ -46,19 +42,15 @@ const Header = ({
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.userRow}>
-          <WelcomeMessage
-            name={data.firstName + " " + data.lastName}
-            role={data.role}
-          />
-          <Avatar
-            size={40}
-            initials={`${data.firstName[0]}${data.lastName[0]}`}
-            uri={data.image ? data.image : null}
-          />
-        </View>
-
+      <View
+        style={{
+          flexDirection: "column",
+          gap: 10,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <UserRow />
         <ScrollView
           ref={scrollRef}
           horizontal
@@ -113,53 +105,4 @@ const Header = ({
   );
 };
 
-const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
-  const { themeTextStyleSecondary } = useThemedStyles();
-  const color = role === "patient" ? Colors.primary : Colors.gold;
-
-  return (
-    <View>
-      <Text
-        style={[
-          themeTextStyleSecondary,
-          {
-            fontFamily: "dm",
-            fontSize: 14,
-          },
-        ]}
-      >
-        Welcome back,
-      </Text>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>{name}</Text>
-        <Text
-          style={{
-            fontFamily: "dm-sb",
-            fontSize: 12,
-            color,
-          }}
-        >
-          {role}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  userRow: {
-    paddingHorizontal: 16,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  container: {
-    flexDirection: "column",
-    gap: 10,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
-
-export default Header;
+export default PatientHomeHeader;

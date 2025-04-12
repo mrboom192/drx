@@ -144,6 +144,13 @@ const Personal = () => {
                       color={Colors.onlineConsultation}
                     />
                   )}
+                  {data.verification === "verified" && (
+                    <Ionicons
+                      name="checkmark-circle-outline"
+                      size={20}
+                      color={Colors.green}
+                    />
+                  )}
                 </View>
                 <Text
                   style={{

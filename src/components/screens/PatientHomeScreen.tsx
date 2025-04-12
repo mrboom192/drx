@@ -14,7 +14,7 @@ import RemoteManagement from "../HomeTabs/RemoteManagement";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useUser } from "@/contexts/UserContext";
 import { Stack } from "expo-router";
-import HomeHeader from "../HomeHeader";
+import { PatientHomeHeader } from "../PatientHomeHeader";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 
 const tabs = [
@@ -90,7 +90,7 @@ const PatientHomeScreen = () => {
       <Stack.Screen
         options={{
           header: () => (
-            <HomeHeader onTabChange={onTabChange} tabs={tabs} data={data} />
+            <PatientHomeHeader onTabChange={onTabChange} tabs={tabs} />
           ),
         }}
       />

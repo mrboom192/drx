@@ -1,12 +1,39 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import { router, Stack } from "expo-router";
 import { useUser } from "@/contexts/UserContext";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import DoctorHomeHeader from "../DoctorHomeHeader";
+import { Calendar, DateData } from "react-native-calendars";
+import { format } from "date-fns";
+import { ScrollView } from "react-native-gesture-handler";
+
+interface Consultation {
+  id: number;
+  patientName: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface ConsultationsData {
+  [date: string]: Consultation[];
+}
+
+// Mock data for consultations - replace with real data later
+const mockConsultations: ConsultationsData = {
+  "2025-04-19": [
+    { id: 1, patientName: "Tyler", startTime: "09:00 AM", endTime: "9:15 AM" },
+    { id: 2, patientName: "Emma", startTime: "09:30 AM", endTime: "9:45 AM" },
+  ],
+};
 
 const DoctorHomeScreen = () => {
   const { data } = useUser();
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "yyyy-MM-dd")
+  );
+
+  const consultationsForDay = mockConsultations[selectedDate] || [];
 
   return (
     <SafeAreaView
@@ -26,6 +53,74 @@ const DoctorHomeScreen = () => {
         <PendingAlert />
       )}
       {!data.hasPublicProfile && <MissingPublicProfileAlert />}
+
+      <ScrollView style={{ padding: 16 }}>
+        <Calendar
+          onDayPress={(day: DateData) => setSelectedDate(day.dateString)}
+          markedDates={{
+            [selectedDate]: { selected: true, selectedColor: "#6366f1" },
+            // Mark dates with consultations
+            ...Object.keys(mockConsultations).reduce(
+              (acc, date) => ({
+                ...acc,
+                [date]: { marked: true, dotColor: "#6366f1" },
+              }),
+              {}
+            ),
+          }}
+          theme={{
+            todayTextColor: "#6366f1",
+            selectedDayBackgroundColor: "#6366f1",
+            arrowColor: "#6366f1",
+          }}
+          style={{
+            borderRadius: 10,
+            elevation: 2,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+            backgroundColor: "#fff",
+            marginBottom: 20,
+          }}
+        />
+
+        <View>
+          <Text style={{ fontSize: 18, fontFamily: "dm-sb", marginBottom: 12 }}>
+            You have {consultationsForDay.length} patient consultations today
+          </Text>
+          {consultationsForDay.map((consultation: Consultation) => (
+            <View
+              key={consultation.id}
+              style={{
+                backgroundColor: "#FFF5F5",
+                padding: 16,
+                borderRadius: 12,
+                marginBottom: 12,
+                borderWidth: 1,
+                borderColor: "#FFE4E4",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ fontSize: 16, fontFamily: "dm-b" }}>
+                  {consultation.patientName}'s Consultation
+                </Text>
+                <TouchableOpacity>
+                  <Ionicons name="ellipsis-horizontal" size={20} color="#666" />
+                </TouchableOpacity>
+              </View>
+              <Text style={{ color: "#666", marginTop: 4, fontFamily: "dm" }}>
+                {consultation.startTime} - {consultation.endTime}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -124,8 +219,8 @@ const PendingAlert = () => {
           flex: 1,
         }}
       >
-        We are currently working to review your license. We’ll notify you once
-        it’s approved.
+        We are currently working to review your license. We'll notify you once
+        it's approved.
       </Text>
     </View>
   );

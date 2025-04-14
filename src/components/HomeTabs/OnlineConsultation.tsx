@@ -13,6 +13,7 @@ import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Dot from "../icons/Dot";
 import Bookmark from "../icons/Bookmark";
 import LottieView from "lottie-react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const mockTags = [
   {
@@ -289,74 +290,151 @@ const OnlineConsultation = () => {
         >
           {doctors.map((item, index) => (
             <Link
-              href={`/doctor-profile/${item.id}` as any}
-              key={item.id}
+              href={`/doctor-profile/${item.uid}` as any}
+              key={item.uid}
               asChild
             >
               <TouchableOpacity
                 style={{
                   width: 300,
                   padding: 16,
-                  borderWidth: 1,
-                  borderColor: Colors.light.faintGrey,
+                  backgroundColor: "#fff",
                   borderRadius: 16,
                   flexDirection: "column",
-                  gap: 16,
-                  alignItems: "center",
+                  gap: 12,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 3,
+                  elevation: 3,
                 }}
               >
                 {/* Doctor General Information */}
                 <View
                   style={{
                     flexDirection: "row",
-                    gap: 16,
+                    gap: 12,
                     alignItems: "center",
-                    justifyContent: "space-between",
                     width: "100%",
                   }}
                 >
-                  <Avatar size={40} uri={item.photo_url} />
-                  <View style={{ flexDirection: "column", flex: 1 }}>
+                  <Avatar size={56} uri={item.image} />
+                  <View style={{ flex: 1 }}>
                     <Text
                       style={[
                         themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 16 },
+                        { fontFamily: "dm-sb", fontSize: 16, marginBottom: 4 },
                       ]}
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                      {item.title} {item.name}
+                      Dr. {item.firstName + " " + item.lastName}
                     </Text>
 
+                    <View
+                      style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}
+                    >
+                      {item.specializations
+                        .slice(0, 2)
+                        .map((spec: string, idx: number) => (
+                          <View
+                            key={idx}
+                            style={{
+                              backgroundColor: Colors.light.faintGrey,
+                              paddingHorizontal: 8,
+                              paddingVertical: 4,
+                              borderRadius: 12,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontFamily: "dm",
+                                fontSize: 12,
+                                color: Colors.light.grey,
+                              }}
+                            >
+                              {spec}
+                            </Text>
+                          </View>
+                        ))}
+                      {item.specializations.length > 2 && (
+                        <Text
+                          style={{
+                            fontFamily: "dm",
+                            fontSize: 12,
+                            color: Colors.light.grey,
+                          }}
+                        >
+                          +{item.specializations.length - 2} more
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                </View>
+
+                {/* Price and Rating Section */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingTop: 12,
+                    borderTopWidth: 1,
+                    borderTopColor: Colors.light.faintGrey,
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    <Ionicons name="star" size={16} color="#FFD700" />
+                    <Text
+                      style={[
+                        themeTextStylePrimary,
+                        { fontFamily: "dm-sb", fontSize: 14 },
+                      ]}
+                    >
+                      4.8
+                    </Text>
                     <Text
                       style={[
                         themeTextStyleSecondary,
                         { fontFamily: "dm", fontSize: 12 },
                       ]}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
                     >
-                      {item.specialty.join(", ")}
+                      (124)
                     </Text>
                   </View>
-                  <Text
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 20 },
-                    ]}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "baseline",
+                      gap: 2,
+                    }}
                   >
-                    ${item.consultation_price}
-                    {/* {item.currency} */}
-                  </Text>
-                </View>
-
-                {/* Tags */}
-                <View
-                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
-                >
-                  {mockTags.map((item, index) => (
-                    <Tag key={index} name={item.name} color={item.color} />
-                  ))}
+                    <Text
+                      style={[
+                        themeTextStylePrimary,
+                        { fontFamily: "dm-sb", fontSize: 20 },
+                      ]}
+                    >
+                      ${item.consultationPrice}
+                    </Text>
+                    <Text
+                      style={[
+                        themeTextStyleSecondary,
+                        { fontFamily: "dm", fontSize: 12 },
+                      ]}
+                    >
+                      /consultation
+                    </Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             </Link>

@@ -4,247 +4,740 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
+  TextInput,
+  Switch,
+  Modal,
+  Pressable,
+  FlatList,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-import { Stack } from "expo-router";
+import React, { useState, useMemo, useEffect } from "react";
+import { Stack, router } from "expo-router";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import UserAvatar from "@/components/UserAvatar";
-import Avatar from "@/components/Avatar";
 import Briefcase from "@/components/icons/Briefcase";
 import Language from "@/components/icons/Language";
+import { Ionicons } from "@expo/vector-icons";
+import { doc, setDoc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
+import { db } from "@/../firebaseConfig";
 
-// Need to have security roles to prevent users from creating invalid profile values
+interface Specialization {
+  id: string;
+  name: string;
+  color: string;
+  icon?: string;
+}
+
+const SPECIALIZATIONS: Specialization[] = [
+  { id: "general", name: "General Practice", color: "#E5E5E5" },
+  { id: "pediatrics", name: "Pediatrics", color: "#FFE4B5" },
+  { id: "cardiology", name: "Cardiology", color: "#FFB6C1" },
+  { id: "dermatology", name: "Dermatology", color: "#F0FFF0" },
+  { id: "oncology", name: "Oncology", color: "#E6E6FA" },
+  { id: "neurology", name: "Neurology", color: "#ADD8E6" },
+  { id: "ophthalmology", name: "Ophthalmology", color: "#FFB6C1" },
+  { id: "orthopedics", name: "Orthopedics", color: "#FFE4C4" },
+  { id: "psychiatry", name: "Psychiatry", color: "#98FB98" },
+  { id: "neurosurgery", name: "Neurosurgery", color: "#90EE90" },
+  { id: "allergy", name: "Allergy and Immunology", color: "#FFB6C1" },
+  { id: "anesthesiology", name: "Anesthesiology", color: "#ADD8E6" },
+  { id: "radiology", name: "Diagnostic Radiology", color: "#FFE4B5" },
+  { id: "emergency", name: "Emergency Medicine", color: "#FFB6C1" },
+  { id: "family", name: "Family Medicine", color: "#E6E6FA" },
+  { id: "internal", name: "Internal Medicine", color: "#FFB6C1" },
+  { id: "genetics", name: "Medical Genetics", color: "#98FB98" },
+  { id: "nuclear", name: "Nuclear Medicine", color: "#ADD8E6" },
+  { id: "obstetrics", name: "Obstetrics and gynecology", color: "#90EE90" },
+  { id: "pathology", name: "Pathology", color: "#98FB98" },
+  { id: "rehab", name: "Rehab", color: "#FFE4C4" },
+  { id: "preventive", name: "Preventive Medicine", color: "#ADD8E6" },
+  { id: "radiation", name: "Radiation Oncology", color: "#FFE4B5" },
+  { id: "surgery", name: "Surgery", color: "#FFB6C1" },
+  { id: "urology", name: "Urology", color: "#E6E6FA" },
+  { id: "gastroenterology", name: "Gastroenterology", color: "#FFE4B5" },
+];
+
+const LANGUAGES = ["English", "Arabic", "Spanish", "French"];
+
+// Helper function to compare arrays
+const arraysEqual = (a: string[], b: string[]) => {
+  if (a.length !== b.length) return false;
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  return sortedA.every((val, idx) => val === sortedB[idx]);
+};
 
 const PublicProfile = () => {
   const { data } = useUser();
-  const [publicProfile, setPublicProfile] = useState(null);
+  const [selectedSpecializations, setSelectedSpecializations] = useState<
+    string[]
+  >([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [showSpecializationsModal, setShowSpecializationsModal] =
+    useState(false);
+  const [showLanguagesModal, setShowLanguagesModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [experience, setExperience] = useState("");
+  const [biography, setBiography] = useState("");
+  const [consultationPrice, setConsultationPrice] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  // Store initial values for change detection
+  const [initialValues, setInitialValues] = useState({
+    specializations: [] as string[],
+    languages: [] as string[],
+    experience: "",
+    biography: "",
+    consultationPrice: "",
+  });
+
+  // Check if any changes have been made
+  const hasChanges = useMemo(() => {
+    return (
+      !isLoading && // Don't enable save while loading
+      (!arraysEqual(selectedSpecializations, initialValues.specializations) ||
+        !arraysEqual(selectedLanguages, initialValues.languages) ||
+        experience !== initialValues.experience ||
+        biography !== initialValues.biography ||
+        consultationPrice !== initialValues.consultationPrice)
+    );
+  }, [
+    isLoading,
+    selectedSpecializations,
+    selectedLanguages,
+    experience,
+    biography,
+    consultationPrice,
+    initialValues,
+  ]);
+
+  useEffect(() => {
+    const fetchPublicProfile = async () => {
+      try {
+        const publicProfileRef = doc(db, "publicProfiles", data.uid);
+        const docSnap = await getDoc(publicProfileRef);
+
+        if (docSnap.exists()) {
+          const profileData = docSnap.data();
+          const specializations = profileData.specializations || [];
+          const languages = profileData.languages || [];
+          const exp = profileData.experience?.toString() || "";
+          const bio = profileData.biography || "";
+          const price = profileData.consultationPrice?.toString() || "";
+
+          // Set current values
+          setSelectedSpecializations(specializations);
+          setSelectedLanguages(languages);
+          setExperience(exp);
+          setBiography(bio);
+          setConsultationPrice(price);
+
+          // Set initial values for change detection
+          setInitialValues({
+            specializations,
+            languages,
+            experience: exp,
+            biography: bio,
+            consultationPrice: price,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching public profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (data?.uid) {
+      fetchPublicProfile();
+    }
+  }, [data?.uid]);
+
+  const filteredSpecializations = useMemo(() => {
+    return SPECIALIZATIONS.filter((spec) =>
+      spec.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
+
+  const toggleSpecialization = (id: string) => {
+    if (selectedSpecializations.includes(id)) {
+      setSelectedSpecializations(
+        selectedSpecializations.filter((s) => s !== id)
+      );
+    } else {
+      setSelectedSpecializations([...selectedSpecializations, id]);
+    }
+  };
+
+  const toggleLanguage = (language: string) => {
+    if (selectedLanguages.includes(language)) {
+      setSelectedLanguages(selectedLanguages.filter((l) => l !== language));
+    } else {
+      setSelectedLanguages([...selectedLanguages, language]);
+    }
+  };
+
+  const handleSave = async () => {
+    if (isSaving) return;
+
+    try {
+      setIsSaving(true);
+      setSaveStatus(null);
+
+      // Update user document to set hasPublicProfile to true
+      const userRef = doc(db, "users", data.uid);
+      await updateDoc(userRef, {
+        hasPublicProfile: true,
+      });
+
+      // Create or update public profile document
+      const publicProfileRef = doc(db, "publicProfiles", data.uid);
+      await setDoc(
+        publicProfileRef,
+        {
+          uid: data.uid,
+          specializations: selectedSpecializations,
+          languages: selectedLanguages,
+          experience: parseInt(experience, 10),
+          biography,
+          consultationPrice: parseInt(consultationPrice, 10),
+          firstName: data.firstName,
+          lastName: data.lastName,
+          image: data.image || null,
+          updatedAt: Timestamp.now(),
+        },
+        { merge: true }
+      );
+
+      setSaveStatus({
+        type: "success",
+        message: "Profile updated successfully",
+      });
+
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus(null);
+      }, 3000);
+    } catch (error) {
+      console.error("Error saving public profile:", error);
+      setSaveStatus({
+        type: "error",
+        message: "Failed to update profile. Please try again.",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const renderSpecializationItem = ({ item }: { item: Specialization }) => (
+    <TouchableOpacity
+      onPress={() => toggleSpecialization(item.id)}
+      style={{
+        flex: 1,
+        margin: 6,
+        padding: 16,
+        borderRadius: 12,
+        backgroundColor: selectedSpecializations.includes(item.id)
+          ? item.color
+          : "#F5F5F5",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: 100,
+      }}
+    >
+      {selectedSpecializations.includes(item.id) && (
+        <View style={{ position: "absolute", top: 8, right: 8 }}>
+          <Ionicons name="checkmark-circle" size={20} color="#000" />
+        </View>
+      )}
+      <Text
+        style={{
+          fontFamily: "dm",
+          fontSize: 13,
+          textAlign: "center",
+          color: "#000",
+        }}
+      >
+        {item.name}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Stack.Screen
         options={{
-          title: "Public profile",
+          title: "Edit Public Profile",
           headerTitleStyle: { fontFamily: "dm-sb" },
           headerTitleAlign: "center",
+          headerRight: () => (
+            <TouchableOpacity
+              style={{
+                backgroundColor: !hasChanges ? Colors.light.faintGrey : "#000",
+                paddingVertical: 6,
+                paddingHorizontal: 12,
+                borderRadius: 6,
+                opacity: isSaving ? 0.5 : 1,
+              }}
+              onPress={handleSave}
+              disabled={isSaving || !hasChanges}
+            >
+              <Text
+                style={{ color: "#fff", fontFamily: "dm-sb", fontSize: 14 }}
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </Text>
+            </TouchableOpacity>
+          ),
         }}
       />
 
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          flexDirection: "column",
-          gap: 16,
-        }}
-      >
-        {/* Doctor Info */}
+      {saveStatus && (
         <View
           style={{
-            flexDirection: "row",
-            gap: 16,
-            alignItems: "center",
-          }}
-        >
-          <UserAvatar size={48} />
-          <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
-            Dr. {data.firstName + " " + data.lastName}
-          </Text>
-        </View>
-
-        {/* Specializations */}
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 8,
-            paddingBottom: 16,
-            borderBottomWidth: 1,
-            borderColor: Colors.light.faintGrey,
-          }}
-        >
-          {["primary care", "ER"].map((specialty: string, idx: number) => (
-            <View
-              key={idx}
-              style={{
-                backgroundColor: idx === 0 ? "#8EFFC3" : "#E6E6FA",
-                paddingVertical: 4,
-                paddingHorizontal: 10,
-                borderRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "dm",
-                  fontSize: 12,
-                  color: "#333",
-                }}
-              >
-                {specialty}
-              </Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Languages */}
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 16,
-          }}
-        >
-          <Language size={20} color="#000" />
-          <View style={{ flexDirection: "column", gap: 8 }}>
-            <Text
-              style={{
-                fontFamily: "dm-sb",
-                fontSize: 14,
-                color: "#000",
-              }}
-            >
-              Languages
-            </Text>
-            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#444" }}>
-              This doctor speaks English.
-            </Text>
-          </View>
-        </View>
-
-        {/* Experience */}
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 16,
-            paddingBottom: 16,
-            borderBottomWidth: 1,
-            borderColor: Colors.light.faintGrey,
-          }}
-        >
-          <Briefcase size={20} color="#000" />
-          <View style={{ flexDirection: "column", gap: 8 }}>
-            <Text
-              style={{
-                fontFamily: "dm-sb",
-                fontSize: 14,
-                color: "#000",
-              }}
-            >
-              Experience
-            </Text>
-            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#444" }}>
-              Dr. {data.firstName + " " + data.lastName} has over 15 years of
-              experience.
-            </Text>
-          </View>
-        </View>
-
-        {/* Bio */}
-        <View
-          style={{
-            flexDirection: "column",
-            gap: 8,
-            paddingBottom: 16,
-            borderBottomWidth: 1,
-            borderColor: Colors.light.faintGrey,
+            padding: 16,
+            backgroundColor:
+              saveStatus.type === "success" ? Colors.green : Colors.pink,
+            opacity: 0.8,
           }}
         >
           <Text
             style={{
               fontFamily: "dm",
               fontSize: 14,
-              color: "#444",
-              marginBottom: 16,
+              color: "#fff",
+              textAlign: "center",
             }}
-            numberOfLines={5}
           >
-            Biographhy here
+            {saveStatus.message}
           </Text>
-          <TouchableOpacity style={{ marginBottom: 20 }}>
-            <Text
-              style={{
-                fontFamily: "dm-sb",
-                fontSize: 14,
-                color: "#000",
-              }}
-            >
-              Show more
-            </Text>
-          </TouchableOpacity>
         </View>
+      )}
 
-        {/* Reviews */}
-        <View
-          style={{
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
-            borderColor: "#eee",
-            paddingVertical: 16,
-            marginBottom: 20,
-          }}
-        >
-          <Text style={{ fontFamily: "dm-sb", fontSize: 14, marginBottom: 6 }}>
-            ⭐ 4.96 · 56 reviews
-          </Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Avatar size={28} initials={"JN"} />
-            <View>
-              <Text style={{ fontFamily: "dm-sb", fontSize: 14 }}>Mark</Text>
-              <Text style={{ fontFamily: "dm", fontSize: 13 }}>
-                Best doctor ever!!!
-              </Text>
+      {/* Specializations Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showSpecializationsModal}
+        onRequestClose={() => setShowSpecializationsModal(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ padding: 16 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 16,
+                }}
+              >
+                <Text style={{ fontFamily: "dm-sb", fontSize: 24 }}>
+                  Specializations
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setShowSpecializationsModal(false)}
+                >
+                  <Ionicons name="close" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  backgroundColor: "#F5F5F5",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <Ionicons name="search" size={20} color="#666" />
+                <TextInput
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                  placeholder="Search specializations"
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    paddingHorizontal: 8,
+                    fontFamily: "dm",
+                    fontSize: 16,
+                  }}
+                />
+                {searchQuery.length > 0 && (
+                  <TouchableOpacity onPress={() => setSearchQuery("")}>
+                    <Ionicons name="close-circle" size={20} color="#666" />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <FlatList
+                data={filteredSpecializations}
+                renderItem={renderSpecializationItem}
+                keyExtractor={(item) => item.id}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+              />
             </View>
-          </View>
-          <TouchableOpacity style={{ marginTop: 12 }}>
-            <Text
+          </SafeAreaView>
+        </View>
+      </Modal>
+
+      {/* Languages Selection Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showLanguagesModal}
+        onRequestClose={() => setShowLanguagesModal(false)}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "flex-end",
+          }}
+          onPress={() => setShowLanguagesModal(false)}
+        >
+          <Pressable
+            style={{
+              backgroundColor: "white",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              padding: 20,
+              paddingBottom: 40,
+            }}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <View
               style={{
-                fontFamily: "dm-sb",
-                fontSize: 14,
-                color: "#000",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 20,
               }}
             >
-              Show all reviews
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text style={{ fontFamily: "dm-sb", fontSize: 18 }}>
+                Select Languages
+              </Text>
+              <TouchableOpacity onPress={() => setShowLanguagesModal(false)}>
+                <Ionicons name="close" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
+            {LANGUAGES.map((language) => (
+              <TouchableOpacity
+                key={language}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingVertical: 12,
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#F5F5F5",
+                }}
+                onPress={() => toggleLanguage(language)}
+              >
+                <View
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                    borderWidth: 2,
+                    borderColor: selectedLanguages.includes(language)
+                      ? "#6366f1"
+                      : "#E5E5E5",
+                    marginRight: 12,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {selectedLanguages.includes(language) && (
+                    <View
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 5,
+                        backgroundColor: "#6366f1",
+                      }}
+                    />
+                  )}
+                </View>
+                <Text style={{ fontFamily: "dm", fontSize: 16 }}>
+                  {language}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </Pressable>
+        </Pressable>
+      </Modal>
 
-        {/* License */}
-        <TouchableOpacity
-          style={{
-            paddingVertical: 16,
-            borderBottomWidth: 1,
-            borderColor: "#eee",
-          }}
-        >
-          <Text style={{ fontFamily: "dm", fontSize: 14, color: "#000" }}>
-            View Dr. {data.firstName + " " + data.lastName}'s license
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* Bottom CTA */}
-      <View
-        style={{
-          flexDirection: "row",
+      <ScrollView
+        contentContainerStyle={{
           padding: 16,
-          borderTopWidth: 1,
-          borderColor: "#eee",
-          alignItems: "center",
-          justifyContent: "space-between",
-          backgroundColor: "#fff",
+          gap: 24,
         }}
       >
-        <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>${16}</Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#000",
-            paddingVertical: 10,
-            paddingHorizontal: 24,
-            borderRadius: 8,
-          }}
-        >
-          <Text style={{ fontFamily: "dm-sb", color: "#fff", fontSize: 14 }}>
-            Book
+        {/* Doctor Info */}
+        <View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>
+          <UserAvatar size={48} />
+          <View>
+            <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
+              Dr. {data.firstName + " " + data.lastName}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "dm-sb",
+                fontSize: 14,
+                color: Colors.onlineConsultation,
+              }}
+            >
+              doctor
+            </Text>
+          </View>
+        </View>
+
+        {/* Specializations */}
+        <View>
+          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+            Specializations
           </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            onPress={() => setShowSpecializationsModal(true)}
+            style={{
+              borderWidth: 1,
+              borderColor: "#E5E5E5",
+              borderRadius: 8,
+              padding: 12,
+            }}
+          >
+            {selectedSpecializations.length ? (
+              <View>
+                <View
+                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
+                >
+                  {(() => {
+                    const selected = SPECIALIZATIONS.filter((s) =>
+                      selectedSpecializations.includes(s.id)
+                    );
+                    const displayItems = selected.slice(0, 2);
+                    return (
+                      <>
+                        {displayItems.map((spec) => (
+                          <View
+                            key={spec.id}
+                            style={{
+                              backgroundColor: spec.color,
+                              paddingVertical: 6,
+                              paddingHorizontal: 12,
+                              borderRadius: 16,
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontFamily: "dm",
+                                fontSize: 14,
+                                color: "#000",
+                              }}
+                            >
+                              {spec.name}
+                            </Text>
+                          </View>
+                        ))}
+                        {selected.length > 2 && (
+                          <View
+                            style={{
+                              backgroundColor: "#F5F5F5",
+                              paddingVertical: 6,
+                              paddingHorizontal: 12,
+                              borderRadius: 16,
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontFamily: "dm",
+                                fontSize: 14,
+                                color: "#666",
+                              }}
+                            >
+                              +{selected.length - 2} more
+                            </Text>
+                          </View>
+                        )}
+                      </>
+                    );
+                  })()}
+                </View>
+              </View>
+            ) : (
+              <Text
+                style={{
+                  fontFamily: "dm",
+                  fontSize: 14,
+                  color: "#666",
+                }}
+              >
+                Select specializations
+              </Text>
+            )}
+            <View style={{ position: "absolute", right: 12, top: 12 }}>
+              <Ionicons name="chevron-down" size={20} color="#666" />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Languages */}
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 12,
+            }}
+          >
+            <Language size={20} color="#000" />
+            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>Languages</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => setShowLanguagesModal(true)}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderWidth: 1,
+              borderColor: "#E5E5E5",
+              borderRadius: 8,
+              padding: 12,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "dm",
+                fontSize: 14,
+                color: selectedLanguages.length ? "#000" : "#666",
+              }}
+            >
+              {selectedLanguages.length
+                ? selectedLanguages.join(", ")
+                : "Select languages"}
+            </Text>
+            <Ionicons name="chevron-down" size={20} color="#666" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Experience */}
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 12,
+            }}
+          >
+            <Briefcase size={20} color="#000" />
+            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>
+              Experience
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <TextInput
+              value={experience}
+              onChangeText={setExperience}
+              keyboardType="numeric"
+              style={{
+                borderWidth: 1,
+                borderColor: "#E5E5E5",
+                borderRadius: 8,
+                padding: 12,
+                width: 80,
+                fontFamily: "dm",
+                fontSize: 14,
+              }}
+            />
+            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#666" }}>
+              years of experience
+            </Text>
+          </View>
+        </View>
+
+        {/* Biography */}
+        <View>
+          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+            Biography
+          </Text>
+          <TextInput
+            value={biography}
+            onChangeText={setBiography}
+            multiline
+            numberOfLines={6}
+            style={{
+              borderWidth: 1,
+              borderColor: "#E5E5E5",
+              borderRadius: 8,
+              padding: 12,
+              fontFamily: "dm",
+              fontSize: 14,
+              textAlignVertical: "top",
+            }}
+          />
+        </View>
+
+        {/* Consultation Price */}
+        <View>
+          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+            Consultation Price
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontFamily: "dm", fontSize: 16, marginRight: 8 }}>
+              $
+            </Text>
+            <TextInput
+              value={consultationPrice}
+              onChangeText={setConsultationPrice}
+              keyboardType="numeric"
+              style={{
+                borderWidth: 1,
+                borderColor: "#E5E5E5",
+                borderRadius: 8,
+                padding: 12,
+                width: 100,
+                fontFamily: "dm",
+                fontSize: 14,
+              }}
+            />
+            <Text
+              style={{
+                fontFamily: "dm",
+                fontSize: 14,
+                color: "#666",
+                marginLeft: 8,
+              }}
+            >
+              per consultation
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

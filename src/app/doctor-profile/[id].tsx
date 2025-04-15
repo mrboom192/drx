@@ -104,54 +104,41 @@ const Page = () => {
         >
           <Avatar size={64} uri={doctor.image || undefined} />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 24, color: "#000" }}>
+            <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
               Dr. {doctor.firstName} {doctor.lastName}
             </Text>
-            <Text
-              style={{
-                fontFamily: "dm",
-                fontSize: 14,
-                color: "#666",
-                marginTop: 4,
-              }}
-            >
-              {doctor.specializations[0]}
-            </Text>
-          </View>
-        </View>
-
-        {/* Specializations */}
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: 8,
-            paddingBottom: 16,
-            borderBottomWidth: 1,
-            borderColor: Colors.light.faintGrey,
-          }}
-        >
-          {doctor.specializations?.map((specialty: string, idx: number) => (
             <View
-              key={idx}
               style={{
-                backgroundColor: idx === 0 ? "#8EFFC3" : "#E6E6FA",
-                paddingVertical: 6,
-                paddingHorizontal: 12,
-                borderRadius: 6,
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 8,
+                marginTop: 8,
               }}
             >
-              <Text
-                style={{
-                  fontFamily: "dm",
-                  fontSize: 14,
-                  color: "#333",
-                }}
-              >
-                {specialty}
-              </Text>
+              {doctor.specializations?.map((specialty: string, idx: number) => (
+                <View
+                  key={idx}
+                  style={{
+                    backgroundColor: idx === 0 ? "#8EFFC3" : "#E6E6FA",
+                    paddingVertical: 4,
+                    paddingHorizontal: 12,
+                    borderRadius: 4,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "dm",
+                      fontSize: 12,
+                      color: "#333",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {specialty}
+                  </Text>
+                </View>
+              ))}
             </View>
-          ))}
+          </View>
         </View>
 
         {/* Languages */}
@@ -170,7 +157,7 @@ const Page = () => {
               lineHeight: 20,
             }}
           >
-            This doctor speaks {doctor.languages?.join(", ")}.
+            Dr. {doctor.firstName} speaks {doctor.languages?.join(", ")}.
           </Text>
         </View>
 
@@ -190,7 +177,7 @@ const Page = () => {
               lineHeight: 20,
             }}
           >
-            Dr. {doctor.firstName} has over {doctor.experience} years of
+            Dr. {doctor.firstName} has over {doctor.experience}+ years of
             experience.
           </Text>
         </View>

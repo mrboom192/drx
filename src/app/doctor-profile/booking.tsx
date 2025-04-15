@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Stack, useLocalSearchParams, router } from "expo-router";
@@ -13,6 +14,7 @@ import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 interface TimeSlot {
   id: string;
@@ -21,7 +23,7 @@ interface TimeSlot {
   isAvailable: boolean;
 }
 
-const generateTimeSlots = (): TimeSlot[] => {
+const generateTimeSlots = (date: Date): TimeSlot[] => {
   const slots: TimeSlot[] = [];
   const startHour = 9; // 9 AM
   const endHour = 17; // 5 PM
@@ -36,7 +38,7 @@ const generateTimeSlots = (): TimeSlot[] => {
         .toString()
         .padStart(2, "0")}`;
       slots.push({
-        id: `${startTime}-${endTime}`,
+        id: `${date.toISOString().split("T")[0]}-${startTime}-${endTime}`,
         startTime,
         endTime,
         isAvailable: true,
@@ -44,6 +46,14 @@ const generateTimeSlots = (): TimeSlot[] => {
     }
   }
   return slots;
+};
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
 };
 
 const BookingPage = () => {
@@ -54,6 +64,8 @@ const BookingPage = () => {
   const [doctor, setDoctor] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isBooking, setIsBooking] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     const fetchDoctorProfile = async () => {
@@ -73,9 +85,17 @@ const BookingPage = () => {
 
     if (id) {
       fetchDoctorProfile();
-      setTimeSlots(generateTimeSlots());
+      setTimeSlots(generateTimeSlots(selectedDate));
     }
-  }, [id]);
+  }, [id, selectedDate]);
+
+  const onDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setSelectedDate(selectedDate);
+      setSelectedSlot(null);
+    }
+  };
 
   const handleBooking = async () => {
     if (!selectedSlot || !doctor || !user) return;
@@ -91,12 +111,15 @@ const BookingPage = () => {
         patientName: `${user.firstName} ${user.lastName}`,
         doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
         timeSlot: selectedSlot,
+        date: selectedDate,
         price: doctor.consultationPrice,
         status: "pending",
         createdAt: Timestamp.now(),
         scheduledFor: Timestamp.fromDate(
           new Date(
-            new Date().setHours(parseInt(selectedSlot.startTime.split(":")[0]))
+            selectedDate.setHours(
+              parseInt(selectedSlot.startTime.split(":")[0])
+            )
           )
         ),
       });
@@ -114,6 +137,7 @@ const BookingPage = () => {
         patientId: user.uid,
         patientName: `${user.firstName} ${user.lastName}`,
         timeSlot: selectedSlot,
+        date: selectedDate,
         price: doctor.consultationPrice,
         status: "pending",
         createdAt: Timestamp.now(),
@@ -132,6 +156,7 @@ const BookingPage = () => {
         doctorId: id,
         doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
         timeSlot: selectedSlot,
+        date: selectedDate,
         price: doctor.consultationPrice,
         status: "pending",
         createdAt: Timestamp.now(),
@@ -210,6 +235,30 @@ const BookingPage = () => {
           </View>
         </View>
 
+        {/* Date Selection */}
+        <View>
+          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+            Select Date
+          </Text>
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderWidth: 1,
+              borderColor: "#E5E5E5",
+              borderRadius: 8,
+              padding: 12,
+            }}
+          >
+            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#000" }}>
+              {formatDate(selectedDate)}
+            </Text>
+            <Ionicons name="calendar" size={20} color="#666" />
+          </TouchableOpacity>
+        </View>
+
         {/* Time Slots */}
         <View>
           <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 16 }}>
@@ -286,6 +335,16 @@ const BookingPage = () => {
           )}
         </TouchableOpacity>
       </View>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={onDateChange}
+          minimumDate={new Date()}
+        />
+      )}
     </SafeAreaView>
   );
 };

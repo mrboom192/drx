@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import MapView from "react-native-map-clustering"; // Easy way to do map clustering
 import { Doctor } from "@/types/doctor";
 import Avatar from "./Avatar";
+import { TextSemiBold } from "./StyledText";
 
 interface Props {
   doctors: any;
@@ -43,15 +44,14 @@ const DoctorMap = memo(({ doctors }: Props) => {
         }}
       >
         <TouchableOpacity style={styles.marker}>
-          <Text
+          <TextSemiBold
             style={{
               color: "#000",
               textAlign: "center",
-              fontFamily: "dm-sb",
             }}
           >
             {points}
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </Marker>
     );
@@ -83,7 +83,7 @@ const DoctorMap = memo(({ doctors }: Props) => {
           >
             <View style={styles.marker}>
               <Avatar size={24} uri={item.photo_url} />
-              <Text style={styles.markerText}>${item.consultation_price}</Text>
+              <TextRegular style={styles.markerText}>${item.consultation_price}</TextRegular>
             </View>
           </Marker>
         ))}
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
   },
   markerText: {
     fontSize: 14,
-    fontFamily: "dm-sb",
   },
   locateBtn: {
     position: "absolute",

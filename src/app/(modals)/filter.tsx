@@ -5,6 +5,7 @@ import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 
 // 1:11:09
 
@@ -43,7 +44,7 @@ const Page = () => {
         options={{
           title: "Filters",
           headerTitleStyle: {
-            fontFamily: "dm-sb",
+            fontFamily: "DMSans_600SemiBold",
           },
           presentation: "modal",
           headerLeft: () => (
@@ -57,11 +58,9 @@ const Page = () => {
           ),
         }}
       />
-      <Text
-        style={[themeTextStylePrimary, { fontFamily: "dm-sb", fontSize: 24 }]}
-      >
+      <TextSemiBold style={[themeTextStylePrimary, { fontSize: 24 }]}>
         Provider language
-      </Text>
+      </TextSemiBold>
       <View
         style={{
           width: "100%",
@@ -92,9 +91,8 @@ const Page = () => {
             onPress={() => handleLanguageSelect(language.abbr)}
           >
             <Image source={language.icon} style={styles.image} />
-            <Text
+            <TextSemiBold
               style={{
-                fontFamily: "dm-sb",
                 color: languageFilter.includes(language.abbr)
                   ? Colors.primary
                   : colorScheme === "light"
@@ -103,7 +101,7 @@ const Page = () => {
               }}
             >
               {language.name}
-            </Text>
+            </TextSemiBold>
           </TouchableOpacity>
         ))}
       </View>

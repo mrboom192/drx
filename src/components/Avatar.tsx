@@ -7,6 +7,7 @@ import Animated, {
   withRepeat,
   Easing,
 } from "react-native-reanimated";
+import { TextSemiBold } from "./StyledText";
 
 const Avatar = ({
   onPress = null,
@@ -90,16 +91,15 @@ const Avatar = ({
           />
         </>
       ) : (
-        <Text
+        <TextSemiBold
           style={{
-            fontFamily: "dm-sb",
             color: "#555",
             marginHorizontal: 8,
             textAlign: "center",
           }}
         >
           {initials}
-        </Text>
+        </TextSemiBold>
       )}
     </Pressable>
   );

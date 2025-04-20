@@ -8,7 +8,7 @@ const ProfileLayout = () => {
       screenOptions={{
         navigationBarColor: "#FFF",
         headerTitleStyle: {
-          fontFamily: "dm-sb",
+          fontFamily: "DMSans_600SemiBold",
         },
         headerTitleAlign: "center",
         headerShadowVisible: false,

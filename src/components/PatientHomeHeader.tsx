@@ -11,6 +11,7 @@ import { SafeAreaView } from "./Themed";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Tab } from "@/types/tab";
 import UserRow from "./UserRow";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 export const PatientHomeHeader = ({
   tabs,
@@ -87,16 +88,22 @@ export const PatientHomeHeader = ({
               >
                 {item.icon}
               </View>
-              <Text
-                style={[
-                  activeIndex === index
-                    ? { color: "#000", fontFamily: "dm-sb" }
-                    : [themeTextStyleSecondary, { fontFamily: "dm" }],
-                  { fontSize: 12, textAlign: "center" },
-                ]}
-              >
-                {item.name}
-              </Text>
+              {activeIndex === index ? (
+                <TextSemiBold
+                  style={{ color: "#000", fontSize: 12, textAlign: "center" }}
+                >
+                  {item.name}
+                </TextSemiBold>
+              ) : (
+                <TextRegular
+                  style={[
+                    themeTextStyleSecondary,
+                    { fontSize: 12, textAlign: "center" },
+                  ]}
+                >
+                  {item.name}
+                </TextRegular>
+              )}
             </Pressable>
           ))}
         </ScrollView>

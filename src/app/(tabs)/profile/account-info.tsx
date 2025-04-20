@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
   TextInput,
   SafeAreaView,
   ScrollView,
@@ -18,10 +17,10 @@ import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../../../firebaseConfig";
 import {
   parsePhoneNumberFromString,
-  isValidPhoneNumber,
   AsYouType,
   CountryCode,
 } from "libphonenumber-js";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 
 const AccountInfo = () => {
   const { data } = useUser();
@@ -97,7 +96,7 @@ const AccountInfo = () => {
       <Stack.Screen
         options={{
           title: "Account info",
-          headerTitleStyle: { fontFamily: "dm-sb" },
+          headerTitleStyle: { fontFamily: "DMSans_600SemiBold" },
           headerTitleAlign: "center",
         }}
       />
@@ -107,7 +106,7 @@ const AccountInfo = () => {
         keyboardShouldPersistTaps="handled"
       >
         {/* First Name */}
-        <Text style={{ fontFamily: "dm", marginBottom: 6 }}>First name</Text>
+        <TextRegular style={{ marginBottom: 6 }}>First name</TextRegular>
         <TextInput
           value={firstName}
           onChangeText={setFirstName}
@@ -116,13 +115,13 @@ const AccountInfo = () => {
             borderColor: "#ddd",
             borderRadius: 8,
             padding: 12,
-            fontFamily: "dm",
+            fontFamily: "DMSans_400Regular",
             marginBottom: 16,
           }}
         />
 
         {/* Last Name */}
-        <Text style={{ fontFamily: "dm", marginBottom: 6 }}>Last name</Text>
+        <TextRegular style={{ marginBottom: 6 }}>Last name</TextRegular>
         <TextInput
           value={lastName}
           onChangeText={setLastName}
@@ -131,15 +130,13 @@ const AccountInfo = () => {
             borderColor: "#ddd",
             borderRadius: 8,
             padding: 12,
-            fontFamily: "dm",
+            fontFamily: "DMSans_400Regular",
             marginBottom: 16,
           }}
         />
 
         {/* Phone Number */}
-        <Text style={{ fontFamily: "dm", marginBottom: 6 }}>
-          Phone (optional)
-        </Text>
+        <TextRegular style={{ marginBottom: 6 }}>Phone (optional)</TextRegular>
         <View
           style={{
             flexDirection: "row",
@@ -159,7 +156,7 @@ const AccountInfo = () => {
               marginRight: 8,
             }}
           >
-            <Text style={{ fontSize: 18 }}>{countryFlag}</Text>
+            <TextRegular style={{ fontSize: 18 }}>{countryFlag}</TextRegular>
           </Pressable>
 
           <TextInput
@@ -195,7 +192,7 @@ const AccountInfo = () => {
         />
 
         {/* Date of Birth */}
-        <Text style={{ fontFamily: "dm", marginBottom: 6 }}>Date of birth</Text>
+        <TextRegular style={{ marginBottom: 6 }}>Date of birth</TextRegular>
         <TouchableOpacity
           onPress={() => setShowDatePicker(true)}
           style={{
@@ -206,13 +203,13 @@ const AccountInfo = () => {
             marginBottom: 16,
           }}
         >
-          <Text style={{ fontFamily: "dm" }}>
+          <TextRegular>
             {dateOfBirth.toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
-          </Text>
+          </TextRegular>
         </TouchableOpacity>
 
         {showDatePicker && (
@@ -228,9 +225,7 @@ const AccountInfo = () => {
         )}
 
         {/* Gender */}
-        <Text style={{ fontFamily: "dm", marginBottom: 6 }}>
-          Gender (optional)
-        </Text>
+        <TextRegular style={{ marginBottom: 6 }}>Gender (optional)</TextRegular>
         <View
           style={{
             borderWidth: 1,
@@ -270,9 +265,9 @@ const AccountInfo = () => {
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontFamily: "dm-sb", fontSize: 16 }}>
+          <TextSemiBold style={{ color: "#fff", fontSize: 16 }}>
             {loading ? "Saving..." : "Save"}
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

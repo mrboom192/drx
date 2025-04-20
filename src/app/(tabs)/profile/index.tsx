@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserContext";
 import UserAvatar from "@/components/UserAvatar";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 
 const items = [
   {
@@ -48,7 +49,7 @@ const Profile = () => {
   const color = data.role === "patient" ? Colors.primary : Colors.gold;
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <TextRegular>Loading...</TextRegular>;
   }
 
   return (
@@ -101,25 +102,24 @@ const Profile = () => {
         >
           <UserAvatar size={64} canUpload={true} />
           <View>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
+            <TextSemiBold style={{ fontSize: 20 }}>
               {data.firstName + " " + data.lastName}
-            </Text>
-            <Text
+            </TextSemiBold>
+            <TextRegular
               style={{
-                fontFamily: "dm",
                 fontSize: 16,
                 color,
               }}
             >
               {data.role ? data.role : "Role not found"}
-            </Text>
+            </TextRegular>
           </View>
         </View>
 
         {/* Main Message */}
-        <Text style={{ fontFamily: "dm-sb", fontSize: 20, marginBottom: 16 }}>
+        <TextSemiBold style={{ fontSize: 20, marginBottom: 16 }}>
           How can we help you, {data.firstName}?
-        </Text>
+        </TextSemiBold>
 
         {/* Links */}
         <View style={{ width: "100%" }}>
@@ -155,9 +155,11 @@ const Profile = () => {
                       color={color}
                       style={{ marginBottom: 12 }}
                     />
-                    <Text style={{ fontSize: 12, color: Colors.light.grey }}>
+                    <TextRegular
+                      style={{ fontSize: 12, color: Colors.light.grey }}
+                    >
                       {item.label}
-                    </Text>
+                    </TextRegular>
                   </TouchableOpacity>
                 </Link>
               ))}
@@ -176,16 +178,15 @@ const Profile = () => {
             borderRadius: 8,
           }}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#FFF",
               fontSize: 16,
-              fontFamily: "dm-sb",
               textAlign: "center",
             }}
           >
             Log out
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

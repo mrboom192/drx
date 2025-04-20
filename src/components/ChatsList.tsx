@@ -1,28 +1,19 @@
 import {
   View,
-  Text,
   ListRenderItem,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Image,
-  Touchable,
   useColorScheme,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { defaultStyles, themedStyles } from "@/constants/Styles";
+import React, { useRef, useState } from "react";
+import { themedStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
-import {
-  BottomSheetFlatList,
-  BottomSheetFlatListMethods,
-} from "@gorhom/bottom-sheet";
-import { Doctor } from "@/types/doctor";
-import Rating from "./Rating";
 import { Chat } from "@/types/chat";
 import { format } from "date-fns";
 import Colors from "@/constants/Colors";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
   chats: Chat[];
@@ -30,22 +21,8 @@ interface Props {
 
 const ChatsList = ({ chats }: Props) => {
   const [loading, setLoading] = useState(false);
-  const listRef = useRef<BottomSheetFlatListMethods>(null);
+  const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
-
-  //   useEffect(() => {
-  //     if (refresh) {
-  //       listRef.current?.scrollToOffset({ offset: 0, animated: true });
-  //     }
-  //   }, [refresh]);
-
-  //   useEffect(() => {
-  //     setLoading(true);
-
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //     }, 200);
-  //   }, [specialty]);
 
   const themeBorderStyle =
     colorScheme === "light"
@@ -89,33 +66,23 @@ const ChatsList = ({ chats }: Props) => {
           </View>
 
           <View style={{ flex: 1 }}>
-            <Text
-              style={[
-                themeTextStylePrimary,
-                { fontFamily: "dm-sb", fontSize: 16 },
-              ]}
-            >
+            <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
               {item.doctor_name}
-            </Text>
+            </TextSemiBold>
             <View style={{ flexDirection: "row" }}>
-              <Text
+              <TextRegular
                 numberOfLines={2}
                 ellipsizeMode="tail"
-                style={[themeTextStyleSecondary, { fontFamily: "dm", flex: 1 }]}
+                style={[themeTextStyleSecondary, { flex: 1 }]}
               >
                 {item.last_sender_name}: {item.last_message}
-              </Text>
+              </TextRegular>
             </View>
           </View>
 
-          <Text
-            style={[
-              themeTextStyleSecondary,
-              { fontFamily: "dm", fontSize: 16 },
-            ]}
-          >
+          <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
             {format(new Date(item.last_updated * 1000), "h:mm a")}
-          </Text>
+          </TextRegular>
         </View>
       </TouchableOpacity>
     </Link>

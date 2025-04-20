@@ -15,6 +15,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import Colors from "@/constants/Colors";
 
 import { useUser } from "@/contexts/UserContext"; // <- make sure you import this
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 
 const DoctorVerification = () => {
   const { pickImage, uploadImage, isUploading } = useImagePicker();
@@ -65,16 +66,15 @@ const DoctorVerification = () => {
       <Stack.Screen
         options={{
           title: "Verification",
-          headerTitleStyle: { fontFamily: "dm-sb" },
+          headerTitleStyle: { fontFamily: "DMSans_600SemiBold" },
           headerTitleAlign: "center",
         }}
       />
 
       {isVerified ? (
         <View style={{ alignItems: "center", marginTop: 40 }}>
-          <Text
+          <TextSemiBold
             style={{
-              fontFamily: "dm-sb",
               fontSize: 18,
               color: Colors.green,
               textAlign: "center",
@@ -82,10 +82,9 @@ const DoctorVerification = () => {
             }}
           >
             You're verified!
-          </Text>
-          <Text
+          </TextSemiBold>
+          <TextRegular
             style={{
-              fontFamily: "dm",
               fontSize: 14,
               color: "#444",
               textAlign: "center",
@@ -93,13 +92,12 @@ const DoctorVerification = () => {
             }}
           >
             You’ve already been approved and are visible to patients.
-          </Text>
+          </TextRegular>
         </View>
       ) : isPending ? (
         <View style={{ alignItems: "center", marginTop: 40 }}>
-          <Text
+          <TextSemiBold
             style={{
-              fontFamily: "dm-sb",
               fontSize: 18,
               color: "#333",
               textAlign: "center",
@@ -107,10 +105,9 @@ const DoctorVerification = () => {
             }}
           >
             Your verification is currently pending.
-          </Text>
-          <Text
+          </TextSemiBold>
+          <TextRegular
             style={{
-              fontFamily: "dm",
               fontSize: 14,
               color: "#666",
               textAlign: "center",
@@ -118,20 +115,19 @@ const DoctorVerification = () => {
             }}
           >
             We'll notify you once your license has been reviewed and approved.
-          </Text>
+          </TextRegular>
         </View>
       ) : (
         <>
-          <Text
+          <TextSemiBold
             style={{
               fontSize: 18,
-              fontFamily: "dm-sb",
               marginBottom: 16,
               color: "#000",
             }}
           >
             Upload your medical license
-          </Text>
+          </TextSemiBold>
 
           <Pressable
             onPress={handlePickImage}
@@ -155,9 +151,7 @@ const DoctorVerification = () => {
             ) : isUploading ? (
               <ActivityIndicator />
             ) : (
-              <Text style={{ fontFamily: "dm", color: "#888" }}>
-                Tap to upload
-              </Text>
+              <TextRegular style={{ color: "#888" }}>Tap to upload</TextRegular>
             )}
           </Pressable>
 
@@ -174,16 +168,15 @@ const DoctorVerification = () => {
             {isSubmitting ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text
+              <TextSemiBold
                 style={{
                   color: "#fff",
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                   textAlign: "center",
                 }}
               >
                 Submit for Verification
-              </Text>
+              </TextSemiBold>
             )}
           </Pressable>
         </>

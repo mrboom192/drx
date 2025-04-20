@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { themedStyles } from "@/constants/Styles";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 const tabs = [
   {
@@ -69,14 +70,14 @@ const MessagesHeader = ({}: Props) => {
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Messages title */}
-          <Text
+          <TextSemiBold
             style={[
               themeTextStylePrimary,
               { fontSize: 32, fontFamily: "dm-sb" },
             ]}
           >
             Consultations
-          </Text>
+          </TextSemiBold>
 
           <TouchableOpacity
             onPress={() => {
@@ -135,7 +136,7 @@ const MessagesHeader = ({}: Props) => {
                 styles.filterPill,
               ]}
             >
-              <Text
+              <TextRegular
                 style={
                   activeIndex === index
                     ? {
@@ -143,17 +144,13 @@ const MessagesHeader = ({}: Props) => {
                           colorScheme === "light"
                             ? "#fff"
                             : Colors.dark.background,
-                        fontFamily: "dm",
                         textTransform: "capitalize",
                       }
-                    : [
-                        themeTextStyleSecondary,
-                        { fontFamily: "dm", textTransform: "capitalize" },
-                      ]
+                    : [themeTextStyleSecondary, { textTransform: "capitalize" }]
                 }
               >
                 {item.name}
-              </Text>
+              </TextRegular>
             </TouchableOpacity>
           ))}
         </ScrollView>

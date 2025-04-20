@@ -6,6 +6,7 @@ import { useSession } from "@/contexts/AuthContext";
 import { auth } from "@/../firebaseConfig";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import { TextRegular } from "@/components/StyledText";
 
 export default function TabLayout() {
   const { signOut, session, isLoading } = useSession();
@@ -21,7 +22,7 @@ export default function TabLayout() {
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading || !isAuthReady) {
-    return <Text>Loading...</Text>;
+    return <TextRegular>Loading...</TextRegular>;
   }
 
   // Only require authentication within the (app) group's layout as users

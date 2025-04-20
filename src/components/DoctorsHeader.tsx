@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { TextSemiBold } from "./StyledText";
 
 const categories = [
   {
@@ -182,9 +183,9 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
               }
             />
             <View>
-              <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
+              <TextSemiBold style={themeTextStyleSecondary}>
                 Find the perfect doctor
-              </Text>
+              </TextSemiBold>
             </View>
           </TouchableOpacity>
 
@@ -230,26 +231,15 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
                 gap: 4,
               }}
             >
-              {/* <MaterialIcons
-                name={item.icon as any}
-                color={
-                  activeIndex === index
-                    ? Colors.primary
-                    : colorScheme === "light"
-                    ? Colors.light.grey
-                    : Colors.dark.grey
-                }
-                size={24}
-              /> */}
-              <Text
+              <TextSemiBold
                 style={
                   activeIndex === index
-                    ? { color: Colors.primary, fontFamily: "dm-sb" }
-                    : [themeTextStyleSecondary, { fontFamily: "dm-sb" }]
+                    ? { color: Colors.primary }
+                    : themeTextStyleSecondary
                 }
               >
                 {item.name}
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           ))}
         </ScrollView>

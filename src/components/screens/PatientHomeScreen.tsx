@@ -16,6 +16,7 @@ import { useUser } from "@/contexts/UserContext";
 import { Stack } from "expo-router";
 import { PatientHomeHeader } from "../PatientHomeHeader";
 import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
+import { TextRegular } from "../StyledText";
 
 const tabs = [
   {
@@ -74,7 +75,7 @@ const PatientHomeScreen = () => {
   };
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <TextRegular>Loading...</TextRegular>;
   }
 
   return (
@@ -107,7 +108,7 @@ const PatientHomeScreen = () => {
             flex: 1,
           }}
         >
-          {tabComponents[tab] || <Text>Tab not found</Text>}
+          {tabComponents[tab] || <TextRegular>Tab not found</TextRegular>}
         </Animated.View>
       </View>
     </SafeAreaView>

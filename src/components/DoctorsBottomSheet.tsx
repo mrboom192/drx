@@ -12,6 +12,7 @@ import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Doctor } from "@/types/doctor";
 import DoctorList from "./DoctorList";
+import { TextSemiBold } from "./StyledText";
 
 interface Props {
   doctors: Doctor[];
@@ -56,7 +57,7 @@ const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
         <DoctorList doctors={doctors} specialty={specialty} refresh={refresh} />
         <View style={styles.absoluteView}>
           <TouchableOpacity onPress={showMap} style={styles.btn}>
-            <Text style={{ fontFamily: "dm-sb", color: "#FFF" }}>Map</Text>
+            <TextSemiBold style={{ color: "#FFF" }}>Map</TextSemiBold>
             <Ionicons name="map" size={20} color={"#FFF"} />
           </TouchableOpacity>
         </View>

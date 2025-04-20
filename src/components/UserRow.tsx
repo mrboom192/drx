@@ -4,6 +4,7 @@ import { useUser } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import Colors from "@/constants/Colors";
 import Avatar from "./Avatar";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 const UserRow = () => {
   const { data } = useUser();
@@ -37,28 +38,26 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
 
   return (
     <View>
-      <Text
+      <TextRegular
         style={[
           themeTextStyleSecondary,
           {
-            fontFamily: "dm",
             fontSize: 14,
           },
         ]}
       >
         Welcome back,
-      </Text>
+      </TextRegular>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>{name}</Text>
-        <Text
+        <TextSemiBold style={{ fontSize: 20 }}>{name}</TextSemiBold>
+        <TextSemiBold
           style={{
-            fontFamily: "dm-sb",
             fontSize: 12,
             color,
           }}
         >
           {role}
-        </Text>
+        </TextSemiBold>
       </View>
     </View>
   );

@@ -3,11 +3,15 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { useFonts } from "expo-font";
+import {
+  DMSans_400Regular,
+  DMSans_600SemiBold,
+  DMSans_700Bold,
+  useFonts,
+} from "@expo-google-fonts/dm-sans";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import "react-native-reanimated";
 import { SessionProvider } from "../contexts/AuthContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -30,9 +34,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    dm: require("../../assets/fonts/DMSans-Regular.ttf"),
-    "dm-sb": require("../../assets/fonts/DMSans-SemiBold.ttf"),
-    "dm-b": require("../../assets/fonts/DMSans-Bold.ttf"),
+    DMSans_400Regular,
+    DMSans_600SemiBold,
+    DMSans_700Bold,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -46,7 +50,7 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
+  if (!loaded && !error) {
     return null;
   }
 

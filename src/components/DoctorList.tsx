@@ -21,6 +21,7 @@ import {
 import { Doctor } from "@/types/doctor";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Rating from "./Rating";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
   doctors: Doctor[];
@@ -85,30 +86,20 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
 
             <View style={styles.info}>
               <View>
-                <Text
-                  style={[
-                    themeTextStylePrimary,
-                    { fontFamily: "dm-sb", fontSize: 16 },
-                  ]}
-                >
+                <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                   {item.name}
-                </Text>
-                <Text style={[themeTextStyleSecondary, { fontFamily: "dm" }]}>
+                </TextSemiBold>
+                <TextRegular style={themeTextStyleSecondary}>
                   {item.specialty.join(", ")}
-                </Text>
+                </TextRegular>
               </View>
               <Rating rating={4.5} reviews={223} />
             </View>
           </View>
           <View style={[themeBorderStyle, styles.price]}>
-            <Text
-              style={[
-                themeTextStylePrimary,
-                { fontFamily: "dm-sb", fontSize: 20 },
-              ]}
-            >
+            <TextRegular style={[themeTextStylePrimary, { fontSize: 20 }]}>
               ${item.consultation_price}
-            </Text>
+            </TextRegular>
           </View>
         </Animated.View>
       </TouchableOpacity>
@@ -120,11 +111,6 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
       renderItem={renderRow}
       data={loading ? [] : items}
       ref={listRef}
-      // ListHeaderComponent={
-      //   <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
-      //     {items.length} doctors
-      //   </Text>
-      // }
     />
   );
 };

@@ -7,6 +7,7 @@ import DoctorHomeHeader from "../DoctorHomeHeader";
 import { Calendar, DateData } from "react-native-calendars";
 import { format } from "date-fns";
 import { ScrollView } from "react-native-gesture-handler";
+import { TextBold, TextRegular, TextSemiBold } from "../StyledText";
 
 interface Consultation {
   id: number;
@@ -86,9 +87,9 @@ const DoctorHomeScreen = () => {
         />
 
         <View>
-          <Text style={{ fontSize: 18, fontFamily: "dm-sb", marginBottom: 12 }}>
+          <TextSemiBold style={{ fontSize: 18, marginBottom: 12 }}>
             You have {consultationsForDay.length} patient consultations today
-          </Text>
+          </TextSemiBold>
           {consultationsForDay.map((consultation: Consultation) => (
             <View
               key={consultation.id}
@@ -107,16 +108,16 @@ const DoctorHomeScreen = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 16, fontFamily: "dm-b" }}>
+                <TextBold style={{ fontSize: 16 }}>
                   {consultation.patientName}'s Consultation
-                </Text>
+                </TextBold>
                 <TouchableOpacity>
                   <Ionicons name="ellipsis-horizontal" size={20} color="#666" />
                 </TouchableOpacity>
               </View>
-              <Text style={{ color: "#666", marginTop: 4, fontFamily: "dm" }}>
+              <TextRegular style={{ color: "#666", marginTop: 4 }}>
                 {consultation.startTime} - {consultation.endTime}
-              </Text>
+              </TextRegular>
             </View>
           ))}
         </View>
@@ -154,7 +155,7 @@ const VerificationAlert = () => {
         color="#E53935"
         style={{ marginRight: 8 }}
       />
-      <Text
+      <TextRegular
         style={{
           fontFamily: "dm",
           color: "#B71C1C",
@@ -164,7 +165,7 @@ const VerificationAlert = () => {
         }}
       >
         Please verify your doctor account to be listed to patients!
-      </Text>
+      </TextRegular>
       <TouchableOpacity
         onPress={handleNavigate}
         style={{
@@ -175,7 +176,7 @@ const VerificationAlert = () => {
           alignSelf: "flex-start",
         }}
       >
-        <Text
+        <TextSemiBold
           style={{
             fontFamily: "dm-sb",
             color: "white",
@@ -184,7 +185,7 @@ const VerificationAlert = () => {
           }}
         >
           Go to Verification
-        </Text>
+        </TextSemiBold>
       </TouchableOpacity>
     </View>
   );
@@ -211,7 +212,7 @@ const PendingAlert = () => {
         color="#FFA000"
         style={{ marginRight: 8 }}
       />
-      <Text
+      <TextRegular
         style={{
           fontFamily: "dm",
           color: "#B26A00",
@@ -221,7 +222,7 @@ const PendingAlert = () => {
       >
         We are currently working to review your license. We'll notify you once
         it's approved.
-      </Text>
+      </TextRegular>
     </View>
   );
 };
@@ -246,7 +247,7 @@ const MissingPublicProfileAlert = () => {
         color="#E53935"
         style={{ marginRight: 8 }}
       />
-      <Text
+      <TextRegular
         style={{
           fontFamily: "dm",
           color: "#B71C1C",
@@ -257,7 +258,7 @@ const MissingPublicProfileAlert = () => {
       >
         Your public profile is not yet set up. Set it up now so that patients
         can find you. you.
-      </Text>
+      </TextRegular>
     </View>
   );
 };

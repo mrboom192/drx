@@ -64,7 +64,7 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
       : themedStyles.darkTextSecondary;
 
   const renderRow: ListRenderItem<Doctor> = ({ item }) => (
-    <Link href={`/doctor-profile/${item.id}` as any} asChild>
+    <Link href={`/doctor/${item.id}` as any} asChild>
       <TouchableOpacity>
         <Animated.View
           style={[

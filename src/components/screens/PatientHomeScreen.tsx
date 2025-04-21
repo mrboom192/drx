@@ -15,8 +15,14 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useUser } from "@/contexts/UserContext";
 import { Stack } from "expo-router";
 import { PatientHomeHeader } from "../PatientHomeHeader";
-import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  SlideInLeft,
+  SlideInRight,
+} from "react-native-reanimated";
 import { TextRegular } from "../StyledText";
+import { ScreenTransition } from "../ScreenTransition";
 
 const tabs = [
   {
@@ -95,22 +101,13 @@ const PatientHomeScreen = () => {
           ),
         }}
       />
-      <View
-        style={{
-          flex: 1,
-        }}
+      <ScreenTransition
+        key={tab}
+        direction={isForward ? "Forward" : "Backward"}
+        style={{ flex: 1 }}
       >
-        <Animated.View
-          key={tab}
-          entering={isForward ? FadeInRight : FadeInLeft}
-          // exiting={isForward ? FadeOutLeft : FadeOutRight}
-          style={{
-            flex: 1,
-          }}
-        >
-          {tabComponents[tab] || <TextRegular>Tab not found</TextRegular>}
-        </Animated.View>
-      </View>
+        {tabComponents[tab] || <TextRegular>Tab not found</TextRegular>}
+      </ScreenTransition>
     </SafeAreaView>
   );
 };

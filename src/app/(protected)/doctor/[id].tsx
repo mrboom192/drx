@@ -13,6 +13,8 @@ import { db } from "@/../firebaseConfig";
 import Colors from "@/constants/Colors";
 import Avatar from "@/components/Avatar";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import Specializations from "@/components/screens/doctor/Specializations";
+import Biography from "@/components/screens/doctor/Biography";
 
 interface PublicProfile {
   uid: string;
@@ -58,7 +60,7 @@ const Page = () => {
   }, [id]);
 
   const handleBooking = () => {
-    router.push(`/doctor-profile/booking?id=${id}`);
+    router.push(`/doctor/booking?id=${id}`);
   };
 
   if (isLoading) {
@@ -112,40 +114,7 @@ const Page = () => {
             </View>
           </View>
 
-          <View style={{ flexDirection: "column", gap: 8 }}>
-            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-              Specializations
-            </TextSemiBold>
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 8,
-              }}
-            >
-              {doctor.specializations?.map((specialty: string, idx: number) => (
-                <View
-                  key={idx}
-                  style={{
-                    backgroundColor: idx === 0 ? "#8EFFC3" : "#E6E6FA",
-                    paddingVertical: 4,
-                    paddingHorizontal: 12,
-                    borderRadius: 4,
-                  }}
-                >
-                  <TextRegular
-                    style={{
-                      fontSize: 12,
-                      color: "#000",
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {specialty}
-                  </TextRegular>
-                </View>
-              ))}
-            </View>
-          </View>
+          <Specializations doctor={doctor} />
         </View>
 
         {/* Languages */}
@@ -187,33 +156,7 @@ const Page = () => {
           </TextRegular>
         </View>
 
-        {/* Bio */}
-        <View style={{ flexDirection: "column", gap: 8 }}>
-          <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-            Biography
-          </TextSemiBold>
-          <TextRegular
-            style={{
-              fontSize: 14,
-              color: "#444",
-              lineHeight: 20,
-            }}
-            numberOfLines={5}
-          >
-            {doctor.biography}
-          </TextRegular>
-          <TouchableOpacity>
-            <TextSemiBold
-              style={{
-                fontSize: 14,
-                color: "#000",
-                marginTop: 8,
-              }}
-            >
-              Show more
-            </TextSemiBold>
-          </TouchableOpacity>
-        </View>
+        <Biography doctor={doctor} />
       </ScrollView>
 
       {/* Bottom CTA */}

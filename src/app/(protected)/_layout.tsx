@@ -39,7 +39,7 @@ export default function ProtectedLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="doctor-profile" options={{ headerShown: false }} />
+      <Stack.Screen name="doctor" options={{ headerShown: false }} />
       <Stack.Screen name="(modals)/filter" options={{ headerShown: false }} />
     </Stack>
   );

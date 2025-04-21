@@ -70,12 +70,7 @@ const MessagesHeader = ({}: Props) => {
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Messages title */}
-          <TextSemiBold
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 32, fontFamily: "dm-sb" },
-            ]}
-          >
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 32 }]}>
             Consultations
           </TextSemiBold>
 

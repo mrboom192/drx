@@ -1,9 +1,10 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, SafeAreaView, TouchableOpacity } from "react-native";
 import React from "react";
 import { Stack, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@/contexts/UserContext";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 const Personal = () => {
   const router = useRouter();
@@ -41,21 +42,18 @@ const Personal = () => {
             }}
           >
             <View>
-              <Text
-                style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}
-              >
+              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                 Account info
-              </Text>
-              <Text
+              </TextSemiBold>
+              <TextRegular
                 style={{
-                  fontFamily: "dm",
                   fontSize: 14,
                   color: "#555",
                   marginTop: 2,
                 }}
               >
                 Manage your personal account information
-              </Text>
+              </TextRegular>
             </View>
             <Ionicons name="chevron-forward" size={16} color="#000" />
           </View>
@@ -90,15 +88,9 @@ const Personal = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: "dm-sb",
-                        fontSize: 16,
-                        color: "#000",
-                      }}
-                    >
+                    <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                       Public profile
-                    </Text>
+                    </TextSemiBold>
                     {!data.hasPublicProfile && (
                       <Ionicons
                         name="alert-circle-outline"
@@ -107,9 +99,8 @@ const Personal = () => {
                       />
                     )}
                   </View>
-                  <Text
+                  <TextRegular
                     style={{
-                      fontFamily: "dm",
                       fontSize: 14,
                       color: "#555",
                       marginTop: 2,
@@ -117,7 +108,7 @@ const Personal = () => {
                   >
                     Manage your public-facing profile which will be visible to
                     patients
-                  </Text>
+                  </TextRegular>
                 </View>
                 <Ionicons name="chevron-forward" size={16} color="#000" />
               </View>
@@ -147,15 +138,9 @@ const Personal = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: "dm-sb",
-                        fontSize: 16,
-                        color: "#000",
-                      }}
-                    >
+                    <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                       Doctor verification
-                    </Text>
+                    </TextSemiBold>
 
                     {(data.verification === "unverified" ||
                       !data.verification) && (
@@ -180,9 +165,8 @@ const Personal = () => {
                       />
                     )}
                   </View>
-                  <Text
+                  <TextRegular
                     style={{
-                      fontFamily: "dm",
                       fontSize: 14,
                       color: "#555",
                       marginTop: 2,
@@ -190,7 +174,7 @@ const Personal = () => {
                   >
                     Verify your doctor account in order for you to be visible to
                     patients
-                  </Text>
+                  </TextRegular>
                 </View>
                 <Ionicons name="chevron-forward" size={16} color="#000" />
               </View>

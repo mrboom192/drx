@@ -14,6 +14,7 @@ import Dot from "../icons/Dot";
 import Bookmark from "../icons/Bookmark";
 import LottieView from "lottie-react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { TextRegular, TextSemiBold, TextBold } from "../StyledText";
 
 const mockTags = [
   {
@@ -98,19 +99,14 @@ const OnlineConsultation = () => {
               pointerEvents: "none",
             }}
           />
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 20, fontFamily: "dm-sb" },
-            ]}
-          >
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
             Online Consultations
-          </Text>
-          <Text>
+          </TextSemiBold>
+          <TextRegular>
             Our Online Consultation service brings healthcare directly to you,
             offering convenient and secure virtual appointments with licensed
             medical professionals.
-          </Text>
+          </TextRegular>
         </View>
 
         <TouchableOpacity
@@ -122,16 +118,15 @@ const OnlineConsultation = () => {
             paddingVertical: 16,
           }}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#FFF",
-              fontFamily: "dm-sb",
               fontSize: 16,
               textAlign: "center",
             }}
           >
             Ok!
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
     );
@@ -148,11 +143,9 @@ const OnlineConsultation = () => {
           gap: 16,
         }}
       >
-        <Text
-          style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
-        >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
           Online Consultations
-        </Text>
+        </TextSemiBold>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
@@ -167,14 +160,9 @@ const OnlineConsultation = () => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
-              </Text>
+              </TextSemiBold>
               <ArrowOutward size={24} color={"#000"} />
             </TouchableOpacity>
             <TouchableOpacity
@@ -191,14 +179,9 @@ const OnlineConsultation = () => {
               ]}
             >
               <HealthShield size={24} color={"#FF4346"} />
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 View medical record
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
           <View
@@ -213,10 +196,10 @@ const OnlineConsultation = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
               Total Consultation Time
-            </Text>
-            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>134 mins</Text>
+            </TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>134 mins</TextSemiBold>
           </View>
         </View>
       </View>
@@ -244,14 +227,9 @@ const OnlineConsultation = () => {
             margin: 16,
           }}
         >
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 20, fontFamily: "dm-sb" },
-            ]}
-          >
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
             Suggested doctors
-          </Text>
+          </TextSemiBold>
           <View
             style={{
               flexDirection: "row",
@@ -266,16 +244,15 @@ const OnlineConsultation = () => {
             }}
           >
             <Dot color={Colors.green} size={8} />
-            <Text
+            <TextRegular
               style={{
                 color: Colors.green,
                 textAlign: "center",
-                fontFamily: "dm-sb",
                 fontSize: 12,
               }}
             >
               3302 Online
-            </Text>
+            </TextRegular>
           </View>
         </View>
 
@@ -323,16 +300,16 @@ const OnlineConsultation = () => {
                 >
                   <Avatar size={56} uri={item.image} />
                   <View style={{ flex: 1 }}>
-                    <Text
+                    <TextSemiBold
                       style={[
                         themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 16, marginBottom: 4 },
+                        { fontSize: 16, marginBottom: 4 },
                       ]}
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
                       Dr. {item.firstName + " " + item.lastName}
-                    </Text>
+                    </TextSemiBold>
 
                     <View
                       style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}
@@ -349,27 +326,25 @@ const OnlineConsultation = () => {
                               borderRadius: 12,
                             }}
                           >
-                            <Text
+                            <TextRegular
                               style={{
-                                fontFamily: "dm",
                                 fontSize: 12,
                                 color: Colors.light.grey,
                               }}
                             >
                               {spec}
-                            </Text>
+                            </TextRegular>
                           </View>
                         ))}
                       {item.specializations.length > 2 && (
-                        <Text
+                        <TextRegular
                           style={{
-                            fontFamily: "dm",
                             fontSize: 12,
                             color: Colors.light.grey,
                           }}
                         >
                           +{item.specializations.length - 2} more
-                        </Text>
+                        </TextRegular>
                       )}
                     </View>
                   </View>
@@ -394,22 +369,16 @@ const OnlineConsultation = () => {
                     }}
                   >
                     <Ionicons name="star" size={16} color="#FFD700" />
-                    <Text
-                      style={[
-                        themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 14 },
-                      ]}
+                    <TextSemiBold
+                      style={[themeTextStylePrimary, { fontSize: 14 }]}
                     >
                       4.8
-                    </Text>
-                    <Text
-                      style={[
-                        themeTextStyleSecondary,
-                        { fontFamily: "dm", fontSize: 12 },
-                      ]}
+                    </TextSemiBold>
+                    <TextRegular
+                      style={[themeTextStyleSecondary, { fontSize: 12 }]}
                     >
                       (124)
-                    </Text>
+                    </TextRegular>
                   </View>
                   <View
                     style={{
@@ -418,22 +387,16 @@ const OnlineConsultation = () => {
                       gap: 2,
                     }}
                   >
-                    <Text
-                      style={[
-                        themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 20 },
-                      ]}
+                    <TextSemiBold
+                      style={[themeTextStylePrimary, { fontSize: 20 }]}
                     >
                       ${item.consultationPrice}
-                    </Text>
-                    <Text
-                      style={[
-                        themeTextStyleSecondary,
-                        { fontFamily: "dm", fontSize: 12 },
-                      ]}
+                    </TextSemiBold>
+                    <TextRegular
+                      style={[themeTextStyleSecondary, { fontSize: 12 }]}
                     >
                       /consultation
-                    </Text>
+                    </TextRegular>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -459,16 +422,15 @@ const OnlineConsultation = () => {
             }}
           >
             <Bookmark color={Colors.dark.background} size={20} />
-            <Text
+            <TextSemiBold
               style={{
                 color: Colors.dark.background,
-                fontFamily: "dm-sb",
                 fontSize: 16,
                 textAlign: "center",
               }}
             >
               View bookmarked (6)
-            </Text>
+            </TextSemiBold>
           </TouchableOpacity>
           <Link href={"/search"} asChild>
             <TouchableOpacity
@@ -481,16 +443,15 @@ const OnlineConsultation = () => {
                 paddingVertical: 16,
               }}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color: "#FFF",
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                   textAlign: "center",
                 }}
               >
                 Search all doctors
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </Link>
         </View>
@@ -511,9 +472,7 @@ const Tag = ({ name, color }: { name: string; color: string }) => {
         backgroundColor: color,
       }}
     >
-      <Text style={{ color: "#000", fontSize: 14, fontFamily: "dm" }}>
-        {name}
-      </Text>
+      <TextRegular style={{ color: "#000", fontSize: 14 }}>{name}</TextRegular>
     </View>
   );
 };

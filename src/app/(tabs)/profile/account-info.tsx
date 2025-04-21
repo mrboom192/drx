@@ -165,7 +165,11 @@ const AccountInfo = () => {
               setPhoneNumber(text);
             }}
             keyboardType="phone-pad"
-            style={{ flex: 1, paddingVertical: 12, fontFamily: "dm" }}
+            style={{
+              flex: 1,
+              paddingVertical: 12,
+              fontFamily: "DMSans_400Regular",
+            }}
             placeholder="Phone number"
           />
         </View>

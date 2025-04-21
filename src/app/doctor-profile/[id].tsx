@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   useColorScheme,
   ScrollView,
   TouchableOpacity,
@@ -15,6 +14,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
 import Colors from "@/constants/Colors";
 import Avatar from "@/components/Avatar";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 interface PublicProfile {
   uid: string;
@@ -70,9 +70,9 @@ const Page = () => {
   if (error || !doctor) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ fontSize: 16, color: "#666" }}>
+        <TextRegular style={{ fontSize: 16, color: "#666" }}>
           {error || "Doctor not found"}
-        </Text>
+        </TextRegular>
       </View>
     );
   }
@@ -104,9 +104,9 @@ const Page = () => {
         >
           <Avatar size={64} uri={doctor.image || undefined} />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
+            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
               Dr. {doctor.firstName} {doctor.lastName}
-            </Text>
+            </TextSemiBold>
             <View
               style={{
                 flexDirection: "row",
@@ -125,16 +125,15 @@ const Page = () => {
                     borderRadius: 4,
                   }}
                 >
-                  <Text
+                  <TextRegular
                     style={{
-                      fontFamily: "dm",
                       fontSize: 12,
                       color: "#333",
                       textTransform: "capitalize",
                     }}
                   >
                     {specialty}
-                  </Text>
+                  </TextRegular>
                 </View>
               ))}
             </View>
@@ -145,33 +144,31 @@ const Page = () => {
         <View style={{ flexDirection: "column", gap: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <Ionicons name="language" size={20} color="#000" />
-            <Text style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}>
+            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
               Languages
-            </Text>
+            </TextSemiBold>
           </View>
-          <Text
+          <TextRegular
             style={{
-              fontFamily: "dm",
               fontSize: 14,
               color: Colors.light.grey,
               lineHeight: 20,
             }}
           >
             Dr. {doctor.firstName} speaks {doctor.languages?.join(", ")}.
-          </Text>
+          </TextRegular>
         </View>
 
         {/* Experience */}
         <View style={{ flexDirection: "column", gap: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <Ionicons name="briefcase" size={20} color="#000" />
-            <Text style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}>
+            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
               Experience
-            </Text>
+            </TextSemiBold>
           </View>
-          <Text
+          <TextRegular
             style={{
-              fontFamily: "dm",
               fontSize: 14,
               color: "#444",
               lineHeight: 20,
@@ -179,17 +176,16 @@ const Page = () => {
           >
             Dr. {doctor.firstName} has over {doctor.experience}+ years of
             experience.
-          </Text>
+          </TextRegular>
         </View>
 
         {/* Bio */}
         <View style={{ flexDirection: "column", gap: 8 }}>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, color: "#000" }}>
+          <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
             Biography
-          </Text>
-          <Text
+          </TextSemiBold>
+          <TextRegular
             style={{
-              fontFamily: "dm",
               fontSize: 14,
               color: "#444",
               lineHeight: 20,
@@ -197,18 +193,17 @@ const Page = () => {
             numberOfLines={5}
           >
             {doctor.biography}
-          </Text>
+          </TextRegular>
           <TouchableOpacity>
-            <Text
+            <TextSemiBold
               style={{
-                fontFamily: "dm-sb",
                 fontSize: 14,
                 color: "#000",
                 marginTop: 8,
               }}
             >
               Show more
-            </Text>
+            </TextSemiBold>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -226,12 +221,12 @@ const Page = () => {
         }}
       >
         <View>
-          <Text style={{ fontFamily: "dm", fontSize: 14, color: "#666" }}>
+          <TextRegular style={{ fontSize: 14, color: "#666" }}>
             Consultation Price
-          </Text>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
+          </TextRegular>
+          <TextSemiBold style={{ fontSize: 20 }}>
             ${doctor.consultationPrice}
-          </Text>
+          </TextSemiBold>
         </View>
         <TouchableOpacity
           style={{
@@ -242,9 +237,9 @@ const Page = () => {
           }}
           onPress={() => router.push(`/doctor-profile/booking?id=${id}`)}
         >
-          <Text style={{ fontFamily: "dm-sb", color: "#fff", fontSize: 16 }}>
+          <TextSemiBold style={{ color: "#fff", fontSize: 16 }}>
             Book
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

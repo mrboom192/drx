@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, TouchableOpacity, ScrollView, Image } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import ArrowOutward from "../icons/ArrowOutward";
@@ -9,6 +9,7 @@ import Colors from "@/constants/Colors";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Filter from "../icons/Filter";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 const rays = [
   {
@@ -90,11 +91,9 @@ const RadiologyImages = () => {
           gap: 16,
         }}
       >
-        <Text
-          style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
-        >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
           Radiology Images
-        </Text>
+        </TextSemiBold>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
@@ -109,14 +108,9 @@ const RadiologyImages = () => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
-              </Text>
+              </TextSemiBold>
               <ArrowOutward size={24} color={"#000"} />
             </TouchableOpacity>
             <TouchableOpacity
@@ -133,14 +127,9 @@ const RadiologyImages = () => {
               ]}
             >
               <Filter size={24} color={"#000"} />
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 Provider preferences
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
           <View
@@ -155,10 +144,10 @@ const RadiologyImages = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
               Images Reviewed
-            </Text>
-            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>133</Text>
+            </TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>133</TextSemiBold>
           </View>
         </View>
       </View>
@@ -189,24 +178,14 @@ const RadiologyImages = () => {
           }}
         >
           <View style={{ flexDirection: "column", gap: 8 }}>
-            <Text
-              style={[
-                themeTextStylePrimary,
-                { fontFamily: "dm-sb", fontSize: 20 },
-              ]}
-            >
+            <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
               Uploads
-            </Text>
-            <Text
-              style={[
-                themeTextStyleSecondary,
-                { fontFamily: "dm", fontSize: 16 },
-              ]}
-            >
+            </TextSemiBold>
+            <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
               63/67 images reviewed
-            </Text>
+            </TextRegular>
           </View>
-          <Link href={`/(app)/(tabs)`} asChild>
+          <Link href={`/(tabs)`} asChild>
             <TouchableOpacity
               style={{
                 paddingHorizontal: 16,
@@ -217,16 +196,15 @@ const RadiologyImages = () => {
                 justifyContent: "center",
               }}
             >
-              <Text
+              <TextRegular
                 style={{
                   color: Colors.light.grey,
                   textAlign: "center",
-                  fontFamily: "dm-sb",
                   fontSize: 12,
                 }}
               >
                 View All
-              </Text>
+              </TextRegular>
             </TouchableOpacity>
           </Link>
         </View>
@@ -250,7 +228,7 @@ const RadiologyImages = () => {
             ]}
           >
             {rays.map((item) => (
-              <Link href={`/(app)/(tabs)`} key={item.id} asChild>
+              <Link href={`/(tabs)`} key={item.id} asChild>
                 <TouchableOpacity
                   style={{
                     flexDirection: "column",
@@ -262,16 +240,13 @@ const RadiologyImages = () => {
                     source={{ uri: item.image }}
                     style={{ width: 125, height: 125, borderRadius: 8 }}
                   />
-                  <Text
+                  <TextRegular
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={[
-                      themeTextStyleSecondary,
-                      { fontFamily: "dm", fontSize: 12 },
-                    ]}
+                    style={[themeTextStyleSecondary, { fontSize: 12 }]}
                   >
                     {item.name}
-                  </Text>
+                  </TextRegular>
                 </TouchableOpacity>
               </Link>
             ))}
@@ -290,16 +265,15 @@ const RadiologyImages = () => {
             paddingVertical: 16,
           }}
         >
-          <Text
+          <TextRegular
             style={{
               color: "#FFF",
-              fontFamily: "dm-sb",
-              fontSize: 16,
               textAlign: "center",
+              fontSize: 16,
             }}
           >
             Upload
-          </Text>
+          </TextRegular>
         </TouchableOpacity>
       </View>
 

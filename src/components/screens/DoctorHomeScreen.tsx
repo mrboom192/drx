@@ -157,7 +157,6 @@ const VerificationAlert = () => {
       />
       <TextRegular
         style={{
-          fontFamily: "dm",
           color: "#B71C1C",
           fontSize: 14,
           flex: 1,
@@ -178,9 +177,7 @@ const VerificationAlert = () => {
       >
         <TextSemiBold
           style={{
-            fontFamily: "dm-sb",
             color: "white",
-            fontWeight: "bold",
             fontSize: 13,
           }}
         >
@@ -214,7 +211,6 @@ const PendingAlert = () => {
       />
       <TextRegular
         style={{
-          fontFamily: "dm",
           color: "#B26A00",
           fontSize: 14,
           flex: 1,
@@ -249,7 +245,6 @@ const MissingPublicProfileAlert = () => {
       />
       <TextRegular
         style={{
-          fontFamily: "dm",
           color: "#B71C1C",
           fontSize: 14,
           flex: 1,

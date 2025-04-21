@@ -20,6 +20,7 @@ import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Filter from "../icons/Filter";
 import Check from "../icons/Check";
 import Clock from "../icons/Clock";
+import { TextRegular, TextSemiBold, TextBold } from "../StyledText";
 
 const mockCases = [
   {
@@ -98,11 +99,9 @@ const SecondOpinion = () => {
           gap: 16,
         }}
       >
-        <Text
-          style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
-        >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
           Second Opinion
-        </Text>
+        </TextSemiBold>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
@@ -117,14 +116,9 @@ const SecondOpinion = () => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
-              </Text>
+              </TextSemiBold>
               <ArrowOutward size={24} color={"#000"} />
             </TouchableOpacity>
             <TouchableOpacity
@@ -141,14 +135,9 @@ const SecondOpinion = () => {
               ]}
             >
               <Filter size={24} color={"#000"} />
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 Provider preferences
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
           <View
@@ -163,10 +152,10 @@ const SecondOpinion = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
               Number of Opinions
-            </Text>
-            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>1</Text>
+            </TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>1</TextSemiBold>
           </View>
         </View>
       </View>
@@ -197,22 +186,12 @@ const SecondOpinion = () => {
           }}
         >
           <View style={{ flexDirection: "column", gap: 8 }}>
-            <Text
-              style={[
-                themeTextStylePrimary,
-                { fontFamily: "dm-sb", fontSize: 20 },
-              ]}
-            >
+            <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
               Cases
-            </Text>
-            <Text
-              style={[
-                themeTextStyleSecondary,
-                { fontFamily: "dm", fontSize: 16 },
-              ]}
-            >
+            </TextSemiBold>
+            <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
               1/2 Cases reviewed
-            </Text>
+            </TextRegular>
           </View>
           <Link href={`/(tabs)`} asChild>
             <TouchableOpacity
@@ -225,16 +204,15 @@ const SecondOpinion = () => {
                 justifyContent: "center",
               }}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color: Colors.light.grey,
                   textAlign: "center",
-                  fontFamily: "dm-sb",
                   fontSize: 12,
                 }}
               >
                 View All
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </Link>
         </View>
@@ -272,26 +250,20 @@ const SecondOpinion = () => {
                     borderRadius: 8,
                   }}
                 >
-                  <Text
+                  <TextSemiBold
                     ellipsizeMode="tail"
                     numberOfLines={2}
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 16 },
-                    ]}
+                    style={[themeTextStylePrimary, { fontSize: 16 }]}
                   >
                     {item.title}
-                  </Text>
-                  <Text
+                  </TextSemiBold>
+                  <TextRegular
                     ellipsizeMode="tail"
                     numberOfLines={2}
-                    style={[
-                      themeTextStyleSecondary,
-                      { fontFamily: "dm", fontSize: 12 },
-                    ]}
+                    style={[themeTextStyleSecondary, { fontSize: 12 }]}
                   >
                     {item.description}
-                  </Text>
+                  </TextRegular>
                   {item.reviewed ? (
                     <View
                       style={{
@@ -301,15 +273,14 @@ const SecondOpinion = () => {
                       }}
                     >
                       <Check size={24} color={Colors.green} />
-                      <Text
+                      <TextSemiBold
                         style={{
                           color: Colors.green,
-                          fontFamily: "dm-sb",
                           fontSize: 12,
                         }}
                       >
                         Reviewed by 1
-                      </Text>
+                      </TextSemiBold>
                     </View>
                   ) : (
                     <View
@@ -320,15 +291,14 @@ const SecondOpinion = () => {
                       }}
                     >
                       <Clock size={24} color={Colors.onlineConsultation} />
-                      <Text
+                      <TextSemiBold
                         style={{
                           color: Colors.onlineConsultation,
-                          fontFamily: "dm-sb",
                           fontSize: 12,
                         }}
                       >
                         Pending
-                      </Text>
+                      </TextSemiBold>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -349,16 +319,15 @@ const SecondOpinion = () => {
             paddingVertical: 16,
           }}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#FFF",
-              fontFamily: "dm-sb",
               fontSize: 16,
               textAlign: "center",
             }}
           >
             Start a new case
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
 

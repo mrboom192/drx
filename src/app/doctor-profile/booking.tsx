@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
@@ -15,6 +14,7 @@ import { db } from "@/../firebaseConfig";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 interface TimeSlot {
   id: string;
@@ -211,35 +211,34 @@ const BookingPage = () => {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
+            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
               Dr. {doctor?.firstName} {doctor?.lastName}
-            </Text>
-            <Text
+            </TextSemiBold>
+            <TextRegular
               style={{
-                fontFamily: "dm",
                 fontSize: 14,
                 color: "#666",
                 marginTop: 4,
               }}
             >
               {doctor?.specializations[0]}
-            </Text>
+            </TextRegular>
           </View>
           <View>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 20 }}>
+            <TextSemiBold style={{ fontSize: 20 }}>
               ${doctor?.consultationPrice}
-            </Text>
-            <Text style={{ fontFamily: "dm", fontSize: 12, color: "#666" }}>
+            </TextSemiBold>
+            <TextRegular style={{ fontSize: 12, color: "#666" }}>
               per consultation
-            </Text>
+            </TextRegular>
           </View>
         </View>
 
         {/* Date Selection */}
         <View>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+          <TextSemiBold style={{ fontSize: 16, marginBottom: 12 }}>
             Select Date
-          </Text>
+          </TextSemiBold>
           <TouchableOpacity
             onPress={() => setShowDatePicker(true)}
             style={{
@@ -252,18 +251,18 @@ const BookingPage = () => {
               padding: 12,
             }}
           >
-            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#000" }}>
+            <TextRegular style={{ fontSize: 14, color: "#000" }}>
               {formatDate(selectedDate)}
-            </Text>
+            </TextRegular>
             <Ionicons name="calendar" size={20} color="#666" />
           </TouchableOpacity>
         </View>
 
         {/* Time Slots */}
         <View>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 16 }}>
+          <TextSemiBold style={{ fontSize: 16, marginBottom: 16 }}>
             Select a Time Slot
-          </Text>
+          </TextSemiBold>
           <View
             style={{
               flexDirection: "row",
@@ -286,15 +285,14 @@ const BookingPage = () => {
                     selectedSlot?.id === slot.id ? "#000" : "#E5E5E5",
                 }}
               >
-                <Text
+                <TextRegular
                   style={{
-                    fontFamily: "dm",
                     fontSize: 14,
                     color: selectedSlot?.id === slot.id ? "#FFF" : "#000",
                   }}
                 >
                   {slot.startTime} - {slot.endTime}
-                </Text>
+                </TextRegular>
               </TouchableOpacity>
             ))}
           </View>
@@ -323,15 +321,14 @@ const BookingPage = () => {
           {isBooking ? (
             <ActivityIndicator color="#FFF" />
           ) : (
-            <Text
+            <TextSemiBold
               style={{
-                fontFamily: "dm-sb",
                 color: selectedSlot ? "#FFF" : "#666",
                 fontSize: 16,
               }}
             >
               Book Consultation
-            </Text>
+            </TextSemiBold>
           )}
         </TouchableOpacity>
       </View>

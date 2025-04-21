@@ -1,5 +1,4 @@
 import {
-  Text,
   SafeAreaView,
   ScrollView,
   View,
@@ -22,6 +21,7 @@ import Language from "@/components/icons/Language";
 import { Ionicons } from "@expo/vector-icons";
 import { doc, setDoc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 interface Specialization {
   id: string;
@@ -257,16 +257,15 @@ const PublicProfile = () => {
           <Ionicons name="checkmark-circle" size={20} color="#000" />
         </View>
       )}
-      <Text
+      <TextRegular
         style={{
-          fontFamily: "dm",
           fontSize: 13,
           textAlign: "center",
           color: "#000",
         }}
       >
         {item.name}
-      </Text>
+      </TextRegular>
     </TouchableOpacity>
   );
 
@@ -283,7 +282,7 @@ const PublicProfile = () => {
       <Stack.Screen
         options={{
           title: "Edit Public Profile",
-          headerTitleStyle: { fontFamily: "dm-sb" },
+          headerTitleStyle: { fontFamily: "DMSans_600SemiBold" },
           headerTitleAlign: "center",
           headerRight: () => (
             <TouchableOpacity
@@ -297,11 +296,9 @@ const PublicProfile = () => {
               onPress={handleSave}
               disabled={isSaving || !hasChanges}
             >
-              <Text
-                style={{ color: "#fff", fontFamily: "dm-sb", fontSize: 14 }}
-              >
+              <TextSemiBold style={{ color: "#fff", fontSize: 14 }}>
                 {isSaving ? "Saving..." : "Save"}
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           ),
         }}
@@ -316,16 +313,11 @@ const PublicProfile = () => {
             opacity: 0.8,
           }}
         >
-          <Text
-            style={{
-              fontFamily: "dm",
-              fontSize: 14,
-              color: "#fff",
-              textAlign: "center",
-            }}
+          <TextRegular
+            style={{ fontSize: 14, color: "#fff", textAlign: "center" }}
           >
             {saveStatus.message}
-          </Text>
+          </TextRegular>
         </View>
       )}
 
@@ -347,9 +339,9 @@ const PublicProfile = () => {
                   marginBottom: 16,
                 }}
               >
-                <Text style={{ fontFamily: "dm-sb", fontSize: 24 }}>
+                <TextSemiBold style={{ fontSize: 24 }}>
                   Specializations
-                </Text>
+                </TextSemiBold>
                 <TouchableOpacity
                   onPress={() => setShowSpecializationsModal(false)}
                 >
@@ -376,7 +368,7 @@ const PublicProfile = () => {
                     flex: 1,
                     paddingVertical: 12,
                     paddingHorizontal: 8,
-                    fontFamily: "dm",
+                    fontFamily: "DMSans_400Regular",
                     fontSize: 16,
                   }}
                 />
@@ -433,9 +425,9 @@ const PublicProfile = () => {
                 marginBottom: 20,
               }}
             >
-              <Text style={{ fontFamily: "dm-sb", fontSize: 18 }}>
+              <TextSemiBold style={{ fontSize: 18 }}>
                 Select Languages
-              </Text>
+              </TextSemiBold>
               <TouchableOpacity onPress={() => setShowLanguagesModal(false)}>
                 <Ionicons name="close" size={24} color="#000" />
               </TouchableOpacity>
@@ -477,9 +469,7 @@ const PublicProfile = () => {
                     />
                   )}
                 </View>
-                <Text style={{ fontFamily: "dm", fontSize: 16 }}>
-                  {language}
-                </Text>
+                <TextRegular style={{ fontSize: 16 }}>{language}</TextRegular>
               </TouchableOpacity>
             ))}
           </Pressable>
@@ -496,26 +486,25 @@ const PublicProfile = () => {
         <View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>
           <UserAvatar size={48} />
           <View>
-            <Text style={{ fontFamily: "dm-sb", fontSize: 20, color: "#000" }}>
+            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
               Dr. {data.firstName + " " + data.lastName}
-            </Text>
-            <Text
+            </TextSemiBold>
+            <TextSemiBold
               style={{
-                fontFamily: "dm-sb",
                 fontSize: 14,
                 color: Colors.onlineConsultation,
               }}
             >
               doctor
-            </Text>
+            </TextSemiBold>
           </View>
         </View>
 
         {/* Specializations */}
         <View>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+          <TextSemiBold style={{ fontSize: 16, marginBottom: 12 }}>
             Specializations
-          </Text>
+          </TextSemiBold>
           <TouchableOpacity
             onPress={() => setShowSpecializationsModal(true)}
             style={{
@@ -549,15 +538,14 @@ const PublicProfile = () => {
                               alignItems: "center",
                             }}
                           >
-                            <Text
+                            <TextRegular
                               style={{
-                                fontFamily: "dm",
                                 fontSize: 14,
                                 color: "#000",
                               }}
                             >
                               {spec.name}
-                            </Text>
+                            </TextRegular>
                           </View>
                         ))}
                         {selected.length > 2 && (
@@ -571,15 +559,14 @@ const PublicProfile = () => {
                               alignItems: "center",
                             }}
                           >
-                            <Text
+                            <TextRegular
                               style={{
-                                fontFamily: "dm",
                                 fontSize: 14,
                                 color: "#666",
                               }}
                             >
                               +{selected.length - 2} more
-                            </Text>
+                            </TextRegular>
                           </View>
                         )}
                       </>
@@ -588,15 +575,14 @@ const PublicProfile = () => {
                 </View>
               </View>
             ) : (
-              <Text
+              <TextRegular
                 style={{
-                  fontFamily: "dm",
                   fontSize: 14,
                   color: "#666",
                 }}
               >
                 Select specializations
-              </Text>
+              </TextRegular>
             )}
             <View style={{ position: "absolute", right: 12, top: 12 }}>
               <Ionicons name="chevron-down" size={20} color="#666" />
@@ -615,7 +601,7 @@ const PublicProfile = () => {
             }}
           >
             <Language size={20} color="#000" />
-            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>Languages</Text>
+            <TextSemiBold style={{ fontSize: 16 }}>Languages</TextSemiBold>
           </View>
           <TouchableOpacity
             onPress={() => setShowLanguagesModal(true)}
@@ -629,9 +615,8 @@ const PublicProfile = () => {
               padding: 12,
             }}
           >
-            <Text
+            <TextRegular
               style={{
-                fontFamily: "dm",
                 fontSize: 14,
                 color: selectedLanguages.length ? "#000" : "#666",
               }}
@@ -639,7 +624,7 @@ const PublicProfile = () => {
               {selectedLanguages.length
                 ? selectedLanguages.join(", ")
                 : "Select languages"}
-            </Text>
+            </TextRegular>
             <Ionicons name="chevron-down" size={20} color="#666" />
           </TouchableOpacity>
         </View>
@@ -655,9 +640,7 @@ const PublicProfile = () => {
             }}
           >
             <Briefcase size={20} color="#000" />
-            <Text style={{ fontFamily: "dm-sb", fontSize: 16 }}>
-              Experience
-            </Text>
+            <TextSemiBold style={{ fontSize: 16 }}>Experience</TextSemiBold>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <TextInput
@@ -670,21 +653,21 @@ const PublicProfile = () => {
                 borderRadius: 8,
                 padding: 12,
                 width: 80,
-                fontFamily: "dm",
+                fontFamily: "DMSans_400Regular",
                 fontSize: 14,
               }}
             />
-            <Text style={{ fontFamily: "dm", fontSize: 14, color: "#666" }}>
+            <TextRegular style={{ fontSize: 14, color: "#666" }}>
               years of experience
-            </Text>
+            </TextRegular>
           </View>
         </View>
 
         {/* Biography */}
         <View>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+          <TextSemiBold style={{ fontSize: 16, marginBottom: 12 }}>
             Biography
-          </Text>
+          </TextSemiBold>
           <TextInput
             value={biography}
             onChangeText={setBiography}
@@ -695,7 +678,7 @@ const PublicProfile = () => {
               borderColor: "#E5E5E5",
               borderRadius: 8,
               padding: 12,
-              fontFamily: "dm",
+              fontFamily: "DMSans_400Regular",
               fontSize: 14,
               textAlignVertical: "top",
             }}
@@ -704,13 +687,13 @@ const PublicProfile = () => {
 
         {/* Consultation Price */}
         <View>
-          <Text style={{ fontFamily: "dm-sb", fontSize: 16, marginBottom: 12 }}>
+          <TextSemiBold style={{ fontSize: 16, marginBottom: 12 }}>
             Consultation Price
-          </Text>
+          </TextSemiBold>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontFamily: "dm", fontSize: 16, marginRight: 8 }}>
+            <TextRegular style={{ fontSize: 16, marginRight: 8 }}>
               $
-            </Text>
+            </TextRegular>
             <TextInput
               value={consultationPrice}
               onChangeText={setConsultationPrice}
@@ -721,20 +704,19 @@ const PublicProfile = () => {
                 borderRadius: 8,
                 padding: 12,
                 width: 100,
-                fontFamily: "dm",
+                fontFamily: "DMSans_400Regular",
                 fontSize: 14,
               }}
             />
-            <Text
+            <TextRegular
               style={{
-                fontFamily: "dm",
                 fontSize: 14,
                 color: "#666",
                 marginLeft: 8,
               }}
             >
               per consultation
-            </Text>
+            </TextRegular>
           </View>
         </View>
       </ScrollView>

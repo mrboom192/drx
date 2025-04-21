@@ -16,6 +16,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { router } from "expo-router";
 import { useSession } from "@/contexts/AuthContext";
 import { format } from "date-fns";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 const SignUp = () => {
   const { signUpData, setSignUpData } = useSignUp();
@@ -73,16 +74,15 @@ const SignUp = () => {
           />
         </TouchableOpacity>
 
-        <Text
+        <TextSemiBold
           style={{
             fontSize: 20,
-            fontFamily: "dm-sb",
             marginVertical: 24,
             textAlign: "center",
           }}
         >
           Finish signing up
-        </Text>
+        </TextSemiBold>
 
         {/* Role Selector */}
         <View
@@ -115,23 +115,22 @@ const SignUp = () => {
                 alignItems: "center",
               }}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color:
                     signUpData.role === option.toLowerCase() ? "#fff" : "#000",
-                  fontFamily: "dm-sb",
                 }}
               >
                 {option}
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           ))}
         </View>
 
         {/* First Name */}
-        <Text style={{ fontFamily: "dm", fontSize: 14, marginBottom: 6 }}>
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
           First name
-        </Text>
+        </TextRegular>
         <TextInput
           editable={!submitting}
           style={{
@@ -141,7 +140,7 @@ const SignUp = () => {
             paddingHorizontal: 16,
             paddingVertical: 14,
             fontSize: 16,
-            fontFamily: "dm",
+            fontFamily: "DMSans_400Regular",
             marginBottom: 16,
           }}
           placeholder="e.g. John"
@@ -150,9 +149,9 @@ const SignUp = () => {
         />
 
         {/* Last Name */}
-        <Text style={{ fontFamily: "dm", fontSize: 14, marginBottom: 6 }}>
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
           Last name
-        </Text>
+        </TextRegular>
         <TextInput
           editable={!submitting}
           style={{
@@ -162,7 +161,7 @@ const SignUp = () => {
             paddingHorizontal: 16,
             paddingVertical: 14,
             fontSize: 16,
-            fontFamily: "dm",
+            fontFamily: "DMSans_400Regular",
             marginBottom: 16,
           }}
           placeholder="e.g. Smith"
@@ -171,9 +170,9 @@ const SignUp = () => {
         />
 
         {/* Date of Birth */}
-        <Text style={{ fontFamily: "dm", fontSize: 14, marginBottom: 6 }}>
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
           Date of birth
-        </Text>
+        </TextRegular>
         <Pressable
           onPress={() => !submitting && setShowDatePicker(true)}
           style={{
@@ -187,16 +186,15 @@ const SignUp = () => {
             justifyContent: "space-between",
           }}
         >
-          <Text
+          <TextRegular
             style={{
-              fontFamily: "dm",
               color: signUpData.dateOfBirth ? "#000" : Colors.light.grey,
             }}
           >
             {signUpData.dateOfBirth
               ? format(signUpData.dateOfBirth, "MMMM d, yyyy")
               : "Birthdate"}
-          </Text>
+          </TextRegular>
           <Ionicons
             name="calendar-outline"
             size={20}
@@ -214,9 +212,9 @@ const SignUp = () => {
         )}
 
         {/* Password */}
-        <Text style={{ fontFamily: "dm", fontSize: 14, marginBottom: 6 }}>
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
           Password
-        </Text>
+        </TextRegular>
         <View
           style={{
             borderColor: Colors.light.faintGrey,
@@ -235,7 +233,7 @@ const SignUp = () => {
             style={{
               flex: 1,
               fontSize: 16,
-              fontFamily: "dm",
+              fontFamily: "DMSans_400Regular",
               paddingVertical: 10,
             }}
             placeholder="Password"
@@ -256,27 +254,26 @@ const SignUp = () => {
         </View>
 
         {/* Terms */}
-        <Text
+        <TextRegular
           style={{
             fontSize: 12,
             color: "#666",
             textAlign: "center",
-            fontFamily: "dm",
             lineHeight: 16,
             marginBottom: 24,
           }}
         >
           By selecting Agree and continue, I agree to DrX's{" "}
-          <Text style={{ textDecorationLine: "underline" }}>
+          <TextRegular style={{ textDecorationLine: "underline" }}>
             Terms of Service, Payments Terms of Service and Nondiscrimination
             Policy
-          </Text>{" "}
+          </TextRegular>{" "}
           and acknowledge the{" "}
-          <Text style={{ textDecorationLine: "underline" }}>
+          <TextRegular style={{ textDecorationLine: "underline" }}>
             Privacy Policy
-          </Text>
+          </TextRegular>
           .
-        </Text>
+        </TextRegular>
 
         {/* Agree Button */}
         <TouchableOpacity
@@ -289,15 +286,15 @@ const SignUp = () => {
           }}
           onPress={handleSignUp}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#fff",
               fontSize: 16,
-              fontFamily: "dm-sb",
+              textAlign: "center",
             }}
           >
             {submitting ? "Signing up..." : "Agree and continue"}
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>

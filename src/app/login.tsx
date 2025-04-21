@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { useSession } from "@/contexts/AuthContext";
+import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 const SignIn = () => {
   const { signUpData, setSignUpData } = useSignUp();
@@ -74,16 +75,15 @@ const SignIn = () => {
           paddingBottom: 16,
         }}
       >
-        <Text
+        <TextSemiBold
           style={{
             fontSize: 20,
-            fontFamily: "dm-sb",
             textAlign: "center",
             marginBottom: 32,
           }}
         >
           Log in or sign up into DrX
-        </Text>
+        </TextSemiBold>
 
         <View
           style={{
@@ -91,7 +91,7 @@ const SignIn = () => {
             gap: 8,
           }}
         >
-          <Text style={{ fontFamily: "dm", fontSize: 16 }}>Email</Text>
+          <TextRegular style={{ fontSize: 16 }}>Email</TextRegular>
           <TextInput
             editable={!checking}
             style={{
@@ -101,7 +101,7 @@ const SignIn = () => {
               paddingHorizontal: 16,
               paddingVertical: 14,
               fontSize: 16,
-              fontFamily: "dm",
+              fontFamily: "DMSans_400Regular",
             }}
             placeholder="myemail@email.com"
             placeholderTextColor={Colors.light.grey}
@@ -115,24 +115,23 @@ const SignIn = () => {
             autoCapitalize="none"
           />
           {emailError ? (
-            <Text
+            <TextRegular
               style={{
                 color: Colors.pink,
                 fontSize: 14,
-                fontFamily: "dm",
                 marginTop: 4,
               }}
             >
               {emailError}
-            </Text>
+            </TextRegular>
           ) : null}
         </View>
 
         {showPasswordInput && (
           <View style={{ marginTop: 24, opacity: checking ? 0.5 : 1 }}>
-            <Text style={{ fontFamily: "dm", fontSize: 16, marginBottom: 8 }}>
+            <TextRegular style={{ fontSize: 16, marginBottom: 8 }}>
               Password
-            </Text>
+            </TextRegular>
             <View
               style={{
                 flexDirection: "row",
@@ -149,7 +148,7 @@ const SignIn = () => {
                 style={{
                   flex: 1,
                   fontSize: 16,
-                  fontFamily: "dm",
+                  fontFamily: "DMSans_400Regular",
                   paddingVertical: 10,
                 }}
                 placeholder="Password"
@@ -181,15 +180,14 @@ const SignIn = () => {
               }}
               onPress={() => signIn(signUpData.email, signUpData.password)}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color: "#fff",
                   fontSize: 16,
-                  fontFamily: "dm-sb",
                 }}
               >
                 Log in
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
         )}
@@ -206,15 +204,14 @@ const SignIn = () => {
             }}
             onPress={handleContinue}
           >
-            <Text
+            <TextSemiBold
               style={{
                 color: "#fff",
                 fontSize: 16,
-                fontFamily: "dm-sb",
               }}
             >
               {checking ? "Loading..." : "Continue"}
-            </Text>
+            </TextSemiBold>
           </TouchableOpacity>
         )}
 
@@ -233,16 +230,15 @@ const SignIn = () => {
               backgroundColor: Colors.light.faintGrey,
             }}
           />
-          <Text
+          <TextSemiBold
             style={{
               marginHorizontal: 12,
               fontSize: 16,
               color: "#444",
-              fontFamily: "dm-sb",
             }}
           >
             or
-          </Text>
+          </TextSemiBold>
           <View
             style={{
               flex: 1,
@@ -264,31 +260,29 @@ const SignIn = () => {
           }}
         >
           <Ionicons name="search-outline" size={16} color="#000" />
-          <Text
+          <TextSemiBold
             style={{
               fontSize: 16,
               color: "#000",
-              fontFamily: "dm-sb",
             }}
           >
             Recover my account
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </KeyboardAvoidingView>
 
-      <Text
+      <TextRegular
         style={{
           fontSize: 12,
           color: "#666",
           textAlign: "center",
           lineHeight: 16,
-          fontFamily: "dm",
         }}
       >
         By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
         including by automated dialer, from DrX and its affiliates to the number
         provided. Text "STOP" to 89203 to opt out.
-      </Text>
+      </TextRegular>
     </SafeAreaView>
   );
 };

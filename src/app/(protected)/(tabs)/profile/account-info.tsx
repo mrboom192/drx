@@ -15,7 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { useUser } from "@/contexts/UserContext";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../../../firebaseConfig";
+import { db } from "../../../../../firebaseConfig";
 import {
   parsePhoneNumberFromString,
   AsYouType,

@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import { Stack } from "expo-router";
 import { useImagePicker } from "@/hooks/useImagePicker";
-import { auth, db } from "../../../../firebaseConfig";
+import { auth, db } from "../../../../../firebaseConfig";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import Colors from "@/constants/Colors";
 

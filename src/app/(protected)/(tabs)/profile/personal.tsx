@@ -26,7 +26,7 @@ const Personal = () => {
         {/* Account Info */}
         <TouchableOpacity
           onPress={() => {
-            router.push("/(tabs)/profile/account-info");
+            router.push("/(protected)/(tabs)/profile/account-info");
           }}
           style={{
             paddingVertical: 16,
@@ -65,7 +65,7 @@ const Personal = () => {
             {/* Public Profile */}
             <TouchableOpacity
               onPress={() => {
-                router.push("/(tabs)/profile/public-profile");
+                router.push("/(protected)/(tabs)/profile/public-profile");
               }}
               style={{
                 paddingVertical: 16,
@@ -115,7 +115,7 @@ const Personal = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                router.push("/(tabs)/profile/doctor-verification");
+                router.push("/(protected)/(tabs)/profile/doctor-verification");
               }}
               style={{
                 paddingVertical: 16,

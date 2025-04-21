@@ -1,9 +1,7 @@
 import {
   View,
-  useColorScheme,
   ScrollView,
   TouchableOpacity,
-  Image,
   SafeAreaView,
   ActivityIndicator,
 } from "react-native";
@@ -14,7 +12,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
 import Colors from "@/constants/Colors";
 import Avatar from "@/components/Avatar";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 
 interface PublicProfile {
   uid: string;
@@ -59,6 +57,10 @@ const Page = () => {
     }
   }, [id]);
 
+  const handleBooking = () => {
+    router.push(`/doctor-profile/booking?id=${id}`);
+  };
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -94,25 +96,31 @@ const Page = () => {
         {/* Doctor Info */}
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: "column",
             gap: 16,
-            alignItems: "center",
             paddingBottom: 16,
             borderBottomWidth: 1,
             borderColor: Colors.light.faintGrey,
           }}
         >
-          <Avatar size={64} uri={doctor.image || undefined} />
-          <View style={{ flex: 1 }}>
-            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
-              Dr. {doctor.firstName} {doctor.lastName}
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
+            <Avatar size={48} uri={doctor.image || undefined} />
+            <View style={{ flex: 1 }}>
+              <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
+                Dr. {doctor.firstName} {doctor.lastName}
+              </TextSemiBold>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
+              Specializations
             </TextSemiBold>
             <View
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 8,
-                marginTop: 8,
               }}
             >
               {doctor.specializations?.map((specialty: string, idx: number) => (
@@ -128,7 +136,7 @@ const Page = () => {
                   <TextRegular
                     style={{
                       fontSize: 12,
-                      color: "#333",
+                      color: "#000",
                       textTransform: "capitalize",
                     }}
                   >
@@ -235,7 +243,7 @@ const Page = () => {
             paddingHorizontal: 32,
             borderRadius: 8,
           }}
-          onPress={() => router.push(`/doctor-profile/booking?id=${id}`)}
+          onPress={handleBooking}
         >
           <TextSemiBold style={{ color: "#fff", fontSize: 16 }}>
             Book

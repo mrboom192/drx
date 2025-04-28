@@ -190,7 +190,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push("/(modals)/filter")}
+            onPress={() => router.push("/(protected)/(modals)/filter")}
             style={[themeBorderStyle, styles.filterBtn]}
           >
             <Ionicons

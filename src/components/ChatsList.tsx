@@ -40,7 +40,13 @@ const ChatsList = ({ chats }: Props) => {
       : themedStyles.darkTextSecondary;
 
   const renderRow: ListRenderItem<Chat> = ({ item }) => (
-    <Link href={`/(tabs)/messages/${item.id}`} asChild>
+    <Link
+      href={{
+        pathname: `/(protected)/(tabs)/messages/[id]`,
+        params: { id: item.id },
+      }}
+      asChild
+    >
       <TouchableOpacity>
         <View
           style={[

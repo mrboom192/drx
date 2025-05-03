@@ -9,7 +9,6 @@ import {
 import { FirebaseError } from "firebase/app";
 import { RelativePathString, router } from "expo-router";
 import { doc, setDoc } from "firebase/firestore";
-import { PathString } from "react-hook-form";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;

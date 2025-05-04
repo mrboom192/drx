@@ -1,21 +1,20 @@
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import Colors from "@/constants/Colors";
+import { useSession } from "@/contexts/AuthContext";
+import { useSignUp } from "@/contexts/SignupContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useState } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import Colors from "@/constants/Colors";
-import { useSignUp } from "@/contexts/SignupContext";
-import { router } from "expo-router";
-import { fetchSignInMethodsForEmail } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
-import { useSession } from "@/contexts/AuthContext";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
 
 const SignIn = () => {
   const { signUpData, setSignUpData } = useSignUp();

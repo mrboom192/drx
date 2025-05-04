@@ -1,8 +1,7 @@
 import Colors from "@/constants/Colors";
-import { Stack } from "expo-router";
-import React, { useState, useCallback, useEffect } from "react";
-import { View, Text } from "react-native";
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import React, { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
+import { Bubble, GiftedChat } from "react-native-gifted-chat";
 
 interface Message {
   _id: number;

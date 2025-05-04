@@ -1,23 +1,23 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { SignUpProvider } from "@/contexts/SignupContext";
+import { UserProvider } from "@/contexts/UserContext";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 import {
   DMSans_400Regular,
   DMSans_600SemiBold,
   DMSans_700Bold,
   useFonts,
 } from "@expo-google-fonts/dm-sans";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { SessionProvider } from "../contexts/AuthContext";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { SignUpProvider } from "@/contexts/SignupContext";
-import { UserProvider } from "@/contexts/UserContext";
+import { SessionProvider } from "../contexts/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.

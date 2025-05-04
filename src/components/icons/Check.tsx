@@ -1,5 +1,5 @@
 import React from "react";
-import { Svg, Path } from "react-native-svg";
+import { Path, Svg } from "react-native-svg";
 
 const Check = ({ size = 18, color }: { size: number; color: string }) => {
   return (

@@ -1,16 +1,14 @@
+import Colors from "@/constants/Colors";
+import { Doctor } from "@/types/doctor";
+import { Ionicons } from "@expo/vector-icons";
+import BottomSheet from "@gorhom/bottom-sheet";
+import React, { useMemo, useRef, useState } from "react";
 import {
-  View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   useColorScheme,
+  View,
 } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
-import { Doctor } from "@/types/doctor";
 import DoctorList from "./DoctorList";
 import { TextSemiBold } from "./StyledText";
 

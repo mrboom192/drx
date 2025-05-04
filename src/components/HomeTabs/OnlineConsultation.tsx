@@ -1,20 +1,20 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import ArrowOutward from "../icons/ArrowOutward";
-import HealthShield from "../icons/HealthShield";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
-import { Link } from "expo-router";
-import Colors from "@/constants/Colors";
-import Avatar from "../Avatar";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
-import Dot from "../icons/Dot";
-import Bookmark from "../icons/Bookmark";
-import LottieView from "lottie-react-native";
+import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { TextRegular, TextSemiBold, TextBold } from "../StyledText";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Link } from "expo-router";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import LottieView from "lottie-react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { db } from "../../../firebaseConfig";
+import Avatar from "../Avatar";
+import ArrowOutward from "../icons/ArrowOutward";
+import Bookmark from "../icons/Bookmark";
+import Dot from "../icons/Dot";
+import HealthShield from "../icons/HealthShield";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 const mockTags = [
   {

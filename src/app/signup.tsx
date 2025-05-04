@@ -1,22 +1,21 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  Pressable,
-} from "react-native";
-import React, { useState } from "react";
-import { useSignUp } from "@/contexts/SignupContext";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { useSession } from "@/contexts/AuthContext";
+import { useSignUp } from "@/contexts/SignupContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { router } from "expo-router";
-import { useSession } from "@/contexts/AuthContext";
 import { format } from "date-fns";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const SignUp = () => {
   const { signUpData, setSignUpData } = useSignUp();

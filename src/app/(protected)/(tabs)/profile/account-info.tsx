@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  Pressable,
-  KeyboardAvoidingView,
-} from "react-native";
-import { Stack } from "expo-router";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { useUser } from "@/contexts/UserContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
-import { CountryPicker } from "react-native-country-codes-picker";
-import { useUser } from "@/contexts/UserContext";
+import { Stack } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../../../../firebaseConfig";
 import {
-  parsePhoneNumberFromString,
   AsYouType,
   CountryCode,
+  parsePhoneNumberFromString,
 } from "libphonenumber-js";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import React, { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { CountryPicker } from "react-native-country-codes-picker";
+import { db } from "../../../../../firebaseConfig";
 
 const AccountInfo = () => {
   const { data } = useUser();

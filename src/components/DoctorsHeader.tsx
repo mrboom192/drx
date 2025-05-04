@@ -1,19 +1,12 @@
-import { StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "./Themed";
-import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import * as Haptics from "expo-haptics";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
+import React, { useRef, useState } from "react";
+import { StyleSheet } from "react-native";
 import { TextSemiBold } from "./StyledText";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "./Themed";
 
 const categories = [
   {

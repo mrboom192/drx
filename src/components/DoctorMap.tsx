@@ -1,12 +1,9 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import React, { memo } from "react";
-import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { defaultStyles } from "@/constants/Styles";
-import { useRouter } from "expo-router";
-import MapView from "react-native-map-clustering"; // Easy way to do map clustering
 import { Doctor } from "@/types/doctor";
-import Avatar from "./Avatar";
-import { TextSemiBold } from "./StyledText";
+import { useRouter } from "expo-router";
+import React, { memo } from "react";
+import { StyleSheet, View } from "react-native";
+// import { Marker } from "react-native-maps";
 
 interface Props {
   doctors: any;
@@ -35,25 +32,26 @@ const DoctorMap = memo(({ doctors }: Props) => {
     const points = properties.point_count;
 
     return (
-      <Marker
-        key={`cluster-${id}`}
-        onPress={onPress}
-        coordinate={{
-          longitude: geometry.coordinates[0],
-          latitude: geometry.coordinates[1],
-        }}
-      >
-        <TouchableOpacity style={styles.marker}>
-          <TextSemiBold
-            style={{
-              color: "#000",
-              textAlign: "center",
-            }}
-          >
-            {points}
-          </TextSemiBold>
-        </TouchableOpacity>
-      </Marker>
+      <></>
+      // <Marker
+      //   key={`cluster-${id}`}
+      //   onPress={onPress}
+      //   coordinate={{
+      //     longitude: geometry.coordinates[0],
+      //     latitude: geometry.coordinates[1],
+      //   }}
+      // >
+      //   <TouchableOpacity style={styles.marker}>
+      //     <TextSemiBold
+      //       style={{
+      //         color: "#000",
+      //         textAlign: "center",
+      //       }}
+      //     >
+      //       {points}
+      //     </TextSemiBold>
+      //   </TouchableOpacity>
+      // </Marker>
     );
   };
 

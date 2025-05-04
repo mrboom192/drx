@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { Text, Pressable, Image, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withRepeat,
   Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
 } from "react-native-reanimated";
 import { TextSemiBold } from "./StyledText";
 

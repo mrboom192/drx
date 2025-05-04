@@ -1,13 +1,13 @@
-import { View, Pressable } from "react-native";
-import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
 import Colors from "@/constants/Colors";
-import Close from "./icons/Close";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
+import { Pressable, View } from "react-native";
+import Close from "./icons/Close";
 
 const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
   ({ content = <></> }, ref) => {

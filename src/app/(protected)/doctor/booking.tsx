@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface TimeSlot {
   id: string;
@@ -65,6 +66,7 @@ const BookingPage = () => {
   const [isBooking, setIsBooking] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const fetchDoctorProfile = async () => {
@@ -178,7 +180,9 @@ const BookingPage = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <View
+      style={{ flex: 1, backgroundColor: "#FFF", paddingBottom: insets.bottom }}
+    >
       <ScrollView
         contentContainerStyle={{
           padding: 16,

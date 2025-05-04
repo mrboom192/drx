@@ -1,11 +1,12 @@
-import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { TextSemiBold } from "@/components/StyledText";
 import { View } from "@/components/Themed";
-import React, { useState } from "react";
 import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import React, { useState } from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // 1:11:09
 
@@ -28,6 +29,7 @@ const Page = () => {
   const router = useRouter();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
   const { colorScheme, themeTextStylePrimary } = useThemedStyles();
+  const insets = useSafeAreaInsets();
 
   const handleLanguageSelect = (abbr: string) => {
     setLanguageFilter(
@@ -39,7 +41,7 @@ const Page = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <Stack.Screen
         options={{
           title: "Filters",

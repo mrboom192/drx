@@ -5,7 +5,7 @@ import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextSemiBold } from "./StyledText";
 import { ScrollView, TouchableOpacity, View } from "./Themed";
 
@@ -131,6 +131,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
     useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
+  const insets = useSafeAreaInsets();
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
@@ -149,7 +150,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <View style={{ paddingTop: insets.top }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Search container */}
@@ -238,7 +239,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
           ))}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

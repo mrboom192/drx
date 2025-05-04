@@ -37,10 +37,10 @@ export default function ProtectedLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="doctor" options={{ headerShown: false }} />
-      <Stack.Screen name="(modals)/filter" options={{ headerShown: false }} />
+      <Stack.Screen name="(modals)/filter" />
     </Stack>
   );
 }

@@ -1,10 +1,10 @@
-import { View } from "@/components/Themed";
-import React, { useMemo, useState } from "react";
-import { Stack } from "expo-router";
-import DoctorsHeader from "@/components/DoctorsHeader";
+import doctorsData from "@/../assets/data/doctors.json";
 import DoctorMap from "@/components/DoctorMap";
 import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";
-import doctorsData from "@/../assets/data/doctors.json";
+import DoctorsHeader from "@/components/DoctorsHeader";
+import { View } from "@/components/Themed";
+import { Stack } from "expo-router";
+import React, { useMemo, useState } from "react";
 
 const Page = () => {
   const doctors = useMemo(() => doctorsData as any, []);

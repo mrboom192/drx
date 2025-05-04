@@ -60,7 +60,6 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const { colorScheme } = useThemedStyles();
 
-  // Need to make a header function that looks good!!
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>

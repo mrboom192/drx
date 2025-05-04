@@ -1,20 +1,20 @@
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { Stack, useLocalSearchParams, router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
-import Colors from "@/constants/Colors";
 import Avatar from "@/components/Avatar";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import Specializations from "@/components/screens/doctor/Specializations";
 import Biography from "@/components/screens/doctor/Biography";
+import Specializations from "@/components/screens/doctor/Specializations";
+import Colors from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface PublicProfile {
   uid: string;
@@ -31,6 +31,7 @@ interface PublicProfile {
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const insets = useSafeAreaInsets();
   const [doctor, setDoctor] = useState<PublicProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +74,13 @@ const Page = () => {
 
   if (error || !doctor) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <TextRegular style={{ fontSize: 16, color: "#666" }}>
           {error || "Doctor not found"}
         </TextRegular>
@@ -82,11 +89,9 @@ const Page = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <Stack.Screen
-        options={{ title: "Doctor Profile", headerTitleAlign: "center" }}
-      />
-
+    <View
+      style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
+    >
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 16,
@@ -119,41 +124,48 @@ const Page = () => {
 
         {/* Languages */}
         <View style={{ flexDirection: "column", gap: 8 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <Ionicons name="language" size={20} color="#000" />
-            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-              Languages
-            </TextSemiBold>
-          </View>
-          <TextRegular
-            style={{
-              fontSize: 14,
-              color: Colors.light.grey,
-              lineHeight: 20,
-            }}
+          <View
+            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
           >
-            Dr. {doctor.firstName} speaks {doctor.languages?.join(", ")}.
-          </TextRegular>
+            <Ionicons name="language" size={20} color="#000" />
+            <View style={{ flexDirection: "column", gap: 8 }}>
+              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
+                Languages
+              </TextSemiBold>
+              <TextRegular
+                style={{
+                  fontSize: 16,
+                  color: Colors.light.grey,
+                  lineHeight: 20,
+                }}
+              >
+                Dr. {doctor.firstName} speaks {doctor.languages?.join(", ")}.
+              </TextRegular>
+            </View>
+          </View>
         </View>
 
-        {/* Experience */}
         <View style={{ flexDirection: "column", gap: 8 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <Ionicons name="briefcase" size={20} color="#000" />
-            <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-              Experience
-            </TextSemiBold>
-          </View>
-          <TextRegular
-            style={{
-              fontSize: 14,
-              color: "#444",
-              lineHeight: 20,
-            }}
+          <View
+            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
           >
-            Dr. {doctor.firstName} has over {doctor.experience}+ years of
-            experience.
-          </TextRegular>
+            <Ionicons name="briefcase" size={20} color="#000" />
+            <View style={{ flexDirection: "column", gap: 8 }}>
+              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
+                Experience
+              </TextSemiBold>
+              <TextRegular
+                style={{
+                  fontSize: 16,
+                  color: Colors.light.grey,
+                  lineHeight: 20,
+                }}
+              >
+                Dr. {doctor.firstName} has over {doctor.experience}+ years of
+                experience.
+              </TextRegular>
+            </View>
+          </View>
         </View>
 
         <Biography doctor={doctor} />
@@ -193,7 +205,7 @@ const Page = () => {
           </TextSemiBold>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

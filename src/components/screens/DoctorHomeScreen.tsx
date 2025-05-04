@@ -1,12 +1,13 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
-import { router, Stack } from "expo-router";
 import { useUser } from "@/contexts/UserContext";
-import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import DoctorHomeHeader from "../DoctorHomeHeader";
-import { Calendar, DateData } from "react-native-calendars";
 import { format } from "date-fns";
+import { router, Stack } from "expo-router";
+import React, { useState } from "react";
+import { TouchableOpacity, View } from "react-native";
+import { Calendar, DateData } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+import DoctorHomeHeader from "../DoctorHomeHeader";
 import { TextBold, TextRegular, TextSemiBold } from "../StyledText";
 
 interface Consultation {

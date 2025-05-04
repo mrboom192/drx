@@ -14,13 +14,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { CountryPicker } from "react-native-country-codes-picker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db } from "../../../../../firebaseConfig";
 
 const AccountInfo = () => {
@@ -42,6 +42,7 @@ const AccountInfo = () => {
   const [phoneNumber, setPhoneNumber] = useState(original.phone); // Full E.164 format
   const [dateOfBirth, setDateOfBirth] = useState(original.dateOfBirth);
   const [gender, setGender] = useState(original.gender);
+  const insets = useSafeAreaInsets();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isPickerVisible, setIsPickerVisible] = useState(false);
@@ -93,7 +94,9 @@ const AccountInfo = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View
+      style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
+    >
       <Stack.Screen
         options={{
           title: "Account info",
@@ -283,7 +286,7 @@ const AccountInfo = () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

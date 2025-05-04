@@ -1,28 +1,22 @@
-import { View, Text, SafeAreaView } from "react-native";
+import Colors from "@/constants/Colors";
+import { useUser } from "@/contexts/UserContext";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { Stack } from "expo-router";
 import React, { ReactElement, useState } from "react";
-import Stethoscope from "../icons/Stethoscope";
+import OnlineConsultation from "../HomeTabs/OnlineConsultation";
+import RadiologyImages from "../HomeTabs/RadiologyImages";
+import RemoteManagement from "../HomeTabs/RemoteManagement";
+import SecondOpinion from "../HomeTabs/SecondOpinion";
+import WeightManagement from "../HomeTabs/WeightManagement";
+import Emergency from "../icons/Emergency";
+import MonitorWeight from "../icons/MonitorWeight";
 import PsychologyAlt from "../icons/PsychologyAlt";
 import Radiology from "../icons/Radiology";
-import MonitorWeight from "../icons/MonitorWeight";
-import Emergency from "../icons/Emergency";
-import Colors from "@/constants/Colors";
-import OnlineConsultation from "../HomeTabs/OnlineConsultation";
-import SecondOpinion from "../HomeTabs/SecondOpinion";
-import RadiologyImages from "../HomeTabs/RadiologyImages";
-import WeightManagement from "../HomeTabs/WeightManagement";
-import RemoteManagement from "../HomeTabs/RemoteManagement";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import { useUser } from "@/contexts/UserContext";
-import { Stack } from "expo-router";
+import Stethoscope from "../icons/Stethoscope";
 import { PatientHomeHeader } from "../PatientHomeHeader";
-import Animated, {
-  FadeInLeft,
-  FadeInRight,
-  SlideInLeft,
-  SlideInRight,
-} from "react-native-reanimated";
-import { TextRegular } from "../StyledText";
 import { ScreenTransition } from "../ScreenTransition";
+import { TextRegular } from "../StyledText";
+import { View } from "../Themed";
 
 const tabs = [
   {
@@ -85,15 +79,7 @@ const PatientHomeScreen = () => {
   }
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor:
-          colorScheme === "light"
-            ? Colors.light.background
-            : Colors.dark.background,
-      }}
-    >
+    <View style={{ flex: 1 }}>
       <Stack.Screen
         options={{
           header: () => (
@@ -108,7 +94,7 @@ const PatientHomeScreen = () => {
       >
         {tabComponents[tab] || <TextRegular>Tab not found</TextRegular>}
       </ScreenTransition>
-    </SafeAreaView>
+    </View>
   );
 };
 export default PatientHomeScreen;

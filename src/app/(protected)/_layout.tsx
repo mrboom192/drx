@@ -1,9 +1,9 @@
-import { Redirect, Stack } from "expo-router";
-import { auth } from "../../../firebaseConfig";
 import { TextRegular } from "@/components/StyledText";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "@firebase/auth";
 import { useSession } from "@/contexts/AuthContext";
+import { onAuthStateChanged } from "@firebase/auth";
+import { Redirect, Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { auth } from "../../../firebaseConfig";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)", // anchor

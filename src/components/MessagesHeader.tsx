@@ -1,18 +1,12 @@
-import { StyleSheet, useColorScheme } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "./Themed";
-import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import * as Haptics from "expo-haptics";
 import { themedStyles } from "@/constants/Styles";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import React, { useRef, useState } from "react";
+import { StyleSheet, useColorScheme } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextRegular, TextSemiBold } from "./StyledText";
+import { ScrollView, TouchableOpacity, View } from "./Themed";
 
 const tabs = [
   {
@@ -34,6 +28,7 @@ const MessagesHeader = ({}: Props) => {
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
+  const insets = useSafeAreaInsets();
 
   const themeTextStylePrimary =
     colorScheme === "light"
@@ -66,7 +61,7 @@ const MessagesHeader = ({}: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <View style={{ backgroundColor: "#FFF", paddingTop: insets.top }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Messages title */}
@@ -150,7 +145,7 @@ const MessagesHeader = ({}: Props) => {
           ))}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

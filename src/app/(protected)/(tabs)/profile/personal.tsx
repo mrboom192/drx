@@ -1,17 +1,17 @@
-import { View, SafeAreaView, TouchableOpacity } from "react-native";
-import React from "react";
-import { Stack, useRouter } from "expo-router";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@/contexts/UserContext";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
+import { Ionicons } from "@expo/vector-icons";
+import { Stack, useRouter } from "expo-router";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
 
 const Personal = () => {
   const router = useRouter();
   const { data } = useUser();
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
         backgroundColor: "#FFF",
@@ -182,7 +182,7 @@ const Personal = () => {
           </>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

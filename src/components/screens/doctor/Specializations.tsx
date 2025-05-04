@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import React from "react";
+import { View } from "react-native";
 
 const Specializations = ({ doctor }: { doctor: any }) => {
   return (
@@ -27,7 +27,7 @@ const Specializations = ({ doctor }: { doctor: any }) => {
           >
             <TextRegular
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: "#000",
                 textTransform: "capitalize",
               }}

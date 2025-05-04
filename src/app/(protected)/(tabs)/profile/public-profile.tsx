@@ -1,27 +1,25 @@
-import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Switch,
-  Modal,
-  Pressable,
-  FlatList,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
-import React, { useState, useMemo, useEffect } from "react";
-import { Stack, router } from "expo-router";
-import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
+import { db } from "@/../firebaseConfig";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
 import Briefcase from "@/components/icons/Briefcase";
 import Language from "@/components/icons/Language";
+import Colors from "@/constants/Colors";
+import { useUser } from "@/contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
-import { doc, setDoc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
-import { db } from "@/../firebaseConfig";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
+import { Stack } from "expo-router";
+import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  Pressable,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Specialization {
   id: string;

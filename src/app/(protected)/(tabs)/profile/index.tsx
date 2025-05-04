@@ -1,13 +1,14 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
-import React from "react";
-import { Link, RelativePathString, Stack } from "expo-router";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import UserAvatar from "@/components/UserAvatar";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import { useSession } from "@/contexts/AuthContext";
 import { useUser } from "@/contexts/UserContext";
-import UserAvatar from "@/components/UserAvatar";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { Ionicons } from "@expo/vector-icons";
+import { Link, RelativePathString, Stack } from "expo-router";
 
 const items = [
   {

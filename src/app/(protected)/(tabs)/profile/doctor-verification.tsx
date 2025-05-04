@@ -1,21 +1,15 @@
-import {
-  SafeAreaView,
-  View,
-  Text,
-  Pressable,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-import React, { useState } from "react";
-import { Stack } from "expo-router";
-import { useImagePicker } from "@/hooks/useImagePicker";
-import { auth, db } from "../../../../../firebaseConfig";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import Colors from "@/constants/Colors";
+import { ActivityIndicator, Alert, Image, Pressable, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useUser } from "@/contexts/UserContext"; // <- make sure you import this
+import Colors from "@/constants/Colors";
+import { useImagePicker } from "@/hooks/useImagePicker";
+import { Stack } from "expo-router";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import React, { useState } from "react";
+import { auth, db } from "../../../../../firebaseConfig";
+
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { useUser } from "@/contexts/UserContext";
 
 const DoctorVerification = () => {
   const { pickImage, uploadImage, isUploading } = useImagePicker();

@@ -1,11 +1,10 @@
-import React from "react";
 import { Stack } from "expo-router";
+import React from "react";
 
 const ProfileLayout = () => {
   return (
     <Stack
       screenOptions={{
-        navigationBarColor: "#FFF",
         headerTitleStyle: {
           fontFamily: "DMSans_600SemiBold",
         },

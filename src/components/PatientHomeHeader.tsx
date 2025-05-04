@@ -1,17 +1,11 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-} from "react-native";
-import React, { useRef, useState } from "react";
-import * as Haptics from "expo-haptics";
-import { SafeAreaView } from "./Themed";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Tab } from "@/types/tab";
-import UserRow from "./UserRow";
+import * as Haptics from "expo-haptics";
+import React, { useRef, useState } from "react";
+import { Pressable, ScrollView, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextRegular, TextSemiBold } from "./StyledText";
+import UserRow from "./UserRow";
 
 export const PatientHomeHeader = ({
   tabs,
@@ -24,6 +18,7 @@ export const PatientHomeHeader = ({
   const scrollRef = useRef<ScrollView | null>(null);
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const insets = useSafeAreaInsets();
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
@@ -42,7 +37,7 @@ export const PatientHomeHeader = ({
   };
 
   return (
-    <SafeAreaView>
+    <View style={{ backgroundColor: "#FFF", paddingTop: insets.top }}>
       <View
         style={{
           flexDirection: "column",
@@ -60,7 +55,6 @@ export const PatientHomeHeader = ({
             alignItems: "center",
             paddingHorizontal: 16,
             gap: 8,
-            paddingBottom: 16,
           }}
         >
           {tabs.map((item, index) => (
@@ -108,7 +102,7 @@ export const PatientHomeHeader = ({
           ))}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

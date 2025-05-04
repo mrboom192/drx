@@ -5,8 +5,9 @@ import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { TextSemiBold } from "./StyledText";
-import { SafeAreaView, ScrollView, TouchableOpacity, View } from "./Themed";
+import { ScrollView, TouchableOpacity, View } from "./Themed";
 
 const categories = [
   {

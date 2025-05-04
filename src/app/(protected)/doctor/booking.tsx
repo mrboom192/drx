@@ -1,20 +1,19 @@
-import {
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  Platform,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { Stack, useLocalSearchParams, router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/../firebaseConfig";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
+import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { TextRegular, TextSemiBold, TextBold } from "@/components/StyledText";
+import { router, useLocalSearchParams } from "expo-router";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface TimeSlot {
   id: string;
@@ -179,20 +178,7 @@ const BookingPage = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <Stack.Screen
-        options={{
-          title: "Book Consultation",
-          headerTitleAlign: "center",
-          presentation: "modal",
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="close" size={24} color="#000" />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <ScrollView
         contentContainerStyle={{
           padding: 16,
@@ -342,7 +328,7 @@ const BookingPage = () => {
           minimumDate={new Date()}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -7,6 +7,7 @@ export default {
   green: "#47DE8D",
   pink: "#FF2776",
   gold: "#E5A21B",
+  lightGrey: "#F8F8F8", // light grey
 
   onlineConsultation: "#FF8E43", // orange
   peach: "#FFECD9", // peach

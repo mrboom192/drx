@@ -4,9 +4,9 @@ import { format } from "date-fns";
 import { router, Stack } from "expo-router";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Calendar, DateData } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DoctorCalendar from "../DoctorCalendar";
 import DoctorHomeHeader from "../DoctorHomeHeader";
 import { TextBold, TextRegular, TextSemiBold } from "../StyledText";
 
@@ -57,34 +57,10 @@ const DoctorHomeScreen = () => {
       {!data.hasPublicProfile && <MissingPublicProfileAlert />}
 
       <ScrollView style={{ padding: 16 }}>
-        <Calendar
-          onDayPress={(day: DateData) => setSelectedDate(day.dateString)}
-          markedDates={{
-            [selectedDate]: { selected: true, selectedColor: "#6366f1" },
-            // Mark dates with consultations
-            ...Object.keys(mockConsultations).reduce(
-              (acc, date) => ({
-                ...acc,
-                [date]: { marked: true, dotColor: "#6366f1" },
-              }),
-              {}
-            ),
-          }}
-          theme={{
-            todayTextColor: "#6366f1",
-            selectedDayBackgroundColor: "#6366f1",
-            arrowColor: "#6366f1",
-          }}
-          style={{
-            borderRadius: 10,
-            elevation: 2,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.22,
-            shadowRadius: 2.22,
-            backgroundColor: "#fff",
-            marginBottom: 20,
-          }}
+        <DoctorCalendar
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          consultations={mockConsultations}
         />
 
         <View>

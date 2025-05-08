@@ -17,12 +17,11 @@ const DoctorCalendar = ({
             style={{
               flex: 1,
               alignItems: "center",
+              justifyContent: "flex-end",
               padding: 16,
               backgroundColor:
                 state === "selected" ? "black" : Colors.lightGrey,
-              height: "85",
-              alignContent: "flex-start",
-              justifyContent: "flex-end",
+              height: 85, // Make this fill
             }}
           >
             <Text

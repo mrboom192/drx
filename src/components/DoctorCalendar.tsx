@@ -18,10 +18,15 @@ const DoctorCalendar = ({
               flex: 1,
               alignItems: "center",
               justifyContent: "flex-end",
-              padding: 16,
+              paddingVertical: 8,
+              paddingHorizontal: 16,
+              //   width: "100%",
+              //   marginHorizontal: 2,
               backgroundColor:
                 state === "selected" ? "black" : Colors.lightGrey,
-              height: 85, // Make this fill
+              height: 80, // Make this fill
+              flexGrow: 1,
+              borderRadius: 8,
             }}
           >
             <Text
@@ -53,13 +58,6 @@ const DoctorCalendar = ({
       }}
       style={{
         borderRadius: 10,
-        elevation: 2,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-        backgroundColor: "#fff",
-        marginBottom: 20,
       }}
     />
   );

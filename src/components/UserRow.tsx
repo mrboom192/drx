@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
-import React from "react";
+import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
-import Colors from "@/constants/Colors";
+import React from "react";
+import { View } from "react-native";
 import Avatar from "./Avatar";
+import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 const UserRow = () => {
@@ -23,11 +24,14 @@ const UserRow = () => {
         name={data.firstName + " " + data.lastName}
         role={data.role}
       />
-      <Avatar
-        size={40}
-        initials={`${data.firstName[0]}${data.lastName[0]}`}
-        uri={data.image ? data.image : null}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <IconButton name={"notification-bell"} />
+        <Avatar
+          size={40}
+          initials={`${data.firstName[0]}${data.lastName[0]}`}
+          uri={data.image ? data.image : null}
+        />
+      </View>
     </View>
   );
 };

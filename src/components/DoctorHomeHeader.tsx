@@ -1,11 +1,20 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import UserRow from "./UserRow";
 
 const DoctorHomeHeader = () => {
+  const insets = useSafeAreaInsets();
+
+  // const renderNotifications = () => {
+  //   // Placeholder for notifications rendering logic
+  //   return (
+
+  //   );
+  // };
+
   return (
-    <SafeAreaView style={{ backgroundColor: "#FFF" }}>
+    <View style={{ backgroundColor: "#FFF", paddingTop: insets.top }}>
       <View
         style={{
           flexDirection: "column",
@@ -16,7 +25,7 @@ const DoctorHomeHeader = () => {
       >
         <UserRow />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

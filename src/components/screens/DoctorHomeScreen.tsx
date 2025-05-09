@@ -4,11 +4,10 @@ import { format } from "date-fns";
 import { router, Stack } from "expo-router";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import DoctorCalendar from "../DoctorCalendar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import DoctorCalendar from "../Calendar/DoctorCalendar";
 import DoctorHomeHeader from "../DoctorHomeHeader";
-import { TextBold, TextRegular, TextSemiBold } from "../StyledText";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 interface Consultation {
   id: number;
@@ -34,16 +33,10 @@ const DoctorHomeScreen = () => {
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd")
   );
-
-  const consultationsForDay = mockConsultations[selectedDate] || [];
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#FFF",
-      }}
-    >
+    <View style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}>
       <Stack.Screen
         options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
       />
@@ -56,50 +49,12 @@ const DoctorHomeScreen = () => {
       )}
       {!data.hasPublicProfile && <MissingPublicProfileAlert />}
 
-      <ScrollView style={{ padding: 16 }}>
-        <DoctorCalendar
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          consultations={mockConsultations}
-        />
-
-        <View>
-          <TextSemiBold style={{ fontSize: 18, marginBottom: 12 }}>
-            You have {consultationsForDay.length} patient consultations today
-          </TextSemiBold>
-          {consultationsForDay.map((consultation: Consultation) => (
-            <View
-              key={consultation.id}
-              style={{
-                backgroundColor: "#FFF5F5",
-                padding: 16,
-                borderRadius: 12,
-                marginBottom: 12,
-                borderWidth: 1,
-                borderColor: "#FFE4E4",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TextBold style={{ fontSize: 16 }}>
-                  {consultation.patientName}'s Consultation
-                </TextBold>
-                <TouchableOpacity>
-                  <Ionicons name="ellipsis-horizontal" size={20} color="#666" />
-                </TouchableOpacity>
-              </View>
-              <TextRegular style={{ color: "#666", marginTop: 4 }}>
-                {consultation.startTime} - {consultation.endTime}
-              </TextRegular>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <DoctorCalendar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        consultations={mockConsultations}
+      />
+    </View>
   );
 };
 

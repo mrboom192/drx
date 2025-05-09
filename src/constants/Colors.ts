@@ -7,6 +7,7 @@ export default {
   green: "#47DE8D",
   pink: "#FF2776",
   gold: "#E5A21B",
+  grey: "#595959",
   lightGrey: "#F8F8F8", // light grey
   lightGrey2: "#DDDDDD", // light grey
 

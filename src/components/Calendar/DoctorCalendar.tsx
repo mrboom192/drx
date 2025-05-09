@@ -2,8 +2,9 @@ import React from "react";
 
 import Colors from "@/constants/Colors";
 import { format } from "date-fns";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
+import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
 import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
@@ -63,38 +64,39 @@ const DoctorCalendar = ({
     );
   };
 
+  const renderDay = ({ date, state }: { date?: DateData } & DayProps) => {
+    return (
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          paddingVertical: 8,
+          paddingHorizontal: 16,
+          backgroundColor: state === "selected" ? "black" : Colors.lightGrey,
+          borderRadius: 8,
+        }}
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            color: state === "disabled" ? "gray" : "black",
+          }}
+        >
+          {date ? date.day : "Error"}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <Calendar
       renderArrow={renderArrow}
       renderHeader={renderHeader}
       onDayPress={(day: DateData) => {
         console.log(day);
-        setSelectedDate(day.dateString);
+        setSelectedDate("RAN");
       }}
-      dayComponent={({ date, state }) => {
-        return (
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "flex-end",
-              paddingVertical: 8,
-              paddingHorizontal: 16,
-              backgroundColor:
-                state === "selected" ? "black" : Colors.lightGrey,
-              borderRadius: 8,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                color: state === "disabled" ? "gray" : "black",
-              }}
-            >
-              {date ? date.day : ""}
-            </Text>
-          </View>
-        );
-      }}
+      dayComponent={renderDay}
       markedDates={{
         [selectedDate]: { selected: true, selectedColor: "#6366f1" },
         // Mark dates with consultations

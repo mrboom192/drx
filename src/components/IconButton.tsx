@@ -4,6 +4,8 @@ import { GestureResponderEvent, TouchableOpacity } from "react-native";
 import CustomIcon from "./icons/CustomIcon";
 import { IconName } from "./icons/iconsMap";
 
+const DEFAULT_ICONBUTTON_SIZE = 40;
+
 const IconButton = ({
   name,
   onPress,
@@ -14,8 +16,8 @@ const IconButton = ({
   return (
     <TouchableOpacity
       style={{
-        width: 40,
-        height: 40,
+        width: DEFAULT_ICONBUTTON_SIZE,
+        height: DEFAULT_ICONBUTTON_SIZE,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 9999,

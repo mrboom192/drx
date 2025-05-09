@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 import Avatar from "./Avatar";
@@ -25,7 +26,12 @@ const UserRow = () => {
         role={data.role}
       />
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <IconButton name={"notification-bell"} />
+        <IconButton
+          name={"notification-bell"}
+          onPress={() => {
+            router.push("/(protected)/notifications");
+          }}
+        />
         <Avatar
           size={40}
           initials={`${data.firstName[0]}${data.lastName[0]}`}

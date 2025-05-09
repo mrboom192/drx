@@ -4,7 +4,7 @@ import Colors from "@/constants/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { router } from "expo-router";
-import { Dimensions, Platform, TouchableOpacity } from "react-native";
+import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
@@ -29,7 +29,8 @@ const DoctorCalendar = ({ consultations }: any) => {
 
   const renderArrow = (direction: Direction) => {
     return (
-      <TouchableOpacity
+      <View
+        pointerEvents="none" // Prevents touch events on the arrow, allowing calendar to work
         style={{
           width: 40,
           height: 40,
@@ -43,7 +44,7 @@ const DoctorCalendar = ({ consultations }: any) => {
         <IconButton
           name={direction === "right" ? "chevron-right" : "chevron-left"}
         />
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -136,7 +137,6 @@ const DoctorCalendar = ({ consultations }: any) => {
       renderArrow={renderArrow}
       renderHeader={renderHeader}
       dayComponent={renderDay}
-      current={selectedDate}
       markedDates={{
         [selectedDate]: { selected: true, selectedColor: "#6366f1" },
         // Mark dates with consultations

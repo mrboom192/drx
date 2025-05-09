@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import Colors from "@/constants/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
+import { router } from "expo-router";
 import { Dimensions, Platform, TouchableOpacity } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
@@ -20,7 +21,10 @@ const DoctorCalendar = ({ consultations }: any) => {
     if (!date) return;
 
     setSelectedDate(date.dateString);
-    console.log("Selected date:", date.dateString);
+    router.push({
+      pathname: "/(protected)/(modals)/[date]",
+      params: { date: date.dateString },
+    });
   }, []);
 
   const renderArrow = (direction: Direction) => {

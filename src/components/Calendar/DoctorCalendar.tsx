@@ -54,8 +54,7 @@ const DoctorCalendar = ({ consultations }: any) => {
     const onDateChange = (event: any, selectedDate?: Date) => {
       setShowDatePicker(false);
       if (selectedDate) {
-        // Update the selected date here
-        console.log("Selected date:", selectedDate);
+        setSelectedDate(format(selectedDate, "yyyy-MM-dd"));
       }
     };
 
@@ -137,6 +136,7 @@ const DoctorCalendar = ({ consultations }: any) => {
       renderArrow={renderArrow}
       renderHeader={renderHeader}
       dayComponent={renderDay}
+      current={selectedDate}
       markedDates={{
         [selectedDate]: { selected: true, selectedColor: "#6366f1" },
         // Mark dates with consultations

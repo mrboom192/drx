@@ -1,14 +1,17 @@
-export interface User {
-  name: string;
-  role: string;
-  profileImage: string;
-  gender: string;
-  age: number;
-  weight: Measurement;
-  height: Measurement;
-}
+import { Timestamp } from "firebase/firestore";
 
-interface Measurement {
-  value: number;
-  unit: string;
+export interface User {
+  uid: string;
+  dateOfBirth: Timestamp;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  role: string;
+  image: string;
+
+  // Doctor-specific fields
+  hasPublicProfile?: boolean;
+  licenseImage?: string;
+  verification?: string;
 }

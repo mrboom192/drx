@@ -1,39 +1,73 @@
 import { useUser } from "@/contexts/UserContext";
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
 import { router, Stack } from "expo-router";
-import React, { useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { db } from "../../../firebaseConfig";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
 import DoctorHomeHeader from "../DoctorHomeHeader";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
-interface Consultation {
-  id: number;
-  patientName: string;
-  startTime: string;
-  endTime: string;
-}
-
-interface ConsultationsData {
-  [date: string]: Consultation[];
-}
-
-// Mock data for consultations - replace with real data later
-const mockConsultations: ConsultationsData = {
-  "2025-04-19": [
-    { id: 1, patientName: "Tyler", startTime: "09:00 AM", endTime: "9:15 AM" },
-    { id: 2, patientName: "Emma", startTime: "09:30 AM", endTime: "9:45 AM" },
-  ],
-};
-
 const DoctorHomeScreen = () => {
   const { data } = useUser();
-  const [selectedDate, setSelectedDate] = useState(
-    format(new Date(), "yyyy-MM-dd")
-  );
+  const [appointments, setAppointments] = useState<any>([]);
+  const [status, setStatus] = useState<string>("loading");
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      if (!data) {
+        setStatus("error");
+        return;
+      }
+
+      try {
+        const appointmentsRef = collection(db, "appointments");
+        const q = query(appointmentsRef, where("doctorId", "==", data.uid));
+        const querySnapshot = await getDocs(q);
+
+        const appointmentsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setAppointments(appointmentsList);
+      } catch (err) {
+        console.error("Error fetching doctor profile:", err); // For debugg
+        setStatus("error");
+      } finally {
+        setStatus("success");
+      }
+    };
+
+    fetchAppointments();
+  }, [data]);
+
+  if (status === "loading") {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
+      >
+        <TextRegular style={{ textAlign: "center", marginTop: 20 }}>
+          Loading...
+        </TextRegular>
+      </View>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
+      >
+        <TextRegular style={{ textAlign: "center", marginHorizontal: 16 }}>
+          There was an error fetching your appointments. Please try again later.
+        </TextRegular>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}>
@@ -41,19 +75,15 @@ const DoctorHomeScreen = () => {
         options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
       />
 
-      {(data.verification === "unverified" || !data.verification) && (
+      {(data?.verification === "unverified" || !data?.verification) && (
         <VerificationAlert />
       )}
-      {(data.verification === "pending" || !data.verification) && (
+      {(data?.verification === "pending" || !data?.verification) && (
         <PendingAlert />
       )}
-      {!data.hasPublicProfile && <MissingPublicProfileAlert />}
+      {!data?.hasPublicProfile && <MissingPublicProfileAlert />}
 
-      <DoctorCalendar
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        consultations={mockConsultations}
-      />
+      <DoctorCalendar consultations={null} />
     </View>
   );
 };

@@ -1,16 +1,17 @@
+import { auth, db } from "@/../firebaseConfig";
+import { User } from "@/types/user";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
 import React, {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { doc, onSnapshot } from "firebase/firestore";
-import { auth, db } from "@/../firebaseConfig";
 
 interface UserContextType {
-  data: any;
+  data: User | null;
   loading: boolean;
   error: string | null;
 }
@@ -18,7 +19,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +41,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         userDocRef,
         (snapshot) => {
           if (snapshot.exists()) {
-            setData({ uid: user.uid, ...snapshot.data() });
+            setData({
+              uid: user.uid,
+              ...snapshot.data(),
+            } as User);
             setError(null);
           } else {
             setData(null);

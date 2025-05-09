@@ -105,12 +105,12 @@ const BookingPage = () => {
       setIsBooking(true);
 
       // Create a new consultation document
-      const consultationRef = doc(db, "consultations", `${id}-${Date.now()}`);
+      const consultationRef = doc(db, "appointments", `${id}-${Date.now()}`);
       await setDoc(consultationRef, {
         doctorId: id,
         patientId: user.uid,
-        patientName: `${user.firstName} ${user.lastName}`,
-        doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
+        doctor: { firstName: doctor.firstName, lastName: doctor.lastName },
+        patient: { firstName: user.firstName, lastName: user.lastName },
         timeSlot: selectedSlot,
         date: selectedDate,
         price: doctor.consultationPrice,
@@ -125,45 +125,7 @@ const BookingPage = () => {
         ),
       });
 
-      // Add consultation to doctor's consultations subcollection
-      const doctorConsultationRef = doc(
-        db,
-        "doctors",
-        id,
-        "consultations",
-        consultationRef.id
-      );
-      await setDoc(doctorConsultationRef, {
-        consultationId: consultationRef.id,
-        patientId: user.uid,
-        patientName: `${user.firstName} ${user.lastName}`,
-        timeSlot: selectedSlot,
-        date: selectedDate,
-        price: doctor.consultationPrice,
-        status: "pending",
-        createdAt: Timestamp.now(),
-      });
-
-      // Add consultation to patient's consultations subcollection
-      const patientConsultationRef = doc(
-        db,
-        "patients",
-        user.uid,
-        "consultations",
-        consultationRef.id
-      );
-      await setDoc(patientConsultationRef, {
-        consultationId: consultationRef.id,
-        doctorId: id,
-        doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
-        timeSlot: selectedSlot,
-        date: selectedDate,
-        price: doctor.consultationPrice,
-        status: "pending",
-        createdAt: Timestamp.now(),
-      });
-
-      router.back();
+      router.replace("/(protected)/(tabs)");
     } catch (error) {
       console.error("Error booking consultation:", error);
     } finally {

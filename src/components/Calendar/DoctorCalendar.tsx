@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import Colors from "@/constants/Colors";
 import { format } from "date-fns";
@@ -10,11 +10,16 @@ import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
 import CustomIcon from "../icons/CustomIcon";
 
-const DoctorCalendar = ({
-  selectedDate,
-  setSelectedDate,
-  consultations,
-}: any) => {
+const DoctorCalendar = ({ consultations }: any) => {
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "yyyy-MM-dd")
+  );
+
+  const onDayPress = useCallback((day: DateData) => {
+    setSelectedDate(day.dateString);
+    console.log("Selected date:", day.dateString);
+  }, []);
+
   const renderArrow = (direction: Direction) => {
     return (
       <TouchableOpacity
@@ -93,20 +98,19 @@ const DoctorCalendar = ({
       renderArrow={renderArrow}
       renderHeader={renderHeader}
       onDayPress={(day: DateData) => {
-        console.log(day);
-        setSelectedDate("RAN");
+        onDayPress(day);
       }}
       dayComponent={renderDay}
       markedDates={{
         [selectedDate]: { selected: true, selectedColor: "#6366f1" },
         // Mark dates with consultations
-        ...Object.keys(consultations).reduce(
-          (acc, date) => ({
-            ...acc,
-            [date]: { marked: true, dotColor: "#6366f1" },
-          }),
-          {}
-        ),
+        // ...Object.keys(consultations).reduce(
+        //   (acc, date) => ({
+        //     ...acc,
+        //     [date]: { marked: true, dotColor: "#6366f1" },
+        //   }),
+        //   {}
+        // ),
       }}
       theme={{
         backgroundColor: "transparent",

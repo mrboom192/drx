@@ -49,9 +49,7 @@ const tabs = [
 const PatientHomeScreen = () => {
   const [tab, setTab] = useState("Online\nConsultation");
   const [isForward, setIsForward] = useState(false);
-  const { data, loading } = useUser();
-
-  const { colorScheme } = useThemedStyles();
+  const { loading } = useUser();
 
   const onTabChange = (newTab: string) => {
     if (newTab === tab) return; // No-op if you're already on that tab

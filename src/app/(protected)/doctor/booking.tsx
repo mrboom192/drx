@@ -104,13 +104,17 @@ const BookingPage = () => {
     try {
       setIsBooking(true);
 
-      // Create a new consultation document
+      // Patient books an appointment
       const consultationRef = doc(db, "appointments", `${id}-${Date.now()}`);
       await setDoc(consultationRef, {
         doctorId: id,
         patientId: user.uid,
         doctor: { firstName: doctor.firstName, lastName: doctor.lastName },
-        patient: { firstName: user.firstName, lastName: user.lastName },
+        patient: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          image: user.image,
+        },
         timeSlot: selectedSlot,
         date: selectedDate,
         price: doctor.consultationPrice,

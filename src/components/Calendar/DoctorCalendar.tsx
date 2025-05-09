@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import Colors from "@/constants/Colors";
+import { Appointment } from "@/types/appointment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { router } from "expo-router";
@@ -8,14 +9,19 @@ import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
+import Avatar from "../Avatar";
 import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
 import CustomIcon from "../icons/CustomIcon";
 
-const DoctorCalendar = ({ consultations }: any) => {
+const DoctorCalendar = ({ appointments }: any) => {
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd")
   );
+
+  useEffect(() => {
+    console.log("Appointments:", appointments);
+  }, [appointments]);
 
   const onDayPress = useCallback((date?: DateData | undefined) => {
     if (!date) return;
@@ -104,14 +110,26 @@ const DoctorCalendar = ({ consultations }: any) => {
     if (state === "disabled") return null;
 
     const isToday = state === "today";
+    let todaysAppointments: Appointment[] = [];
+
+    appointments.forEach((appointment: any) => {
+      const appointmentDate = format(appointment.date.toDate(), "yyyy-MM-dd");
+      const calendarDate = date?.dateString;
+
+      if (appointmentDate === calendarDate) {
+        todaysAppointments.push(appointment);
+      }
+    });
 
     return (
       <TouchableOpacity
         style={{
-          width: getDayWidth(), // Hacky fix
-          height: 122, // Need to implement a better way to get the height
+          width: getDayWidth(),
+          height: 122,
           alignItems: "center",
           justifyContent: "flex-end",
+          flexDirection: "column",
+          gap: 8,
           paddingVertical: 8,
           paddingHorizontal: 16,
           backgroundColor: isToday ? "black" : Colors.lightGrey,
@@ -119,13 +137,22 @@ const DoctorCalendar = ({ consultations }: any) => {
         }}
         onPress={() => onDayPress(date)}
       >
+        <View style={{ flexDirection: "column", gap: 2 }}>
+          {todaysAppointments.map((appointment) => (
+            <Avatar
+              key={appointment.id}
+              size={24}
+              uri={appointment.patient.image}
+            />
+          ))}
+        </View>
         <TextSemiBold
           style={{
             textAlign: "center",
             color: isToday ? "#FFF" : Colors.grey,
           }}
         >
-          {date?.day ?? "–"}
+          {date?.day}
         </TextSemiBold>
       </TouchableOpacity>
     );

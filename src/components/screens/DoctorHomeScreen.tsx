@@ -83,7 +83,7 @@ const DoctorHomeScreen = () => {
       )}
       {!data?.hasPublicProfile && <MissingPublicProfileAlert />}
 
-      <DoctorCalendar consultations={null} />
+      <DoctorCalendar appointments={appointments} />
     </View>
   );
 };

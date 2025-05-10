@@ -6,13 +6,6 @@ import UserRow from "./UserRow";
 const DoctorHomeHeader = () => {
   const insets = useSafeAreaInsets();
 
-  // const renderNotifications = () => {
-  //   // Placeholder for notifications rendering logic
-  //   return (
-
-  //   );
-  // };
-
   return (
     <View style={{ backgroundColor: "#FFF", paddingTop: insets.top }}>
       <View

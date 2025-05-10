@@ -1,15 +1,47 @@
-import { Text, useColorScheme } from "react-native";
-import { View } from "@/components/Themed";
-import React, { useMemo } from "react";
-import MessagesHeader from "@/components/MessagesHeader";
-import chatsData from "@/../assets/data/chats.json";
-import { Stack } from "expo-router";
-import { themedStyles } from "@/constants/Styles";
 import ChatsList from "@/components/ChatsList";
+import MessagesHeader from "@/components/MessagesHeader";
+import { View } from "@/components/Themed";
+import { themedStyles } from "@/constants/Styles";
+import { useUser } from "@/contexts/UserContext";
+import { Stack } from "expo-router";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { useColorScheme } from "react-native";
+import { db } from "../../../../../firebaseConfig";
 
 const Messages = () => {
   const colorScheme = useColorScheme();
-  const chats = useMemo(() => chatsData as any, []);
+  const [chats, setChats] = useState<any[]>([]);
+  const { data, loading } = useUser();
+
+  // Fetch chats from Firebase
+  useEffect(() => {
+    const fetchChats = async () => {
+      if (loading || !data) return;
+
+      try {
+        const chatsRef = collection(db, "chats");
+
+        const q = query(
+          chatsRef,
+          where("users", "array-contains", data.uid),
+          orderBy("latestMessageTime", "desc") // assumes field exists and is a Timestamp
+        );
+
+        const snapshot = await getDocs(q);
+        const chatData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setChats(chatData);
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+
+    fetchChats();
+  }, [data]);
 
   const themeBorderStyle =
     colorScheme === "light"

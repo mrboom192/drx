@@ -141,9 +141,34 @@ const BookingPage = () => {
 
       if (!chatSnap.exists()) {
         await setDoc(chatRef, {
+          // Users in the chat for querying
           users: [user.uid, doctor.uid],
-          lastMessage: null,
-          latestMessageTime: null,
+
+          // The doctor and patient details
+          participants: {
+            doctor: {
+              uid: doctor.uid,
+              firstName: doctor.firstName,
+              lastName: doctor.lastName,
+              image: doctor.image || null,
+            },
+            patient: {
+              uid: user.uid,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              image: user.image || null,
+            },
+          },
+
+          // Useful for displaying the latest message
+          lastMessage: {
+            text: "New consultation created",
+            senderId: "system",
+            timestamp: Timestamp.now(),
+          },
+
+          // Chat metadata
+          status: "ongoing",
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now(),
         });

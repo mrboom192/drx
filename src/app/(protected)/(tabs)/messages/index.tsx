@@ -1,46 +1,54 @@
 import ChatsList from "@/components/ChatsList";
 import MessagesHeader from "@/components/MessagesHeader";
+import { TextSemiBold } from "@/components/StyledText";
 import { View } from "@/components/Themed";
 import { themedStyles } from "@/constants/Styles";
 import { useUser } from "@/contexts/UserContext";
+import { Chat } from "@/types/chat";
 import { Stack } from "expo-router";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { db } from "../../../../../firebaseConfig";
 
 const Messages = () => {
   const colorScheme = useColorScheme();
-  const [chats, setChats] = useState<any[]>([]);
-  const { data, loading } = useUser();
+  const [chats, setChats] = useState<Chat[] | null>(null);
+  const { data } = useUser();
 
   // Fetch chats from Firebase
   useEffect(() => {
-    const fetchChats = async () => {
-      if (loading || !data) return;
+    if (!data) return;
 
-      try {
-        const chatsRef = collection(db, "chats");
+    const chatsRef = collection(db, "chats");
 
-        const q = query(
-          chatsRef,
-          where("users", "array-contains", data.uid),
-          orderBy("latestMessageTime", "desc") // assumes field exists and is a Timestamp
-        );
+    const q = query(
+      chatsRef,
+      where("users", "array-contains", data.uid),
+      orderBy("lastMessage.timestamp", "desc")
+    );
 
-        const snapshot = await getDocs(q);
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
         const chatData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        setChats(chatData);
-      } catch (error) {
-        console.error("Error fetching chats:", error);
+        setChats(chatData as Chat[]);
+      },
+      (error) => {
+        console.error("Error subscribing to chats:", error);
       }
-    };
+    );
 
-    fetchChats();
+    return () => unsubscribe(); // Clean up on unmount
   }, [data]);
 
   const themeBorderStyle =
@@ -48,9 +56,19 @@ const Messages = () => {
       ? themedStyles.lightBorder
       : themedStyles.darkBorder;
 
+  if (chats === null) {
+    return (
+      <View>
+        <TextSemiBold style={{ textAlign: "center", marginTop: 20 }}>
+          Loading...
+        </TextSemiBold>
+      </View>
+    );
+  }
+
   return (
     <View
-      style={[themeBorderStyle, { flex: 1, borderWidth: 0, borderTopWidth: 1 }]} // Probably a better way to do this but idc
+      style={[themeBorderStyle, { flex: 1, borderWidth: 0, borderTopWidth: 1 }]}
     >
       <Stack.Screen
         options={{

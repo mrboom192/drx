@@ -1,18 +1,19 @@
-import {
-  View,
-  ListRenderItem,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  useColorScheme,
-} from "react-native";
-import React, { useRef, useState } from "react";
+import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
-import { Link } from "expo-router";
+import { useUser } from "@/contexts/UserContext";
 import { Chat } from "@/types/chat";
 import { format } from "date-fns";
-import Colors from "@/constants/Colors";
+import { Link } from "expo-router";
+import React, { useRef, useState } from "react";
+import {
+  FlatList,
+  ListRenderItem,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
+import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
@@ -21,8 +22,23 @@ interface Props {
 
 const ChatsList = ({ chats }: Props) => {
   const [loading, setLoading] = useState(false);
+  const { data } = useUser();
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
+
+  const getSenderName = (uid: string, chat: Chat): string => {
+    if (uid === "system") return "System";
+
+    if (chat.participants.doctor.uid === uid) {
+      return `${chat.participants.doctor.firstName} ${chat.participants.doctor.lastName}`;
+    }
+
+    if (chat.participants.patient.uid === uid) {
+      return `${chat.participants.patient.firstName} ${chat.participants.patient.lastName}`;
+    }
+
+    return "Unknown";
+  };
 
   const themeBorderStyle =
     colorScheme === "light"
@@ -39,11 +55,11 @@ const ChatsList = ({ chats }: Props) => {
       ? themedStyles.lightTextSecondary
       : themedStyles.darkTextSecondary;
 
-  const renderRow: ListRenderItem<Chat> = ({ item }) => (
+  const renderRow: ListRenderItem<Chat> = ({ item: chat }) => (
     <Link
       href={{
         pathname: `/(protected)/(tabs)/messages/[id]`,
-        params: { id: item.id },
+        params: { id: chat.id },
       }}
       asChild
     >
@@ -64,16 +80,20 @@ const ChatsList = ({ chats }: Props) => {
           ]}
         >
           <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: item.doctor_profile_url }}
-              style={styles.image}
+            <Avatar
+              size={64}
+              uri={
+                data?.role === "patient"
+                  ? chat.participants.doctor.image
+                  : chat.participants.patient.image
+              }
             />
-            {item.doctor_is_online && <View style={styles.onlineIndicator} />}
           </View>
 
           <View style={{ flex: 1 }}>
             <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
-              {item.doctor_name}
+              {chat.participants.doctor.firstName}{" "}
+              {chat.participants.doctor.lastName}
             </TextSemiBold>
             <View style={{ flexDirection: "row" }}>
               <TextRegular
@@ -81,18 +101,50 @@ const ChatsList = ({ chats }: Props) => {
                 ellipsizeMode="tail"
                 style={[themeTextStyleSecondary, { flex: 1 }]}
               >
-                {item.last_sender_name}: {item.last_message}
+                <TextSemiBold>
+                  {getSenderName(chat.lastMessage.senderId, chat)}:{" "}
+                </TextSemiBold>
+                {chat.lastMessage.text}
               </TextRegular>
             </View>
           </View>
 
           <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
-            {format(new Date(item.last_updated * 1000), "h:mm a")}
+            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a")}
           </TextRegular>
         </View>
       </TouchableOpacity>
     </Link>
   );
+
+  if (chats.length === 0) {
+    return (
+      <View
+        style={[
+          themeBorderStyle,
+          {
+            flex: 1,
+            borderWidth: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        ]}
+      >
+        <TextSemiBold
+          style={{
+            color: Colors.grey,
+            fontSize: 16,
+            width: 256,
+            textAlign: "center",
+          }}
+        >
+          {data?.role === "doctor"
+            ? "You currently have no chats"
+            : "Book a consultation to start chatting with a doctor"}
+        </TextSemiBold>
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -111,11 +163,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 16,
     justifyContent: "space-between",
-  },
-  image: {
-    width: 64,
-    height: 64,
-    borderRadius: 9999,
   },
   info: {
     flexDirection: "column",

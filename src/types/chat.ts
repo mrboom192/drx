@@ -2,15 +2,23 @@ import { User } from "./user";
 
 export interface Chat {
   id: string;
-  doctor: Pick<User, "firstName" | "lastName" | "image">;
-  patient: Pick<User, "firstName" | "lastName" | "image">;
-  patient_id: string;
-  doctor_id: string;
-  created_at: number;
-  last_message: string;
-  last_sender_name: string;
-  last_updated: number;
+  users: string[];
 
-  patient_is_online: boolean;
-  doctor_is_online: boolean;
+  participants: {
+    doctor: Pick<User, "uid" | "firstName" | "lastName" | "image">;
+    patient: Pick<User, "uid" | "firstName" | "lastName" | "image">;
+  };
+
+  lastMessage: {
+    text: string;
+    senderId: string;
+    timestamp: number; // Firestore timestamps can be converted to number or use Firebase Timestamp type
+  };
+
+  status: "ongoing" | "finished" | "pending";
+  createdAt: number; // Use camelCase for consistency
+  updatedAt: number;
+
+  patient_is_online?: boolean;
+  doctor_is_online?: boolean;
 }

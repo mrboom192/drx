@@ -26,6 +26,8 @@ export default function ProtectedLayout() {
     return <TextRegular>Loading...</TextRegular>;
   }
 
+  // Update this to the new router Expo SDK 53
+
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
   if (!session || auth.currentUser === null) {
@@ -40,6 +42,7 @@ export default function ProtectedLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="doctor" options={{ headerShown: false }} />
+      <Stack.Screen name="[chatId]" />
       <Stack.Screen name="(modals)/filter" />
       <Stack.Screen
         name="(modals)/[date]"

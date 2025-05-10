@@ -58,8 +58,8 @@ const ChatsList = ({ chats }: Props) => {
   const renderRow: ListRenderItem<Chat> = ({ item: chat }) => (
     <Link
       href={{
-        pathname: `/(protected)/(tabs)/messages/[id]`,
-        params: { id: chat.id },
+        pathname: `/(protected)/[chatId]`,
+        params: { chatId: chat.id },
       }}
       asChild
     >

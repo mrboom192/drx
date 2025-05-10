@@ -1,7 +1,8 @@
 import Colors from "@/constants/Colors";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Message {
   _id: number;
@@ -18,21 +19,7 @@ interface User {
 
 const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
-  }, []);
+  const insets = useSafeAreaInsets();
 
   const onSend = useCallback((messages: Message[] = []) => {
     setMessages((previousMessages) =>
@@ -41,7 +28,9 @@ const Chat = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <View
+      style={{ flex: 1, backgroundColor: "#FFF", paddingBottom: insets.bottom }}
+    >
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}

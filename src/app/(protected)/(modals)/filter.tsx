@@ -1,8 +1,8 @@
+import IconButton from "@/components/IconButton";
 import { TextSemiBold } from "@/components/StyledText";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
-import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
@@ -50,13 +50,7 @@ const Page = () => {
           },
           presentation: "modal",
           headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons
-                name="close-outline"
-                size={24}
-                color={colorScheme === "light" ? "#000" : "#FFF"}
-              />
-            </TouchableOpacity>
+            <IconButton name="close" onPress={() => router.back()} />
           ),
         }}
       />

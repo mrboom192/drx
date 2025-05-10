@@ -70,7 +70,7 @@ const DoctorHomeScreen = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}>
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <Stack.Screen
         options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
       />

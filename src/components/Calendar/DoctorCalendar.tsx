@@ -113,6 +113,7 @@ const DoctorCalendar = ({ appointments }: any) => {
     let todaysAppointments: Appointment[] = [];
 
     appointments.forEach((appointment: any) => {
+      // Normalize the date to YYYY-MM-DD format and then compare
       const appointmentDate = format(appointment.date.toDate(), "yyyy-MM-dd");
       const calendarDate = date?.dateString;
 

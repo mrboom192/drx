@@ -14,7 +14,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import "react-native-get-random-values";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Messages from "../(tabs)/messages";
 
 interface TimeSlot {
   id: string;
@@ -104,8 +106,13 @@ const BookingPage = () => {
     try {
       setIsBooking(true);
 
+      // On successful doctor appointment booking:
+      // 1. Create a new appointment in the "appointments" collection
+      // 2. Create a new chat in the "chats" collection if it doesn't exist
+      // 3. Navigate to the chat screen
+
       // Patient books an appointment
-      const consultationRef = doc(db, "appointments", `${id}-${Date.now()}`);
+      const consultationRef = doc(db, "appointments");
       await setDoc(consultationRef, {
         doctorId: id,
         patientId: user.uid,
@@ -127,6 +134,14 @@ const BookingPage = () => {
             )
           )
         ),
+      });
+
+      const chatRef = doc(db, "chats");
+      await setDoc(chatRef, {
+        users: [user.uid, id],
+        lastMessage: null,
+        latestMessageTime: null,
+        Messages,
       });
 
       router.replace("/(protected)/(tabs)");

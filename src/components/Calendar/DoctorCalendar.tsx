@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import Colors from "@/constants/Colors";
 import { Appointment } from "@/types/appointment";
@@ -18,10 +18,12 @@ const DoctorCalendar = ({ appointments }: any) => {
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd")
   );
+  const [calendarHeight, setCalendarHeight] = useState(0);
 
-  useEffect(() => {
-    console.log("Appointments:", appointments);
-  }, [appointments]);
+  const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
+    const { height } = event.nativeEvent.layout;
+    setCalendarHeight(height);
+  };
 
   const onDayPress = useCallback((date?: DateData | undefined) => {
     if (!date) return;
@@ -126,7 +128,7 @@ const DoctorCalendar = ({ appointments }: any) => {
       <TouchableOpacity
         style={{
           width: getDayWidth(),
-          height: 122,
+          height: getDayHeight(calendarHeight),
           alignItems: "center",
           justifyContent: "flex-end",
           flexDirection: "column",
@@ -160,34 +162,34 @@ const DoctorCalendar = ({ appointments }: any) => {
   };
 
   return (
-    <Calendar
-      renderArrow={renderArrow}
-      renderHeader={renderHeader}
-      dayComponent={renderDay}
-      current={selectedDate}
-      markedDates={{
-        [selectedDate]: { selected: true, selectedColor: "#6366f1" },
-        // Mark dates with consultations
-        // ...Object.keys(consultations).reduce(
-        //   (acc, date) => ({
-        //     ...acc,
-        //     [date]: { marked: true, dotColor: "#6366f1" },
-        //   }),
-        //   {}
-        // ),
-      }}
-      theme={{
-        backgroundColor: "transparent",
-        todayTextColor: "#6366f1",
-        selectedDayBackgroundColor: "#6366f1",
-        arrowColor: "#6366f1",
-      }}
-      style={{
-        // flex: 1,
-        height: "100%",
-        backgroundColor: "transparent",
-      }}
-    />
+    <View onLayout={onLayout} style={{ flex: 1 }}>
+      <Calendar
+        disableAllTouchEventsForDisabledDays
+        renderArrow={renderArrow}
+        renderHeader={renderHeader}
+        dayComponent={renderDay}
+        current={selectedDate}
+        markedDates={{
+          [selectedDate]: { selected: true, selectedColor: "#6366f1" },
+          // Mark dates with consultations
+          // ...Object.keys(consultations).reduce(
+          //   (acc, date) => ({
+          //     ...acc,
+          //     [date]: { marked: true, dotColor: "#6366f1" },
+          //   }),
+          //   {}
+          // ),
+        }}
+        theme={{
+          backgroundColor: "transparent",
+          textDayHeaderFontFamily: "DMSans_600SemiBold",
+        }}
+        style={{
+          height: "100%",
+          backgroundColor: "transparent",
+        }}
+      />
+    </View>
   );
 };
 
@@ -205,6 +207,6 @@ const getDayHeight = (calendarHeight: number) => {
   const verticalPadding = 32; // e.g., 16 top + 16 bottom
   const totalGapBetweenRows = 4 * 4; // 4 gaps between 5 rows
   const availableHeight =
-    calendarHeight - verticalPadding - totalGapBetweenRows;
+    calendarHeight - verticalPadding - totalGapBetweenRows - 120;
   return availableHeight / 5;
 };

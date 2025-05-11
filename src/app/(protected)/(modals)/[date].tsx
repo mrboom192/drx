@@ -19,7 +19,6 @@ const DayInfo = () => {
     <View style={[page.container, { paddingBottom: insets.bottom }]}>
       <Stack.Screen
         options={{
-          presentation: "modal",
           header: () => <DayInfoHeader date={date as string} />,
         }}
       />

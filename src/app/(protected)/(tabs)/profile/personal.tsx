@@ -10,6 +10,8 @@ const Personal = () => {
   const router = useRouter();
   const { data } = useUser();
 
+  if (!data) return null;
+
   return (
     <View
       style={{

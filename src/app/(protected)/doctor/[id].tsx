@@ -1,6 +1,7 @@
 import { db } from "@/../firebaseConfig";
 import Avatar from "@/components/Avatar";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import CustomIcon from "@/components/icons/CustomIcon";
 import Biography from "@/components/screens/doctor/Biography";
 import Specializations from "@/components/screens/doctor/Specializations";
 import Colors from "@/constants/Colors";
@@ -149,7 +150,7 @@ const Page = () => {
           <View
             style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
           >
-            <Ionicons name="briefcase" size={20} color="#000" />
+            <CustomIcon name="briefcase" size={20} color="#000" />
             <View style={{ flexDirection: "column", gap: 8 }}>
               <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                 Experience

@@ -47,11 +47,12 @@ const Profile = () => {
   const { colorScheme } = useThemedStyles();
   const { signOut } = useSession();
   const { data, loading } = useUser();
-  const color = data.role === "patient" ? Colors.primary : Colors.gold;
 
-  if (loading) {
+  if (loading || !data) {
     return <TextRegular>Loading...</TextRegular>;
   }
+
+  const color = data.role === "patient" ? Colors.primary : Colors.gold;
 
   return (
     <SafeAreaView

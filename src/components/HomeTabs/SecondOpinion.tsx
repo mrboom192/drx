@@ -1,26 +1,15 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Image,
-} from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import ArrowOutward from "../icons/ArrowOutward";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
-import { Link } from "expo-router";
-import Colors from "@/constants/Colors";
-import Avatar from "../Avatar";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
+import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Link } from "expo-router";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { db } from "../../../firebaseConfig";
+import CustomIcon from "../icons/CustomIcon";
 import Filter from "../icons/Filter";
-import Check from "../icons/Check";
-import Clock from "../icons/Clock";
-import { TextRegular, TextSemiBold, TextBold } from "../StyledText";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 const mockCases = [
   {
@@ -119,7 +108,7 @@ const SecondOpinion = () => {
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
               </TextSemiBold>
-              <ArrowOutward size={24} color={"#000"} />
+              <CustomIcon size={24} name="arrow-outward" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -272,7 +261,11 @@ const SecondOpinion = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Check size={24} color={Colors.green} />
+                      <CustomIcon
+                        name="check-mark"
+                        size={24}
+                        color={Colors.green}
+                      />
                       <TextSemiBold
                         style={{
                           color: Colors.green,
@@ -290,7 +283,11 @@ const SecondOpinion = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Clock size={24} color={Colors.onlineConsultation} />
+                      <CustomIcon
+                        name="schedule"
+                        size={24}
+                        color={Colors.onlineConsultation}
+                      />
                       <TextSemiBold
                         style={{
                           color: Colors.onlineConsultation,

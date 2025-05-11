@@ -1,7 +1,7 @@
 import { db } from "@/../firebaseConfig";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
-import Briefcase from "@/components/icons/Briefcase";
+import CustomIcon from "@/components/icons/CustomIcon";
 import Language from "@/components/icons/Language";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
@@ -118,6 +118,8 @@ const PublicProfile = () => {
 
   useEffect(() => {
     const fetchPublicProfile = async () => {
+      if (!data) return;
+
       try {
         const publicProfileRef = doc(db, "publicProfiles", data.uid);
         const docSnap = await getDoc(publicProfileRef);
@@ -183,7 +185,7 @@ const PublicProfile = () => {
   };
 
   const handleSave = async () => {
-    if (isSaving) return;
+    if (isSaving || !data) return;
 
     try {
       setIsSaving(true);
@@ -485,7 +487,7 @@ const PublicProfile = () => {
           <UserAvatar size={48} />
           <View>
             <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
-              Dr. {data.firstName + " " + data.lastName}
+              Dr. {data?.firstName + " " + data?.lastName}
             </TextSemiBold>
             <TextSemiBold
               style={{
@@ -637,7 +639,7 @@ const PublicProfile = () => {
               marginBottom: 12,
             }}
           >
-            <Briefcase size={20} color="#000" />
+            <CustomIcon name="briefcase" size={20} color="#000" />
             <TextSemiBold style={{ fontSize: 16 }}>Experience</TextSemiBold>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>

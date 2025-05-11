@@ -1,11 +1,11 @@
-import Avatar from "./Avatar";
-import React, { useState } from "react";
 import { useUser } from "@/contexts/UserContext";
-import { auth, db } from "../../firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useImagePicker } from "@/hooks/useImagePicker";
+import { MaterialIcons } from "@expo/vector-icons";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useState } from "react";
+import { View } from "react-native";
+import { auth, db } from "../../firebaseConfig";
+import Avatar from "./Avatar";
 
 const UserAvatar = ({
   size,
@@ -46,6 +46,8 @@ const UserAvatar = ({
       console.error("Error updating Firestore user doc:", error);
     }
   };
+
+  if (!data) return null;
 
   return (
     <View

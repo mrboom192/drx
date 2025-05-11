@@ -26,6 +26,8 @@ import { db } from "../../../../../firebaseConfig";
 const AccountInfo = () => {
   const { data } = useUser();
 
+  if (!data) return null;
+
   const original = {
     firstName: data.firstName,
     lastName: data.lastName,

@@ -10,9 +10,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { db } from "../../../firebaseConfig";
 import Avatar from "../Avatar";
-import ArrowOutward from "../icons/ArrowOutward";
-import Bookmark from "../icons/Bookmark";
-import Dot from "../icons/Dot";
+import CustomIcon from "../icons/CustomIcon";
 import HealthShield from "../icons/HealthShield";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
@@ -163,7 +161,7 @@ const OnlineConsultation = () => {
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
               </TextSemiBold>
-              <ArrowOutward size={24} color={"#000"} />
+              <CustomIcon size={24} name="arrow-outward" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -243,7 +241,7 @@ const OnlineConsultation = () => {
               justifyContent: "center",
             }}
           >
-            <Dot color={Colors.green} size={8} />
+            <CustomIcon name="dot" color={Colors.green} size={8} />
             <TextRegular
               style={{
                 color: Colors.green,
@@ -287,7 +285,11 @@ const OnlineConsultation = () => {
               paddingVertical: 16,
             }}
           >
-            <Bookmark color={Colors.dark.background} size={20} />
+            <CustomIcon
+              name="bookmark"
+              color={Colors.dark.background}
+              size={20}
+            />
             <TextSemiBold
               style={{
                 color: Colors.dark.background,

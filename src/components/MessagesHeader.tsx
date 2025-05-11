@@ -1,10 +1,10 @@
 import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
-import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import React, { useRef, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import { ScrollView, TouchableOpacity, View } from "./Themed";
 
@@ -68,21 +68,7 @@ const MessagesHeader = ({}: Props) => {
           <TextSemiBold style={[themeTextStylePrimary, { fontSize: 32 }]}>
             Consultations
           </TextSemiBold>
-
-          <TouchableOpacity
-            onPress={() => {
-              //   router.push("/(modals)/filter");
-            }}
-            style={[themeBorderStyle, styles.searchBtn]}
-          >
-            <Ionicons
-              name="search"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
-              }
-            />
-          </TouchableOpacity>
+          <IconButton name="search" />
         </View>
 
         <ScrollView

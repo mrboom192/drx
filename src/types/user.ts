@@ -6,9 +6,10 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   role: string;
   image: string;
+  gender: string;
 
   // Doctor-specific fields
   hasPublicProfile?: boolean;

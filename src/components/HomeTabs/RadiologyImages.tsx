@@ -1,13 +1,13 @@
-import { View, TouchableOpacity, ScrollView, Image } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import ArrowOutward from "../icons/ArrowOutward";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
-import { Link } from "expo-router";
-import Colors from "@/constants/Colors";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
+import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Link } from "expo-router";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
+import { db } from "../../../firebaseConfig";
+import CustomIcon from "../icons/CustomIcon";
 import Filter from "../icons/Filter";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
@@ -111,7 +111,7 @@ const RadiologyImages = () => {
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
               </TextSemiBold>
-              <ArrowOutward size={24} color={"#000"} />
+              <CustomIcon size={24} name="arrow-outward" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[

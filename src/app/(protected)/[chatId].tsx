@@ -61,11 +61,7 @@ const ChatRoom = () => {
       }
 
       const chat = snapshot.data() as Chat;
-      setChatData(chat);
-      setError(null);
-      setLoading(false);
-
-      // Now safe to start messages listener
+      // // Now safe to start messages listener
       const messagesRef = collection(chatDocRef, "messages");
       const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
         const loadedMessages = snapshot.docs.map((doc) => {
@@ -81,7 +77,6 @@ const ChatRoom = () => {
             },
           };
         });
-
         setMessages(
           loadedMessages.sort(
             (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
@@ -89,44 +84,46 @@ const ChatRoom = () => {
         );
       });
 
+      // Below causes infinite loop when uncommented
+      setChatData(chat);
+      setError(null);
+      setLoading(false);
+
       // Clean up messages listener inside chat listener
       return unsubscribeMessages;
     });
 
     return () => unsubscribeChat();
-  }, [chatId]);
+  }, []);
 
-  const onSend = useCallback(
-    async (newMessages: Message[] = []) => {
-      if (!data || !chatId || newMessages.length === 0) return;
+  const onSend = useCallback(async (newMessages: Message[] = []) => {
+    if (!data || !chatId || newMessages.length === 0) return;
 
-      const message = newMessages[0]; // GiftedChat sends 1 at a time by default
+    const message = newMessages[0]; // GiftedChat sends 1 at a time by default
 
-      const messagePayload = {
-        id: nanoid(), // optional, Firestore doc ID also works
-        text: message.text,
-        senderId: data.uid,
-        avatar: data.image || "",
-        createdAt: serverTimestamp(),
-      };
+    const messagePayload = {
+      id: nanoid(), // optional, Firestore doc ID also works
+      text: message.text,
+      senderId: data.uid,
+      avatar: data.image || "",
+      createdAt: serverTimestamp(),
+    };
 
-      try {
-        await addDoc(messagesRef, messagePayload);
+    try {
+      await addDoc(messagesRef, messagePayload);
 
-        await updateDoc(chatDocRef, {
-          lastMessage: {
-            text: message.text,
-            senderId: data.uid,
-            timestamp: serverTimestamp(),
-          },
-          updatedAt: serverTimestamp(),
-        });
-      } catch (err) {
-        console.error("Error sending message:", err);
-      }
-    },
-    [chatId, data]
-  );
+      await updateDoc(chatDocRef, {
+        lastMessage: {
+          text: message.text,
+          senderId: data.uid,
+          timestamp: serverTimestamp(),
+        },
+        updatedAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
+  }, []);
 
   if (loading || !data) {
     return (
@@ -144,7 +141,6 @@ const ChatRoom = () => {
     >
       <Stack.Screen
         options={{
-          presentation: "modal",
           header: () => <ChatHeader chatData={chatData} />,
         }}
       />
@@ -184,15 +180,13 @@ export default ChatRoom;
 const ChatHeader = ({ chatData }: { chatData: any }) => {
   const insets = useSafeAreaInsets();
 
-  if (!chatData) return null;
-
   // Replace fake values with actual data soon
   return (
     <View style={[header.container, { paddingTop: insets.top }]}>
       <IconButton name="arrow-back" onPress={() => router.back()} />
       <View style={header.chatInfo}>
         <TextSemiBold style={header.chatTitle}>
-          Dr. {chatData.participants.doctor.lastName}'s Consultation chat
+          Dr. {chatData.participants.doctor.lastName}'s Consultation Room
         </TextSemiBold>
         <TextSemiBold style={header.onlineStatus}>Offline</TextSemiBold>
       </View>

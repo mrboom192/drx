@@ -5,7 +5,7 @@ import Colors from "@/constants/Colors";
 import { format, parseISO } from "date-fns";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const DayInfo = () => {
@@ -34,7 +34,12 @@ const DayInfoHeader = ({ date }: { date: string }) => {
 
   // Replace fake values with actual data soon
   return (
-    <View style={[header.container, { paddingTop: insets.top }]}>
+    <View
+      style={[
+        header.container,
+        Platform.OS === "android" && { paddingTop: insets.top },
+      ]}
+    >
       <IconButton name="close" onPress={() => router.back()} />
       <TextSemiBold style={header.date}>
         {format(parseISO(date), "MMMM d, yyyy")}

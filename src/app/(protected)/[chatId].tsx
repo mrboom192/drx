@@ -2,6 +2,7 @@ import IconButton from "@/components/IconButton";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
+import { useUserPresence } from "@/hooks/useUserPresence";
 import { Chat } from "@/types/chat";
 import { getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
@@ -47,6 +48,7 @@ const ChatRoom = () => {
   const chatDocRef = doc(db, "chats", chatId as string);
   const messagesRef = collection(db, "chats", chatId as string, "messages");
 
+  // Mainly used to fetch the chat data and messages
   useEffect(() => {
     if (!chatId) return;
 
@@ -96,6 +98,7 @@ const ChatRoom = () => {
     return () => unsubscribeChat();
   }, []);
 
+  // Handle whenever the user sends a message
   const onSend = useCallback(async (newMessages: Message[] = []) => {
     if (!data || !chatId || newMessages.length === 0) return;
 
@@ -125,6 +128,7 @@ const ChatRoom = () => {
     }
   }, []);
 
+  // Loading logic
   if (loading || !data) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -141,7 +145,7 @@ const ChatRoom = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <ChatHeader chatData={chatData} />,
+          header: () => <ChatHeader chatData={chatData as Chat} />,
         }}
       />
       <GiftedChat
@@ -177,8 +181,15 @@ const ChatRoom = () => {
 
 export default ChatRoom;
 
-const ChatHeader = ({ chatData }: { chatData: any }) => {
+const ChatHeader = ({ chatData }: { chatData: Chat }) => {
   const insets = useSafeAreaInsets();
+  const { data } = useUser();
+  const otherUser =
+    data?.role === "patient"
+      ? chatData.participants.doctor
+      : chatData.participants.patient;
+
+  const presence = useUserPresence(otherUser.uid);
 
   // Replace fake values with actual data soon
   return (
@@ -188,7 +199,14 @@ const ChatHeader = ({ chatData }: { chatData: any }) => {
         <TextSemiBold style={header.chatTitle}>
           Dr. {chatData.participants.doctor.lastName}'s Consultation Room
         </TextSemiBold>
-        <TextSemiBold style={header.onlineStatus}>Offline</TextSemiBold>
+        <TextSemiBold
+          style={[
+            header.onlineStatus,
+            { color: presence === "online" ? Colors.green : Colors.grey },
+          ]}
+        >
+          {otherUser.firstName} {otherUser.lastName} is {presence}
+        </TextSemiBold>
       </View>
     </View>
   );

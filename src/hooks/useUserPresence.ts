@@ -14,7 +14,6 @@ export const useUserPresence = (uid: string | undefined | null) => {
     const unsubscribe = onValue(statusRef, (snapshot) => {
       const status = snapshot.val();
       setPresence(status?.state ?? null);
-      console.log("User presence status:", status?.state);
     });
 
     return () => unsubscribe();

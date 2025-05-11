@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import React, { useEffect } from "react";
 import { Image, Pressable, View } from "react-native";
 import Animated, {
@@ -10,6 +11,7 @@ import Animated, {
 import { TextSemiBold } from "./StyledText";
 
 const Avatar = ({
+  presence = null,
   onPress = null,
   size,
   uri = null,
@@ -17,6 +19,7 @@ const Avatar = ({
   color = "#ddd",
   loading = false,
 }: {
+  presence?: "online" | "offline" | null; // Make it more robust in the future so null is not an option
   onPress?: null | (() => void);
   size: number;
   uri?: string | null;
@@ -44,6 +47,9 @@ const Avatar = ({
     };
   });
 
+  // Determine the presence dot color
+  const presenceColor = presence === "online" ? Colors.green : null;
+
   return (
     <Pressable
       style={{
@@ -53,7 +59,6 @@ const Avatar = ({
         height: size,
         backgroundColor: color,
         borderRadius: 9999,
-        overflow: "hidden",
       }}
       onPress={onPress}
     >
@@ -73,7 +78,7 @@ const Avatar = ({
         <>
           <Image
             source={{ uri }}
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", borderRadius: 9999 }}
             resizeMode="cover"
           />
           <View
@@ -100,6 +105,23 @@ const Avatar = ({
         >
           {initials}
         </TextSemiBold>
+      )}
+
+      {/* Presence dot */}
+      {presenceColor && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: size * 0.3,
+            height: size * 0.3,
+            backgroundColor: presenceColor,
+            borderRadius: 9999,
+            borderWidth: 2,
+            borderColor: "#fff",
+          }}
+        />
       )}
     </Pressable>
   );

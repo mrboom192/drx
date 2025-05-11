@@ -4,12 +4,16 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import Avatar from "./Avatar";
 import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
+import UserAvatar from "./UserAvatar";
 
 const UserRow = () => {
   const { data } = useUser();
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <View
@@ -32,11 +36,7 @@ const UserRow = () => {
             router.push("/(protected)/notifications");
           }}
         />
-        <Avatar
-          size={40}
-          initials={`${data.firstName[0]}${data.lastName[0]}`}
-          uri={data.image ? data.image : null}
-        />
+        <UserAvatar size={40} canUpload={false} />
       </View>
     </View>
   );

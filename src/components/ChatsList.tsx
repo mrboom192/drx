@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
 import { useUser } from "@/contexts/UserContext";
+import { useUserPresence } from "@/hooks/useUserPresence";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
 import { format } from "date-fns";
@@ -8,7 +9,6 @@ import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   FlatList,
-  ListRenderItem,
   StyleSheet,
   TouchableOpacity,
   useColorScheme,
@@ -46,73 +46,6 @@ const ChatsList = ({ chats }: Props) => {
       ? themedStyles.lightTextSecondary
       : themedStyles.darkTextSecondary;
 
-  const renderRow: ListRenderItem<Chat> = ({ item: chat }) => (
-    <Link
-      href={{
-        pathname: `/(protected)/[chatId]`,
-        params: { chatId: chat.id },
-      }}
-      asChild
-    >
-      <TouchableOpacity>
-        <View
-          style={[
-            themeBorderStyle,
-            {
-              flexDirection: "row",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              padding: 16,
-              gap: 16,
-              flex: 1,
-              borderWidth: 0,
-              borderBottomWidth: 1,
-            },
-          ]}
-        >
-          <View style={styles.imageContainer}>
-            <Avatar
-              size={64}
-              uri={
-                data?.role === "patient"
-                  ? chat.participants.doctor.image
-                  : chat.participants.patient.image
-              }
-            />
-          </View>
-
-          <View style={{ flex: 1 }}>
-            <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
-              {data?.role === "doctor"
-                ? chat.participants.patient.firstName +
-                  " " +
-                  chat.participants.patient.lastName
-                : chat.participants.doctor.firstName +
-                  " " +
-                  chat.participants.doctor.lastName}
-            </TextSemiBold>
-            <View style={{ flexDirection: "row" }}>
-              <TextRegular
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={[themeTextStyleSecondary, { flex: 1 }]}
-              >
-                <TextSemiBold>
-                  {getSenderName(chat.lastMessage.senderId, chat)}:{" "}
-                </TextSemiBold>
-                {chat.lastMessage.text}
-              </TextRegular>
-            </View>
-          </View>
-
-          <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
-            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a")}
-          </TextRegular>
-        </View>
-      </TouchableOpacity>
-    </Link>
-  );
-
   if (chats.length === 0) {
     return (
       <View
@@ -144,10 +77,87 @@ const ChatsList = ({ chats }: Props) => {
 
   return (
     <FlatList
-      renderItem={renderRow}
+      renderItem={({ item }) => <ChatRow chat={item} />}
       data={loading ? [] : chats}
       ref={listRef}
     />
+  );
+};
+
+const ChatRow = ({ chat }: { chat: Chat }) => {
+  const { data } = useUser();
+  const otherUser =
+    data?.role === "patient"
+      ? chat.participants.doctor
+      : chat.participants.patient;
+
+  const presence = useUserPresence(otherUser.uid);
+
+  return (
+    <Link
+      href={{
+        pathname: `/(protected)/[chatId]`,
+        params: { chatId: chat.id },
+      }}
+      asChild
+    >
+      <TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            padding: 16,
+            gap: 16,
+            flex: 1,
+            borderWidth: 0,
+            borderBottomWidth: 1,
+            borderColor: Colors.light.faintGrey,
+          }}
+        >
+          <View style={styles.imageContainer}>
+            <Avatar
+              size={64}
+              uri={
+                data?.role === "patient"
+                  ? chat.participants.doctor.image
+                  : chat.participants.patient.image
+              }
+              presence={presence}
+              initials={otherUser.firstName[0] + otherUser.lastName[0]}
+            />
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
+              {data?.role === "doctor"
+                ? chat.participants.patient.firstName +
+                  " " +
+                  chat.participants.patient.lastName
+                : chat.participants.doctor.firstName +
+                  " " +
+                  chat.participants.doctor.lastName}
+            </TextSemiBold>
+            <View style={{ flexDirection: "row" }}>
+              <TextRegular
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={{ flex: 1, color: Colors.grey }}
+              >
+                <TextSemiBold>
+                  {getSenderName(chat.lastMessage.senderId, chat)}:{" "}
+                </TextSemiBold>
+                {chat.lastMessage.text}
+              </TextRegular>
+            </View>
+          </View>
+
+          <TextRegular style={{ fontSize: 16, color: Colors.grey }}>
+            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a")}
+          </TextRegular>
+        </View>
+      </TouchableOpacity>
+    </Link>
   );
 };
 

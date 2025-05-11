@@ -1,14 +1,16 @@
-import { useContext, createContext, type PropsWithChildren } from "react";
-import { useStorageState } from "../hooks/useStorageState";
-import { auth, db } from "@/../firebaseConfig";
+import { auth, database, db } from "@/../firebaseConfig";
+import { isOfflineForDatabase } from "@/constants/Presence";
+import { RelativePathString, router } from "expo-router";
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { RelativePathString, router } from "expo-router";
+import { ref, set } from "firebase/database";
 import { doc, setDoc } from "firebase/firestore";
+import { createContext, useContext, type PropsWithChildren } from "react";
+import { useStorageState } from "../hooks/useStorageState";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
@@ -83,6 +85,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   async function signOutUser() {
     try {
+      // Set the user's status to offline in the database
+      await set(
+        ref(database, `/status/${auth.currentUser?.uid}`),
+        isOfflineForDatabase
+      );
       await signOut(auth);
       setSession(null); // Clear the session
     } catch (error) {

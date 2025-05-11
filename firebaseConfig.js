@@ -1,8 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { initializeApp } from "firebase/app";
+import { getReactNativePersistence, initializeAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // import { getAnalytics } from "firebase/analytics";
@@ -14,6 +15,7 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyDatPsHvrKYG6-bRaUdIud_b1rlcuEf9hI",
   authDomain: "doctorx-8f72d.firebaseapp.com",
+  databaseURL: "https://doctorx-8f72d-default-rtdb.firebaseio.com",
   projectId: "doctorx-8f72d",
   storageBucket: "doctorx-8f72d.firebasestorage.app",
   messagingSenderId: "459117120227",
@@ -35,6 +37,9 @@ const db = getFirestore(app);
 // Initialize Cloud Storage and get a reference to the service
 const storage = getStorage(app);
 
-export { auth, db, storage };
+// Initialize Realtime Database and get a reference to the service
+const database = getDatabase(app);
+
+export { auth, database, db, storage };
 
 // const analytics = getAnalytics(app);

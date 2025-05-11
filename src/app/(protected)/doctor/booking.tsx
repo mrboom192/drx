@@ -9,6 +9,7 @@ import {
   collection,
   doc,
   getDoc,
+  serverTimestamp,
   Timestamp,
   writeBatch,
 } from "firebase/firestore";
@@ -172,13 +173,13 @@ const BookingPage = () => {
           lastMessage: {
             text: "New consultation created",
             senderId: "system",
-            timestamp: Timestamp.now(),
+            timestamp: serverTimestamp(),
           },
 
           // Chat metadata
           status: "ongoing",
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
         });
       }
 

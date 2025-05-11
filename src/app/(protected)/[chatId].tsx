@@ -4,7 +4,16 @@ import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import { Chat } from "@/types/chat";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { nanoid } from "nanoid";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
@@ -33,11 +42,12 @@ const ChatRoom = () => {
   const { chatId } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
 
+  // Firestore references
+  const chatDocRef = doc(db, "chats", chatId as string);
+  const messagesRef = collection(db, "chats", chatId as string, "messages");
+
   useEffect(() => {
     if (!chatId) return;
-
-    const chatDocRef = doc(db, "chats", chatId as string);
-    const messagesRef = collection(db, "chats", chatId as string, "messages");
 
     // Listener for chat metadata
     const unsubscribeChat = onSnapshot(
@@ -60,16 +70,17 @@ const ChatRoom = () => {
 
     // Listener for messages
     const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
+      // Transform Firestore data to GiftedChat format
       const loadedMessages = snapshot.docs.map((doc) => {
-        const data = doc.data();
+        const messageData = doc.data();
         return {
-          _id: data.id || doc.id,
-          text: data.text,
-          createdAt: data.createdAt.toDate(), // Firestore Timestamp → JS Date
+          _id: messageData.id || doc.id,
+          text: messageData.text,
+          createdAt: (messageData.createdAt as Timestamp).toDate(),
           user: {
-            _id: data.senderId,
-            name: data.senderName || "System",
-            avatar: data.avatar || "", // optional
+            _id: messageData.senderId,
+            name: messageData.senderName || "System",
+            avatar: messageData.avatar || "", // optional
           },
         };
       });
@@ -88,15 +99,38 @@ const ChatRoom = () => {
   }, [chatId]);
 
   const onSend = useCallback(
-    (messages: Message[] = []) => {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
-      );
+    async (newMessages: Message[] = []) => {
+      if (!data || !chatId || newMessages.length === 0) return;
+
+      const message = newMessages[0]; // GiftedChat sends 1 at a time by default
+
+      const messagePayload = {
+        id: nanoid(), // optional, Firestore doc ID also works
+        text: message.text,
+        senderId: data.uid,
+        avatar: data.image || "",
+        createdAt: serverTimestamp(),
+      };
+
+      try {
+        await addDoc(messagesRef, messagePayload);
+
+        await updateDoc(chatDocRef, {
+          lastMessage: {
+            text: message.text,
+            senderId: data.uid,
+            timestamp: serverTimestamp(),
+          },
+          updatedAt: serverTimestamp(),
+        });
+      } catch (err) {
+        console.error("Error sending message:", err);
+      }
     },
-    [chatId]
+    [chatId, data]
   );
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <TextSemiBold style={{ fontSize: 16, color: "#666" }}>
@@ -120,7 +154,7 @@ const ChatRoom = () => {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: data.uid, // Let giftedchat know who is the current user
         }}
         renderBubble={(props) => {
           return (

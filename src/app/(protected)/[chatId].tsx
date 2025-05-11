@@ -186,7 +186,7 @@ const ChatHeader = ({ chatData }: { chatData: any }) => {
       <IconButton name="arrow-back" onPress={() => router.back()} />
       <View style={header.chatInfo}>
         <TextSemiBold style={header.chatTitle}>
-          Dr. {chatData.participants.doctor.lastName}'s Consultation chat
+          Dr. {chatData.participants.doctor.lastName}'s Consultation Room
         </TextSemiBold>
         <TextSemiBold style={header.onlineStatus}>Offline</TextSemiBold>
       </View>

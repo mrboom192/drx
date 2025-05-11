@@ -2,6 +2,7 @@ import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
 import { useUser } from "@/contexts/UserContext";
 import { Chat } from "@/types/chat";
+import { getSenderName } from "@/utils/chatUtils";
 import { format } from "date-fns";
 import { Link } from "expo-router";
 import React, { useRef, useState } from "react";
@@ -26,19 +27,9 @@ const ChatsList = ({ chats }: Props) => {
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
 
-  const getSenderName = (uid: string, chat: Chat): string => {
-    if (uid === "system") return "System";
-
-    if (chat.participants.doctor.uid === uid) {
-      return `${chat.participants.doctor.firstName} ${chat.participants.doctor.lastName}`;
-    }
-
-    if (chat.participants.patient.uid === uid) {
-      return `${chat.participants.patient.firstName} ${chat.participants.patient.lastName}`;
-    }
-
-    return "Unknown";
-  };
+  if (!data) {
+    return null;
+  }
 
   const themeBorderStyle =
     colorScheme === "light"
@@ -92,8 +83,13 @@ const ChatsList = ({ chats }: Props) => {
 
           <View style={{ flex: 1 }}>
             <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
-              {chat.participants.doctor.firstName}{" "}
-              {chat.participants.doctor.lastName}
+              {data?.role === "doctor"
+                ? chat.participants.patient.firstName +
+                  " " +
+                  chat.participants.patient.lastName
+                : chat.participants.doctor.firstName +
+                  " " +
+                  chat.participants.doctor.lastName}
             </TextSemiBold>
             <View style={{ flexDirection: "row" }}>
               <TextRegular

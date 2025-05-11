@@ -3,6 +3,7 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import { Chat } from "@/types/chat";
+import { getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
   addDoc,
@@ -49,53 +50,50 @@ const ChatRoom = () => {
   useEffect(() => {
     if (!chatId) return;
 
-    // Listener for chat metadata
-    const unsubscribeChat = onSnapshot(
-      chatDocRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          setChatData(snapshot.data() as Chat);
-          setError(null);
-        } else {
-          setChatData(null);
-          setError("Chat not found.");
-        }
-        setLoading(false);
-      },
-      (error) => {
-        setError("Error retrieving chat information.");
-        setLoading(false);
-      }
-    );
+    const chatDocRef = doc(db, "chats", chatId as string);
 
-    // Listener for messages
-    const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
-      // Transform Firestore data to GiftedChat format
-      const loadedMessages = snapshot.docs.map((doc) => {
-        const messageData = doc.data();
-        return {
-          _id: messageData.id || doc.id,
-          text: messageData.text,
-          createdAt: (messageData.createdAt as Timestamp).toDate(),
-          user: {
-            _id: messageData.senderId,
-            name: messageData.senderName || "System",
-            avatar: messageData.avatar || "", // optional
-          },
-        };
+    const unsubscribeChat = onSnapshot(chatDocRef, (snapshot) => {
+      if (!snapshot.exists()) {
+        setChatData(null);
+        setError("Chat not found.");
+        setLoading(false);
+        return;
+      }
+
+      const chat = snapshot.data() as Chat;
+      setChatData(chat);
+      setError(null);
+      setLoading(false);
+
+      // Now safe to start messages listener
+      const messagesRef = collection(chatDocRef, "messages");
+      const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
+        const loadedMessages = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            _id: data.id || doc.id,
+            text: data.text,
+            createdAt: (data.createdAt as Timestamp)?.toDate?.() || new Date(),
+            user: {
+              _id: data.senderId,
+              name: getSenderName(data.senderId, chat),
+              avatar: getSenderAvatar(data.senderId, chat),
+            },
+          };
+        });
+
+        setMessages(
+          loadedMessages.sort(
+            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+          )
+        );
       });
 
-      setMessages(
-        loadedMessages.sort(
-          (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-        )
-      );
+      // Clean up messages listener inside chat listener
+      return unsubscribeMessages;
     });
 
-    return () => {
-      unsubscribeChat();
-      unsubscribeMessages();
-    };
+    return () => unsubscribeChat();
   }, [chatId]);
 
   const onSend = useCallback(

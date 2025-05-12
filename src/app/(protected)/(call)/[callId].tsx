@@ -78,7 +78,7 @@ const Call = () => {
 
   // Cleanup peer connection and media tracks on unmount
   async function endCall() {
-    peerConnection.current.close();
+    peerConnection.current?.close();
     localStream?.getTracks().forEach((track) => track.stop());
     remoteStream?.getTracks().forEach((track) => track.stop());
 
@@ -121,7 +121,10 @@ const Call = () => {
           const candidateJSON = event.candidate.toJSON();
           try {
             // About 20ish writes to Firestore
-            await addDoc(myCandidatesRef, candidateJSON);
+            const docRef = await addDoc(myCandidatesRef, candidateJSON);
+
+            // Store manually added doc ref for cleanup
+            offersDocsRef.current.push({ ref: docRef });
           } catch (err) {
             console.error("[Firestore] Failed to store ICE candidate:", err);
           }
@@ -145,6 +148,7 @@ const Call = () => {
       const peerDisconnected =
         state === "disconnected" || state === "failed" || state === "closed";
 
+      console.log("ICE connection state:", state);
       if (peerDisconnected) {
         router.back();
       }
@@ -209,7 +213,10 @@ const Call = () => {
         if (event.candidate) {
           const candidateJSON = event.candidate.toJSON();
           try {
-            await addDoc(myCandidatesRef, candidateJSON);
+            const docRef = await addDoc(myCandidatesRef, candidateJSON);
+
+            // Store manually added doc ref for cleanup
+            answersDocsRef.current.push({ ref: docRef });
           } catch (err) {
             console.error("[Firestore] Failed to store ICE candidate:", err);
           }

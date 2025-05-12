@@ -21,7 +21,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { db } from "../../../firebaseConfig";
+import { db } from "../../../../firebaseConfig";
 
 interface Message {
   _id: number;
@@ -212,7 +212,12 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => router.push(`/video-call/${chatData.id}`)}
+        onPress={() =>
+          router.push({
+            pathname: "/(protected)/(call)/[callId]",
+            params: { callId: "123", caller: "true" },
+          })
+        }
         style={[header.callButton, header.callButton_On]}
       >
         <CustomIcon name="videocam" size={24} color={"#FFF"} />

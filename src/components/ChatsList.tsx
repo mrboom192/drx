@@ -96,7 +96,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
   return (
     <Link
       href={{
-        pathname: `/(protected)/[chatId]`,
+        pathname: `/(protected)/(chat)/[chatId]`,
         params: { chatId: chat.id },
       }}
       asChild
@@ -118,11 +118,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
           <View style={styles.imageContainer}>
             <Avatar
               size={64}
-              uri={
-                data?.role === "patient"
-                  ? chat.participants.doctor.image
-                  : chat.participants.patient.image
-              }
+              uri={otherUser.image}
               presence={presence}
               initials={otherUser.firstName[0] + otherUser.lastName[0]}
             />

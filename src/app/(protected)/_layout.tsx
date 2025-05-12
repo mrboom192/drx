@@ -82,14 +82,12 @@ export default function ProtectedLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="doctor" options={{ headerShown: false }} />
-      <Stack.Screen name="[chatId]" />
-      <Stack.Screen
-        name="(modals)"
-        options={{ headerShown: false, presentation: "modal" }}
-      />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(chat)" />
+      <Stack.Screen name="(call)" />
+      <Stack.Screen name="doctor" />
+      <Stack.Screen name="(modals)" options={{ presentation: "modal" }} />
     </Stack>
   );
 }

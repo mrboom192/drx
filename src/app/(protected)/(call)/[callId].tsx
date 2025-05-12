@@ -2,22 +2,22 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useWebRTCCall } from "@/hooks/useWebRTCCall";
 import { useLocalSearchParams } from "expo-router";
-import { DocumentReference } from "firebase/firestore";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { RTCView } from "react-native-webrtc";
 
 type CallProps = {
+  chatId: string;
   callId: string;
   callerType: string;
 };
 
 const Call = () => {
   // Get callId and callerType (either "caller" or "callee") from URL params
-  const { callId, callerType } = useLocalSearchParams<CallProps>();
+  const { chatId, callId, callerType } = useLocalSearchParams<CallProps>();
   const isCaller = callerType === "caller";
 
-  const { localStream, remoteStream } = useWebRTCCall(callId, isCaller);
+  const { localStream, remoteStream } = useWebRTCCall(chatId, callId, isCaller);
   return (
     <View style={[styles.container]}>
       {localStream ? (

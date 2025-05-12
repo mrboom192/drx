@@ -26,7 +26,11 @@ import { db } from "../../firebaseConfig";
 
 type ICECandidateDocRef = { ref: DocumentReference };
 
-export function useWebRTCCall(callId: string, isCaller: boolean) {
+export function useWebRTCCall(
+  chatId: string,
+  callId: string,
+  isCaller: boolean
+) {
   // State to hold local and remote media streams
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
@@ -225,6 +229,10 @@ export function useWebRTCCall(callId: string, isCaller: boolean) {
     peerConnection.current?.close();
     localStream?.getTracks().forEach((track) => track.stop());
     remoteStream?.getTracks().forEach((track) => track.stop());
+
+    const chatDocRef = doc(db, "chats", chatId);
+    await updateDoc(chatDocRef, { hasActiveCall: false });
+
     for (const doc of offersDocsRef.current) await deleteDoc(doc.ref);
     for (const doc of answersDocsRef.current) await deleteDoc(doc.ref);
 

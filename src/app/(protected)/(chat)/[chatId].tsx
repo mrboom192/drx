@@ -63,7 +63,8 @@ const ChatRoom = () => {
       }
 
       const chat = snapshot.data() as Chat;
-      // // Now safe to start messages listener
+
+      // Fetch chat messages
       const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
         const loadedMessages = snapshot.docs.map((doc) => {
           const data = doc.data();
@@ -78,6 +79,8 @@ const ChatRoom = () => {
             },
           };
         });
+
+        // Sort messages by createdAt in descending order
         setMessages(
           loadedMessages.sort(
             (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
@@ -144,7 +147,9 @@ const ChatRoom = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <ChatHeader chatData={chatData as Chat} />,
+          header: () => (
+            <ChatHeader chatId={chatId as string} chatData={chatData as Chat} />
+          ),
         }}
       />
       <GiftedChat
@@ -180,16 +185,41 @@ const ChatRoom = () => {
 
 export default ChatRoom;
 
-const ChatHeader = ({ chatData }: { chatData: Chat }) => {
+const ChatHeader = ({
+  chatData,
+  chatId,
+}: {
+  chatId: string;
+  chatData: Chat;
+}) => {
   const insets = useSafeAreaInsets();
   const { data } = useUser();
-  const otherUser =
-    data?.role === "patient"
-      ? chatData.participants.doctor
-      : chatData.participants.patient;
+  const isDoctor = data?.role === "doctor";
+
+  const otherUser = isDoctor
+    ? chatData.participants.patient
+    : chatData.participants.doctor;
 
   const presence = useUserPresence(otherUser.uid);
   const callId = [data?.uid, otherUser.uid].sort().join("_");
+
+  const handleCall = async () => {
+    try {
+      const docRef = doc(db, "chats", chatId);
+      await updateDoc(docRef, { hasActiveCall: true });
+    } catch (err) {
+      console.error("Error updating chat document:", err);
+    }
+
+    router.push({
+      pathname: "/(protected)/(call)/[callId]",
+      params: {
+        chatId,
+        callId,
+        callerType: data?.role === "doctor" ? "caller" : "callee",
+      },
+    });
+  };
 
   // Replace fake values with actual data soon
   return (
@@ -211,16 +241,14 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() =>
-          router.push({
-            pathname: "/(protected)/(call)/[callId]",
-            params: {
-              callId,
-              callerType: data?.role === "doctor" ? "caller" : "callee",
-            },
-          })
-        }
-        style={[header.callButton, header.callButton_On]}
+        onPress={handleCall}
+        style={[
+          header.callButton,
+          chatData.hasActiveCall || isDoctor
+            ? header.callButton_On
+            : header.callButton_Off,
+        ]}
+        disabled={!isDoctor && !chatData.hasActiveCall}
       >
         <CustomIcon name="videocam" size={24} color={"#FFF"} />
       </TouchableOpacity>

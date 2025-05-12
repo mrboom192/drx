@@ -15,6 +15,7 @@ export interface Chat {
     timestamp: number; // Firestore timestamps can be converted to number or use Firebase Timestamp type
   };
 
+  hasActiveCall: boolean;
   status: "ongoing" | "finished" | "pending";
   createdAt: number; // Use camelCase for consistency
   updatedAt: number;

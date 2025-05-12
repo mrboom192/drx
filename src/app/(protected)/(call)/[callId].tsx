@@ -1,6 +1,7 @@
 import { TextSemiBold } from "@/components/StyledText";
+import { peerConstraints, sessionConstraints } from "@/config/webrtcConfig";
 import Colors from "@/constants/Colors";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   addDoc,
   collection,
@@ -21,27 +22,6 @@ import {
   RTCView,
 } from "react-native-webrtc";
 import { db } from "../../../../firebaseConfig";
-
-// Define STUN and TURN servers for ICE candidate negotiation
-const peerConstraints = {
-  iceServers: [
-    { urls: "stun:stun.l.google.com:19302" },
-    {
-      urls: "turn:turn.anyfirewall.com:443?transport=tcp",
-      username: "webrtc",
-      credential: "webrtc",
-    },
-  ],
-};
-
-// Constraints for SDP offer creation
-let sessionConstraints = {
-  mandatory: {
-    OfferToReceiveAudio: true,
-    OfferToReceiveVideo: true,
-    VoiceActivityDetection: true,
-  },
-};
 
 const Call = () => {
   // Get callId and callerType (either "caller" or "callee") from URL params
@@ -146,6 +126,18 @@ const Call = () => {
       }
     });
 
+    peerConnection.current.addEventListener("iceconnectionstatechange", () => {
+      const state = peerConnection.current.iceConnectionState;
+
+      if (
+        state === "disconnected" ||
+        state === "failed" ||
+        state === "closed"
+      ) {
+        router.back();
+      }
+    });
+
     // Add local media tracks to peer connection
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current.addTrack(track, mediaStream);
@@ -221,6 +213,18 @@ const Call = () => {
       }
     });
 
+    peerConnection.current.addEventListener("iceconnectionstatechange", () => {
+      const state = peerConnection.current.iceConnectionState;
+
+      if (
+        state === "disconnected" ||
+        state === "failed" ||
+        state === "closed"
+      ) {
+        router.back();
+      }
+    });
+
     // Wait for offer and respond with an answer
     onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
@@ -256,7 +260,6 @@ const Call = () => {
     });
   }
 
-  // UI layout: display local and remote video or waiting messages
   return (
     <View style={[styles.container]}>
       {localStream ? (
@@ -289,7 +292,6 @@ const Call = () => {
   );
 };
 
-// Basic styling for video layout
 const styles = StyleSheet.create({
   container: {
     flex: 1,

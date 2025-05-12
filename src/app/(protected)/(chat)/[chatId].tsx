@@ -218,7 +218,7 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
             pathname: "/(protected)/(call)/[callId]",
             params: {
               callId,
-              callerType: data?.role === "doctor" ? "caller" : "receiver",
+              callerType: data?.role === "doctor" ? "caller" : "callee",
             },
           })
         }

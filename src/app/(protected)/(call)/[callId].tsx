@@ -7,7 +7,6 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { RTCView } from "react-native-webrtc";
 
-type ICECandidateDocRef = { ref: DocumentReference };
 type CallProps = {
   callId: string;
   callerType: string;

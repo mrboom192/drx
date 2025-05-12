@@ -9,6 +9,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentReference,
   onSnapshot,
   setDoc,
   updateDoc,
@@ -23,6 +24,8 @@ import {
 } from "react-native-webrtc";
 import { db } from "../../firebaseConfig";
 
+type ICECandidateDocRef = { ref: DocumentReference };
+
 export function useWebRTCCall(callId: string, isCaller: boolean) {
   // State to hold local and remote media streams
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
@@ -36,8 +39,8 @@ export function useWebRTCCall(callId: string, isCaller: boolean) {
   const callDocRef = doc(db, "calls", callId); // The call document
   const offersCollectionRef = collection(callDocRef, "offerCandidates"); // Offers collection
   const answersCollectionRef = collection(callDocRef, "answerCandidates"); // Answers collection
-  const offersDocsRef = useRef<any[]>([]); // Refs to each offer to delete later
-  const answersDocsRef = useRef<any[]>([]); // Refs to each answer to delete later
+  const offersDocsRef = useRef<ICECandidateDocRef[]>([]); // Refs to each offer to delete later
+  const answersDocsRef = useRef<ICECandidateDocRef[]>([]); // Refs to each answer to delete later
 
   useEffect(() => {
     peerConnection.current = new RTCPeerConnection(peerConstraints);

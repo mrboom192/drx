@@ -1,4 +1,5 @@
 import IconButton from "@/components/IconButton";
+import CustomIcon from "@/components/icons/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
@@ -17,7 +18,7 @@ import {
 } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db } from "../../../firebaseConfig";
@@ -194,20 +195,28 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
   // Replace fake values with actual data soon
   return (
     <View style={[header.container, { paddingTop: insets.top }]}>
-      <IconButton name="arrow-back" onPress={() => router.back()} />
-      <View style={header.chatInfo}>
-        <TextSemiBold style={header.chatTitle}>
-          Dr. {chatData.participants.doctor.lastName}'s Consultation Room
-        </TextSemiBold>
-        <TextSemiBold
-          style={[
-            header.onlineStatus,
-            { color: presence === "online" ? Colors.green : Colors.grey },
-          ]}
-        >
-          {otherUser.firstName} {otherUser.lastName} is {presence}
-        </TextSemiBold>
+      <View style={header.left}>
+        <IconButton name="arrow-back" onPress={() => router.back()} />
+        <View style={header.chatInfo}>
+          <TextSemiBold style={header.chatTitle}>
+            Dr. {chatData.participants.doctor.lastName}'s Consultation Room
+          </TextSemiBold>
+          <TextSemiBold
+            style={[
+              header.onlineStatus,
+              { color: presence === "online" ? Colors.green : Colors.grey },
+            ]}
+          >
+            {otherUser.firstName} {otherUser.lastName} is {presence}
+          </TextSemiBold>
+        </View>
       </View>
+      <TouchableOpacity
+        onPress={() => router.push(`/video-call/${chatData.id}`)}
+        style={[header.callButton, header.callButton_On]}
+      >
+        <CustomIcon name="videocam" size={24} color={"#FFF"} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -215,11 +224,17 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
 const header = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    padding: 16,
+    justifyContent: "space-between",
     flexDirection: "row",
+    padding: 16,
     gap: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGrey2,
+  },
+  left: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
   },
   chatInfo: {
     flexDirection: "column",
@@ -230,5 +245,20 @@ const header = StyleSheet.create({
   onlineStatus: {
     fontSize: 16,
     color: Colors.grey,
+  },
+  callButton: {
+    borderRadius: 9999,
+    paddingVertical: 8,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  callButton_On: {
+    backgroundColor: Colors.green,
+    paddingHorizontal: 16,
+  },
+  callButton_Off: {
+    backgroundColor: Colors.lightGrey2,
+    paddingHorizontal: 8,
   },
 });

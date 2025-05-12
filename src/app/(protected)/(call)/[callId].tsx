@@ -9,6 +9,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   setDoc,
@@ -39,10 +40,15 @@ const Call = () => {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
+  // Initialize peer connection
+  const peerConnection = useRef<any>(null);
+
   //Firestore refs
   const callDocRef = doc(db, "calls", callId); // Call document
   const offersCollectionRef = collection(callDocRef, "offerCandidates"); // Offer candidates
   const answersCollectionRef = collection(callDocRef, "answerCandidates"); // Answer candidates
+  const offersDocsRef = useRef<any[]>([]);
+  const answersDocsRef = useRef<any[]>([]);
 
   // Check if current user is the one initiating the call
   const isCaller = callerType === "caller";
@@ -50,18 +56,14 @@ const Call = () => {
   // Track whether the remote SDP has been set already
   const hasSetRemoteDescription = useRef(false);
 
-  // Create peer connection instance
-  const peerConnection = new RTCPeerConnection(peerConstraints) as any;
-
   // Refs for remote stream and seen ICE candidates to avoid duplicates
   const remoteStreamRef = useRef<MediaStream | null>(null);
   const seenCandidates = useRef<Set<string>>(new Set());
 
   // Main setup effect: initiates the call flow based on caller type
   useEffect(() => {
-    if (!peerConnection.current) {
-      peerConnection.current = new RTCPeerConnection(peerConstraints);
-    }
+    // Set up the peerconnection
+    peerConnection.current = new RTCPeerConnection(peerConstraints);
 
     if (isCaller) {
       startCallAsHost(); // Caller creates offer
@@ -79,6 +81,14 @@ const Call = () => {
     peerConnection.current.close();
     localStream?.getTracks().forEach((track) => track.stop());
     remoteStream?.getTracks().forEach((track) => track.stop());
+
+    for (const doc of offersDocsRef.current) {
+      await deleteDoc(doc.ref);
+    }
+
+    for (const doc of answersDocsRef.current) {
+      await deleteDoc(doc.ref);
+    }
   }
 
   // Helper function to request camera and microphone access
@@ -164,6 +174,9 @@ const Call = () => {
 
     // Listen for ICE candidates from callee
     onSnapshot(theirCandidatesRef, (snapshot) => {
+      // Save ref to these documents for cleanup later
+      answersDocsRef.current = snapshot.docs;
+
       snapshot.forEach((doc) => {
         const data = doc.data();
         const key = JSON.stringify(data);
@@ -250,6 +263,9 @@ const Call = () => {
     // Listen for ICE candidates from caller
     // Listens to the entire collection!! Fix this
     onSnapshot(theirCandidatesRef, (snapshot) => {
+      // Save ref to these documents for cleanup later
+      offersDocsRef.current = snapshot.docs;
+
       snapshot.forEach((doc) => {
         const data = doc.data();
         const key = JSON.stringify(data);

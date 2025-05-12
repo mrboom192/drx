@@ -13,4 +13,11 @@ export interface Appointment {
   scheduledFor: Timestamp;
   status: "pending" | "confirmed" | "completed" | "cancelled";
   price: number;
+
+  timeSlot: {
+    startTime: string;
+    endTime: string;
+    isAvailable: boolean;
+    id: string;
+  };
 }

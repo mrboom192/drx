@@ -26,7 +26,6 @@ const Call = () => {
     callerType,
     otherPersonFirstName,
     otherPersonLastName,
-    otherPersonImage,
   } = useLocalSearchParams<CallProps>();
   const isCaller = callerType === "caller";
   const insets = useSafeAreaInsets();

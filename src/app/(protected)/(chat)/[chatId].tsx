@@ -214,7 +214,6 @@ const ChatHeader = ({
     router.navigate({
       pathname: "/(protected)/(call)/[callId]",
       params: {
-        otherPersonImage: otherUser.image,
         otherPersonFirstName: otherUser.firstName,
         otherPersonLastName: otherUser.lastName,
         chatId,

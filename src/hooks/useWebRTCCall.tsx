@@ -4,7 +4,6 @@ import {
   sessionConstraints,
 } from "@/config/webrtcConfig";
 import { onChildAdded, push, ref, remove, set } from "@firebase/database";
-import { router } from "expo-router";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -16,8 +15,6 @@ import {
 } from "react-native-webrtc";
 import { database, db } from "../../firebaseConfig";
 
-type ICECandidateKeyRef = { key: string };
-
 export function useWebRTCCall(
   chatId: string,
   callId: string,
@@ -26,6 +23,11 @@ export function useWebRTCCall(
   // State to hold local and remote media streams
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+
+  // For UX
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
 
   const peerConnection = useRef<any>(null); // Peer connection reference
   const remoteStreamRef = useRef<MediaStream | null>(null); // Remote stream reference
@@ -50,7 +52,7 @@ export function useWebRTCCall(
 
     return () => {
       // Just in case the call is not ended properly
-      endCall(false);
+      endCall();
     };
   }, []);
 
@@ -232,7 +234,7 @@ export function useWebRTCCall(
     });
   }
 
-  async function endCall(canGoBack = true) {
+  async function endCall() {
     peerConnection.current?.close();
     localStream?.getTracks().forEach((track) => track.stop());
     remoteStream?.getTracks().forEach((track) => track.stop());
@@ -242,9 +244,79 @@ export function useWebRTCCall(
 
     await remove(offerCandidatesRef);
     await remove(answerCandidatesRef);
-
-    canGoBack && router.back();
   }
 
-  return { localStream, remoteStream };
+  async function switchCamera() {
+    if (!localStream || !peerConnection.current) return;
+
+    const newFacingMode = facingMode === "user" ? "environment" : "user";
+
+    try {
+      // Stop old video tracks
+      localStream.getVideoTracks().forEach((track) => track.stop());
+
+      // Get new stream with the opposite facing mode
+      const newStream = await mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          facingMode: newFacingMode,
+        },
+      });
+
+      const newVideoTrack = newStream.getVideoTracks()[0];
+      const videoSender = peerConnection.current
+        .getSenders()
+        .find((s: { track: { kind: string } }) => s.track?.kind === "video");
+
+      if (videoSender && newVideoTrack) {
+        await videoSender.replaceTrack(newVideoTrack);
+      }
+
+      // Combine with existing audio tracks
+      const updatedStream = new MediaStream([
+        newVideoTrack,
+        ...localStream.getAudioTracks(),
+      ]);
+      setLocalStream(updatedStream);
+      setFacingMode(newFacingMode);
+    } catch (error) {
+      console.error("[Camera Switch] Failed to switch camera:", error);
+    }
+  }
+
+  function toggleMute() {
+    if (!localStream) return;
+
+    const newMuteState = !isMuted;
+
+    localStream.getAudioTracks().forEach((track) => {
+      track.enabled = !newMuteState; // false = muted, true = unmuted
+    });
+
+    setIsMuted(newMuteState);
+  }
+
+  function toggleVideo() {
+    if (!localStream) return;
+
+    const newVideoState = !isVideoEnabled;
+
+    localStream.getVideoTracks().forEach((track) => {
+      track.enabled = newVideoState;
+    });
+
+    setIsVideoEnabled(newVideoState);
+  }
+
+  return {
+    localStream,
+    remoteStream,
+    switchCamera,
+    toggleMute,
+    toggleVideo,
+    isVideoEnabled,
+    isMuted,
+    endCall,
+    facingMode,
+  };
 }

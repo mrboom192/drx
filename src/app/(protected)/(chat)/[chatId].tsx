@@ -211,9 +211,12 @@ const ChatHeader = ({
       console.error("Error updating chat document:", err);
     }
 
-    router.push({
+    router.navigate({
       pathname: "/(protected)/(call)/[callId]",
       params: {
+        otherPersonImage: otherUser.image,
+        otherPersonFirstName: otherUser.firstName,
+        otherPersonLastName: otherUser.lastName,
         chatId,
         callId,
         callerType: data?.role === "doctor" ? "caller" : "callee",

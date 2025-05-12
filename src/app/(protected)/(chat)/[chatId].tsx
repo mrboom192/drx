@@ -191,6 +191,7 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
       : chatData.participants.patient;
 
   const presence = useUserPresence(otherUser.uid);
+  const callId = [data?.uid, otherUser.uid].sort().join("_");
 
   // Replace fake values with actual data soon
   return (
@@ -215,7 +216,10 @@ const ChatHeader = ({ chatData }: { chatData: Chat }) => {
         onPress={() =>
           router.push({
             pathname: "/(protected)/(call)/[callId]",
-            params: { callId: "123", caller: "true" },
+            params: {
+              callId,
+              callerType: data?.role === "doctor" ? "caller" : "receiver",
+            },
           })
         }
         style={[header.callButton, header.callButton_On]}

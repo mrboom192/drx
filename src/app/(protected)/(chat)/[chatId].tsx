@@ -51,9 +51,8 @@ const ChatRoom = () => {
 
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
+    // If we goof up and don't have a chatId, just return
     if (!chatId) return;
-
-    const chatDocRef = doc(db, "chats", chatId as string);
 
     const unsubscribeChat = onSnapshot(chatDocRef, (snapshot) => {
       if (!snapshot.exists()) {
@@ -65,7 +64,6 @@ const ChatRoom = () => {
 
       const chat = snapshot.data() as Chat;
       // // Now safe to start messages listener
-      const messagesRef = collection(chatDocRef, "messages");
       const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
         const loadedMessages = snapshot.docs.map((doc) => {
           const data = doc.data();

@@ -1,30 +1,4 @@
 import { Chat } from "@/types/chat";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
-
-export function subscribeToUserById(
-  uid: string,
-  callback: (user: any | null) => void
-) {
-  const userRef = doc(db, "users", uid);
-
-  const unsubscribe = onSnapshot(
-    userRef,
-    (snapshot) => {
-      if (snapshot.exists()) {
-        callback(snapshot.data());
-      } else {
-        callback(null);
-      }
-    },
-    (error) => {
-      console.error("Error subscribing to user:", error);
-      callback(null);
-    }
-  );
-
-  return unsubscribe; // call this to stop listening
-}
 
 export const getSenderName = (uid: string, chat: Chat): string => {
   if (uid === "system") return "System";

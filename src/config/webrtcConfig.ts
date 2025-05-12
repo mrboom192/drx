@@ -1,3 +1,11 @@
+export const mediaConstraints = {
+  audio: true,
+  video: {
+    frameRate: 24,
+    facingMode: "user",
+  },
+};
+
 // Define STUN and TURN servers for ICE candidate negotiation
 export const peerConstraints = {
   iceServers: [

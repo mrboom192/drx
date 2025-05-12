@@ -3,17 +3,9 @@ import {
   peerConstraints,
   sessionConstraints,
 } from "@/config/webrtcConfig";
+import { onChildAdded, push, ref, remove, set } from "@firebase/database";
 import { router } from "expo-router";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  DocumentReference,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import {
   mediaDevices,
@@ -22,9 +14,9 @@ import {
   RTCPeerConnection,
   RTCSessionDescription,
 } from "react-native-webrtc";
-import { db } from "../../firebaseConfig";
+import { database, db } from "../../firebaseConfig";
 
-type ICECandidateDocRef = { ref: DocumentReference };
+type ICECandidateKeyRef = { key: string };
 
 export function useWebRTCCall(
   chatId: string,
@@ -38,13 +30,14 @@ export function useWebRTCCall(
   const peerConnection = useRef<any>(null); // Peer connection reference
   const remoteStreamRef = useRef<MediaStream | null>(null); // Remote stream reference
   const hasSetRemoteDescription = useRef(false); // Flag to check if remote description is set to prevent constant updates
+  const queuedCandidates = useRef<RTCIceCandidateInit[]>([]);
 
-  // Firestore references
+  // Firestore reference
   const callDocRef = doc(db, "calls", callId); // The call document
-  const offersCollectionRef = collection(callDocRef, "offerCandidates"); // Offers collection
-  const answersCollectionRef = collection(callDocRef, "answerCandidates"); // Answers collection
-  const offersDocsRef = useRef<ICECandidateDocRef[]>([]); // Refs to each offer to delete later
-  const answersDocsRef = useRef<ICECandidateDocRef[]>([]); // Refs to each answer to delete later
+
+  // Realtime Database references
+  const offerCandidatesRef = ref(database, `calls/${callId}/offerCandidates`);
+  const answerCandidatesRef = ref(database, `calls/${callId}/answerCandidates`);
 
   useEffect(() => {
     peerConnection.current = new RTCPeerConnection(peerConstraints);
@@ -76,19 +69,16 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
-    const myCandidatesRef = offersCollectionRef;
-    const theirCandidatesRef = answersCollectionRef;
-
     peerConnection.current.addEventListener(
       "icecandidate",
       async (event: any) => {
         if (event.candidate) {
           const candidateJSON = event.candidate.toJSON();
           try {
-            const docRef = await addDoc(myCandidatesRef, candidateJSON);
-            offersDocsRef.current.push({ ref: docRef });
+            const newRef = push(offerCandidatesRef);
+            await set(newRef, candidateJSON);
           } catch (err) {
-            console.error("[Firestore] Failed to store ICE candidate:", err);
+            console.error("[RTDB] Failed to store ICE candidate:", err);
           }
         }
       }
@@ -122,7 +112,7 @@ export function useWebRTCCall(
     await peerConnection.current.setLocalDescription(offer);
     await setDoc(callDocRef, { offer });
 
-    onSnapshot(callDocRef, (snapshot) => {
+    onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.answer &&
@@ -130,28 +120,35 @@ export function useWebRTCCall(
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
-        peerConnection.current.setRemoteDescription(
+        await peerConnection.current.setRemoteDescription(
           new RTCSessionDescription(data.answer)
         );
+
+        for (const candidate of queuedCandidates.current) {
+          await peerConnection.current.addIceCandidate(
+            new RTCIceCandidate(candidate)
+          );
+        }
+        queuedCandidates.current = [];
       }
     });
 
-    onSnapshot(theirCandidatesRef, (snapshot) => {
-      answersDocsRef.current = snapshot.docs;
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        peerConnection.current.addIceCandidate(new RTCIceCandidate(data));
-      });
+    onChildAdded(answerCandidatesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const candidate = new RTCIceCandidate(data);
+        if (peerConnection.current.remoteDescription) {
+          peerConnection.current.addIceCandidate(candidate);
+        } else {
+          queuedCandidates.current.push(data);
+        }
+      }
     });
   }
 
   async function joinCall() {
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
-
-    const myCandidatesRef = answersCollectionRef;
-    const theirCandidatesRef = offersCollectionRef;
 
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current.addTrack(track, mediaStream);
@@ -163,10 +160,10 @@ export function useWebRTCCall(
         if (event.candidate) {
           const candidateJSON = event.candidate.toJSON();
           try {
-            const docRef = await addDoc(myCandidatesRef, candidateJSON);
-            answersDocsRef.current.push({ ref: docRef });
+            const newRef = push(answerCandidatesRef);
+            await set(newRef, candidateJSON);
           } catch (err) {
-            console.error("[Firestore] Failed to store ICE candidate:", err);
+            console.error("[RTDB] Failed to store ICE candidate:", err);
           }
         }
       }
@@ -208,6 +205,13 @@ export function useWebRTCCall(
           const answer = await peerConnection.current.createAnswer();
           await peerConnection.current.setLocalDescription(answer);
           await updateDoc(callDocRef, { answer });
+
+          for (const candidate of queuedCandidates.current) {
+            await peerConnection.current.addIceCandidate(
+              new RTCIceCandidate(candidate)
+            );
+          }
+          queuedCandidates.current = [];
         } catch (err) {
           console.error("[Participant] Error handling offer/answer:", err);
         }
@@ -215,13 +219,16 @@ export function useWebRTCCall(
     });
 
     // Listen for ICE candidates from the caller
-    onSnapshot(theirCandidatesRef, (snapshot) => {
-      offersDocsRef.current = snapshot.docs;
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        peerConnection.current.addIceCandidate(new RTCIceCandidate(data));
-      });
+    onChildAdded(offerCandidatesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const candidate = new RTCIceCandidate(data);
+        if (peerConnection.current.remoteDescription) {
+          peerConnection.current.addIceCandidate(candidate);
+        } else {
+          queuedCandidates.current.push(data);
+        }
+      }
     });
   }
 
@@ -233,8 +240,8 @@ export function useWebRTCCall(
     const chatDocRef = doc(db, "chats", chatId);
     await updateDoc(chatDocRef, { hasActiveCall: false });
 
-    for (const doc of offersDocsRef.current) await deleteDoc(doc.ref);
-    for (const doc of answersDocsRef.current) await deleteDoc(doc.ref);
+    await remove(offerCandidatesRef);
+    await remove(answerCandidatesRef);
 
     canGoBack && router.back();
   }

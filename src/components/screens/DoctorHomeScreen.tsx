@@ -1,51 +1,37 @@
 import { useUser } from "@/contexts/UserContext";
+import {
+  useAppointmentError,
+  useIsFetchingAppointments,
+  useStartAppointmentsListener,
+  useStopAppointmentsListener,
+} from "@/stores/useAppointmentStore";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { db } from "../../../firebaseConfig";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
 import DoctorHomeHeader from "../DoctorHomeHeader";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const DoctorHomeScreen = () => {
   const { data } = useUser();
-  const [appointments, setAppointments] = useState<any>([]);
-  const [status, setStatus] = useState<string>("loading");
+  const startAppointmentsListener = useStartAppointmentsListener();
+  const stopAppointmentsListener = useStopAppointmentsListener();
+  const isFetchingAppointments = useIsFetchingAppointments();
+  const error = useAppointmentError();
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      if (!data) {
-        setStatus("error");
-        return;
-      }
+    if (!data?.uid) return;
+    startAppointmentsListener(data.uid);
 
-      try {
-        const appointmentsRef = collection(db, "appointments");
-        const q = query(appointmentsRef, where("doctorId", "==", data.uid));
-        const querySnapshot = await getDocs(q);
-
-        const appointmentsList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setAppointments(appointmentsList);
-      } catch (err) {
-        console.error("Error fetching doctor profile:", err); // For debugg
-        setStatus("error");
-      } finally {
-        setStatus("success");
-      }
+    return () => {
+      stopAppointmentsListener();
     };
-
-    fetchAppointments();
   }, [data]);
 
-  if (status === "loading") {
+  if (isFetchingAppointments) {
     return (
       <View
         style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
@@ -57,7 +43,7 @@ const DoctorHomeScreen = () => {
     );
   }
 
-  if (status === "error") {
+  if (error) {
     return (
       <View
         style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
@@ -83,7 +69,7 @@ const DoctorHomeScreen = () => {
       )}
       {!data?.hasPublicProfile && <MissingPublicProfileAlert />}
 
-      <DoctorCalendar appointments={appointments} />
+      <DoctorCalendar />
     </View>
   );
 };

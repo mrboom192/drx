@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 
 import Colors from "@/constants/Colors";
+import { useAppointments } from "@/stores/useAppointmentStore";
 import { Appointment } from "@/types/appointment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
@@ -14,7 +15,8 @@ import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
 import CustomIcon from "../icons/CustomIcon";
 
-const DoctorCalendar = ({ appointments }: any) => {
+const DoctorCalendar = () => {
+  const appointments = useAppointments();
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd")
   );
@@ -169,17 +171,6 @@ const DoctorCalendar = ({ appointments }: any) => {
         renderHeader={renderHeader}
         dayComponent={renderDay}
         current={selectedDate}
-        markedDates={{
-          [selectedDate]: { selected: true, selectedColor: "#6366f1" },
-          // Mark dates with consultations
-          // ...Object.keys(consultations).reduce(
-          //   (acc, date) => ({
-          //     ...acc,
-          //     [date]: { marked: true, dotColor: "#6366f1" },
-          //   }),
-          //   {}
-          // ),
-        }}
         theme={{
           backgroundColor: "transparent",
           textDayHeaderFontFamily: "DMSans_600SemiBold",

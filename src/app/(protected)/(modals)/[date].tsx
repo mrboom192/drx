@@ -3,69 +3,17 @@ import IconButton from "@/components/IconButton";
 import CustomIcon from "@/components/icons/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { Appointment } from "@/types/appointment";
-import { addDays, format, parseISO, startOfDay } from "date-fns";
+import { useAppointmentsByDate } from "@/stores/useAppointmentStore";
+import { format, parseISO } from "date-fns";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import {
-  collection,
-  getDocs,
-  query,
-  Timestamp,
-  where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { db } from "../../../../firebaseConfig";
 
 const DayInfo = () => {
   const { date } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch appointments for the selected date
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const appointmentsRef = collection(db, "appointments");
-
-        const selectedDate = parseISO(date as string); // Convert "2025-05-13" to JS Date
-        const start = Timestamp.fromDate(startOfDay(selectedDate));
-        const end = Timestamp.fromDate(startOfDay(addDays(selectedDate, 1)));
-
-        const q = query(
-          appointmentsRef,
-          where("date", ">=", start),
-          where("date", "<", end)
-        );
-
-        const querySnapshot = await getDocs(q);
-        const appointmentsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setAppointments(appointmentsData as Appointment[]);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-    };
-
-    fetchAppointments();
-  }, []);
-
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
+  const appointmentsByDate = useAppointmentsByDate(date as string);
 
   return (
     <View style={page.container}>
@@ -78,7 +26,7 @@ const DayInfo = () => {
         style={{ flex: 1, paddingBottom: insets.bottom }}
         showsVerticalScrollIndicator={false}
       >
-        {appointments.length === 0 && (
+        {appointmentsByDate.length === 0 && (
           <View
             style={{
               flex: 1,
@@ -106,7 +54,7 @@ const DayInfo = () => {
             </TextSemiBold>
           </View>
         )}
-        {appointments.map((appointment) => (
+        {appointmentsByDate.map((appointment) => (
           <TouchableOpacity
             key={appointment.id}
             style={{
@@ -176,7 +124,6 @@ export default DayInfo;
 const DayInfoHeader = ({ date }: { date: string }) => {
   const insets = useSafeAreaInsets();
 
-  // Replace fake values with actual data soon
   return (
     <View
       style={[

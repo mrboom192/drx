@@ -82,12 +82,26 @@ const DayInfo = () => {
           <View
             style={{
               flex: 1,
+              flexDirection: "column",
+              gap: 8,
               alignItems: "center",
               justifyContent: "center",
               paddingVertical: 32,
             }}
           >
-            <TextSemiBold style={{ fontSize: 16, color: Colors.grey }}>
+            <CustomIcon
+              name="sentiment-satisfied"
+              color={Colors.grey}
+              size={24}
+            />
+            <TextSemiBold
+              style={{
+                fontSize: 16,
+                width: 150,
+                textAlign: "center",
+                color: Colors.grey,
+              }}
+            >
               No appointments for this date.
             </TextSemiBold>
           </View>

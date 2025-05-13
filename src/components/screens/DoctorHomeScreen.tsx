@@ -29,7 +29,7 @@ const DoctorHomeScreen = () => {
     return () => {
       stopAppointmentsListener();
     };
-  }, [data]);
+  }, []);
 
   if (isFetchingAppointments) {
     return (

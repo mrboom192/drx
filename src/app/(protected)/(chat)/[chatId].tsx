@@ -39,7 +39,6 @@ interface User {
 const ChatRoom = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { data } = useUser();
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { chatId } = useLocalSearchParams();
   const chat = useChatsById(chatId as string);
@@ -52,7 +51,6 @@ const ChatRoom = () => {
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
     if (!chat) {
-      setError(null);
       setLoading(false);
       return;
     }
@@ -81,8 +79,6 @@ const ChatRoom = () => {
       );
     });
 
-    // Below causes infinite loop when uncommented
-    setError(null);
     setLoading(false);
 
     return () => unsubscribeMessages();

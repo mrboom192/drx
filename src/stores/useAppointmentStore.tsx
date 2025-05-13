@@ -18,12 +18,11 @@ interface AppointmentStoreState {
   isFetchingAppointments: boolean;
   error: string | null;
   unsubscribe: (() => void) | null;
-  clearAppointments: () => void;
   startAppointmentsListener: (doctorId: string) => Promise<void>;
   stopAppointmentsListener: () => void;
 }
 
-const useAppointmentStoreState = create<AppointmentStoreState>((set, get) => ({
+const useAppointmentStore = create<AppointmentStoreState>((set, get) => ({
   // States
   appointments: [],
   isFetchingAppointments: false,
@@ -33,7 +32,7 @@ const useAppointmentStoreState = create<AppointmentStoreState>((set, get) => ({
   // Actions
   clearAppointments: () => set({ appointments: [] }),
   startAppointmentsListener: async (doctorId: string) => {
-    if (get().unsubscribe) return;
+    if (get().unsubscribe) return; // Prevent multiple listeners
 
     set({ isFetchingAppointments: true, error: null });
 
@@ -72,32 +71,29 @@ const useAppointmentStoreState = create<AppointmentStoreState>((set, get) => ({
     const unsub = get().unsubscribe;
     if (unsub) {
       unsub();
-      set({ unsubscribe: null, appointments: [] }); // optional: clear state
+      set({ unsubscribe: null, appointments: [] });
     }
   },
 }));
 
 // Selectors
 export const useAppointments = () =>
-  useAppointmentStoreState((state) => state.appointments);
+  useAppointmentStore((state) => state.appointments);
 
 export const useIsFetchingAppointments = () =>
-  useAppointmentStoreState((state) => state.isFetchingAppointments);
+  useAppointmentStore((state) => state.isFetchingAppointments);
 
 export const useAppointmentError = () =>
-  useAppointmentStoreState((state) => state.error);
+  useAppointmentStore((state) => state.error);
 
 export const useStartAppointmentsListener = () =>
-  useAppointmentStoreState((state) => state.startAppointmentsListener);
+  useAppointmentStore((state) => state.startAppointmentsListener);
 
 export const useStopAppointmentsListener = () =>
-  useAppointmentStoreState((state) => state.stopAppointmentsListener);
-
-export const useClearAppointments = () =>
-  useAppointmentStoreState((state) => state.clearAppointments);
+  useAppointmentStore((state) => state.stopAppointmentsListener);
 
 export const useAppointmentsByDate = (date: string) => {
-  const appointments = useAppointmentStoreState((state) => state.appointments);
+  const appointments = useAppointmentStore((state) => state.appointments);
 
   return useMemo(() => {
     const selectedDate = parseISO(date);

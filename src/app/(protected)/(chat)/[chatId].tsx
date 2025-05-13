@@ -4,7 +4,7 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
 import { useUserPresence } from "@/hooks/useUserPresence";
-import { Chat } from "@/types/chat";
+import { useChatsById } from "@/stores/useChatStore";
 import { getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
@@ -39,10 +39,10 @@ interface User {
 const ChatRoom = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { data } = useUser();
-  const [chatData, setChatData] = useState<Chat | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { chatId } = useLocalSearchParams();
+  const chat = useChatsById(chatId as string);
   const insets = useSafeAreaInsets();
 
   // Firestore references
@@ -51,53 +51,41 @@ const ChatRoom = () => {
 
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
-    // If we goof up and don't have a chatId, just return
-    if (!chatId) return;
-
-    const unsubscribeChat = onSnapshot(chatDocRef, (snapshot) => {
-      if (!snapshot.exists()) {
-        setChatData(null);
-        setError("Chat not found.");
-        setLoading(false);
-        return;
-      }
-
-      const chat = snapshot.data() as Chat;
-
-      // Fetch chat messages
-      const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
-        const loadedMessages = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            _id: data.id || doc.id,
-            text: data.text,
-            createdAt: (data.createdAt as Timestamp)?.toDate?.() || new Date(),
-            user: {
-              _id: data.senderId,
-              name: getSenderName(data.senderId, chat),
-              avatar: getSenderAvatar(data.senderId, chat),
-            },
-          };
-        });
-
-        // Sort messages by createdAt in descending order
-        setMessages(
-          loadedMessages.sort(
-            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-          )
-        );
-      });
-
-      // Below causes infinite loop when uncommented
-      setChatData(chat);
+    if (!chat) {
       setError(null);
       setLoading(false);
+      return;
+    }
 
-      // Clean up messages listener inside chat listener
-      return unsubscribeMessages;
+    // Fetch chat messages
+    const unsubscribeMessages = onSnapshot(messagesRef, (snapshot) => {
+      const loadedMessages = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          _id: data.id || doc.id,
+          text: data.text,
+          createdAt: (data.createdAt as Timestamp)?.toDate?.() || new Date(),
+          user: {
+            _id: data.senderId,
+            name: getSenderName(data.senderId, chat),
+            avatar: getSenderAvatar(data.senderId, chat),
+          },
+        };
+      });
+
+      // Sort messages by createdAt in descending order
+      setMessages(
+        loadedMessages.sort(
+          (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+        )
+      );
     });
 
-    return () => unsubscribeChat();
+    // Below causes infinite loop when uncommented
+    setError(null);
+    setLoading(false);
+
+    return () => unsubscribeMessages();
   }, []);
 
   // Handle whenever the user sends a message
@@ -147,9 +135,7 @@ const ChatRoom = () => {
     >
       <Stack.Screen
         options={{
-          header: () => (
-            <ChatHeader chatId={chatId as string} chatData={chatData as Chat} />
-          ),
+          header: () => <ChatHeader chatId={chatId as string} />,
         }}
       />
       <GiftedChat
@@ -185,16 +171,15 @@ const ChatRoom = () => {
 
 export default ChatRoom;
 
-const ChatHeader = ({
-  chatData,
-  chatId,
-}: {
-  chatId: string;
-  chatData: Chat;
-}) => {
+const ChatHeader = ({ chatId }: { chatId: string }) => {
   const insets = useSafeAreaInsets();
   const { data } = useUser();
+  const chatData = useChatsById(chatId as string);
   const isDoctor = data?.role === "doctor";
+
+  if (!chatData) {
+    return null; // or a loading spinner
+  }
 
   const otherUser = isDoctor
     ? chatData.participants.patient

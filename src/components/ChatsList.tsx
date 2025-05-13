@@ -2,11 +2,17 @@ import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
 import { useUser } from "@/contexts/UserContext";
 import { useUserPresence } from "@/hooks/useUserPresence";
+import {
+  useChats,
+  useIsFetchingChats,
+  useStartChatsListener,
+  useStopChatsListener,
+} from "@/stores/useChatStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
 import { format } from "date-fns";
 import { Link } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -17,34 +23,36 @@ import {
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
-interface Props {
-  chats: Chat[];
-}
-
-const ChatsList = ({ chats }: Props) => {
-  const [loading, setLoading] = useState(false);
+const ChatsList = () => {
   const { data } = useUser();
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
+  const chats = useChats();
+  const startChatsListener = useStartChatsListener();
+  const stopChatsListener = useStopChatsListener();
+  const isFetchingChats = useIsFetchingChats();
 
-  if (!data) {
-    return null;
+  // Fetch chats from Firebase
+  useEffect(() => {
+    startChatsListener();
+
+    return () => stopChatsListener(); // Clean up on unmount
+  }, []);
+
+  if (chats === null) {
+    return (
+      <View>
+        <TextSemiBold style={{ textAlign: "center", marginTop: 20 }}>
+          Loading...
+        </TextSemiBold>
+      </View>
+    );
   }
 
   const themeBorderStyle =
     colorScheme === "light"
       ? themedStyles.lightBorder
       : themedStyles.darkBorder;
-
-  const themeTextStylePrimary =
-    colorScheme === "light"
-      ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
-
-  const themeTextStyleSecondary =
-    colorScheme === "light"
-      ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
 
   if (chats.length === 0) {
     return (
@@ -78,7 +86,7 @@ const ChatsList = ({ chats }: Props) => {
   return (
     <FlatList
       renderItem={({ item }) => <ChatRow chat={item} />}
-      data={loading ? [] : chats}
+      data={isFetchingChats ? [] : chats}
       ref={listRef}
     />
   );

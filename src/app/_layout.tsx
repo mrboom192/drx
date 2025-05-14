@@ -1,5 +1,4 @@
 import { SignUpProvider } from "@/contexts/SignupContext";
-import { UserProvider } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import {
   DMSans_400Regular,

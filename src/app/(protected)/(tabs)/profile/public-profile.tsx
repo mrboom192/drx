@@ -4,7 +4,6 @@ import UserAvatar from "@/components/UserAvatar";
 import CustomIcon from "@/components/icons/CustomIcon";
 import Language from "@/components/icons/Language";
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";

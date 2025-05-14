@@ -16,29 +16,22 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { auth, database } from "../../../firebaseConfig";
 
-export const unstable_settings = {
-  initialRouteName: "(tabs)", // anchor
-};
-
 export default function ProtectedLayout() {
-  const { signOut, session, isLoading } = useSession();
+  const { session, isLoading } = useSession();
   const startUserListener = useStartUserListener();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
-  const [loading, setLoading] = useState(true);
+  const [didCheckAuth, setDidCheckAuth] = useState(false);
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
 
   useEffect(() => {
-    setLoading(true);
     let unsubscribePresence: (() => void) | null = null;
 
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (!user) {
         return;
       } // User must be authenticated
-
-      console.log("User is authenticated:", user);
 
       // Get the user's firebase uid
       const uid = user.uid;
@@ -70,7 +63,7 @@ export default function ProtectedLayout() {
       });
     });
 
-    setLoading(false);
+    setDidCheckAuth(true);
 
     return () => {
       unsubscribeAuth(); // auth listener
@@ -79,7 +72,7 @@ export default function ProtectedLayout() {
   }, []);
 
   // You can keep the splash screen open, or render a loading screen like we do here.
-  if (isLoading || isFetchingUser || loading)
+  if (isLoading || isFetchingUser || !didCheckAuth)
     return (
       <View
         style={{

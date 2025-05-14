@@ -54,7 +54,6 @@ export default function RootLayout() {
     let unsubscribePresence: () => void;
 
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      console.log("Auth state changed:", user);
       if (user) {
         // Get the user's firebase uid
         const uid = user.uid;
@@ -88,7 +87,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded && isAuthReady) {
-      console.log("Fonts loaded and auth is ready");
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, isAuthReady]);

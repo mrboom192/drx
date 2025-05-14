@@ -1,78 +1,21 @@
 import { TextRegular } from "@/components/StyledText";
-import {
-  isOfflineForDatabase,
-  isOnlineForDatabase,
-} from "@/constants/Presence";
 import { useSession } from "@/contexts/AuthContext";
-import {
-  useIsFetchingUser,
-  useIsUserLoggedIn,
-  useStartUserListener,
-} from "@/stores/useUserStore";
-import { onAuthStateChanged } from "@firebase/auth";
+import { useIsAuthReady } from "@/stores/useAuthInitStore";
+import { useIsFetchingUser, useIsUserLoggedIn } from "@/stores/useUserStore";
 import { Redirect, Stack } from "expo-router";
-import { onDisconnect, onValue, ref, set } from "firebase/database";
-import { useEffect, useState } from "react";
 import { View } from "react-native";
-import { auth, database } from "../../../firebaseConfig";
+import { auth } from "../../../firebaseConfig";
 
 export default function ProtectedLayout() {
   const { session, isLoading } = useSession();
-  const startUserListener = useStartUserListener();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
-  const [didCheckAuth, setDidCheckAuth] = useState(false);
+  const isAuthReady = useIsAuthReady();
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
 
-  useEffect(() => {
-    let unsubscribePresence: (() => void) | null = null;
-
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        return;
-      } // User must be authenticated
-
-      // Get the user's firebase uid
-      const uid = user.uid;
-
-      // Start the user listener to fetch user data
-      startUserListener(uid);
-
-      const userStatusRef = ref(database, "/status/" + uid);
-
-      // A special path in the Realtime Database that is updated when the user's
-      // client is connected (or disconnected!)
-      const connectedRef = ref(database, ".info/connected");
-
-      unsubscribePresence = onValue(connectedRef, (snap) => {
-        // Return if we are not connected
-        if (snap.val() === false) return;
-
-        // When we disconnect (e.g., close app, reload, lose network),
-        // the server will mark us offline.
-        onDisconnect(userStatusRef)
-          .set(isOfflineForDatabase)
-          .then(() => {
-            // Add a short delay before setting us online to help
-            // reduce false "offline" flickers during reloads or something
-            setTimeout(() => {
-              set(userStatusRef, isOnlineForDatabase);
-            }, 100); // 100ms debounce buffer
-          });
-      });
-    });
-
-    setDidCheckAuth(true);
-
-    return () => {
-      unsubscribeAuth(); // auth listener
-      if (unsubscribePresence) unsubscribePresence(); // presence listener
-    };
-  }, []);
-
   // You can keep the splash screen open, or render a loading screen like we do here.
-  if (isLoading || isFetchingUser || !didCheckAuth)
+  if (isLoading || isFetchingUser || !isAuthReady)
     return (
       <View
         style={{

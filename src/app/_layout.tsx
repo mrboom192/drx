@@ -67,25 +67,20 @@ function RootLayoutNav() {
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
           <SessionProvider>
-            <UserProvider>
-              <SignUpProvider>
-                <Stack
-                  screenOptions={{
-                    navigationBarColor: "#FFF",
-                  }}
-                >
-                  <Stack.Screen
-                    name="(protected)"
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen name="login" options={{ headerShown: false }} />
-                  <Stack.Screen
-                    name="signup"
-                    options={{ headerShown: false }}
-                  />
-                </Stack>
-              </SignUpProvider>
-            </UserProvider>
+            <SignUpProvider>
+              <Stack
+                screenOptions={{
+                  navigationBarColor: "#FFF",
+                }}
+              >
+                <Stack.Screen
+                  name="(protected)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="signup" options={{ headerShown: false }} />
+              </Stack>
+            </SignUpProvider>
           </SessionProvider>
         </ThemeProvider>
       </BottomSheetModalProvider>

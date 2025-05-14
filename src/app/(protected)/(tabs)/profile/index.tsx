@@ -5,8 +5,8 @@ import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
-import { useUser } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, RelativePathString, Stack } from "expo-router";
 
@@ -46,13 +46,9 @@ const items = [
 const Profile = () => {
   const { colorScheme } = useThemedStyles();
   const { signOut } = useSession();
-  const { data, loading } = useUser();
+  const userData = useUserData();
 
-  if (loading || !data) {
-    return <TextRegular>Loading...</TextRegular>;
-  }
-
-  const color = data.role === "patient" ? Colors.primary : Colors.gold;
+  const color = userData?.role === "patient" ? Colors.primary : Colors.gold;
 
   return (
     <SafeAreaView
@@ -105,7 +101,7 @@ const Profile = () => {
           <UserAvatar size={64} canUpload={true} />
           <View>
             <TextSemiBold style={{ fontSize: 20 }}>
-              {data.firstName + " " + data.lastName}
+              {userData?.firstName + " " + userData?.lastName}
             </TextSemiBold>
             <TextRegular
               style={{
@@ -113,14 +109,14 @@ const Profile = () => {
                 color,
               }}
             >
-              {data.role ? data.role : "Role not found"}
+              {userData?.role ? userData?.role : "Role not found"}
             </TextRegular>
           </View>
         </View>
 
         {/* Main Message */}
         <TextSemiBold style={{ fontSize: 20, marginBottom: 16 }}>
-          How can we help you, {data.firstName}?
+          How can we help you, {userData?.firstName}?
         </TextSemiBold>
 
         {/* Links */}

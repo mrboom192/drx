@@ -9,16 +9,16 @@ import React, { useState } from "react";
 import { auth, db } from "../../../../../firebaseConfig";
 
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import { useUser } from "@/contexts/UserContext";
+import { useUserData } from "@/stores/useUserStore";
 
 const DoctorVerification = () => {
   const { pickImage, uploadImage, isUploading } = useImagePicker();
-  const { data } = useUser(); // <- get current user
+  const userData = useUserData();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uri, setUri] = useState<string | null>(null);
 
-  const isPending = data?.verification === "pending";
-  const isVerified = data?.verification === "verified";
+  const isPending = userData?.verification === "pending";
+  const isVerified = userData?.verification === "verified";
 
   const handlePickImage = async () => {
     const imageUri = await pickImage();

@@ -1,7 +1,7 @@
 import { db } from "@/../firebaseConfig";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
+import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
@@ -67,7 +67,7 @@ const formatDate = (date: Date) => {
 
 const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: user } = useUser();
+  const userData = useUserData();
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [doctor, setDoctor] = useState<any>(null);
@@ -108,7 +108,7 @@ const BookingPage = () => {
   };
 
   const handleBooking = async () => {
-    if (!selectedSlot || !doctor || !user) return;
+    if (!selectedSlot || !doctor || !userData) return;
 
     try {
       setIsBooking(true);
@@ -118,15 +118,15 @@ const BookingPage = () => {
       const appointmentRef = doc(collection(db, "appointments"));
       const appointmentData = {
         doctorId: doctor.uid,
-        patientId: user.uid,
+        patientId: userData.uid,
         doctor: {
           firstName: doctor.firstName,
           lastName: doctor.lastName,
         },
         patient: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          image: user.image || null,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          image: userData.image || null,
         },
         timeSlot: selectedSlot,
         date: selectedDate,
@@ -144,14 +144,14 @@ const BookingPage = () => {
       batch.set(appointmentRef, appointmentData);
 
       // Create a chat document only if it doesn't already exist
-      const chatId = [user.uid, doctor.uid].sort().join("_");
+      const chatId = [userData.uid, doctor.uid].sort().join("_");
       const chatRef = doc(db, "chats", chatId);
       const chatSnap = await getDoc(chatRef);
 
       if (!chatSnap.exists()) {
         batch.set(chatRef, {
           // Users in the chat for querying
-          users: [user.uid, doctor.uid],
+          users: [userData.uid, doctor.uid],
 
           // The doctor and patient details
           participants: {
@@ -162,10 +162,10 @@ const BookingPage = () => {
               image: doctor.image || null,
             },
             patient: {
-              uid: user.uid,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              image: user.image || null,
+              uid: userData.uid,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              image: userData.image || null,
             },
           },
 

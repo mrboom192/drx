@@ -1,16 +1,16 @@
-import { Text } from "react-native";
-import React from "react";
-import { useUser } from "@/contexts/UserContext";
-import PatientHomeScreen from "@/components/screens/PatientHomeScreen";
 import DoctorHomeScreen from "@/components/screens/DoctorHomeScreen";
-import { TextRegular } from "@/components/StyledText";
+import PatientHomeScreen from "@/components/screens/PatientHomeScreen";
+import { useUserData } from "@/stores/useUserStore";
+import React from "react";
 
 const Home = () => {
-  const { data, loading } = useUser();
+  const userData = useUserData();
 
-  if (loading) return <TextRegular>Loading...</TextRegular>;
-
-  return data?.role === "doctor" ? <DoctorHomeScreen /> : <PatientHomeScreen />;
+  return userData?.role === "doctor" ? (
+    <DoctorHomeScreen />
+  ) : (
+    <PatientHomeScreen />
+  );
 };
 
 export default Home;

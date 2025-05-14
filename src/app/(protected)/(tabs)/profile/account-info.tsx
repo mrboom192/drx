@@ -1,5 +1,5 @@
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import { useUser } from "@/contexts/UserContext";
+import { useUserData } from "@/stores/useUserStore";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { Stack } from "expo-router";
@@ -24,19 +24,21 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db } from "../../../../../firebaseConfig";
 
 const AccountInfo = () => {
-  const { data } = useUser();
+  const userData = useUserData();
 
-  if (!data) return null;
+  if (!userData) return null;
 
   const original = {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    phone: data.phone || "",
-    dateOfBirth: data.dateOfBirth?.toDate
-      ? data.dateOfBirth.toDate()
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    phone: userData.phone || "",
+    dateOfBirth: userData.dateOfBirth?.toDate
+      ? userData.dateOfBirth.toDate()
       : new Date(),
     gender:
-      data.gender === "male" || data.gender === "female" ? data.gender : "",
+      userData.gender === "male" || userData.gender === "female"
+        ? userData.gender
+        : "",
   };
 
   const [firstName, setFirstName] = useState(original.firstName);
@@ -77,7 +79,7 @@ const AccountInfo = () => {
 
     try {
       await setDoc(
-        doc(db, "users", data.uid),
+        doc(db, "users", userData.uid),
         {
           firstName,
           lastName,

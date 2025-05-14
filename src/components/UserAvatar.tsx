@@ -1,6 +1,6 @@
-import { useUser } from "@/contexts/UserContext";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { useUserPresence } from "@/hooks/useUserPresence";
+import { useUserData } from "@/stores/useUserStore";
 import { MaterialIcons } from "@expo/vector-icons";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
@@ -15,7 +15,7 @@ const UserAvatar = ({
   size: number;
   canUpload?: boolean;
 }) => {
-  const { data } = useUser();
+  const userData = useUserData();
   const { pickImage, uploadImage, isUploading } = useImagePicker();
   const [isUpdatingUserDoc, setIsUpdatingUserDoc] = useState(false);
   const uid = auth.currentUser?.uid;
@@ -48,9 +48,9 @@ const UserAvatar = ({
     }
   };
 
-  if (!data) return null;
+  if (!userData) return null;
 
-  const presence = useUserPresence(data.uid);
+  const presence = useUserPresence(userData.uid);
 
   return (
     <View
@@ -62,8 +62,8 @@ const UserAvatar = ({
     >
       <Avatar
         size={size}
-        initials={`${data.firstName[0]}${data.lastName[0]}`}
-        uri={data.image || null}
+        initials={`${userData.firstName[0]}${userData.lastName[0]}`}
+        uri={userData.image || null}
         presence={presence}
         onPress={canUpload ? handleUpload : null}
         loading={isUploading || isUpdatingUserDoc}

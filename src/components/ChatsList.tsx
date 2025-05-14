@@ -1,6 +1,5 @@
 import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
-import { useUser } from "@/contexts/UserContext";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import {
   useChats,
@@ -8,6 +7,7 @@ import {
   useStartChatsListener,
   useStopChatsListener,
 } from "@/stores/useChatStore";
+import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
 import { format } from "date-fns";
@@ -24,7 +24,7 @@ import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 const ChatsList = () => {
-  const { data } = useUser();
+  const userData = useUserData();
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
   const chats = useChats();
@@ -75,7 +75,7 @@ const ChatsList = () => {
             textAlign: "center",
           }}
         >
-          {data?.role === "doctor"
+          {userData?.role === "doctor"
             ? "You currently have no chats"
             : "Book a consultation to start chatting with a doctor"}
         </TextSemiBold>
@@ -93,9 +93,9 @@ const ChatsList = () => {
 };
 
 const ChatRow = ({ chat }: { chat: Chat }) => {
-  const { data } = useUser();
+  const userData = useUserData();
   const otherUser =
-    data?.role === "patient"
+    userData?.role === "patient"
       ? chat.participants.doctor
       : chat.participants.patient;
 
@@ -134,7 +134,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
 
           <View style={{ flex: 1 }}>
             <TextSemiBold style={{ fontSize: 16 }}>
-              {data?.role === "doctor"
+              {userData?.role === "doctor"
                 ? chat.participants.patient.firstName +
                   " " +
                   chat.participants.patient.lastName

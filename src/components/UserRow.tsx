@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { useUserData } from "@/stores/useUserStore";
 import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
@@ -9,9 +9,9 @@ import { TextRegular, TextSemiBold } from "./StyledText";
 import UserAvatar from "./UserAvatar";
 
 const UserRow = () => {
-  const { data } = useUser();
+  const userData = useUserData();
 
-  if (!data) {
+  if (!userData) {
     return null;
   }
 
@@ -26,8 +26,8 @@ const UserRow = () => {
       }}
     >
       <WelcomeMessage
-        name={data.firstName + " " + data.lastName}
-        role={data.role}
+        name={userData.firstName + " " + userData.lastName}
+        role={userData.role}
       />
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
         <IconButton

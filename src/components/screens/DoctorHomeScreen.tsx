@@ -1,10 +1,10 @@
-import { useUser } from "@/contexts/UserContext";
 import {
   useAppointmentError,
   useIsFetchingAppointments,
   useStartAppointmentsListener,
   useStopAppointmentsListener,
 } from "@/stores/useAppointmentStore";
+import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
 import React, { useEffect } from "react";
@@ -15,7 +15,7 @@ import DoctorHomeHeader from "../DoctorHomeHeader";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const DoctorHomeScreen = () => {
-  const { data } = useUser();
+  const userData = useUserData();
   const startAppointmentsListener = useStartAppointmentsListener();
   const stopAppointmentsListener = useStopAppointmentsListener();
   const isFetchingAppointments = useIsFetchingAppointments();
@@ -23,8 +23,8 @@ const DoctorHomeScreen = () => {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    if (!data?.uid) return;
-    startAppointmentsListener(data.uid);
+    if (!userData?.uid) return;
+    startAppointmentsListener(userData.uid);
 
     return () => {
       stopAppointmentsListener();
@@ -61,13 +61,13 @@ const DoctorHomeScreen = () => {
         options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
       />
 
-      {(data?.verification === "unverified" || !data?.verification) && (
+      {(userData?.verification === "unverified" || !userData?.verification) && (
         <VerificationAlert />
       )}
-      {(data?.verification === "pending" || !data?.verification) && (
+      {(userData?.verification === "pending" || !userData?.verification) && (
         <PendingAlert />
       )}
-      {!data?.hasPublicProfile && <MissingPublicProfileAlert />}
+      {!userData?.hasPublicProfile && <MissingPublicProfileAlert />}
 
       <DoctorCalendar />
     </View>

@@ -5,6 +5,7 @@ import CustomIcon from "@/components/icons/CustomIcon";
 import Language from "@/components/icons/Language";
 import Colors from "@/constants/Colors";
 import { useUser } from "@/contexts/UserContext";
+import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
@@ -68,7 +69,7 @@ const arraysEqual = (a: string[], b: string[]) => {
 };
 
 const PublicProfile = () => {
-  const { data } = useUser();
+  const userData = useUserData();
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     string[]
   >([]);
@@ -118,10 +119,10 @@ const PublicProfile = () => {
 
   useEffect(() => {
     const fetchPublicProfile = async () => {
-      if (!data) return;
+      if (!userData) return;
 
       try {
-        const publicProfileRef = doc(db, "publicProfiles", data.uid);
+        const publicProfileRef = doc(db, "publicProfiles", userData.uid);
         const docSnap = await getDoc(publicProfileRef);
 
         if (docSnap.exists()) {
@@ -155,10 +156,10 @@ const PublicProfile = () => {
       }
     };
 
-    if (data?.uid) {
+    if (userData?.uid) {
       fetchPublicProfile();
     }
-  }, [data?.uid]);
+  }, [userData?.uid]);
 
   const filteredSpecializations = useMemo(() => {
     return SPECIALIZATIONS.filter((spec) =>
@@ -185,32 +186,32 @@ const PublicProfile = () => {
   };
 
   const handleSave = async () => {
-    if (isSaving || !data) return;
+    if (isSaving || !userData) return;
 
     try {
       setIsSaving(true);
       setSaveStatus(null);
 
       // Update user document to set hasPublicProfile to true
-      const userRef = doc(db, "users", data.uid);
+      const userRef = doc(db, "users", userData.uid);
       await updateDoc(userRef, {
         hasPublicProfile: true,
       });
 
       // Create or update public profile document
-      const publicProfileRef = doc(db, "publicProfiles", data.uid);
+      const publicProfileRef = doc(db, "publicProfiles", userData.uid);
       await setDoc(
         publicProfileRef,
         {
-          uid: data.uid,
+          uid: userData.uid,
           specializations: selectedSpecializations,
           languages: selectedLanguages,
           experience: parseInt(experience, 10),
           biography,
           consultationPrice: parseInt(consultationPrice, 10),
-          firstName: data.firstName,
-          lastName: data.lastName,
-          image: data.image || null,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          image: userData.image || null,
           updatedAt: Timestamp.now(),
         },
         { merge: true }
@@ -487,7 +488,7 @@ const PublicProfile = () => {
           <UserAvatar size={48} />
           <View>
             <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
-              Dr. {data?.firstName + " " + data?.lastName}
+              Dr. {userData?.firstName + " " + userData?.lastName}
             </TextSemiBold>
             <TextSemiBold
               style={{

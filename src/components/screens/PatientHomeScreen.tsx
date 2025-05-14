@@ -1,6 +1,4 @@
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Stack } from "expo-router";
 import React, { ReactElement, useState } from "react";
 import OnlineConsultation from "../HomeTabs/OnlineConsultation";
@@ -49,7 +47,6 @@ const tabs = [
 const PatientHomeScreen = () => {
   const [tab, setTab] = useState("Online\nConsultation");
   const [isForward, setIsForward] = useState(false);
-  const { loading } = useUser();
 
   const onTabChange = (newTab: string) => {
     if (newTab === tab) return; // No-op if you're already on that tab
@@ -71,10 +68,6 @@ const PatientHomeScreen = () => {
     "Weight\nManagement": <WeightManagement />,
     "Remote ICU\nManagement": <RemoteManagement />,
   };
-
-  if (loading) {
-    return <TextRegular>Loading...</TextRegular>;
-  }
 
   return (
     <View style={{ flex: 1 }}>

@@ -2,9 +2,9 @@ import IconButton from "@/components/IconButton";
 import CustomIcon from "@/components/icons/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChatsById } from "@/stores/useChatStore";
+import { useUserData } from "@/stores/useUserStore";
 import { getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
@@ -38,7 +38,7 @@ interface User {
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const { data } = useUser();
+  const userData = useUserData();
   const [loading, setLoading] = useState(true);
   const { chatId } = useLocalSearchParams();
   const chat = useChatsById(chatId as string);
@@ -79,6 +79,7 @@ const ChatRoom = () => {
       );
     });
 
+    // Below causes infinite loop when uncommented
     setLoading(false);
 
     return () => unsubscribeMessages();
@@ -86,15 +87,15 @@ const ChatRoom = () => {
 
   // Handle whenever the user sends a message
   const onSend = useCallback(async (newMessages: Message[] = []) => {
-    if (!data || !chatId || newMessages.length === 0) return;
+    if (!userData || !chatId || newMessages.length === 0) return;
 
     const message = newMessages[0]; // GiftedChat sends 1 at a time by default
 
     const messagePayload = {
       id: nanoid(), // optional, Firestore doc ID also works
       text: message.text,
-      senderId: data.uid,
-      avatar: data.image || "",
+      senderId: userData.uid,
+      avatar: userData.image || "",
       createdAt: serverTimestamp(),
     };
 
@@ -104,7 +105,7 @@ const ChatRoom = () => {
       await updateDoc(chatDocRef, {
         lastMessage: {
           text: message.text,
-          senderId: data.uid,
+          senderId: userData.uid,
           timestamp: serverTimestamp(),
         },
         updatedAt: serverTimestamp(),
@@ -115,7 +116,7 @@ const ChatRoom = () => {
   }, []);
 
   // Loading logic
-  if (loading || !data) {
+  if (loading || !userData) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <TextSemiBold style={{ fontSize: 16, color: "#666" }}>
@@ -138,7 +139,7 @@ const ChatRoom = () => {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: data.uid, // Let giftedchat know who is the current user
+          _id: userData.uid, // Let giftedchat know who is the current user
         }}
         renderBubble={(props) => {
           return (
@@ -169,9 +170,9 @@ export default ChatRoom;
 
 const ChatHeader = ({ chatId }: { chatId: string }) => {
   const insets = useSafeAreaInsets();
-  const { data } = useUser();
+  const userData = useUserData();
   const chatData = useChatsById(chatId as string);
-  const isDoctor = data?.role === "doctor";
+  const isDoctor = userData?.role === "doctor";
 
   if (!chatData) {
     return null; // or a loading spinner
@@ -182,7 +183,7 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
     : chatData.participants.doctor;
 
   const presence = useUserPresence(otherUser.uid);
-  const callId = [data?.uid, otherUser.uid].sort().join("_");
+  const callId = [userData?.uid, otherUser.uid].sort().join("_");
 
   const handleCall = async () => {
     try {
@@ -199,7 +200,7 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
         otherPersonLastName: otherUser.lastName,
         chatId,
         callId,
-        callerType: data?.role === "doctor" ? "caller" : "callee",
+        callerType: userData?.role === "doctor" ? "caller" : "callee",
       },
     });
   };

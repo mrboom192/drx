@@ -1,6 +1,6 @@
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { useUser } from "@/contexts/UserContext";
+import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import React from "react";
@@ -8,9 +8,7 @@ import { TouchableOpacity, View } from "react-native";
 
 const Personal = () => {
   const router = useRouter();
-  const { data } = useUser();
-
-  if (!data) return null;
+  const userData = useUserData();
 
   return (
     <View
@@ -62,7 +60,7 @@ const Personal = () => {
         </TouchableOpacity>
 
         {/* Doctor verification */}
-        {data.role === "doctor" && (
+        {userData?.role === "doctor" && (
           <>
             {/* Public Profile */}
             <TouchableOpacity
@@ -93,7 +91,7 @@ const Personal = () => {
                     <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                       Public profile
                     </TextSemiBold>
-                    {!data.hasPublicProfile && (
+                    {userData.hasPublicProfile && (
                       <Ionicons
                         name="alert-circle-outline"
                         size={20}
@@ -144,22 +142,22 @@ const Personal = () => {
                       Doctor verification
                     </TextSemiBold>
 
-                    {(data.verification === "unverified" ||
-                      !data.verification) && (
+                    {(userData.verification === "unverified" ||
+                      !userData.verification) && (
                       <Ionicons
                         name="alert-circle-outline"
                         size={20}
                         color={Colors.pink}
                       />
                     )}
-                    {data.verification === "pending" && (
+                    {userData.verification === "pending" && (
                       <Ionicons
                         name="time-outline"
                         size={20}
                         color={Colors.onlineConsultation}
                       />
                     )}
-                    {data.verification === "verified" && (
+                    {userData.verification === "verified" && (
                       <Ionicons
                         name="checkmark-circle-outline"
                         size={20}

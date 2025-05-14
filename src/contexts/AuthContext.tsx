@@ -1,5 +1,6 @@
 import { auth, database, db } from "@/../firebaseConfig";
 import { isOfflineForDatabase } from "@/constants/Presence";
+import { useStopUserListener } from "@/stores/useUserStore";
 import { RelativePathString, router } from "expo-router";
 import { FirebaseError } from "firebase/app";
 import {
@@ -40,6 +41,7 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
+  const stopUserListener = useStopUserListener();
 
   async function signUp(email: string, password: string, data: object) {
     try {
@@ -90,6 +92,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         ref(database, `/status/${auth.currentUser?.uid}`),
         isOfflineForDatabase
       );
+      stopUserListener(); // Stop the user listener
       await signOut(auth);
       setSession(null); // Clear the session
     } catch (error) {

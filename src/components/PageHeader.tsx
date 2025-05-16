@@ -1,6 +1,6 @@
 import { getHeaderTitle } from "@react-navigation/elements";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
 import { TextSemiBold } from "./StyledText";
@@ -16,12 +16,16 @@ const PageHeader = ({
   const insets = useSafeAreaInsets();
   const title = getHeaderTitle(options, route.name);
   const headerRight = options.headerRight;
+  const isModal = Platform.OS === "ios" && options.presentation === "modal";
 
   return (
     <View
       style={[
         header.container,
-        { height: HEADER_HEIGHT + insets.top, paddingTop: insets.top },
+        {
+          height: isModal ? HEADER_HEIGHT + 16 : HEADER_HEIGHT + insets.top,
+          paddingTop: isModal ? 16 : insets.top,
+        },
       ]}
     >
       {back && (

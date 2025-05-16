@@ -6,11 +6,14 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useKeyboardHandler } from "react-native-keyboard-controller";
 import Animated, {
+  interpolate,
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+// Hook to track keyboard height using reanimated shared value
 const useGradualAnimation = () => {
   const height = useSharedValue(0);
 
@@ -23,6 +26,7 @@ const useGradualAnimation = () => {
     },
     []
   );
+
   return { height };
 };
 
@@ -53,7 +57,9 @@ const Add = () => {
           placeholder="e.g. 10mg pill"
         />
       </PageScrollView>
-      <Footer />
+
+      <Footer keyboardHeightShared={height} />
+
       <Animated.View style={fakeView} />
     </View>
   );
@@ -66,21 +72,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
 });
 
-const Footer = () => {
+const Footer = ({
+  keyboardHeightShared,
+}: {
+  keyboardHeightShared: SharedValue<number>;
+}) => {
   const insets = useSafeAreaInsets();
 
+  const animatedStyle = useAnimatedStyle(() => {
+    const basePadding = 16;
+    const safeAreaBottom = insets.bottom;
+
+    // Smoothly interpolate between full padding and minimal when keyboard shows
+    const paddingBottom = interpolate(
+      keyboardHeightShared.value,
+      [0, 350], // Find another way instead of hardcoding 350
+      [basePadding + safeAreaBottom, basePadding]
+    );
+
+    return {
+      paddingBottom,
+    };
+  }, [insets.bottom]);
+
   return (
-    <View style={[footer.container, { paddingBottom: insets.bottom + 16 }]}>
+    <Animated.View style={[footer.container, animatedStyle]}>
       <TouchableOpacity style={footer.button}>
         <TextSemiBold style={footer.text}>Save</TextSemiBold>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 

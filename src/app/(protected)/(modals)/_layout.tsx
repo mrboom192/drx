@@ -8,6 +8,7 @@ export default function ModalsLayout() {
         name="add"
         options={{
           title: "Add",
+          presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
       />
@@ -15,6 +16,7 @@ export default function ModalsLayout() {
         name="edit"
         options={{
           title: "Edit",
+          presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
       />

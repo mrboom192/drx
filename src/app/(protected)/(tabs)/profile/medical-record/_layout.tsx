@@ -27,20 +27,6 @@ const MedicalInformationLayout = () => {
           title: "Medications",
         }}
       />
-      <Stack.Screen
-        name="edit"
-        options={{
-          title: "Edit",
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
-        name="add"
-        options={{
-          title: "Add",
-          presentation: "modal",
-        }}
-      />
     </Stack>
   );
 };

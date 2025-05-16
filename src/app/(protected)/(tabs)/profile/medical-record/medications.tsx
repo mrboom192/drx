@@ -18,9 +18,10 @@ const Medications = () => {
             <IconButton
               name="add"
               onPress={() =>
-                router.navigate(
-                  "/(protected)/(tabs)/profile/medical-record/add"
-                )
+                router.push({
+                  pathname: "/(protected)/(modals)/add",
+                  params: {},
+                })
               }
             />
           ),
@@ -76,8 +77,8 @@ const MedicationListItem = ({
         <IconButton
           name="stylus"
           onPress={() =>
-            router.navigate({
-              pathname: "/(protected)/(tabs)/profile/medical-record/edit",
+            router.push({
+              pathname: "/(protected)/(modals)/edit",
               params: {},
             })
           }

@@ -55,7 +55,10 @@ export default function ProtectedLayout() {
       <Stack.Screen name="(chat)" options={{ headerShown: false }} />
       <Stack.Screen name="(call)" options={{ headerShown: false }} />
       <Stack.Screen name="doctor" options={{ headerShown: false }} />
-      <Stack.Screen name="(modals)" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="(modals)"
+        options={{ presentation: "modal", headerShown: false }}
+      />
       <Stack.Screen
         name="notifications"
         options={{

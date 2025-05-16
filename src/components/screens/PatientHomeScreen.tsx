@@ -6,11 +6,10 @@ import RadiologyImages from "../HomeTabs/RadiologyImages";
 import RemoteManagement from "../HomeTabs/RemoteManagement";
 import SecondOpinion from "../HomeTabs/SecondOpinion";
 import WeightManagement from "../HomeTabs/WeightManagement";
+import CustomIcon from "../icons/CustomIcon";
 import Emergency from "../icons/Emergency";
-import MonitorWeight from "../icons/MonitorWeight";
 import PsychologyAlt from "../icons/PsychologyAlt";
 import Radiology from "../icons/Radiology";
-import Stethoscope from "../icons/Stethoscope";
 import { PatientHomeHeader } from "../PatientHomeHeader";
 import { ScreenTransition } from "../ScreenTransition";
 import { TextRegular } from "../StyledText";
@@ -19,7 +18,13 @@ import { View } from "../Themed";
 const tabs = [
   {
     name: "Online\nConsultation",
-    icon: <Stethoscope size={24} color={Colors.onlineConsultation} />,
+    icon: (
+      <CustomIcon
+        name="stethoscope"
+        size={24}
+        color={Colors.onlineConsultation}
+      />
+    ),
     backgroundColor: Colors.peach,
   },
   {
@@ -34,7 +39,13 @@ const tabs = [
   },
   {
     name: "Weight\nManagement",
-    icon: <MonitorWeight size={24} color={Colors.weightManagement} />,
+    icon: (
+      <CustomIcon
+        size={24}
+        color={Colors.weightManagement}
+        name="monitor-weight"
+      />
+    ),
     backgroundColor: Colors.lightLavender,
   },
   {

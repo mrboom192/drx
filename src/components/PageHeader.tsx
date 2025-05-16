@@ -15,6 +15,7 @@ const PageHeader = ({
 }: NativeStackHeaderProps) => {
   const insets = useSafeAreaInsets();
   const title = getHeaderTitle(options, route.name);
+  const headerRight = options.headerRight;
 
   return (
     <View
@@ -29,6 +30,7 @@ const PageHeader = ({
         </View>
       )}
       <TextSemiBold style={header.title}>{title}</TextSemiBold>
+      {headerRight && <View style={header.rightButton}>{headerRight({})}</View>}
     </View>
   );
 };
@@ -45,14 +47,19 @@ const header = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    left: 0,
-    bottom: 0,
+    left: 16,
+    bottom: 8,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
   },
   title: {
     fontSize: 24,
+  },
+  rightButton: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    right: 16,
+    bottom: 8,
   },
 });

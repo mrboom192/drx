@@ -11,27 +11,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import { db } from "../../../firebaseConfig";
 import Avatar from "../Avatar";
 import CustomIcon from "../icons/CustomIcon";
-import HealthShield from "../icons/HealthShield";
 import { TextRegular, TextSemiBold } from "../StyledText";
-
-const mockTags = [
-  {
-    name: "Speaks Arabic",
-    color: "#8EFFC3",
-  },
-  {
-    name: "Highly Rated (4.4)",
-    color: "#FFCD87",
-  },
-  {
-    name: "15+ years experience",
-    color: "#FF86B2",
-  },
-  {
-    name: "USA",
-    color: "#B7DEFF",
-  },
-];
 
 const OnlineConsultation = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
@@ -176,7 +156,11 @@ const OnlineConsultation = () => {
                 },
               ]}
             >
-              <HealthShield size={24} color={"#FF4346"} />
+              <CustomIcon
+                name="health-and-safety"
+                size={24}
+                color={"#FF4346"}
+              />
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 View medical record
               </TextSemiBold>

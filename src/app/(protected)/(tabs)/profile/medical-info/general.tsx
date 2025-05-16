@@ -1,12 +1,21 @@
+import PageScrollView from "@/components/PageScrollView";
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 const General = () => {
   return (
-    <View>
+    <PageScrollView>
       <Text>General</Text>
-    </View>
+    </PageScrollView>
   );
 };
 
 export default General;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 16,
+  },
+});

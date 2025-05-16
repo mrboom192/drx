@@ -1,7 +1,7 @@
 import PageListLink from "@/components/PageListLink";
+import PageScrollView from "@/components/PageScrollView";
 import { RelativePathString } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
 
 const pages = [
   {
@@ -17,13 +17,13 @@ const pages = [
   {
     title: "Medications",
     description: "View and manage your current medications.",
-    href: "/(protected)/(tabs)/profile/medical-info",
+    href: "/(protected)/(tabs)/profile/medical-info/medications",
   },
 ];
 
 const MedicalInfo = () => {
   return (
-    <ScrollView style={styles.container}>
+    <PageScrollView>
       {pages.map((page, idx) => (
         <PageListLink
           key={idx}
@@ -32,16 +32,8 @@ const MedicalInfo = () => {
           href={page.href as RelativePathString}
         />
       ))}
-    </ScrollView>
+    </PageScrollView>
   );
 };
 
 export default MedicalInfo;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 16,
-  },
-});

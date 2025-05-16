@@ -1,3 +1,4 @@
+import PageHeader from "@/components/PageHeader";
 import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
 import { useIsAuthReady } from "@/stores/useAuthInitStore";
@@ -49,12 +50,20 @@ export default function ProtectedLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(chat)" />
-      <Stack.Screen name="(call)" />
-      <Stack.Screen name="doctor" />
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(chat)" options={{ headerShown: false }} />
+      <Stack.Screen name="(call)" options={{ headerShown: false }} />
+      <Stack.Screen name="doctor" options={{ headerShown: false }} />
       <Stack.Screen name="(modals)" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="notifications"
+        options={{
+          title: "Notifications",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

@@ -53,7 +53,7 @@ const header = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
   },
   rightButton: {
     position: "absolute",

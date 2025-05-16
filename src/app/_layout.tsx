@@ -23,6 +23,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 
@@ -103,28 +104,33 @@ function RootLayoutNav() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <SessionProvider>
-            <SignUpProvider>
-              <Stack
-                screenOptions={{
-                  navigationBarColor: "#FFF",
-                }}
-              >
-                <Stack.Screen
-                  name="(protected)"
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-                <Stack.Screen name="signup" options={{ headerShown: false }} />
-              </Stack>
-            </SignUpProvider>
-          </SessionProvider>
-        </ThemeProvider>
-      </BottomSheetModalProvider>
+      <KeyboardProvider>
+        <BottomSheetModalProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <SessionProvider>
+              <SignUpProvider>
+                <Stack
+                  screenOptions={{
+                    navigationBarColor: "#FFF",
+                  }}
+                >
+                  <Stack.Screen
+                    name="(protected)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="login" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="signup"
+                    options={{ headerShown: false }}
+                  />
+                </Stack>
+              </SignUpProvider>
+            </SessionProvider>
+          </ThemeProvider>
+        </BottomSheetModalProvider>
+      </KeyboardProvider>
     </GestureHandlerRootView>
   );
 }

@@ -25,7 +25,7 @@ const ProfileLayout = () => {
           header: (props) => <PageHeader {...props} />,
         }}
       />
-      <Stack.Screen name="medical-info" options={{ headerShown: false }} />
+      <Stack.Screen name="medical-record" options={{ headerShown: false }} />
     </Stack>
   );
 };

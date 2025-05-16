@@ -2,50 +2,38 @@ import IconButton from "@/components/IconButton";
 import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { Stack } from "expo-router";
+import { useRecordStoreMedications } from "@/stores/useRecordStore";
+import { router, Stack } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-const medicationsMockData = [
-  {
-    id: 1,
-    name: "Ibuprofen",
-    dosage: "200mg",
-    interval: "day",
-    frequency: 2,
-  },
-  {
-    id: 2,
-    name: "Paracetamol",
-    dosage: "500mg",
-    interval: "day",
-    frequency: 3,
-  },
-  {
-    id: 3,
-    name: "Amoxicillin",
-    dosage: "250mg",
-    interval: "day",
-    frequency: 1,
-  },
-  {
-    id: 4,
-    name: "Lisinopril",
-    dosage: "10mg",
-    interval: "day",
-    frequency: 1,
-  },
-];
-
 const Medications = () => {
+  const medications = useRecordStoreMedications();
+
   return (
     <PageScrollView>
       <Stack.Screen
         options={{
-          headerRight: () => <IconButton name="add" />,
+          headerRight: () => (
+            <IconButton
+              name="add"
+              onPress={() =>
+                router.navigate(
+                  "/(protected)/(tabs)/profile/medical-record/add"
+                )
+              }
+            />
+          ),
         }}
       />
-      {medicationsMockData.map((medication) => (
+      {medications?.length === 0 && (
+        <TextSemiBold
+          style={{ textAlign: "center", marginTop: 16, color: Colors.grey }}
+        >
+          No medications found.
+        </TextSemiBold>
+      )}
+      {medications?.map((medication) => (
         <MedicationListItem
           key={medication.id}
           id={medication.id}
@@ -85,7 +73,15 @@ const MedicationListItem = ({
         {frequency}/{interval}
       </TextSemiBold>
       <View style={itemStyles.buttons}>
-        <IconButton name="stylus" />
+        <IconButton
+          name="stylus"
+          onPress={() =>
+            router.navigate({
+              pathname: "/(protected)/(tabs)/profile/medical-record/edit",
+              params: {},
+            })
+          }
+        />
         <IconButton name="close" />
       </View>
     </View>

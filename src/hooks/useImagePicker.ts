@@ -63,7 +63,6 @@ export function useImagePicker() {
 
     try {
       await uploadBytes(fileRef, blob);
-      console.log("Ran"); // Only logs if successful
     } catch (error) {
       console.error("uploadBytes failed:", error);
     }

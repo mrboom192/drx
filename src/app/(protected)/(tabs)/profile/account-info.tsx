@@ -32,8 +32,10 @@ const AccountInfo = () => {
     firstName: userData.firstName,
     lastName: userData.lastName,
     phone: userData.phone || "",
-    dateOfBirth: userData.dateOfBirth?.toDate
-      ? userData.dateOfBirth.toDate()
+    dateOfBirth: userData.dateOfBirth
+      ? userData.dateOfBirth instanceof Timestamp
+        ? userData.dateOfBirth.toDate()
+        : userData.dateOfBirth
       : new Date(),
     gender:
       userData.gender === "male" || userData.gender === "female"

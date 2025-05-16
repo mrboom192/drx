@@ -1,4 +1,3 @@
-import IconButton from "@/components/IconButton";
 import PageHeader from "@/components/PageHeader";
 import { Stack } from "expo-router";
 import React from "react";
@@ -13,7 +12,7 @@ const MedicalInformationLayout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "Medical Info",
+          title: "Medical Record",
         }}
       />
       <Stack.Screen
@@ -26,6 +25,20 @@ const MedicalInformationLayout = () => {
         name="medications"
         options={{
           title: "Medications",
+        }}
+      />
+      <Stack.Screen
+        name="edit"
+        options={{
+          title: "Edit",
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
+        name="add"
+        options={{
+          title: "Add",
+          presentation: "modal",
         }}
       />
     </Stack>

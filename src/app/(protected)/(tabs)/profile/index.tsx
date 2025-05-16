@@ -8,7 +8,7 @@ import { useSession } from "@/contexts/AuthContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, RelativePathString, Stack } from "expo-router";
+import { Link, RelativePathString } from "expo-router";
 
 const items = [
   {
@@ -19,7 +19,7 @@ const items = [
   {
     icon: "medkit-outline",
     label: "View your medical records",
-    url: "/(tabs)/profile/medical-info",
+    url: "/(tabs)/profile/medical-record",
   },
   {
     icon: "cloud-upload-outline",
@@ -48,7 +48,8 @@ const Profile = () => {
   const { signOut } = useSession();
   const userData = useUserData();
 
-  const color = userData?.role === "patient" ? Colors.primary : Colors.gold;
+  const color = "#000";
+  const roleColor = userData?.role === "patient" ? Colors.primary : Colors.gold;
 
   return (
     <SafeAreaView
@@ -101,7 +102,7 @@ const Profile = () => {
             <TextRegular
               style={{
                 fontSize: 16,
-                color,
+                color: roleColor,
               }}
             >
               {userData?.role ? userData?.role : "Role not found"}

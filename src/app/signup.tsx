@@ -2,6 +2,7 @@ import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { useSignUp } from "@/contexts/SignupContext";
+import { SignupUser } from "@/types/user";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
@@ -36,7 +37,7 @@ const SignUp = () => {
 
     try {
       setSubmitting(true);
-      await signUp(email, password, userInfo);
+      await signUp(email, password, userInfo as SignupUser);
     } catch (e) {
       // Already handled in the context, but you could add UI feedback here
     } finally {

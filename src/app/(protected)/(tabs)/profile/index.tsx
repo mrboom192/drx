@@ -19,7 +19,7 @@ const items = [
   {
     icon: "medkit-outline",
     label: "View your medical records",
-    url: "/(tabs)/profile",
+    url: "/(tabs)/profile/medical-info",
   },
   {
     icon: "cloud-upload-outline",
@@ -60,11 +60,6 @@ const Profile = () => {
             : Colors.dark.background,
       }}
     >
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
       <View
         style={{
           flex: 1,

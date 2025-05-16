@@ -11,7 +11,15 @@ const ProfileLayout = () => {
         headerTitleAlign: "center",
         headerShadowVisible: false,
       }}
-    />
+    >
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name="medical-info" options={{ headerShown: false }} />
+    </Stack>
   );
 };
 

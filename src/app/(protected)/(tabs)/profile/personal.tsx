@@ -17,11 +17,6 @@ const Personal = () => {
         backgroundColor: "#FFF",
       }}
     >
-      <Stack.Screen
-        options={{
-          title: "Personal Info",
-        }}
-      />
       <View style={{ paddingHorizontal: 20 }}>
         {/* Account Info */}
         <TouchableOpacity

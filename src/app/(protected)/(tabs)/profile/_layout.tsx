@@ -1,21 +1,28 @@
+import PageHeader from "@/components/PageHeader";
 import { Stack } from "expo-router";
 import React from "react";
 
 const ProfileLayout = () => {
   return (
-    <Stack
-      screenOptions={{
-        headerTitleStyle: {
-          fontFamily: "DMSans_600SemiBold",
-        },
-        headerTitleAlign: "center",
-        headerShadowVisible: false,
-      }}
-    >
+    <Stack>
       <Stack.Screen
         name="index"
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="personal"
+        options={{
+          title: "Personal Info",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="account-info"
+        options={{
+          title: "Account Info",
+          header: (props) => <PageHeader {...props} />,
         }}
       />
       <Stack.Screen name="medical-info" options={{ headerShown: false }} />

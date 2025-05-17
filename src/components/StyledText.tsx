@@ -1,13 +1,25 @@
-import { Text, TextProps } from "./Themed";
+import { Text, TextProps } from "react-native";
 
-export function TextNormal(props: TextProps) {
-  return <Text {...props} style={[props.style, { fontFamily: "dm" }]} />;
+export function TextRegular(props: TextProps) {
+  return (
+    <Text
+      {...props}
+      style={[props.style, { fontFamily: "DMSans_400Regular" }]}
+    />
+  );
 }
 
-export function TextSb(props: TextProps) {
-  return <Text {...props} style={[props.style, { fontFamily: "dm-sb" }]} />;
+export function TextSemiBold(props: TextProps) {
+  return (
+    <Text
+      {...props}
+      style={[props.style, { fontFamily: "DMSans_600SemiBold" }]}
+    />
+  );
 }
 
-export function TextB(props: TextProps) {
-  return <Text {...props} style={[props.style, { fontFamily: "dm-b" }]} />;
+export function TextBold(props: TextProps) {
+  return (
+    <Text {...props} style={[props.style, { fontFamily: "DMSans_700Bold" }]} />
+  );
 }

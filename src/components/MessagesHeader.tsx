@@ -1,17 +1,12 @@
-import { StyleSheet, useColorScheme } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "./Themed";
-import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import * as Haptics from "expo-haptics";
 import { themedStyles } from "@/constants/Styles";
+import * as Haptics from "expo-haptics";
+import React, { useRef, useState } from "react";
+import { StyleSheet, useColorScheme } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import IconButton from "./IconButton";
+import { TextRegular, TextSemiBold } from "./StyledText";
+import { ScrollView, TouchableOpacity, View } from "./Themed";
 
 const tabs = [
   {
@@ -29,11 +24,11 @@ const tabs = [
 interface Props {}
 
 const MessagesHeader = ({}: Props) => {
-  const scrollRef = useRef<ScrollView | null>(null);
-  const router = useRouter();
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const scrollRef = useRef<typeof ScrollView | null>(null);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
+  const insets = useSafeAreaInsets();
 
   const themeTextStylePrimary =
     colorScheme === "light"
@@ -54,8 +49,8 @@ const MessagesHeader = ({}: Props) => {
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
-      scrollRef.current?.scrollTo({
+    (selected as any)?.measure((x: number) => {
+      (scrollRef.current as any)?.scrollTo({
         x: x - 16,
         y: 0,
         animated: true,
@@ -66,37 +61,18 @@ const MessagesHeader = ({}: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <View style={{ backgroundColor: "#FFF", paddingTop: insets.top }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Messages title */}
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 32, fontFamily: "dm-sb" },
-            ]}
-          >
-            Messages
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => {
-              //   router.push("/(modals)/filter");
-            }}
-            style={[themeBorderStyle, styles.searchBtn]}
-          >
-            <Ionicons
-              name="search"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
-              }
-            />
-          </TouchableOpacity>
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 32 }]}>
+            Consultations
+          </TextSemiBold>
+          <IconButton name="search" />
         </View>
 
         <ScrollView
-          ref={scrollRef}
+          ref={scrollRef as any}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[
@@ -131,12 +107,12 @@ const MessagesHeader = ({}: Props) => {
                       ? colorScheme === "light"
                         ? "#000"
                         : "#fff"
-                      : "none",
+                      : "transparent",
                 },
                 styles.filterPill,
               ]}
             >
-              <Text
+              <TextRegular
                 style={
                   activeIndex === index
                     ? {
@@ -144,22 +120,18 @@ const MessagesHeader = ({}: Props) => {
                           colorScheme === "light"
                             ? "#fff"
                             : Colors.dark.background,
-                        fontFamily: "dm",
                         textTransform: "capitalize",
                       }
-                    : [
-                        themeTextStyleSecondary,
-                        { fontFamily: "dm", textTransform: "capitalize" },
-                      ]
+                    : [themeTextStyleSecondary, { textTransform: "capitalize" }]
                 }
               >
                 {item.name}
-              </Text>
+              </TextRegular>
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

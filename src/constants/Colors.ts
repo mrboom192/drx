@@ -5,9 +5,15 @@ export default {
   primary: "#7846FF", // purple
   yellow: "#FFB650", // stars/ratings
   green: "#47DE8D",
+  pink: "#FF2776",
+  gold: "#E5A21B",
+  grey: "#595959",
+  lightGrey: "#F8F8F8", // light grey
+  lightGrey2: "#DDDDDD", // light grey
+  faintGrey: "#DDDDDD",
 
   onlineConsultation: "#FF8E43", // orange
-  onlineConsultationBackground: "#FFECD9", // peach
+  peach: "#FFECD9", // peach
 
   secondOpinion: "#43C0FF", // sky blue
   secondOpinionBackground: "#D9F4FF", // light blue
@@ -16,7 +22,7 @@ export default {
   radiologyImagesBackground: "#FFEDEF", // blush pink
 
   weightManagement: "#D556FF", // magenta
-  weightManagementBackground: "#FBEDFD", // light lavender
+  lightLavender: "#FBEDFD", // light lavender
 
   remoteICUManagement: "#998AFF", // periwinkle
   remoteICUManagementBackground: "#EDEFFE", // soft lilac

@@ -1,36 +1,17 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import ArrowOutward from "../icons/ArrowOutward";
-import HealthShield from "../icons/HealthShield";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
-import { Link } from "expo-router";
-import Colors from "@/constants/Colors";
-import Avatar from "../Avatar";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
-import Dot from "../icons/Dot";
-import Bookmark from "../icons/Bookmark";
-
-const mockTags = [
-  {
-    name: "Speaks Arabic",
-    color: "#8EFFC3",
-  },
-  {
-    name: "Highly Rated (4.4)",
-    color: "#FFCD87",
-  },
-  {
-    name: "15+ years experience",
-    color: "#FF86B2",
-  },
-  {
-    name: "USA",
-    color: "#B7DEFF",
-  },
-];
+import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Link } from "expo-router";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import LottieView from "lottie-react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { db } from "../../../firebaseConfig";
+import Avatar from "../Avatar";
+import CustomIcon from "../icons/CustomIcon";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 const OnlineConsultation = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
@@ -50,7 +31,7 @@ const OnlineConsultation = () => {
     setError(null); // Reset error state before fetching
 
     try {
-      const doctorsRef = collection(db, "public_profiles");
+      const doctorsRef = collection(db, "publicProfiles");
 
       // Fetch up to 50 doctors (to allow better randomness)
       const q = query(doctorsRef, limit(7));
@@ -86,27 +67,24 @@ const OnlineConsultation = () => {
         }}
       >
         <View style={{ flexDirection: "column", gap: 8 }}>
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 20, fontFamily: "dm-sb" },
-            ]}
-          >
+          <LottieView
+            source={require("@/../assets/lottie/doctorWave.json")}
+            loop={true}
+            autoPlay={true}
+            speed={1}
+            style={{
+              height: 200,
+              pointerEvents: "none",
+            }}
+          />
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
             Online Consultations
-          </Text>
-          <Text>
+          </TextSemiBold>
+          <TextRegular>
             Our Online Consultation service brings healthcare directly to you,
             offering convenient and secure virtual appointments with licensed
-            medical professionals. Whether you need a routine check-up, expert
-            medical advice, or a prescription refill, our platform connects you
-            with doctors, specialists, and healthcare providers from the comfort
-            of your home. With real-time video calls and chat support, you can
-            discuss your health concerns, receive personalized treatment plans,
-            and even get e-prescriptions—all without the need to visit a clinic.
-            Our telehealth service ensures quick access, confidentiality, and
-            quality care anytime, anywhere. Skip the waiting room and get the
-            medical attention you need—on your schedule. Your health, your way!
-          </Text>
+            medical professionals.
+          </TextRegular>
         </View>
 
         <TouchableOpacity
@@ -118,16 +96,15 @@ const OnlineConsultation = () => {
             paddingVertical: 16,
           }}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#FFF",
-              fontFamily: "dm-sb",
               fontSize: 16,
               textAlign: "center",
             }}
           >
             Ok!
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
     );
@@ -144,17 +121,15 @@ const OnlineConsultation = () => {
           gap: 16,
         }}
       >
-        <Text
-          style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
-        >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
           Online Consultations
-        </Text>
+        </TextSemiBold>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
               onPress={handlePresentModalPress}
               style={[
-                { backgroundColor: Colors.onlineConsultationBackground },
+                { backgroundColor: Colors.peach },
                 {
                   borderRadius: 16,
                   padding: 16,
@@ -163,15 +138,10 @@ const OnlineConsultation = () => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
-              </Text>
-              <ArrowOutward size={24} color={"#000"} />
+              </TextSemiBold>
+              <CustomIcon size={24} name="arrow-outward" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -186,20 +156,19 @@ const OnlineConsultation = () => {
                 },
               ]}
             >
-              <HealthShield size={24} color={"#FF4346"} />
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <CustomIcon
+                name="health-and-safety"
+                size={24}
+                color={"#FF4346"}
+              />
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 View medical record
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
           <View
             style={[
-              { backgroundColor: Colors.onlineConsultationBackground },
+              { backgroundColor: Colors.peach },
               {
                 flex: 1,
                 borderRadius: 16,
@@ -209,10 +178,10 @@ const OnlineConsultation = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
               Total Consultation Time
-            </Text>
-            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>134 mins</Text>
+            </TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>134 mins</TextSemiBold>
           </View>
         </View>
       </View>
@@ -240,14 +209,9 @@ const OnlineConsultation = () => {
             margin: 16,
           }}
         >
-          <Text
-            style={[
-              themeTextStylePrimary,
-              { fontSize: 20, fontFamily: "dm-sb" },
-            ]}
-          >
+          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
             Suggested doctors
-          </Text>
+          </TextSemiBold>
           <View
             style={{
               flexDirection: "row",
@@ -261,17 +225,16 @@ const OnlineConsultation = () => {
               justifyContent: "center",
             }}
           >
-            <Dot color={Colors.green} size={8} />
-            <Text
+            <CustomIcon name="dot" color={Colors.green} size={8} />
+            <TextRegular
               style={{
                 color: Colors.green,
                 textAlign: "center",
-                fontFamily: "dm-sb",
                 fontSize: 12,
               }}
             >
               3302 Online
-            </Text>
+            </TextRegular>
           </View>
         </View>
 
@@ -285,74 +248,7 @@ const OnlineConsultation = () => {
           }}
         >
           {doctors.map((item, index) => (
-            <Link href={`/doctor/${item.id}`} key={item.id} asChild>
-              <TouchableOpacity
-                style={{
-                  width: 300,
-                  padding: 16,
-                  borderWidth: 1,
-                  borderColor: Colors.light.faintGrey,
-                  borderRadius: 16,
-                  flexDirection: "column",
-                  gap: 16,
-                  alignItems: "center",
-                }}
-              >
-                {/* Doctor General Information */}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 16,
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <Avatar size={40} uri={item.photo_url} />
-                  <View style={{ flexDirection: "column", flex: 1 }}>
-                    <Text
-                      style={[
-                        themeTextStylePrimary,
-                        { fontFamily: "dm-sb", fontSize: 16 },
-                      ]}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {item.title} {item.name}
-                    </Text>
-
-                    <Text
-                      style={[
-                        themeTextStyleSecondary,
-                        { fontFamily: "dm", fontSize: 12 },
-                      ]}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {item.specialty.join(", ")}
-                    </Text>
-                  </View>
-                  <Text
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 20 },
-                    ]}
-                  >
-                    ${item.consultation_price}
-                    {/* {item.currency} */}
-                  </Text>
-                </View>
-
-                {/* Tags */}
-                <View
-                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
-                >
-                  {mockTags.map((item, index) => (
-                    <Tag key={index} name={item.name} color={item.color} />
-                  ))}
-                </View>
-              </TouchableOpacity>
-            </Link>
+            <DoctorCard key={item.uid} item={item} />
           ))}
         </ScrollView>
 
@@ -373,19 +269,22 @@ const OnlineConsultation = () => {
               paddingVertical: 16,
             }}
           >
-            <Bookmark color={Colors.dark.background} size={20} />
-            <Text
+            <CustomIcon
+              name="bookmark"
+              color={Colors.dark.background}
+              size={20}
+            />
+            <TextSemiBold
               style={{
                 color: Colors.dark.background,
-                fontFamily: "dm-sb",
                 fontSize: 16,
                 textAlign: "center",
               }}
             >
               View bookmarked (6)
-            </Text>
+            </TextSemiBold>
           </TouchableOpacity>
-          <Link href={`/(app)/(tabs)/search` as any} asChild>
+          <Link href={"/search"} asChild>
             <TouchableOpacity
               style={{
                 borderColor: Colors.dark.background,
@@ -396,16 +295,15 @@ const OnlineConsultation = () => {
                 paddingVertical: 16,
               }}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color: "#FFF",
-                  fontFamily: "dm-sb",
                   fontSize: 16,
                   textAlign: "center",
                 }}
               >
                 Search all doctors
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </Link>
         </View>
@@ -426,11 +324,119 @@ const Tag = ({ name, color }: { name: string; color: string }) => {
         backgroundColor: color,
       }}
     >
-      <Text style={{ color: "#000", fontSize: 14, fontFamily: "dm" }}>
-        {name}
-      </Text>
+      <TextRegular style={{ color: "#000", fontSize: 14 }}>{name}</TextRegular>
     </View>
   );
 };
 
 export default OnlineConsultation;
+
+const DoctorCard = ({ item }: { item: any }) => {
+  return (
+    <Link href={`/doctor/${item.uid}` as any} key={item.uid} asChild>
+      <TouchableOpacity
+        style={{
+          width: 300,
+          padding: 16,
+          borderRadius: 16,
+          borderWidth: 1,
+          borderColor: Colors.light.faintGrey,
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        {/* Doctor General Information */}
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 12,
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Avatar size={56} uri={item.image} />
+          <View style={{ flex: 1 }}>
+            <TextSemiBold
+              style={{ fontSize: 16, marginBottom: 4 }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              Dr. {item.firstName + " " + item.lastName}
+            </TextSemiBold>
+
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 4 }}>
+              {item.specializations
+                .slice(0, 2)
+                .map((spec: string, idx: number) => (
+                  <View
+                    key={idx}
+                    style={{
+                      backgroundColor: Colors.light.faintGrey,
+                      paddingHorizontal: 8,
+                      paddingVertical: 4,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <TextRegular
+                      style={{
+                        fontSize: 12,
+                        color: Colors.light.grey,
+                      }}
+                    >
+                      {spec}
+                    </TextRegular>
+                  </View>
+                ))}
+              {item.specializations.length > 2 && (
+                <TextRegular
+                  style={{
+                    fontSize: 12,
+                    color: Colors.light.grey,
+                  }}
+                >
+                  +{item.specializations.length - 2} more
+                </TextRegular>
+              )}
+            </View>
+          </View>
+        </View>
+
+        {/* Price and Rating Section */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: 12,
+            borderTopWidth: 1,
+            borderTopColor: Colors.light.faintGrey,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <Ionicons name="star" size={16} color="#FFD700" />
+            <TextSemiBold style={{ fontSize: 14 }}>4.8</TextSemiBold>
+            <TextRegular style={{ fontSize: 12 }}>(124)</TextRegular>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 2,
+            }}
+          >
+            <TextSemiBold style={{ fontSize: 20 }}>
+              ${item.consultationPrice}
+            </TextSemiBold>
+            <TextRegular style={{ fontSize: 12 }}>/consultation</TextRegular>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </Link>
+  );
+};

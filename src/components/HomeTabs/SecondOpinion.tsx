@@ -1,25 +1,15 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-  StyleSheet,
-  Image,
-} from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import ArrowOutward from "../icons/ArrowOutward";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
-import { Link } from "expo-router";
-import Colors from "@/constants/Colors";
-import Avatar from "../Avatar";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import InfoBottomSheet from "@/components/InfoBottomSheet";
+import Colors from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { Link } from "expo-router";
+import { collection, getDocs, limit, query } from "firebase/firestore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { db } from "../../../firebaseConfig";
+import CustomIcon from "../icons/CustomIcon";
 import Filter from "../icons/Filter";
-import Check from "../icons/Check";
-import Clock from "../icons/Clock";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 const mockCases = [
   {
@@ -63,7 +53,7 @@ const SecondOpinion = () => {
     setError(null); // Reset error state before fetching
 
     try {
-      const doctorsRef = collection(db, "public_profiles");
+      const doctorsRef = collection(db, "publicProfiles");
 
       // Fetch up to 50 doctors (to allow better randomness)
       const q = query(doctorsRef, limit(7));
@@ -98,11 +88,9 @@ const SecondOpinion = () => {
           gap: 16,
         }}
       >
-        <Text
-          style={[themeTextStylePrimary, { fontSize: 20, fontFamily: "dm-sb" }]}
-        >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
           Second Opinion
-        </Text>
+        </TextSemiBold>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
@@ -117,15 +105,10 @@ const SecondOpinion = () => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
-              </Text>
-              <ArrowOutward size={24} color={"#000"} />
+              </TextSemiBold>
+              <CustomIcon size={24} name="arrow-outward" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -141,14 +124,9 @@ const SecondOpinion = () => {
               ]}
             >
               <Filter size={24} color={"#000"} />
-              <Text
-                style={[
-                  themeTextStylePrimary,
-                  { fontSize: 16, fontFamily: "dm-sb" },
-                ]}
-              >
+              <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 Provider preferences
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </View>
           <View
@@ -163,10 +141,10 @@ const SecondOpinion = () => {
               },
             ]}
           >
-            <Text style={{ fontSize: 16, fontFamily: "dm-sb" }}>
+            <TextSemiBold style={{ fontSize: 16 }}>
               Number of Opinions
-            </Text>
-            <Text style={{ fontSize: 28, fontFamily: "dm-sb" }}>1</Text>
+            </TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>1</TextSemiBold>
           </View>
         </View>
       </View>
@@ -197,24 +175,14 @@ const SecondOpinion = () => {
           }}
         >
           <View style={{ flexDirection: "column", gap: 8 }}>
-            <Text
-              style={[
-                themeTextStylePrimary,
-                { fontFamily: "dm-sb", fontSize: 20 },
-              ]}
-            >
+            <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
               Cases
-            </Text>
-            <Text
-              style={[
-                themeTextStyleSecondary,
-                { fontFamily: "dm", fontSize: 16 },
-              ]}
-            >
+            </TextSemiBold>
+            <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
               1/2 Cases reviewed
-            </Text>
+            </TextRegular>
           </View>
-          <Link href={`/(app)/(tabs)/index`} asChild>
+          <Link href={`/(protected)/(tabs)`} asChild>
             <TouchableOpacity
               style={{
                 paddingHorizontal: 16,
@@ -225,16 +193,15 @@ const SecondOpinion = () => {
                 justifyContent: "center",
               }}
             >
-              <Text
+              <TextSemiBold
                 style={{
                   color: Colors.light.grey,
                   textAlign: "center",
-                  fontFamily: "dm-sb",
                   fontSize: 12,
                 }}
               >
                 View All
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           </Link>
         </View>
@@ -258,7 +225,7 @@ const SecondOpinion = () => {
             ]}
           >
             {mockCases.map((item) => (
-              <Link href={`/(app)/(tabs)/index`} key={item.id} asChild>
+              <Link href={`/(protected)/(tabs)`} key={item.id} asChild>
                 <TouchableOpacity
                   style={{
                     borderWidth: 1,
@@ -272,26 +239,20 @@ const SecondOpinion = () => {
                     borderRadius: 8,
                   }}
                 >
-                  <Text
+                  <TextSemiBold
                     ellipsizeMode="tail"
                     numberOfLines={2}
-                    style={[
-                      themeTextStylePrimary,
-                      { fontFamily: "dm-sb", fontSize: 16 },
-                    ]}
+                    style={[themeTextStylePrimary, { fontSize: 16 }]}
                   >
                     {item.title}
-                  </Text>
-                  <Text
+                  </TextSemiBold>
+                  <TextRegular
                     ellipsizeMode="tail"
                     numberOfLines={2}
-                    style={[
-                      themeTextStyleSecondary,
-                      { fontFamily: "dm", fontSize: 12 },
-                    ]}
+                    style={[themeTextStyleSecondary, { fontSize: 12 }]}
                   >
                     {item.description}
-                  </Text>
+                  </TextRegular>
                   {item.reviewed ? (
                     <View
                       style={{
@@ -300,16 +261,19 @@ const SecondOpinion = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Check size={24} color={Colors.green} />
-                      <Text
+                      <CustomIcon
+                        name="check-mark"
+                        size={24}
+                        color={Colors.green}
+                      />
+                      <TextSemiBold
                         style={{
                           color: Colors.green,
-                          fontFamily: "dm-sb",
                           fontSize: 12,
                         }}
                       >
                         Reviewed by 1
-                      </Text>
+                      </TextSemiBold>
                     </View>
                   ) : (
                     <View
@@ -319,16 +283,19 @@ const SecondOpinion = () => {
                         alignItems: "center",
                       }}
                     >
-                      <Clock size={24} color={Colors.onlineConsultation} />
-                      <Text
+                      <CustomIcon
+                        name="schedule"
+                        size={24}
+                        color={Colors.onlineConsultation}
+                      />
+                      <TextSemiBold
                         style={{
                           color: Colors.onlineConsultation,
-                          fontFamily: "dm-sb",
                           fontSize: 12,
                         }}
                       >
                         Pending
-                      </Text>
+                      </TextSemiBold>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -349,16 +316,15 @@ const SecondOpinion = () => {
             paddingVertical: 16,
           }}
         >
-          <Text
+          <TextSemiBold
             style={{
               color: "#FFF",
-              fontFamily: "dm-sb",
               fontSize: 16,
               textAlign: "center",
             }}
           >
             Start a new case
-          </Text>
+          </TextSemiBold>
         </TouchableOpacity>
       </View>
 

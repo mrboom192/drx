@@ -1,18 +1,24 @@
-import { useContext, createContext, type PropsWithChildren } from "react";
-import { useStorageState } from "../hooks/useStorageState";
-import { auth, db } from "@/../firebaseConfig";
+import { auth, database, db } from "@/../firebaseConfig";
+import { createMedicalRecord } from "@/api/medicalRecords";
+import { isOfflineForDatabase } from "@/constants/Presence";
+import { useStopRecordsListener } from "@/stores/useRecordStore";
+import { useStopUserListener } from "@/stores/useUserStore";
+import { SignupUser, User } from "@/types/user";
+import { RelativePathString, router } from "expo-router";
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { router } from "expo-router";
-import { doc, setDoc } from "firebase/firestore";
+import { ref, set } from "firebase/database";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { createContext, useContext, type PropsWithChildren } from "react";
+import { useStorageState } from "../hooks/useStorageState";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, data: object) => Promise<void>;
+  signUp: (email: string, password: string, data: SignupUser) => Promise<void>;
   signOut: () => Promise<void>;
   session?: string | null;
   isLoading: boolean;
@@ -38,8 +44,10 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
+  const stopUserListener = useStopUserListener();
+  const stopRecordsListener = useStopRecordsListener();
 
-  async function signUp(email: string, password: string, data: object) {
+  async function signUp(email: string, password: string, data: SignupUser) {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -47,16 +55,23 @@ export function SessionProvider({ children }: PropsWithChildren) {
         password
       );
       const user = userCredential.user;
-
-      // Store user information in Firestore, merging user-specific data
-      await setDoc(doc(db, "users", user.uid), {
+      const userData = {
         email: user.email,
         uid: user.uid,
-        ...data, // Spread additional user information
-      });
+        createdAt: serverTimestamp(),
+        ...data,
+      } as SignupUser & Pick<User, "uid" | "email" | "createdAt">;
+
+      // Store user information in Firestore, merging user-specific data
+      await setDoc(doc(db, "users", user.uid), userData);
 
       setSession(user.uid); // Save the new user ID or token to the session
-      router.replace("/"); // Navigate to home page
+
+      if (userData.role === "patient") {
+        await createMedicalRecord(userData); // Create a medical record for the new user if they are a patient
+      }
+
+      router.replace("/" as RelativePathString); // Navigate to home page
     } catch (e: any) {
       const err = e as FirebaseError;
       alert("Registration failed: " + err.message);
@@ -74,7 +89,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
       // Save the user UID or token to session state
       setSession(user.uid); // Or user.email or user.getIdToken() for token
-      router.replace("/"); // Lets go home!!!
+      router.replace("/" as RelativePathString); // Lets go home!!!
     } catch (error) {
       console.error("Error signing in:", error);
       throw error; // Re-throw to handle errors in the UI
@@ -83,6 +98,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   async function signOutUser() {
     try {
+      // Set the user's status to offline in the database
+      await set(
+        ref(database, `/status/${auth.currentUser?.uid}`),
+        isOfflineForDatabase
+      );
+      stopUserListener(); // Stop the user listener
+      stopRecordsListener(); // Stop the records listener (if any)
       await signOut(auth);
       setSession(null); // Clear the session
     } catch (error) {

@@ -3,6 +3,7 @@ import React from "react";
 import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { themedStyles } from "@/constants/Styles";
+import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
   rating: number;
@@ -48,15 +49,13 @@ const Rating = ({ rating, reviews }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.stars}>
-        <Text style={[themeTextStylePrimary, { fontFamily: "dm-sb" }]}>
-          {rating}
-        </Text>
+        <TextSemiBold style={[themeTextStylePrimary]}>{rating}</TextSemiBold>
         {stars}
       </View>
 
-      <Text style={[themeTextStyleSecondary, { fontFamily: "dm" }]}>
+      <TextRegular style={[themeTextStyleSecondary]}>
         {reviews} reviews
-      </Text>
+      </TextRegular>
     </View>
   );
 };

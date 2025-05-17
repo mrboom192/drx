@@ -1,17 +1,129 @@
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import { Image } from "react-native";
+import Colors from "@/constants/Colors";
+import React, { useEffect } from "react";
+import { Image, Pressable, View } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+import { TextSemiBold } from "./StyledText";
 
-const Avatar = ({ size, uri }: { size: number; uri: string }) => {
-  const { themeBorderStyle } = useThemedStyles();
+const Avatar = ({
+  presence = null,
+  onPress = null,
+  size,
+  uri = null,
+  initials = "",
+  color = "#ddd",
+  loading = false,
+}: {
+  presence?: "online" | "offline" | null; // Make it more robust in the future so null is not an option
+  onPress?: null | (() => void);
+  size: number;
+  uri?: string | null;
+  initials?: string;
+  color?: string;
+  loading?: boolean;
+}) => {
+  const opacity = useSharedValue(1);
+
+  useEffect(() => {
+    if (loading) {
+      opacity.value = withRepeat(
+        withTiming(0.3, { duration: 700, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      );
+    } else {
+      opacity.value = withTiming(1);
+    }
+  }, [loading]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
+  // Determine the presence dot color
+  const presenceColor = presence === "online" ? Colors.green : null;
 
   return (
-    <Image
-      source={{ uri: uri }}
-      style={[
-        themeBorderStyle,
-        { width: size, height: size, borderRadius: 9999 },
-      ]}
-    />
+    <Pressable
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: size,
+        height: size,
+        backgroundColor: color,
+        borderRadius: 9999,
+      }}
+      onPress={onPress}
+    >
+      {loading ? (
+        <Animated.View
+          style={[
+            {
+              width: "100%",
+              height: "100%",
+              backgroundColor: "#ccc",
+              borderRadius: 9999,
+            },
+            animatedStyle,
+          ]}
+        />
+      ) : uri ? (
+        <>
+          <Image
+            source={{ uri }}
+            style={{ width: "100%", height: "100%", borderRadius: 9999 }}
+            resizeMode="cover"
+          />
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              borderRadius: 9999,
+              borderWidth: 1,
+              borderColor: "rgba(255, 255, 255, 0.2)",
+            }}
+          />
+        </>
+      ) : (
+        <TextSemiBold
+          style={{
+            color: "#555",
+            marginHorizontal: 8,
+            textAlign: "center",
+          }}
+        >
+          {initials}
+        </TextSemiBold>
+      )}
+
+      {/* Presence dot */}
+      {presenceColor && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: size * 0.3,
+            height: size * 0.3,
+            backgroundColor: presenceColor,
+            borderRadius: 9999,
+            borderWidth: 2,
+            borderColor: "#fff",
+          }}
+        />
+      )}
+    </Pressable>
   );
 };
 

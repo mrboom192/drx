@@ -1,14 +1,24 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface User {
-  name: string;
+  uid: string;
+  dateOfBirth: Timestamp | Date;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
   role: string;
-  profileImage: string;
+  image: string;
   gender: string;
-  age: number;
-  weight: Measurement;
-  height: Measurement;
+
+  // Doctor-specific fields
+  createdAt: Timestamp;
+  hasPublicProfile?: boolean;
+  licenseImage?: string;
+  verification?: string;
 }
 
-interface Measurement {
-  value: number;
-  unit: string;
-}
+export type SignupUser = Pick<
+  User,
+  "firstName" | "lastName" | "dateOfBirth" | "role"
+>;

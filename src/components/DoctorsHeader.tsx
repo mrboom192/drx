@@ -1,18 +1,13 @@
-import { StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "./Themed";
-import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import * as Haptics from "expo-haptics";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
+import React, { useRef, useState } from "react";
+import { StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TextSemiBold } from "./StyledText";
+import { ScrollView, TouchableOpacity, View } from "./Themed";
 
 const categories = [
   {
@@ -130,19 +125,20 @@ interface Props {
 }
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
-  const scrollRef = useRef<ScrollView | null>(null);
+  const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
     useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
+  const insets = useSafeAreaInsets();
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
     setActiveIndex(index);
 
-    selected?.measure((x: number) => {
-      scrollRef.current?.scrollTo({
+    (selected as any)?.measure((x: number) => {
+      (scrollRef.current as any)?.scrollTo({
         x: x - 16,
         y: 0,
         animated: true,
@@ -154,7 +150,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <View style={{ paddingTop: insets.top }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Search container */}
@@ -182,14 +178,14 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
               }
             />
             <View>
-              <Text style={[themeTextStyleSecondary, { fontFamily: "dm-sb" }]}>
+              <TextSemiBold style={themeTextStyleSecondary}>
                 Find the perfect doctor
-              </Text>
+              </TextSemiBold>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push("/(modals)/filter")}
+            onPress={() => router.push("/(protected)/(modals)/filter")}
             style={[themeBorderStyle, styles.filterBtn]}
           >
             <Ionicons
@@ -203,7 +199,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
         </View>
 
         <ScrollView
-          ref={scrollRef}
+          ref={scrollRef as any}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[
@@ -230,31 +226,20 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
                 gap: 4,
               }}
             >
-              {/* <MaterialIcons
-                name={item.icon as any}
-                color={
-                  activeIndex === index
-                    ? Colors.primary
-                    : colorScheme === "light"
-                    ? Colors.light.grey
-                    : Colors.dark.grey
-                }
-                size={24}
-              /> */}
-              <Text
+              <TextSemiBold
                 style={
                   activeIndex === index
-                    ? { color: Colors.primary, fontFamily: "dm-sb" }
-                    : [themeTextStyleSecondary, { fontFamily: "dm-sb" }]
+                    ? { color: Colors.primary }
+                    : themeTextStyleSecondary
                 }
               >
                 {item.name}
-              </Text>
+              </TextSemiBold>
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

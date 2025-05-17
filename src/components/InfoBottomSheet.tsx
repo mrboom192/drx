@@ -1,13 +1,13 @@
-import { View, Pressable } from "react-native";
-import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
 import Colors from "@/constants/Colors";
-import Close from "./icons/Close";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import React, { forwardRef, ReactNode, useCallback, useMemo } from "react";
+import { View } from "react-native";
+import IconButton from "./IconButton";
 
 const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
   ({ content = <></> }, ref) => {
@@ -25,6 +25,11 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
       ),
       []
     );
+
+    if (!ref) {
+      console.error("Ref is not defined");
+      return null;
+    }
 
     return (
       <BottomSheetModal
@@ -63,12 +68,14 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
               paddingHorizontal: 16,
             }}
           >
-            <Pressable
-              onPress={() => ref!.current?.dismiss()}
-              style={[themeBorderStyle, { padding: 4, borderRadius: 9999 }]}
-            >
-              <Close size={24} color={"#000"} />
-            </Pressable>
+            <IconButton
+              onPress={() => {
+                if ("current" in ref && ref.current) {
+                  ref.current.dismiss();
+                }
+              }}
+              name="close"
+            />
           </View>
           {content}
         </BottomSheetView>

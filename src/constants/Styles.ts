@@ -47,19 +47,19 @@ export const defaultStyles = StyleSheet.create({
 export const themedStyles = StyleSheet.create({
   lightTextPrimary: {
     color: "#000",
-    fontFamily: "dm",
+    fontFamily: "DMSans_400Regular",
   },
   lightTextSecondary: {
     color: Colors.light.grey,
-    fontFamily: "dm",
+    fontFamily: "DMSans_400Regular",
   },
   darkTextPrimary: {
     color: "#FFF",
-    fontFamily: "dm",
+    fontFamily: "DMSans_400Regular",
   },
   darkTextSecondary: {
     color: Colors.dark.grey,
-    fontFamily: "dm",
+    fontFamily: "DMSans_400Regular",
   },
   lightBorder: {
     borderWidth: 1,

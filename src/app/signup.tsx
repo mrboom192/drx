@@ -1,479 +1,304 @@
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  ActivityIndicator,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import React, { useState } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import LabeledInput from "../components/LabeledInput";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
+import { useSignUp } from "@/contexts/SignupContext";
+import { SignupUser } from "@/types/user";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { format } from "date-fns";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { auth } from "../../firebaseConfig";
 
-interface SignUpFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  age: string;
-  weight?: {
-    value: string;
-    unit: "kg" | "lbs";
-  };
-  height?: {
-    value: string;
-    unit: "cm" | "ft";
-  };
-}
-
-const Page = () => {
+const SignUp = () => {
+  const { signUpData, setSignUpData } = useSignUp();
   const { signUp } = useSession();
-  const [loading, setLoading] = useState(false);
-  const [userType, setUserType] = useState<"doctor" | "patient">("patient");
-  const [language, setLanguage] = useState<string>("");
-  const [gender, setGender] = useState<"Male" | "Female" | "">("");
-  const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">("kg");
-  const [heightUnit, setHeightUnit] = useState<"cm" | "ft">("cm");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const router = useRouter();
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignUpFormData>({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      age: "",
-      weight: { value: "", unit: "kg" },
-      height: { value: "", unit: "cm" },
-    },
-  });
-
-  async function handleSignUp(data: SignUpFormData) {
-    setLoading(true);
-    try {
-      const userData: any = {
-        name: `${data.firstName} ${data.lastName}`,
-        role: userType,
-        gender,
-        age: Number(data.age),
-        language,
-      };
-
-      // Add weight and height only for patients
-      if (userType === "patient") {
-        userData.weight = {
-          value: Number(data.weight?.value),
-          unit: weightUnit,
-        };
-        userData.height = {
-          value: Number(data.height?.value),
-          unit: heightUnit,
-        };
-      }
-
-      await signUp(data.email, data.password, userData);
-
-      if (auth.currentUser) {
-        router.replace("/");
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Sign-up failed", error);
-        alert("Registration failed: " + error.message);
-      }
-    } finally {
-      setLoading(false);
+  const handleDateChange = (_: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setSignUpData({ dateOfBirth: selectedDate });
     }
-  }
+  };
+
+  const handleSignUp = async () => {
+    const { email, password, ...userInfo } = signUpData;
+
+    try {
+      setSubmitting(true);
+      await signUp(email, password, userInfo as SignupUser);
+    } catch (e) {
+      // Already handled in the context, but you could add UI feedback here
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.innerContainer}>
-        <View style={styles.toggleContainer}>
-          <TouchableOpacity
-            style={[
-              styles.toggleButton,
-              userType === "doctor" && styles.activeButton,
-            ]}
-            onPress={() => setUserType("doctor")}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+      }}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{
+          flex: 1,
+          paddingHorizontal: 24,
+          paddingTop: 32,
+          paddingBottom: 16,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            router.back();
+          }}
+          disabled={submitting}
+        >
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            color={submitting ? "#aaa" : "#000"}
+          />
+        </TouchableOpacity>
+
+        <TextSemiBold
+          style={{
+            fontSize: 20,
+            marginVertical: 24,
+            textAlign: "center",
+          }}
+        >
+          Finish signing up
+        </TextSemiBold>
+
+        {/* Role Selector */}
+        <View
+          style={{
+            flexDirection: "row",
+            borderWidth: 1,
+            borderColor: Colors.light.faintGrey,
+            borderRadius: 100,
+            padding: 4,
+            marginBottom: 24,
+          }}
+        >
+          {["Patient", "Doctor"].map((option) => (
+            <TouchableOpacity
+              key={option}
+              disabled={submitting}
+              onPress={() => {
+                setSignUpData({
+                  role: option.toLowerCase() as "patient" | "doctor",
+                });
+              }}
+              style={{
+                flex: 1,
+                backgroundColor:
+                  signUpData.role === option.toLowerCase()
+                    ? "#8854D0"
+                    : "transparent",
+                paddingVertical: 12,
+                borderRadius: 100,
+                alignItems: "center",
+              }}
+            >
+              <TextSemiBold
+                style={{
+                  color:
+                    signUpData.role === option.toLowerCase() ? "#fff" : "#000",
+                }}
+              >
+                {option}
+              </TextSemiBold>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* First Name */}
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
+          First name
+        </TextRegular>
+        <TextInput
+          editable={!submitting}
+          style={{
+            borderColor: Colors.light.faintGrey,
+            borderWidth: 1,
+            borderRadius: 8,
+            paddingHorizontal: 16,
+            paddingVertical: 14,
+            fontSize: 16,
+            fontFamily: "DMSans_400Regular",
+            marginBottom: 16,
+          }}
+          placeholder="e.g. John"
+          value={signUpData.firstName}
+          onChangeText={(text) => setSignUpData({ firstName: text })}
+        />
+
+        {/* Last Name */}
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
+          Last name
+        </TextRegular>
+        <TextInput
+          editable={!submitting}
+          style={{
+            borderColor: Colors.light.faintGrey,
+            borderWidth: 1,
+            borderRadius: 8,
+            paddingHorizontal: 16,
+            paddingVertical: 14,
+            fontSize: 16,
+            fontFamily: "DMSans_400Regular",
+            marginBottom: 16,
+          }}
+          placeholder="e.g. Smith"
+          value={signUpData.lastName}
+          onChangeText={(text) => setSignUpData({ lastName: text })}
+        />
+
+        {/* Date of Birth */}
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
+          Date of birth
+        </TextRegular>
+        <Pressable
+          onPress={() => !submitting && setShowDatePicker(true)}
+          style={{
+            borderColor: Colors.light.faintGrey,
+            borderWidth: 1,
+            borderRadius: 8,
+            flexDirection: "row",
+            paddingHorizontal: 16,
+            paddingVertical: 14,
+            marginBottom: 16,
+            justifyContent: "space-between",
+          }}
+        >
+          <TextRegular
+            style={{
+              color: signUpData.dateOfBirth ? "#000" : Colors.light.grey,
+            }}
           >
-            <Text style={styles.toggleText}>Doctor</Text>
-          </TouchableOpacity>
+            {signUpData.dateOfBirth
+              ? format(signUpData.dateOfBirth, "MMMM d, yyyy")
+              : "Birthdate"}
+          </TextRegular>
+          <Ionicons
+            name="calendar-outline"
+            size={20}
+            color={Colors.light.grey}
+          />
+        </Pressable>
+        {showDatePicker && (
+          <DateTimePicker
+            value={signUpData.dateOfBirth || new Date(2000, 0, 1)}
+            mode="date"
+            display="default"
+            maximumDate={new Date()}
+            onChange={handleDateChange}
+          />
+        )}
+
+        {/* Password */}
+        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
+          Password
+        </TextRegular>
+        <View
+          style={{
+            borderColor: Colors.light.faintGrey,
+            borderWidth: 1,
+            borderRadius: 8,
+            paddingHorizontal: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingVertical: 4,
+            marginBottom: 16,
+          }}
+        >
+          <TextInput
+            editable={!submitting}
+            style={{
+              flex: 1,
+              fontSize: 16,
+              fontFamily: "DMSans_400Regular",
+              paddingVertical: 10,
+            }}
+            placeholder="Password"
+            secureTextEntry={!showPassword}
+            value={signUpData.password}
+            onChangeText={(text) => setSignUpData({ password: text })}
+          />
           <TouchableOpacity
-            style={[
-              styles.toggleButton,
-              userType === "patient" && styles.activeButton,
-            ]}
-            onPress={() => setUserType("patient")}
+            disabled={submitting}
+            onPress={() => setShowPassword(!showPassword)}
           >
-            <Text style={styles.toggleText}>Patient</Text>
+            <Ionicons
+              name={showPassword ? "eye-off-outline" : "eye-outline"}
+              size={20}
+              color={Colors.light.grey}
+            />
           </TouchableOpacity>
         </View>
 
-        <KeyboardAvoidingView style={styles.keyboardView} behavior="padding">
-          <View style={styles.inputContainer}>
-            <Text style={styles.subtitle}>Create an account ({userType})</Text>
+        {/* Terms */}
+        <TextRegular
+          style={{
+            fontSize: 12,
+            color: "#666",
+            textAlign: "center",
+            lineHeight: 16,
+            marginBottom: 24,
+          }}
+        >
+          By selecting Agree and continue, I agree to DrX's{" "}
+          <TextRegular style={{ textDecorationLine: "underline" }}>
+            Terms of Service, Payments Terms of Service and Nondiscrimination
+            Policy
+          </TextRegular>{" "}
+          and acknowledge the{" "}
+          <TextRegular style={{ textDecorationLine: "underline" }}>
+            Privacy Policy
+          </TextRegular>
+          .
+        </TextRegular>
 
-            {/* First Name */}
-            <Controller
-              control={control}
-              name="firstName"
-              rules={{ required: "First name is required" }}
-              render={({ field: { onChange, value } }) => (
-                <LabeledInput
-                  label="First Name"
-                  placeholder="First Name"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
-            />
-            {errors.firstName && (
-              <Text style={styles.errorText}>{errors.firstName.message}</Text>
-            )}
-
-            {/* Last Name */}
-            <Controller
-              control={control}
-              name="lastName"
-              rules={{ required: "Last name is required" }}
-              render={({ field: { onChange, value } }) => (
-                <LabeledInput
-                  label="Last Name"
-                  placeholder="Last Name"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              )}
-            />
-            {errors.lastName && (
-              <Text style={styles.errorText}>{errors.lastName.message}</Text>
-            )}
-
-            {/* Email Input */}
-            <Controller
-              control={control}
-              name="email"
-              rules={{ required: "Email is required" }}
-              render={({ field: { onChange, value } }) => (
-                <LabeledInput
-                  label="Email"
-                  placeholder="Email"
-                  iconLeft={
-                    <Ionicons name="mail-outline" size={16} color="#717171" />
-                  }
-                  value={value}
-                  onChangeText={onChange}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              )}
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email.message}</Text>
-            )}
-
-            {/* Password Input */}
-            <Controller
-              control={control}
-              name="password"
-              rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              }}
-              render={({ field: { onChange, value } }) => (
-                <LabeledInput
-                  label="Password"
-                  placeholder="Password"
-                  iconLeft={
-                    <Ionicons
-                      name="lock-closed-outline"
-                      size={16}
-                      color="#717171"
-                    />
-                  }
-                  value={value}
-                  onChangeText={onChange}
-                  secureTextEntry
-                  autoCapitalize="none"
-                />
-              )}
-            />
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password.message}</Text>
-            )}
-
-            {/* Other Inputs */}
-            {/* Email, Password, Age, Gender (same as before) */}
-
-            {/* Weight (only for patients) */}
-            {userType === "patient" && (
-              <>
-                <Controller
-                  control={control}
-                  name="weight.value"
-                  rules={{ required: "Weight is required" }}
-                  render={({ field: { onChange, value } }) => (
-                    <LabeledInput
-                      label="Weight"
-                      placeholder="Enter weight"
-                      keyboardType="numeric"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                  )}
-                />
-                {errors.weight && (
-                  <Text style={styles.errorText}>
-                    {errors.weight.value?.message}
-                  </Text>
-                )}
-
-                <View style={styles.toggleContainer}>
-                  <TouchableOpacity
-                    style={[
-                      styles.toggleButton,
-                      weightUnit === "kg" && styles.activeButton,
-                    ]}
-                    onPress={() => setWeightUnit("kg")}
-                  >
-                    <Text style={styles.toggleText}>kg</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.toggleButton,
-                      weightUnit === "lbs" && styles.activeButton,
-                    ]}
-                    onPress={() => setWeightUnit("lbs")}
-                  >
-                    <Text style={styles.toggleText}>lbs</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-
-            {/* Height (only for patients) */}
-            {userType === "patient" && (
-              <>
-                <Controller
-                  control={control}
-                  name="height.value"
-                  rules={{ required: "Height is required" }}
-                  render={({ field: { onChange, value } }) => (
-                    <LabeledInput
-                      label="Height"
-                      placeholder="Enter height"
-                      keyboardType="numeric"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                  )}
-                />
-                {errors.height && (
-                  <Text style={styles.errorText}>
-                    {errors.height.value?.message}
-                  </Text>
-                )}
-
-                <View style={styles.toggleContainer}>
-                  <TouchableOpacity
-                    style={[
-                      styles.toggleButton,
-                      heightUnit === "cm" && styles.activeButton,
-                    ]}
-                    onPress={() => setHeightUnit("cm")}
-                  >
-                    <Text style={styles.toggleText}>cm</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      styles.toggleButton,
-                      heightUnit === "ft" && styles.activeButton,
-                    ]}
-                    onPress={() => setHeightUnit("ft")}
-                  >
-                    <Text style={styles.toggleText}>ft</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-
-            {/* Submit Button */}
-            {loading ? (
-              <ActivityIndicator size="small" style={styles.loadingIndicator} />
-            ) : (
-              <TouchableOpacity
-                style={styles.signUpButton}
-                onPress={handleSubmit(handleSignUp)}
-              >
-                <Text style={styles.signUpText}>Sign Up</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.back()}
+        {/* Agree Button */}
+        <TouchableOpacity
+          disabled={submitting}
+          style={{
+            backgroundColor: "#000",
+            borderRadius: 8,
+            paddingVertical: 16,
+            alignItems: "center",
+          }}
+          onPress={handleSignUp}
+        >
+          <TextSemiBold
+            style={{
+              color: "#fff",
+              fontSize: 16,
+              textAlign: "center",
+            }}
           >
-            <Ionicons name="arrow-back" size={24} color="white" />
-            <Text style={styles.backButtonText}>Back</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </View>
+            {submitting ? "Signing up..." : "Agree and continue"}
+          </TextSemiBold>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    textTransform: "capitalize",
-    fontWeight: "500",
-  },
-  button: {
-    width: 128,
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-  },
-  innerContainer: {
-    alignItems: "flex-start",
-    marginHorizontal: 32,
-    marginTop: 16,
-    marginBottom: 64,
-  },
-  toggleContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 16,
-  },
-  toggleButton: {
-    padding: 10,
-    marginHorizontal: 5,
-    borderRadius: 8,
-    backgroundColor: "#ccc",
-  },
-  activeButton: {
-    backgroundColor: "#2C2C2C",
-  },
-  toggleText: {
-    color: "white",
-  },
-  keyboardView: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flex: 1,
-    gap: 8,
-  },
-  inputContainer: {
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 16,
-  },
-  subtitle: {
-    color: "#475569",
-    fontSize: 20,
-    fontWeight: "400",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-  },
-  loadingIndicator: {
-    margin: 28,
-  },
-  signUpButton: {
-    alignSelf: "stretch",
-    paddingVertical: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    backgroundColor: "#2C2C2C",
-  },
-  signUpText: {
-    color: "white",
-    textTransform: "uppercase",
-  },
-  alreadyAccountContainer: {
-    alignSelf: "stretch",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 16,
-  },
-  alreadyAccountText: {
-    color: "#475569",
-  },
-  languageContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  languageButton: {
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: "#ccc",
-  },
-  languageText: {
-    color: "white",
-  },
-  genderContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  genderButton: {
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: "#ccc",
-  },
-  genderText: {
-    color: "white",
-  },
-  blackText: {
-    color: "black",
-  },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#2C2C2C",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignSelf: "flex-start",
-  },
-  backButtonText: {
-    color: "white",
-    fontSize: 16,
-    marginLeft: 8,
-  },
-});
-
-export default Page;
+export default SignUp;

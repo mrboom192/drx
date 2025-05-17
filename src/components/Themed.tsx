@@ -10,7 +10,7 @@ import {
   TouchableOpacityProps as RNTouchableOpacityProps,
 } from "react-native";
 import Colors from "@/constants/Colors";
-import { useColorScheme } from "./useColorScheme";
+import { useColorScheme } from "react-native";
 
 import React, { forwardRef } from "react";
 

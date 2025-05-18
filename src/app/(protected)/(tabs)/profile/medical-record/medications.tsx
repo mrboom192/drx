@@ -81,10 +81,18 @@ const MedicationListItem = ({
   return (
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
-        <TextRegular style={itemStyles.name} numberOfLines={1}>
+        <TextSemiBold
+          style={itemStyles.name}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {name}
-        </TextRegular>
-        <TextRegular style={itemStyles.dosage} numberOfLines={1}>
+        </TextSemiBold>
+        <TextRegular
+          style={itemStyles.dosage}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {dosage}
         </TextRegular>
       </View>

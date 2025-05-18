@@ -76,7 +76,11 @@ const AllergyListItem = ({
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
         <TextSemiBold style={itemStyles.name}>{name}</TextSemiBold>
-        <TextRegular style={itemStyles.reaction} numberOfLines={1}>
+        <TextRegular
+          style={itemStyles.reaction}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {reaction}
         </TextRegular>
       </View>

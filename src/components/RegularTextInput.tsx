@@ -6,6 +6,7 @@ type RegularTextInputProps = {
   label: string;
   value: string;
   placeholder: string;
+  keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
   onChangeText: (text: string) => void;
 };
 
@@ -14,6 +15,7 @@ const RegularTextInput = ({
   value,
   placeholder,
   onChangeText,
+  keyboardType = "default",
 }: RegularTextInputProps) => {
   return (
     <View style={input.container}>
@@ -24,7 +26,7 @@ const RegularTextInput = ({
         placeholderTextColor={Colors.light.grey}
         value={value}
         onChangeText={onChangeText}
-        keyboardType="default"
+        keyboardType={keyboardType}
         autoCapitalize="none"
       />
     </View>

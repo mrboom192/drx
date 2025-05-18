@@ -1,5 +1,5 @@
 import { SignupUser, User } from "@/types/user";
-import { doc, serverTimestamp, setDoc } from "@firebase/firestore";
+import { arrayUnion, doc, serverTimestamp, setDoc, updateDoc } from "@firebase/firestore";
 import { db } from "../../firebaseConfig";
 
 export async function createMedicalRecord(
@@ -30,4 +30,15 @@ export async function createMedicalRecord(
   };
 
   await setDoc(doc(db, "records", user.uid), initialMedicalRecord);
+}
+
+export async function addMedication(
+  userId: string,
+  medication: { name: string; dosage: string; frequency: string }
+) {
+  const userRef = doc(db, "records", userId);
+  await updateDoc(userRef, {
+    medications: arrayUnion(medication),
+    updatedAt: serverTimestamp(),
+  });
 }

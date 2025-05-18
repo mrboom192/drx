@@ -1,7 +1,8 @@
 import PageScrollView from "@/components/PageScrollView";
 import RegularTextInput from "@/components/RegularTextInput";
-import { TextSemiBold } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useKeyboardHandler } from "react-native-keyboard-controller";
@@ -30,9 +31,18 @@ const useGradualAnimation = () => {
   return { height };
 };
 
+// Add takes in options to set up the form
+const AddOptions = {
+  title: "Add Medication",
+  description: "Add a new medication to your record.",
+};
+
 const Add = () => {
   const [medicationName, setMedicationName] = React.useState("");
   const [dosage, setDosage] = React.useState("");
+  const [frequency, setFrequency] = React.useState("");
+  const [unit, setUnit] = React.useState("day");
+
   const { height } = useGradualAnimation();
 
   const fakeView = useAnimatedStyle(() => {
@@ -56,6 +66,30 @@ const Add = () => {
           onChangeText={setDosage}
           placeholder="e.g. 10mg pill"
         />
+        <View style={styles.frequencyContainer}>
+          <View style={styles.frequencyRow}>
+            <RegularTextInput
+              value={frequency}
+              label="Frequency"
+              keyboardType="numeric"
+              onChangeText={setFrequency}
+              placeholder="2"
+            />
+            <TextRegular style={styles.timesPer}>times per</TextRegular>
+            <View style={styles.dropdownWrapper}>
+              <Picker
+                selectedValue={unit}
+                onValueChange={(itemValue) => setUnit(itemValue)}
+                style={styles.picker}
+                mode="dropdown"
+              >
+                <Picker.Item label="Day" value="day" />
+                <Picker.Item label="Week" value="week" />
+                <Picker.Item label="Year" value="year" />
+              </Picker>
+            </View>
+          </View>
+        </View>
       </PageScrollView>
 
       <Footer keyboardHeightShared={height} />
@@ -71,6 +105,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  frequencyContainer: {},
+  label: {
+    marginBottom: 8,
+    fontSize: 16,
+  },
+  frequencyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  frequencyInput: {
+    flex: 1,
+    marginRight: 8,
+  },
+  timesPer: {
+    marginHorizontal: 8,
+    fontSize: 16,
+  },
+  dropdownWrapper: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Colors.faintGrey,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  picker: {
+    width: "100%",
   },
 });
 

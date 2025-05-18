@@ -5,7 +5,6 @@ import {
 import Footer from "@/components/AddFooter";
 import PageScrollView from "@/components/PageScrollView";
 import RegularTextInput from "@/components/RegularTextInput";
-import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
 import {
   useMedicalRecord,
@@ -90,7 +89,7 @@ const UpdateAllergy = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: isEditMode ? "Edit Medication" : "Add Medication" }}
+        options={{ title: isEditMode ? "Edit Allergy" : "Add Allergy" }}
       />
       <PageScrollView>
         <RegularTextInput
@@ -126,32 +125,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  frequencyContainer: {},
-  label: {
-    marginBottom: 8,
-    fontSize: 16,
-  },
-  frequencyRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  frequencyInput: {
-    flex: 1,
-    marginRight: 8,
-  },
-  timesPer: {
-    marginHorizontal: 8,
-    fontSize: 16,
-  },
-  dropdownWrapper: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.faintGrey,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  picker: {
-    width: "100%",
   },
 });

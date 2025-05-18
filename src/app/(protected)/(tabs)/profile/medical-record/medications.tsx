@@ -68,6 +68,8 @@ const Medications = () => {
 
 export default Medications;
 
+const TRUNCATE_LENGTH = 15;
+
 const MedicationListItem = ({
   id,
   medicalRecord,
@@ -79,8 +81,12 @@ const MedicationListItem = ({
   return (
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
-        <TextSemiBold style={itemStyles.name}>{name}</TextSemiBold>
-        <TextRegular style={itemStyles.dosage}>{dosage}</TextRegular>
+        <TextRegular style={itemStyles.name} numberOfLines={1}>
+          {name}
+        </TextRegular>
+        <TextRegular style={itemStyles.dosage} numberOfLines={1}>
+          {dosage}
+        </TextRegular>
       </View>
       <TextSemiBold style={itemStyles.frequency}>
         {frequency}/{interval}
@@ -119,10 +125,10 @@ const itemStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    position: "relative",
   },
   nameContainer: {
     flexDirection: "column",
+    flex: 1,
   },
   name: {
     fontSize: 16,
@@ -133,12 +139,14 @@ const itemStyles = StyleSheet.create({
   },
   frequency: {
     fontSize: 16,
-    position: "absolute",
-    left: "50%",
-    transform: [{ translateX: "-50%" }],
+    flex: 1,
+    textAlign: "center",
   },
   buttons: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
     gap: 8,
+    flex: 1,
   },
 });

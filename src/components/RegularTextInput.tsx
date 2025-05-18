@@ -23,7 +23,7 @@ const RegularTextInput = ({
       <TextInput
         style={input.textInput}
         placeholder={placeholder}
-        placeholderTextColor={Colors.light.grey}
+        placeholderTextColor={Colors.lightText}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}

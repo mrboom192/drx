@@ -11,6 +11,7 @@ export default {
   lightGrey: "#F8F8F8", // light grey
   lightGrey2: "#DDDDDD", // light grey
   faintGrey: "#DDDDDD",
+  lightText: "#9C9C9C",
 
   onlineConsultation: "#FF8E43", // orange
   peach: "#FFECD9", // peach

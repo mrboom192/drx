@@ -1,14 +1,31 @@
+import { deleteMedication } from "@/api/medicalRecords";
 import IconButton from "@/components/IconButton";
 import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { useRecordStoreMedications } from "@/stores/useRecordStore";
+import {
+  useMedicalRecord,
+  useRecordStoreMedications,
+} from "@/stores/useRecordStore";
+import { MedicalRecord, Medication } from "@/types/medicalRecord";
 import { router, Stack } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { auth } from "../../../../../../firebaseConfig";
 
 const Medications = () => {
   const medications = useRecordStoreMedications();
+  const medicalRecord = useMedicalRecord();
+
+  if (!medicalRecord) {
+    return (
+      <TextSemiBold
+        style={{ textAlign: "center", marginTop: 16, color: Colors.grey }}
+      >
+        Error: No medical record found.
+      </TextSemiBold>
+    );
+  }
 
   return (
     <PageScrollView>
@@ -19,8 +36,8 @@ const Medications = () => {
               name="add"
               onPress={() =>
                 router.push({
-                  pathname: "/(protected)/(modals)/add",
-                  params: {},
+                  pathname: "/(protected)/(modals)/edit-medication",
+                  params: { mode: "add", medicationId: "" },
                 })
               }
             />
@@ -38,6 +55,7 @@ const Medications = () => {
         <MedicationListItem
           key={medication.id}
           id={medication.id}
+          medicalRecord={medicalRecord}
           name={medication.name}
           dosage={medication.dosage}
           interval={medication.interval}
@@ -50,20 +68,14 @@ const Medications = () => {
 
 export default Medications;
 
-type MedicationListItemProps = {
-  id: string | number;
-  name: string;
-  dosage: string;
-  interval: string;
-  frequency: number;
-};
-
 const MedicationListItem = ({
+  id,
+  medicalRecord,
   name,
   dosage,
   interval,
   frequency,
-}: MedicationListItemProps) => {
+}: Medication & { medicalRecord: MedicalRecord }) => {
   return (
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
@@ -78,12 +90,17 @@ const MedicationListItem = ({
           name="stylus"
           onPress={() =>
             router.push({
-              pathname: "/(protected)/(modals)/edit",
-              params: {},
+              pathname: "/(protected)/(modals)/edit-medication",
+              params: { mode: "edit", medicationId: id },
             })
           }
         />
-        <IconButton name="close" />
+        <IconButton
+          name="close"
+          onPress={() => {
+            deleteMedication(auth.currentUser!.uid, medicalRecord, id);
+          }}
+        />
       </View>
     </View>
   );

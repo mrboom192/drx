@@ -31,7 +31,7 @@ export type Medication = {
   name: string;
   dosage: string;
   interval: string;
-  frequency: number;
+  frequency: string;
 };
 
 type Allergy = {

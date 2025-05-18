@@ -81,3 +81,9 @@ export const useStopRecordsListener = () =>
 
 export const useRecordStoreMedications = () =>
   useRecordStore((state) => state.medicalRecord?.medications);
+
+// Returns medication given an id
+export const useRecordStoreMedicationById = (id: string) =>
+  useRecordStore((state) =>
+    state.medicalRecord?.medications.find((medication) => medication.id === id)
+  );

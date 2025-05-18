@@ -5,17 +5,8 @@ export default function ModalsLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name="add"
+        name="edit-medication"
         options={{
-          title: "Add",
-          presentation: "modal",
-          header: (props) => <PageHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name="edit"
-        options={{
-          title: "Edit",
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}

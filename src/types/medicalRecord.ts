@@ -34,7 +34,7 @@ export type Medication = {
   frequency: string;
 };
 
-type Allergy = {
+export type Allergy = {
   id: string;
   name: string;
   reaction: string;

@@ -79,6 +79,17 @@ export const useStartRecordsListener = () =>
 export const useStopRecordsListener = () =>
   useRecordStore((state) => state.stopRecordsListener);
 
+// Returns allergies
+export const useRecordStoreAllergies = () =>
+  useRecordStore((state) => state.medicalRecord?.allergies);
+
+// Returns allergy given an id
+export const useRecordStoreAllergyById = (id: string) =>
+  useRecordStore((state) =>
+    state.medicalRecord?.allergies.find((allergy) => allergy.id === id)
+  );
+
+// Returns medications
 export const useRecordStoreMedications = () =>
   useRecordStore((state) => state.medicalRecord?.medications);
 

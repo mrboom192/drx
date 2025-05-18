@@ -8,6 +8,7 @@ type RegularTextInputProps = {
   placeholder: string;
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
   onChangeText: (text: string) => void;
+  multiline?: boolean;
 };
 
 const RegularTextInput = ({
@@ -16,18 +17,20 @@ const RegularTextInput = ({
   placeholder,
   onChangeText,
   keyboardType = "default",
+  multiline = false,
 }: RegularTextInputProps) => {
   return (
     <View style={input.container}>
       <TextRegular style={input.title}>{label}</TextRegular>
       <TextInput
-        style={input.textInput}
+        style={[input.textInput, multiline && input.multilineInput]}
         placeholder={placeholder}
         placeholderTextColor={Colors.lightText}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
         autoCapitalize="none"
+        multiline={multiline}
       />
     </View>
   );
@@ -52,5 +55,9 @@ const input = StyleSheet.create({
     paddingVertical: 14,
     fontSize: 16,
     fontFamily: "DMSans_400Regular",
+  },
+  multilineInput: {
+    minHeight: 100,
+    textAlignVertical: "top",
   },
 });

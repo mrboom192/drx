@@ -1,11 +1,17 @@
-import { addMedication } from "@/api/medicalRecords";
+import {
+  addItemToMedicalRecord,
+  updateItemInMedicalRecord,
+} from "@/api/medicalRecords";
 import Footer from "@/components/AddFooter";
 import PageScrollView from "@/components/PageScrollView";
 import RegularTextInput from "@/components/RegularTextInput";
 import { TextRegular } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
-import { useRecordStoreMedicationById } from "@/stores/useRecordStore";
+import {
+  useMedicalRecord,
+  useRecordStoreMedicationById,
+} from "@/stores/useRecordStore";
 import { Picker } from "@react-native-picker/picker";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { nanoid } from "nanoid";
@@ -14,11 +20,12 @@ import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { auth } from "../../../../firebaseConfig";
 
-const AddMedication = () => {
+const UpdateMedication = () => {
   const { mode, medicationId } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
   const medication = useRecordStoreMedicationById(medicationId as string);
+  const medicalRecord = useMedicalRecord();
   const [submitting, setSubmitting] = useState(false);
 
   const fakeView = useAnimatedStyle(() => {
@@ -41,7 +48,7 @@ const AddMedication = () => {
   const [formData, setFormData] = useState(initialState);
 
   const hasChange = useMemo(() => {
-    if (!isEditMode || !medication) return false;
+    if (!isEditMode || !medication) return true;
     return (
       medication.name !== formData.name ||
       medication.dosage !== formData.dosage ||
@@ -67,7 +74,22 @@ const AddMedication = () => {
 
     try {
       setSubmitting(true);
-      await addMedication(auth.currentUser!.uid, formData);
+
+      if (isEditMode) {
+        await updateItemInMedicalRecord(
+          auth.currentUser!.uid,
+          medicalRecord!,
+          formData,
+          "medications"
+        );
+      } else {
+        await addItemToMedicalRecord(
+          auth.currentUser!.uid,
+          "medications",
+          formData
+        );
+      }
+
       // Handle successful submission
     } catch (error) {
       // Handle error
@@ -136,7 +158,7 @@ const AddMedication = () => {
   );
 };
 
-export default AddMedication;
+export default UpdateMedication;
 
 const styles = StyleSheet.create({
   container: {

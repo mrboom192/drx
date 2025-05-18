@@ -22,6 +22,12 @@ const MedicalInformationLayout = () => {
         }}
       />
       <Stack.Screen
+        name="allergies"
+        options={{
+          title: "Allergies",
+        }}
+      />
+      <Stack.Screen
         name="medications"
         options={{
           title: "Medications",

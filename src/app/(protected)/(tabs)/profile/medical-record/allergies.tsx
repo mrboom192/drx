@@ -5,16 +5,16 @@ import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import {
   useMedicalRecord,
-  useRecordStoreMedications,
+  useRecordStoreAllergies,
 } from "@/stores/useRecordStore";
-import { MedicalRecord, Medication } from "@/types/medicalRecord";
+import { Allergy, MedicalRecord } from "@/types/medicalRecord";
 import { router, Stack } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { auth } from "../../../../../../firebaseConfig";
 
-const Medications = () => {
-  const medications = useRecordStoreMedications();
+const Allergies = () => {
+  const allergies = useRecordStoreAllergies();
   const medicalRecord = useMedicalRecord();
 
   if (!medicalRecord) {
@@ -36,62 +36,61 @@ const Medications = () => {
               name="add"
               onPress={() =>
                 router.push({
-                  pathname: "/(protected)/(modals)/update-medication",
-                  params: { mode: "add", medicationId: "" },
+                  pathname: "/(protected)/(modals)/update-allergy",
+                  params: { mode: "add", allergyId: "" },
                 })
               }
             />
           ),
         }}
       />
-      {medications?.length === 0 && (
+      {allergies?.length === 0 && (
         <TextSemiBold
           style={{ textAlign: "center", marginTop: 16, color: Colors.grey }}
         >
-          No medications found.
+          No allergies found.
         </TextSemiBold>
       )}
-      {medications?.map((medication) => (
-        <MedicationListItem
-          key={medication.id}
-          id={medication.id}
+      {allergies?.map((allergy) => (
+        <AllergyListItem
+          key={allergy.id}
+          id={allergy.id}
           medicalRecord={medicalRecord}
-          name={medication.name}
-          dosage={medication.dosage}
-          interval={medication.interval}
-          frequency={medication.frequency}
+          name={allergy.name}
+          reaction={allergy.reaction}
         />
       ))}
     </PageScrollView>
   );
 };
 
-export default Medications;
+export default Allergies;
 
-const MedicationListItem = ({
+const TRUNCATE_LENGTH = 40;
+
+const AllergyListItem = ({
   id,
   medicalRecord,
   name,
-  dosage,
-  interval,
-  frequency,
-}: Medication & { medicalRecord: MedicalRecord }) => {
+  reaction,
+}: Allergy & { medicalRecord: MedicalRecord }) => {
   return (
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
         <TextSemiBold style={itemStyles.name}>{name}</TextSemiBold>
-        <TextRegular style={itemStyles.dosage}>{dosage}</TextRegular>
+        <TextRegular style={itemStyles.reaction}>
+          {reaction.length > TRUNCATE_LENGTH
+            ? reaction.slice(0, TRUNCATE_LENGTH) + "…"
+            : reaction}
+        </TextRegular>
       </View>
-      <TextSemiBold style={itemStyles.frequency}>
-        {frequency}/{interval}
-      </TextSemiBold>
       <View style={itemStyles.buttons}>
         <IconButton
           name="stylus"
           onPress={() =>
             router.push({
-              pathname: "/(protected)/(modals)/update-medication",
-              params: { mode: "edit", medicationId: id },
+              pathname: "/(protected)/(modals)/update-allergy",
+              params: { mode: "edit", allergyId: id },
             })
           }
         />
@@ -102,7 +101,7 @@ const MedicationListItem = ({
               auth.currentUser!.uid,
               medicalRecord,
               id,
-              "medications"
+              "allergies"
             );
           }}
         />
@@ -127,15 +126,9 @@ const itemStyles = StyleSheet.create({
   name: {
     fontSize: 16,
   },
-  dosage: {
+  reaction: {
     fontSize: 16,
     color: Colors.grey,
-  },
-  frequency: {
-    fontSize: 16,
-    position: "absolute",
-    left: "50%",
-    transform: [{ translateX: "-50%" }],
   },
   buttons: {
     flexDirection: "row",

@@ -1,4 +1,4 @@
-import { MedicalRecord, Medication } from "@/types/medicalRecord";
+import { MedicalRecord } from "@/types/medicalRecord";
 import { SignupUser, User } from "@/types/user";
 import {
   arrayUnion,
@@ -38,27 +38,53 @@ export async function createMedicalRecord(
 
   await setDoc(doc(db, "records", user.uid), initialMedicalRecord);
 }
-export async function addMedication(userId: string, medication: Medication) {
+
+export async function addItemToMedicalRecord<T extends Record<string, any>>(
+  userId: string,
+  field: "medications" | "allergies",
+  item: T
+) {
   const userRef = doc(db, "records", userId);
   await updateDoc(userRef, {
-    medications: arrayUnion(medication),
+    [field]: arrayUnion(item),
     updatedAt: serverTimestamp(),
   });
 }
 
-export async function deleteMedication(
+export async function deleteItemFromMedicalRecord(
   userId: string,
   medicalRecord: MedicalRecord,
-  medicationId: string
+  itemId: string,
+  field: "medications" | "allergies"
 ) {
   const userRef = doc(db, "records", userId);
 
-  const updatedMeds = (medicalRecord?.medications || []).filter(
-    (med: any) => med.id !== medicationId
+  const updatedItems = (medicalRecord?.[field] || []).filter(
+    (item: any) => item.id !== itemId
   );
 
   await updateDoc(userRef, {
-    medications: updatedMeds,
+    [field]: updatedItems,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function updateItemInMedicalRecord<T extends { id: string }>(
+  userId: string,
+  medicalRecord: MedicalRecord,
+  updatedItem: T,
+  field: "medications" | "allergies"
+) {
+  const userRef = doc(db, "records", userId);
+
+  const existingItems = medicalRecord?.[field] as unknown as T[];
+
+  const updatedItems = existingItems.map((item) =>
+    item.id === updatedItem.id ? updatedItem : item
+  );
+
+  await updateDoc(userRef, {
+    [field]: updatedItems,
     updatedAt: serverTimestamp(),
   });
 }

@@ -66,8 +66,6 @@ const Allergies = () => {
 
 export default Allergies;
 
-const TRUNCATE_LENGTH = 40;
-
 const AllergyListItem = ({
   id,
   medicalRecord,
@@ -78,10 +76,8 @@ const AllergyListItem = ({
     <View style={itemStyles.container}>
       <View style={itemStyles.nameContainer}>
         <TextSemiBold style={itemStyles.name}>{name}</TextSemiBold>
-        <TextRegular style={itemStyles.reaction}>
-          {reaction.length > TRUNCATE_LENGTH
-            ? reaction.slice(0, TRUNCATE_LENGTH) + "…"
-            : reaction}
+        <TextRegular style={itemStyles.reaction} numberOfLines={1}>
+          {reaction}
         </TextRegular>
       </View>
       <View style={itemStyles.buttons}>
@@ -122,6 +118,7 @@ const itemStyles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: "column",
+    flex: 1,
   },
   name: {
     fontSize: 16,

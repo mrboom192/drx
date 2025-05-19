@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -68,7 +69,12 @@ const MessagesHeader = ({}: Props) => {
           <TextSemiBold style={[themeTextStylePrimary, { fontSize: 32 }]}>
             Consultations
           </TextSemiBold>
-          <IconButton name="search" />
+          <IconButton
+            name="search"
+            onPress={() =>
+              router.push({ pathname: "/(protected)/(tabs)/messages/search" })
+            }
+          />
         </View>
 
         <ScrollView

@@ -1,5 +1,6 @@
+import IconButton from "@/components/IconButton";
 import PageHeader from "@/components/PageHeader";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 
 export default function ModalsLayout() {
   return (

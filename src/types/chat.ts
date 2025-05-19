@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { User } from "./user";
 
 export interface Chat {
@@ -17,8 +18,8 @@ export interface Chat {
 
   hasActiveCall: boolean;
   status: "ongoing" | "finished" | "pending";
-  createdAt: number; // Use camelCase for consistency
-  updatedAt: number;
+  createdAt: Timestamp; // Use camelCase for consistency
+  updatedAt: Timestamp;
 
   patient_is_online?: boolean;
   doctor_is_online?: boolean;

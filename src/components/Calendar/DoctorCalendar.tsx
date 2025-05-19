@@ -5,7 +5,7 @@ import { useAppointments } from "@/stores/useAppointmentStore";
 import { getDayHeight, getDayWidth } from "@/utils/calendarUtils";
 import { format } from "date-fns";
 import { router } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
@@ -17,18 +17,11 @@ import CustomIcon from "../icons/CustomIcon";
 
 const DoctorCalendar = () => {
   const appointments = useAppointments();
+  const [calendarHeight, setCalendarHeight] = useState(0);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd") // Default to today's date
   );
-  const [calendarHeight, setCalendarHeight] = useState(0);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const onDateChange = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (selectedDate) {
-      setSelectedDate(format(selectedDate, "yyyy-MM-dd"));
-    }
-  };
 
   const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
     const { height } = event.nativeEvent.layout;
@@ -61,17 +54,7 @@ const DoctorCalendar = () => {
     return (
       <TouchableOpacity
         onPress={() => setShowDatePicker(true)}
-        style={{
-          paddingHorizontal: 24,
-          height: 40,
-          borderRadius: 9999,
-          borderWidth: 1,
-          borderColor: Colors.lightGrey2,
-          flexDirection: "row",
-          gap: 8,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        style={styles.calendarHeader}
       >
         <CustomIcon name="calendar" size={24} color="#000" />
         <TextSemiBold
@@ -103,43 +86,36 @@ const DoctorCalendar = () => {
 
       return (
         <TouchableOpacity
-          style={{
-            width: getDayWidth(),
-            height: getDayHeight(calendarHeight),
-            alignItems: "center",
-            justifyContent: "flex-end",
-            flexDirection: "column",
-            gap: 8,
-            paddingVertical: 8,
-            paddingHorizontal: 16,
-            backgroundColor: isToday ? "black" : Colors.lightGrey,
-            borderRadius: 8,
-            overflow: "hidden",
-          }}
+          style={[
+            styles.calendarDay,
+            {
+              width: getDayWidth(),
+              height: getDayHeight(calendarHeight),
+              backgroundColor: isToday ? "black" : Colors.lightGrey,
+            },
+          ]}
           onPress={() => onDayPress(date)}
         >
-          <View style={{ flexDirection: "column", gap: 2 }}>
-            {todaysAppointments.map((appointment) => (
-              <Avatar
-                key={appointment.id}
-                size={24}
-                uri={appointment.patient.image}
-                pointerEvents="none"
-              />
-            ))}
-          </View>
+          {todaysAppointments.map((appointment) => (
+            <Avatar
+              key={appointment.id}
+              size={24}
+              uri={appointment.patient.image}
+              pointerEvents="none"
+            />
+          ))}
           <TextSemiBold
-            style={{
-              textAlign: "center",
-              color: isToday ? "#FFF" : Colors.grey,
-            }}
+            style={[
+              styles.calendarDayText,
+              { color: isToday ? "#FFF" : Colors.grey },
+            ]}
           >
             {date?.day}
           </TextSemiBold>
         </TouchableOpacity>
       );
     },
-    [selectedDate]
+    [selectedDate, calendarHeight]
   );
 
   return (
@@ -155,11 +131,9 @@ const DoctorCalendar = () => {
           backgroundColor: "transparent",
           textDayHeaderFontFamily: "DMSans_600SemiBold",
         }}
-        style={{
-          height: "100%",
-          backgroundColor: "transparent",
-        }}
+        style={styles.calendar}
       />
+
       <DatePicker
         modal
         mode="date"
@@ -178,3 +152,33 @@ const DoctorCalendar = () => {
 };
 
 export default DoctorCalendar;
+
+const styles = StyleSheet.create({
+  calendarHeader: {
+    paddingHorizontal: 24,
+    height: 40,
+    borderRadius: 9999,
+    borderWidth: 1,
+    borderColor: Colors.lightGrey2,
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  calendarDay: {
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flexDirection: "column",
+    gap: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  calendarDayText: {
+    textAlign: "center",
+  },
+  calendar: {
+    backgroundColor: "transparent",
+  },
+});

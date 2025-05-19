@@ -3,13 +3,13 @@ import React, { useCallback, useState } from "react";
 import Colors from "@/constants/Colors";
 import { useAppointments } from "@/stores/useAppointmentStore";
 import { Appointment } from "@/types/appointment";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { router } from "expo-router";
-import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
+import DatePicker from "react-native-date-picker";
 import Avatar from "../Avatar";
 import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
@@ -18,9 +18,17 @@ import CustomIcon from "../icons/CustomIcon";
 const DoctorCalendar = () => {
   const appointments = useAppointments();
   const [selectedDate, setSelectedDate] = useState(
-    format(new Date(), "yyyy-MM-dd")
+    format(new Date(), "yyyy-MM-dd") // Default to today's date
   );
   const [calendarHeight, setCalendarHeight] = useState(0);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setSelectedDate(format(selectedDate, "yyyy-MM-dd"));
+    }
+  };
 
   const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
     const { height } = event.nativeEvent.layout;
@@ -39,35 +47,14 @@ const DoctorCalendar = () => {
 
   const renderArrow = (direction: Direction) => {
     return (
-      <View
-        pointerEvents="none" // Prevents touch events on the arrow, allowing calendar to work
-        style={{
-          width: 40,
-          height: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 9999,
-          borderWidth: 1,
-          borderColor: Colors.lightGrey2,
-        }}
-      >
-        <IconButton
-          name={direction === "right" ? "chevron-right" : "chevron-left"}
-        />
-      </View>
+      <IconButton
+        name={direction === "right" ? "chevron-right" : "chevron-left"}
+        pointerEvents="none"
+      />
     );
   };
 
   const renderHeader = (date: string) => {
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
-    const onDateChange = (event: any, selectedDate?: Date) => {
-      setShowDatePicker(false);
-      if (selectedDate) {
-        setSelectedDate(format(selectedDate, "yyyy-MM-dd"));
-      }
-    };
-
     return (
       <>
         <TouchableOpacity
@@ -95,14 +82,6 @@ const DoctorCalendar = () => {
             {format(date, "LLLL, yyyy")}
           </TextSemiBold>
         </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={new Date(date)}
-            mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
-            onChange={onDateChange}
-          />
-        )}
       </>
     );
   };
@@ -166,6 +145,7 @@ const DoctorCalendar = () => {
   return (
     <View onLayout={onLayout} style={{ flex: 1 }}>
       <Calendar
+        key={selectedDate}
         disableAllTouchEventsForDisabledDays
         renderArrow={renderArrow}
         renderHeader={renderHeader}
@@ -178,6 +158,19 @@ const DoctorCalendar = () => {
         style={{
           height: "100%",
           backgroundColor: "transparent",
+        }}
+      />
+      <DatePicker
+        modal
+        mode="date"
+        open={showDatePicker}
+        date={new Date(selectedDate)}
+        onConfirm={(date) => {
+          setShowDatePicker(false);
+          setSelectedDate(format(date, "yyyy-MM-dd"));
+        }}
+        onCancel={() => {
+          setShowDatePicker(false);
         }}
       />
     </View>

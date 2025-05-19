@@ -10,9 +10,12 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mrboom192.drx",
+      "bundleIdentifier": "com.doctorx.drx",
       "bitcode": false,
-      "appleTeamId": "46LZA2WXBP"
+      "appleTeamId": "46LZA2WXBP",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +24,7 @@
       },
       "edgeToEdgeEnabled": true,
       "googleServicesFile": "./google-services.json",
-      "package": "com.mrboom192.drx",
+      "package": "com.doctorx.drx",
       "permissions": [
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.CAMERA",
@@ -55,7 +58,8 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": "",
+          "merchantIdentifier": "merchant.com.doctorx.drx",
+          "publishableKey": "pk_test_51N1v2aKx4r7X0q3j5gk6m8Z9epk_live_51Q6gpGJIvTh9EQNO1CZxko18GxTEMe5FrMqyFBAxN5E3DnruXRBMMBv3vJaJIXxgn7BxkOm79h7aKHZbwtlQafQW00xIvxrDKP",
           "enableGooglePay": true
         }
       ]
@@ -66,7 +70,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "1d86eaac-3899-4829-befa-50a1a6681717"
+        "projectId": "81b03d8c-3eed-4659-a28f-7ebbf6d4d6d5"
       }
     },
     "owner": "mrboom192"

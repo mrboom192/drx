@@ -2,8 +2,13 @@ import PageHeader from "@/components/PageHeader";
 import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
 import { useIsAuthReady } from "@/stores/useAuthInitStore";
+import {
+  useStartChatsListener,
+  useStopChatsListener,
+} from "@/stores/useChatStore";
 import { useIsFetchingUser, useIsUserLoggedIn } from "@/stores/useUserStore";
 import { Redirect, Stack } from "expo-router";
+import { useEffect } from "react";
 import { View } from "react-native";
 import { auth } from "../../../firebaseConfig";
 
@@ -11,9 +16,19 @@ export default function ProtectedLayout() {
   const { session, isLoading } = useSession();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
+  const startChatsListener = useStartChatsListener();
+  const stopChatsListener = useStopChatsListener();
   const isAuthReady = useIsAuthReady();
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
+
+  // Fetch chats from Firebase immediately
+  useEffect(() => {
+    if (!session || !isAuthReady) return;
+    startChatsListener();
+
+    return () => stopChatsListener(); // Clean up on unmount
+  }, [isAuthReady, session]);
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading || isFetchingUser || !isAuthReady)

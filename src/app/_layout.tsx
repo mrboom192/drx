@@ -1,3 +1,4 @@
+import PageHeader from "@/components/PageHeader";
 import { SignUpProvider } from "@/contexts/SignupContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useIsAuthReady, useSetIsAuthReady } from "@/stores/useAuthInitStore";
@@ -140,6 +141,13 @@ function RootLayoutNav() {
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen name="login" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="privacy-policy"
+                    options={{
+                      title: "Privacy Policy",
+                      header: (props) => <PageHeader {...props} />,
+                    }}
+                  />
                   <Stack.Screen
                     name="signup"
                     options={{ headerShown: false }}

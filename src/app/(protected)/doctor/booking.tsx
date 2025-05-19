@@ -144,7 +144,7 @@ const BookingPage = () => {
       batch.set(appointmentRef, appointmentData);
 
       // Create a chat document only if it doesn't already exist
-      const chatId = [userData.uid, doctor.uid].sort().join("_");
+      const chatId = [doctor.uid, userData.uid].sort().join("_");
       const chatRef = doc(db, "chats", chatId);
       const chatSnap = await getDoc(chatRef);
 
@@ -200,7 +200,12 @@ const BookingPage = () => {
 
       // Commit batch then navigate to the chat screen
       await batch.commit();
-      router.replace(`/protected/${chatId}`);
+      router.replace({
+        pathname: `/(protected)/(chat)/[chatId]`,
+        params: {
+          chatId: chatId,
+        },
+      });
     } catch (error) {
       console.error("Error booking consultation:", error);
     } finally {

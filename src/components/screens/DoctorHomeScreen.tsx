@@ -79,11 +79,12 @@ const DoctorHomeScreen = () => {
         <PendingAlert />
       )}
       {!userData?.hasPublicProfile && <MissingPublicProfileAlert />}
+      {/* <TextRegular>Error: {notificationError?.message}</TextRegular>
       <TextSemiBold>Your push token: {expoPushToken}</TextSemiBold>
       <TextSemiBold>
         Latest Notification: {notification?.request.content.title} -{" "}
         {notification?.request.content.body}
-      </TextSemiBold>
+      </TextSemiBold> */}
       <Notifications />
       <View
         style={{

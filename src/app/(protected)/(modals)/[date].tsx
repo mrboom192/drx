@@ -68,9 +68,12 @@ const DayInfo = () => {
               paddingVertical: 16,
             }}
             onPress={() =>
-              router.replace(
-                `/(protected)/(chat)/${appointment.patientId}_${appointment.doctorId}`
-              )
+              router.replace({
+                pathname: `/(protected)/(chat)/[chatId]`,
+                params: {
+                  chatId: `${appointment.doctorId}_${appointment.patientId}`,
+                },
+              })
             }
           >
             <View style={{ flexDirection: "column", gap: 8 }}>

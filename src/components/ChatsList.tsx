@@ -1,18 +1,13 @@
 import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
 import { useUserPresence } from "@/hooks/useUserPresence";
-import {
-  useChats,
-  useIsFetchingChats,
-  useStartChatsListener,
-  useStopChatsListener,
-} from "@/stores/useChatStore";
+import { useChats, useIsFetchingChats } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
 import { format } from "date-fns";
 import { Link } from "expo-router";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -28,16 +23,7 @@ const ChatsList = () => {
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
   const chats = useChats();
-  const startChatsListener = useStartChatsListener();
-  const stopChatsListener = useStopChatsListener();
   const isFetchingChats = useIsFetchingChats();
-
-  // Fetch chats from Firebase
-  useEffect(() => {
-    startChatsListener();
-
-    return () => stopChatsListener(); // Clean up on unmount
-  }, []);
 
   if (chats === null) {
     return (

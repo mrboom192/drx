@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import {
   useAppointmentError,
   useIsFetchingAppointments,
@@ -12,6 +13,7 @@ import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
 import DoctorHomeHeader from "../DoctorHomeHeader";
+import Notifications from "../Notifications/Notifications";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const DoctorHomeScreen = () => {
@@ -68,7 +70,15 @@ const DoctorHomeScreen = () => {
         <PendingAlert />
       )}
       {!userData?.hasPublicProfile && <MissingPublicProfileAlert />}
-
+      <Notifications />
+      <View
+        style={{
+          marginTop: 16,
+          marginHorizontal: 16,
+          borderBottomWidth: 1,
+          borderBottomColor: Colors.faintGrey,
+        }}
+      />
       <DoctorCalendar />
     </View>
   );

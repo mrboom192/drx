@@ -1,0 +1,52 @@
+import Colors from "@/constants/Colors";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import CustomIcon from "../icons/CustomIcon";
+import { TextRegular, TextSemiBold } from "../StyledText";
+
+const NotificationCard = ({
+  title,
+  message,
+}: {
+  title: string;
+  message: string;
+}) => {
+  return (
+    <TouchableOpacity style={styles.container}>
+      <View style={styles.titleRow}>
+        <CustomIcon name="circle" size={8} color={Colors.green} />
+        <TextSemiBold style={styles.title}>{title}</TextSemiBold>
+      </View>
+      <TextRegular style={styles.message}>{message}</TextRegular>
+    </TouchableOpacity>
+  );
+};
+
+export default NotificationCard;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    width: 180, // Arbitrary width
+    borderColor: Colors.faintGrey,
+    borderWidth: 1,
+    borderRadius: 8,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+  titleRow: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  title: {
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  message: {
+    fontSize: 12,
+    color: Colors.grey,
+  },
+});

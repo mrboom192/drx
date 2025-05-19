@@ -125,6 +125,7 @@ const DayInfo = () => {
 export default DayInfo;
 
 const DayInfoHeader = ({ date }: { date: string }) => {
+  const appointmentsByDate = useAppointmentsByDate(date as string);
   const insets = useSafeAreaInsets();
 
   return (
@@ -141,11 +142,16 @@ const DayInfoHeader = ({ date }: { date: string }) => {
       <View style={header.infoRow}>
         <View style={header.info}>
           <CustomIcon size={24} name="event-chair" />
-          <TextSemiBold style={header.infoText}>3 Appointments</TextSemiBold>
+          <TextSemiBold style={header.infoText}>
+            {appointmentsByDate.length} Appointment
+            {appointmentsByDate.length !== 1 ? "s" : ""}
+          </TextSemiBold>
         </View>
         <View style={header.info}>
           <CustomIcon size={24} name="schedule" />
-          <TextSemiBold style={header.infoText}>30 mins total</TextSemiBold>
+          <TextSemiBold style={header.infoText}>
+            About {appointmentsByDate.length * 15} mins total
+          </TextSemiBold>
         </View>
       </View>
     </View>

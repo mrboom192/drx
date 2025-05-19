@@ -2,10 +2,10 @@ import React, { useCallback, useState } from "react";
 
 import Colors from "@/constants/Colors";
 import { useAppointments } from "@/stores/useAppointmentStore";
-import { Appointment } from "@/types/appointment";
+import { getDayHeight, getDayWidth } from "@/utils/calendarUtils";
 import { format } from "date-fns";
 import { router } from "expo-router";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
@@ -35,6 +35,7 @@ const DoctorCalendar = () => {
     setCalendarHeight(height);
   };
 
+  // Handle day press
   const onDayPress = useCallback((date?: DateData | undefined) => {
     if (!date) return;
 
@@ -45,6 +46,7 @@ const DoctorCalendar = () => {
     });
   }, []);
 
+  // Custom arrow for the calendar
   const renderArrow = (direction: Direction) => {
     return (
       <IconButton
@@ -54,93 +56,91 @@ const DoctorCalendar = () => {
     );
   };
 
+  // Custom header for the calendar
   const renderHeader = (date: string) => {
     return (
-      <>
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          style={{
-            paddingHorizontal: 24,
-            height: 40,
-            borderRadius: 9999,
-            borderWidth: 1,
-            borderColor: Colors.lightGrey2,
-            flexDirection: "row",
-            gap: 8,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CustomIcon name="calendar" size={24} color="#000" />
-          <TextSemiBold
-            style={{
-              fontSize: 16,
-              color: "#000",
-              textAlign: "center",
-            }}
-          >
-            {format(date, "LLLL, yyyy")}
-          </TextSemiBold>
-        </TouchableOpacity>
-      </>
-    );
-  };
-
-  const renderDay = ({
-    date,
-    state,
-  }: DayProps & { date?: DateData | undefined }) => {
-    if (state === "disabled") return null;
-
-    const isToday = state === "today";
-    let todaysAppointments: Appointment[] = [];
-
-    appointments.forEach((appointment: any) => {
-      // Normalize the date to YYYY-MM-DD format and then compare
-      const appointmentDate = format(appointment.date.toDate(), "yyyy-MM-dd");
-      const calendarDate = date?.dateString;
-
-      if (appointmentDate === calendarDate) {
-        todaysAppointments.push(appointment);
-      }
-    });
-
-    return (
       <TouchableOpacity
+        onPress={() => setShowDatePicker(true)}
         style={{
-          width: getDayWidth(),
-          height: getDayHeight(calendarHeight),
-          alignItems: "center",
-          justifyContent: "flex-end",
-          flexDirection: "column",
+          paddingHorizontal: 24,
+          height: 40,
+          borderRadius: 9999,
+          borderWidth: 1,
+          borderColor: Colors.lightGrey2,
+          flexDirection: "row",
           gap: 8,
-          paddingVertical: 8,
-          paddingHorizontal: 16,
-          backgroundColor: isToday ? "black" : Colors.lightGrey,
-          borderRadius: 8,
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        onPress={() => onDayPress(date)}
       >
-        <View style={{ flexDirection: "column", gap: 2 }}>
-          {todaysAppointments.map((appointment) => (
-            <Avatar
-              key={appointment.id}
-              size={24}
-              uri={appointment.patient.image}
-            />
-          ))}
-        </View>
+        <CustomIcon name="calendar" size={24} color="#000" />
         <TextSemiBold
           style={{
+            fontSize: 16,
+            color: "#000",
             textAlign: "center",
-            color: isToday ? "#FFF" : Colors.grey,
           }}
         >
-          {date?.day}
+          {format(date, "LLLL, yyyy")}
         </TextSemiBold>
       </TouchableOpacity>
     );
   };
+
+  // Custom day component for the calendar
+  const renderDay = useCallback(
+    ({ date, state }: DayProps & { date?: DateData | undefined }) => {
+      if (state === "disabled") return null;
+
+      const isToday = state === "today";
+      const calendarDate = date?.dateString;
+
+      // Filter today's appointments once
+      const todaysAppointments = appointments.filter((appointment: any) => {
+        const appointmentDate = format(appointment.date.toDate(), "yyyy-MM-dd");
+        return appointmentDate === calendarDate;
+      });
+
+      return (
+        <TouchableOpacity
+          style={{
+            width: getDayWidth(),
+            height: getDayHeight(calendarHeight),
+            alignItems: "center",
+            justifyContent: "flex-end",
+            flexDirection: "column",
+            gap: 8,
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            backgroundColor: isToday ? "black" : Colors.lightGrey,
+            borderRadius: 8,
+            overflow: "hidden",
+          }}
+          onPress={() => onDayPress(date)}
+        >
+          <View style={{ flexDirection: "column", gap: 2 }}>
+            {todaysAppointments.map((appointment) => (
+              <Avatar
+                key={appointment.id}
+                size={24}
+                uri={appointment.patient.image}
+                pointerEvents="none"
+              />
+            ))}
+          </View>
+          <TextSemiBold
+            style={{
+              textAlign: "center",
+              color: isToday ? "#FFF" : Colors.grey,
+            }}
+          >
+            {date?.day}
+          </TextSemiBold>
+        </TouchableOpacity>
+      );
+    },
+    [selectedDate]
+  );
 
   return (
     <View onLayout={onLayout} style={{ flex: 1 }}>
@@ -178,19 +178,3 @@ const DoctorCalendar = () => {
 };
 
 export default DoctorCalendar;
-
-const getDayWidth = () => {
-  const screenWidth = Dimensions.get("window").width;
-  const horizontalPadding = 32;
-  const totalGapBetweenDays = 6 * 4; // 6 gaps between 7 days
-  const availableWidth = screenWidth - horizontalPadding - totalGapBetweenDays;
-  return availableWidth / 7;
-};
-
-const getDayHeight = (calendarHeight: number) => {
-  const verticalPadding = 32; // e.g., 16 top + 16 bottom
-  const totalGapBetweenRows = 4 * 4; // 4 gaps between 5 rows
-  const availableHeight =
-    calendarHeight - verticalPadding - totalGapBetweenRows - 120;
-  return availableHeight / 5;
-};

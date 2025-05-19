@@ -12,6 +12,7 @@ import { TextSemiBold } from "./StyledText";
 
 const Avatar = ({
   presence = null,
+  pointerEvents = "auto",
   onPress = null,
   size,
   uri = null,
@@ -20,6 +21,7 @@ const Avatar = ({
   loading = false,
 }: {
   presence?: "online" | "offline" | null; // Make it more robust in the future so null is not an option
+  pointerEvents?: "auto" | "box-none" | "none" | "box-only";
   onPress?: null | (() => void);
   size: number;
   uri?: string | null;
@@ -61,6 +63,7 @@ const Avatar = ({
         borderRadius: 9999,
       }}
       onPress={onPress}
+      pointerEvents={pointerEvents}
     >
       {loading ? (
         <Animated.View

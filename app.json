@@ -20,6 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
+      "googleServicesFile": "./google-services.json",
       "package": "com.mrboom192.drx",
       "permissions": [
         "android.permission.ACCESS_NETWORK_STATE",

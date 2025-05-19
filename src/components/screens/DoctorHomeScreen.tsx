@@ -5,6 +5,11 @@ import {
   useStartAppointmentsListener,
   useStopAppointmentsListener,
 } from "@/stores/useAppointmentStore";
+import {
+  useExpoPushToken,
+  useNotification,
+  useNotificationError,
+} from "@/stores/useNotificationStore";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
@@ -23,6 +28,10 @@ const DoctorHomeScreen = () => {
   const isFetchingAppointments = useIsFetchingAppointments();
   const error = useAppointmentError();
   const insets = useSafeAreaInsets();
+
+  const notification = useNotification();
+  const notificationError = useNotificationError();
+  const expoPushToken = useExpoPushToken();
 
   useEffect(() => {
     if (!userData?.uid) return;
@@ -70,6 +79,11 @@ const DoctorHomeScreen = () => {
         <PendingAlert />
       )}
       {!userData?.hasPublicProfile && <MissingPublicProfileAlert />}
+      <TextSemiBold>Your push token: {expoPushToken}</TextSemiBold>
+      <TextSemiBold>
+        Latest Notification: {notification?.request.content.title} -{" "}
+        {notification?.request.content.body}
+      </TextSemiBold>
       <Notifications />
       <View
         style={{

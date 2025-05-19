@@ -1,6 +1,7 @@
 import { SignUpProvider } from "@/contexts/SignupContext";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useIsAuthReady, useSetIsAuthReady } from "@/stores/useAuthInitStore";
+import { useStartNotifications } from "@/stores/useNotificationStore";
 import {
   useStartUserListener,
   useStopUserListener,
@@ -18,6 +19,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
@@ -26,6 +28,16 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+    shouldShowBanner: false,
+    shouldShowList: false,
+  }),
+});
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -41,6 +53,7 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const startNotifications = useStartNotifications();
   const startUserListener = useStartUserListener();
   const stopUserListener = useStopUserListener();
   const setIsAuthReady = useSetIsAuthReady();
@@ -50,6 +63,12 @@ export default function RootLayout() {
     DMSans_600SemiBold,
     DMSans_700Bold,
   });
+
+  // Start notifications when the app loads
+  useEffect(() => {
+    const unsubscribe = startNotifications();
+    return unsubscribe;
+  }, [startNotifications]);
 
   useEffect(() => {
     let unsubscribePresence: () => void;

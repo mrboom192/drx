@@ -1,7 +1,8 @@
 import Footer from "@/components/AddFooter";
+import BillingDetailsSelector from "@/components/BillingDetails/BillingDetailsSelector";
 import PageScrollView from "@/components/PageScrollView";
 import RegularTextInput from "@/components/RegularTextInput";
-import { TextRegular } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
 import { useUserData } from "@/stores/useUserStore";
@@ -78,6 +79,9 @@ const AddCard = () => {
   return (
     <View style={styles.container}>
       <PageScrollView>
+        <TextSemiBold style={styles.title}>
+          Enter the card you want to use
+        </TextSemiBold>
         <RegularTextInput
           label="Name on Card"
           value={cardholderName}
@@ -95,6 +99,10 @@ const AddCard = () => {
               setCardComplete(cardDetails.complete);
             }}
           />
+        </View>
+
+        <View style={{ marginTop: 24 }}>
+          <BillingDetailsSelector />
         </View>
       </PageScrollView>
 
@@ -116,6 +124,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  title: {
+    marginBottom: 16,
+    fontSize: 16,
+    color: "#000",
   },
   cardFieldLabel: {
     marginBottom: 8,

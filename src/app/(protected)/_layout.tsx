@@ -3,6 +3,10 @@ import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
 import { useIsAuthReady } from "@/stores/useAuthInitStore";
 import {
+  useStartBillingListener,
+  useStopBillingListener,
+} from "@/stores/useBillingDetails";
+import {
   useStartChatsListener,
   useStopChatsListener,
 } from "@/stores/useChatStore";
@@ -16,11 +20,26 @@ export default function ProtectedLayout() {
   const { session, isLoading } = useSession();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
+
+  const startBillingListener = useStartBillingListener();
+  const stopBillingListener = useStopBillingListener();
+
+  // Chats
   const startChatsListener = useStartChatsListener();
   const stopChatsListener = useStopChatsListener();
   const isAuthReady = useIsAuthReady();
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
+
+  // Fetch billing details
+  useEffect(() => {
+    if (!session || !isAuthReady) return;
+    startBillingListener();
+
+    return () => {
+      stopBillingListener();
+    };
+  }, [isAuthReady, session]);
 
   // Fetch chats from Firebase immediately
   useEffect(() => {

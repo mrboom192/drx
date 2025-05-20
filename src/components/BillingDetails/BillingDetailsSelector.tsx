@@ -1,39 +1,11 @@
 import Colors from "@/constants/Colors";
+import { useBillingAddresses } from "@/stores/useBillingDetails";
 import { BillingDetails } from "@stripe/stripe-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextSemiBold } from "../StyledText";
 import BillingAddress from "./BillingAddress";
 import BillingDetailsForm from "./BillingDetailsForm";
-
-const mockBillingDetails: BillingDetails[] = [
-  {
-    address: {
-      city: "San Francisco",
-      country: "US",
-      line1: "123 Main St",
-      line2: "Apt 4B",
-      postalCode: "94105",
-      state: "CA",
-    },
-    name: "John Doe",
-    phone: "+14155552671",
-    email: "john@gmail.com",
-  },
-  {
-    address: {
-      city: "New York",
-      country: "US",
-      line1: "456 Elm St",
-      line2: "Suite 5A",
-      postalCode: "10001",
-      state: "NY",
-    },
-    name: "Jane Smith",
-    phone: "+14155552672",
-    email: "jane@gmail.com",
-  },
-];
 
 const initBillingDetails: BillingDetails = {
   address: {
@@ -49,17 +21,33 @@ const initBillingDetails: BillingDetails = {
   email: "",
 };
 
-const BillingDetailsSelector = () => {
+type BillingDetailsSelectorProps = {
+  handleSelectBillingAddress: (billingDetails: BillingDetails) => void;
+  setCanAddAddress: (canAdd: boolean) => void;
+};
+
+const BillingDetailsSelector = ({
+  handleSelectBillingAddress,
+  setCanAddAddress,
+}: BillingDetailsSelectorProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [form, setForm] = useState<BillingDetails>(initBillingDetails);
-  const [formVisible, setFormVisible] = useState(false);
-  const [billingDetails, setBillingDetails] = useState<BillingDetails>(
-    mockBillingDetails[0]
-  );
+  const billingAddresses = useBillingAddresses();
+  const [formVisible, setFormVisible] = useState(billingAddresses.length === 0);
+
+  useEffect(() => {
+    if (formVisible) {
+      setCanAddAddress(true);
+      handleSelectBillingAddress(form);
+    } else {
+      setCanAddAddress(false);
+      handleSelectBillingAddress(billingAddresses[currentIndex]);
+    }
+  }, [billingAddresses, formVisible, form]);
 
   const handleAddressSelect = (index: number) => {
     setCurrentIndex(index);
-    setBillingDetails(mockBillingDetails[index]);
+    handleSelectBillingAddress(billingAddresses[index]);
   };
 
   const updateBillingForm = (updates: Partial<BillingDetails>) => {
@@ -88,14 +76,14 @@ const BillingDetailsSelector = () => {
       ) : (
         <>
           <View style={styles.addressesContainer}>
-            {mockBillingDetails.map(
+            {billingAddresses.map(
               (billingDetails: BillingDetails, index: number) => (
                 <BillingAddress
                   key={index}
                   billingDetails={billingDetails}
                   isSelected={currentIndex === index}
                   onPress={() => handleAddressSelect(index)}
-                  showBorder={index < mockBillingDetails.length - 1}
+                  showBorder={index < billingAddresses.length - 1}
                 />
               )
             )}

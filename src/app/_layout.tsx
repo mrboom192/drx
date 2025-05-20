@@ -68,8 +68,8 @@ export default function RootLayout() {
 
   // Start notifications when the app loads
   useEffect(() => {
-    const unsubscribe = startNotifications();
-    return unsubscribe;
+    const unsubscribeNotifications = startNotifications();
+    return unsubscribeNotifications;
   }, [startNotifications]);
 
   useEffect(() => {

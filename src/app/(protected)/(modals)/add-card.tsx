@@ -1,3 +1,4 @@
+import { addBillingDetails } from "@/api/billingDetails";
 import Footer from "@/components/AddFooter";
 import BillingDetailsSelector from "@/components/BillingDetails/BillingDetailsSelector";
 import PageScrollView from "@/components/PageScrollView";
@@ -7,6 +8,7 @@ import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
 import { useUserData } from "@/stores/useUserStore";
 import { CardField, useStripe } from "@stripe/stripe-react-native";
+import { router } from "expo-router";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
@@ -18,19 +20,31 @@ const AddCard = () => {
   const { confirmSetupIntent } = useStripe();
 
   const [cardholderName, setCardholderName] = useState("");
+  const [billingDetails, setBillingDetails] = useState<any>(null);
+  const [canAddAddress, setCanAddAddress] = useState(false);
   const [cardComplete, setCardComplete] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const userData = useUserData();
 
-  const fakeView = useAnimatedStyle(() => {
-    return {
+  const fakeView = useAnimatedStyle(
+    () => ({
       height: Math.abs(height.value),
-    };
-  }, []);
+    }),
+    []
+  );
+
+  const handleSelectBillingAddress = (selected: any) => {
+    setBillingDetails(selected);
+  };
 
   const handleAddCard = async () => {
     if (!cardComplete || !cardholderName || !userData?.uid) {
       Alert.alert("Please complete the form.");
+      return;
+    }
+
+    if (!billingDetails?.address) {
+      Alert.alert("Please select a billing address.");
       return;
     }
 
@@ -50,6 +64,7 @@ const AddCard = () => {
         paymentMethodType: "Card",
         paymentMethodData: {
           billingDetails: {
+            ...billingDetails,
             name: cardholderName,
           },
         },
@@ -59,17 +74,24 @@ const AddCard = () => {
         throw error;
       }
 
-      // Add to Firestore to trigger backend listener
+      // Save to trigger backend function
       await addDoc(
         collection(db, "stripe_customers", userData.uid, "payment_methods"),
         {
-          id: setupIntent.paymentMethod?.id,
+          id: setupIntent.paymentMethodId,
         }
       );
 
-      Alert.alert("Card added!");
+      // Save billing address
+      if (canAddAddress) {
+        await addBillingDetails({
+          ...billingDetails,
+        });
+      }
+
+      router.back();
     } catch (err: any) {
-      console.error(err);
+      console.error("Add card error:", err);
       Alert.alert("Error", err.message || "Something went wrong");
     } finally {
       setSubmitting(false);
@@ -80,14 +102,16 @@ const AddCard = () => {
     <View style={styles.container}>
       <PageScrollView>
         <TextSemiBold style={styles.title}>
-          Enter the card you want to use
+          Enter the card you want to use for booking appointments
         </TextSemiBold>
+
         <RegularTextInput
           label="Name on Card"
           value={cardholderName}
           onChangeText={setCardholderName}
           placeholder="e.g. John Doe"
         />
+
         <TextRegular style={styles.cardFieldLabel}>Card details</TextRegular>
         <View style={styles.cardFieldContainer}>
           <CardField
@@ -102,7 +126,10 @@ const AddCard = () => {
         </View>
 
         <View style={{ marginTop: 24 }}>
-          <BillingDetailsSelector />
+          <BillingDetailsSelector
+            handleSelectBillingAddress={handleSelectBillingAddress}
+            setCanAddAddress={setCanAddAddress}
+          />
         </View>
       </PageScrollView>
 

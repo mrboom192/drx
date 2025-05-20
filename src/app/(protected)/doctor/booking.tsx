@@ -2,8 +2,9 @@ import { db } from "@/../firebaseConfig";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
+import { TimeSlot } from "@/types/timeSlot";
+import { formatDate, generateTimeSlots } from "@/utils/bookingUtils";
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   collection,
@@ -17,53 +18,13 @@ import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
   ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
+import DatePicker from "react-native-date-picker";
 import "react-native-get-random-values";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-interface TimeSlot {
-  id: string;
-  startTime: string;
-  endTime: string;
-  isAvailable: boolean;
-}
-
-const generateTimeSlots = (date: Date): TimeSlot[] => {
-  const slots: TimeSlot[] = [];
-  const startHour = 9; // 9 AM
-  const endHour = 17; // 5 PM
-  const interval = 30; // 30 minutes
-
-  for (let hour = startHour; hour < endHour; hour++) {
-    for (let minute = 0; minute < 60; minute += interval) {
-      const startTime = `${hour.toString().padStart(2, "0")}:${minute
-        .toString()
-        .padStart(2, "0")}`;
-      const endTime = `${hour.toString().padStart(2, "0")}:${(minute + interval)
-        .toString()
-        .padStart(2, "0")}`;
-      slots.push({
-        id: `${date.toISOString().split("T")[0]}-${startTime}-${endTime}`,
-        startTime,
-        endTime,
-        isAvailable: true,
-      });
-    }
-  }
-  return slots;
-};
-
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
-};
 
 const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -365,15 +326,20 @@ const BookingPage = () => {
         </TouchableOpacity>
       </View>
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={onDateChange}
-          minimumDate={new Date()}
-        />
-      )}
+      <DatePicker
+        modal
+        mode="date"
+        open={showDatePicker}
+        minimumDate={new Date()}
+        date={new Date(selectedDate)}
+        onConfirm={(date) => {
+          setShowDatePicker(false);
+          setSelectedDate(date);
+        }}
+        onCancel={() => {
+          setShowDatePicker(false);
+        }}
+      />
     </View>
   );
 };

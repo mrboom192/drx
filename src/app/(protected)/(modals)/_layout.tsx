@@ -1,6 +1,5 @@
-import IconButton from "@/components/IconButton";
 import PageHeader from "@/components/PageHeader";
-import { router, Stack } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function ModalsLayout() {
   return (
@@ -15,6 +14,14 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="update-allergy"
         options={{
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="add-card"
+        options={{
+          title: "Add Card",
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}

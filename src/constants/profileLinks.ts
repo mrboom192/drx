@@ -10,9 +10,9 @@ export const patientLinks = [
     url: "/(tabs)/profile/medical-record",
   },
   {
-    icon: "notifications-outline",
-    label: "Notification settings",
-    url: "/(tabs)/profile",
+    icon: "card-outline",
+    label: "Payment methods",
+    url: "/(tabs)/profile/payment-methods",
   },
   {
     icon: "shield-checkmark-outline",
@@ -33,9 +33,9 @@ export const doctorLinks = [
     url: "/(tabs)/profile",
   },
   {
-    icon: "notifications-outline",
-    label: "Notification settings",
-    url: "/(tabs)/profile",
+    icon: "card-outline",
+    label: "Payment methods",
+    url: "/(tabs)/profile/payment-methods",
   },
   {
     icon: "shield-checkmark-outline",

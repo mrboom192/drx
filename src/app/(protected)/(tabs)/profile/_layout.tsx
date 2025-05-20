@@ -26,6 +26,13 @@ const ProfileLayout = () => {
         }}
       />
       <Stack.Screen name="medical-record" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="payment-methods"
+        options={{
+          title: "Payment Methods",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 };

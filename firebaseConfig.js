@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
+import { getFunctions } from "firebase/functions";
 import { getStorage } from "firebase/storage";
 
 // import { getAnalytics } from "firebase/analytics";
@@ -40,6 +41,8 @@ const storage = getStorage(app);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-export { auth, database, db, storage };
+const functions = getFunctions(app);
+
+export { auth, database, db, functions, storage };
 
 // const analytics = getAnalytics(app);

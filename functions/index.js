@@ -17,6 +17,7 @@
 
 const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
+const axios = require("axios");
 admin.initializeApp();
 const { Logging } = require("@google-cloud/logging");
 const logging = new Logging({
@@ -217,3 +218,40 @@ function userFacingMessage(error) {
     ? error.message
     : "An error occurred, developers have been alerted";
 }
+
+/**
+ * Generate TURN credentials for the WebRTC connection.
+ */
+const TURN_KEY_ID = functions.config().turn.key_id;
+const TURN_API_TOKEN = functions.config().turn.api_token;
+
+exports.getTurnCredentials = functions.https.onCall(async (data, context) => {
+  // Ensure that the user is authenticated
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "Only authenticated users can request TURN credentials"
+    );
+  }
+
+  try {
+    const response = await axios.post(
+      `https://rtc.live.cloudflare.com/v1/turn/keys/${TURN_KEY_ID}/credentials/generate-ice-servers`,
+      { ttl: 3600 }, // 1 hour
+      {
+        headers: {
+          Authorization: `Bearer ${TURN_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data; // contains `iceServers` array
+  } catch (err) {
+    console.error("TURN credential generation failed:", err);
+    throw new functions.https.HttpsError(
+      "internal",
+      "TURN credentials could not be generated"
+    );
+  }
+});

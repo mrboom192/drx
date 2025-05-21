@@ -1,11 +1,10 @@
-import IconButton from "@/components/IconButton";
+import PageHeader from "@/components/PageHeader";
+import PageScrollView from "@/components/PageScrollView";
 import { TextSemiBold } from "@/components/StyledText";
-import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // 1:11:09
@@ -28,7 +27,6 @@ const languages = [
 const Page = () => {
   const router = useRouter();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
-  const { colorScheme, themeTextStylePrimary } = useThemedStyles();
   const insets = useSafeAreaInsets();
 
   const handleLanguageSelect = (abbr: string) => {
@@ -41,20 +39,15 @@ const Page = () => {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <PageScrollView>
       <Stack.Screen
         options={{
           title: "Filters",
-          headerTitleStyle: {
-            fontFamily: "DMSans_600SemiBold",
-          },
           presentation: "modal",
-          headerLeft: () => (
-            <IconButton name="close" onPress={() => router.back()} />
-          ),
+          header: (props) => <PageHeader {...props} />,
         }}
       />
-      <TextSemiBold style={[themeTextStylePrimary, { fontSize: 24 }]}>
+      <TextSemiBold style={{ fontSize: 24, color: "#000" }}>
         Provider language
       </TextSemiBold>
       <View
@@ -76,8 +69,6 @@ const Page = () => {
               borderWidth: 1,
               borderColor: languageFilter.includes(language.abbr)
                 ? Colors.primary
-                : colorScheme === "light"
-                ? Colors.light.faintGrey
                 : Colors.dark.faintGrey,
               borderRadius: 16,
               alignItems: "center",
@@ -91,9 +82,7 @@ const Page = () => {
               style={{
                 color: languageFilter.includes(language.abbr)
                   ? Colors.primary
-                  : colorScheme === "light"
-                  ? "#000"
-                  : "#FFF",
+                  : "#000",
               }}
             >
               {language.name}
@@ -101,7 +90,7 @@ const Page = () => {
           </TouchableOpacity>
         ))}
       </View>
-    </View>
+    </PageScrollView>
   );
 };
 

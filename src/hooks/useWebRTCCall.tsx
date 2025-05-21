@@ -36,6 +36,8 @@ export function useWebRTCCall(
 
   // Firestore reference
   const callDocRef = doc(db, "calls", callId); // The call document
+  const firestoreUnsub = useRef<(() => void) | null>(null);
+  const rtdbListeners = useRef<(() => void)[]>([]);
 
   // Realtime Database references
   const offerCandidatesRef = ref(database, `calls/${callId}/offerCandidates`);
@@ -56,6 +58,38 @@ export function useWebRTCCall(
     };
   }, []);
 
+  const handleIceCandidate = async (event: any) => {
+    if (event.candidate) {
+      const candidateJSON = event.candidate.toJSON();
+      try {
+        const newRef = push(offerCandidatesRef);
+        await set(newRef, candidateJSON);
+      } catch (err) {
+        console.error("[RTDB] Failed to store ICE candidate:", err);
+      }
+    }
+  };
+
+  const handleTrack = (event: any) => {
+    if (!remoteStreamRef.current) {
+      remoteStreamRef.current = new MediaStream();
+      setRemoteStream(remoteStreamRef.current);
+    }
+    if (event.track.kind === "video" || event.track.kind === "audio") {
+      remoteStreamRef.current.addTrack(event.track);
+    }
+  };
+
+  const handleIceConnectionStateChange = () => {
+    const state = peerConnection.current.iceConnectionState;
+    const peerDisconnected =
+      state === "disconnected" || state === "failed" || state === "closed";
+
+    if (peerDisconnected) {
+      endCall();
+    }
+  };
+
   async function getMediaStream() {
     try {
       const mediaStream = await mediaDevices.getUserMedia(mediaConstraints);
@@ -71,40 +105,12 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
+    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
+    peerConnection.current.addEventListener("track", handleTrack);
     peerConnection.current.addEventListener(
-      "icecandidate",
-      async (event: any) => {
-        if (event.candidate) {
-          const candidateJSON = event.candidate.toJSON();
-          try {
-            const newRef = push(offerCandidatesRef);
-            await set(newRef, candidateJSON);
-          } catch (err) {
-            console.error("[RTDB] Failed to store ICE candidate:", err);
-          }
-        }
-      }
+      "iceconnectionstatechange",
+      handleIceConnectionStateChange
     );
-
-    peerConnection.current.addEventListener("track", (event: any) => {
-      if (!remoteStreamRef.current) {
-        remoteStreamRef.current = new MediaStream();
-        setRemoteStream(remoteStreamRef.current);
-      }
-      if (event.track.kind === "video" || event.track.kind === "audio") {
-        remoteStreamRef.current.addTrack(event.track);
-      }
-    });
-
-    peerConnection.current.addEventListener("iceconnectionstatechange", () => {
-      const state = peerConnection.current.iceConnectionState;
-      const peerDisconnected =
-        state === "disconnected" || state === "failed" || state === "closed";
-
-      if (peerDisconnected) {
-        endCall();
-      }
-    });
 
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current.addTrack(track, mediaStream);
@@ -114,7 +120,8 @@ export function useWebRTCCall(
     await peerConnection.current.setLocalDescription(offer);
     await setDoc(callDocRef, { offer });
 
-    onSnapshot(callDocRef, async (snapshot) => {
+    if (firestoreUnsub.current) firestoreUnsub.current();
+    firestoreUnsub.current = onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.answer &&
@@ -135,7 +142,7 @@ export function useWebRTCCall(
       }
     });
 
-    onChildAdded(answerCandidatesRef, (snapshot) => {
+    const off = onChildAdded(answerCandidatesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
@@ -146,6 +153,7 @@ export function useWebRTCCall(
         }
       }
     });
+    rtdbListeners.current.push(() => off());
   }
 
   async function joinCall() {
@@ -156,43 +164,16 @@ export function useWebRTCCall(
       peerConnection.current.addTrack(track, mediaStream);
     });
 
+    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
+    peerConnection.current.addEventListener("track", handleTrack);
     peerConnection.current.addEventListener(
-      "icecandidate",
-      async (event: any) => {
-        if (event.candidate) {
-          const candidateJSON = event.candidate.toJSON();
-          try {
-            const newRef = push(answerCandidatesRef);
-            await set(newRef, candidateJSON);
-          } catch (err) {
-            console.error("[RTDB] Failed to store ICE candidate:", err);
-          }
-        }
-      }
+      "iceconnectionstatechange",
+      handleIceConnectionStateChange
     );
 
-    peerConnection.current.addEventListener("track", (event: any) => {
-      if (!remoteStreamRef.current) {
-        remoteStreamRef.current = new MediaStream();
-        setRemoteStream(remoteStreamRef.current);
-      }
-      if (event.track.kind === "video" || event.track.kind === "audio") {
-        remoteStreamRef.current.addTrack(event.track);
-      }
-    });
-
-    peerConnection.current.addEventListener("iceconnectionstatechange", () => {
-      const state = peerConnection.current.iceConnectionState;
-      const peerDisconnected =
-        state === "disconnected" || state === "failed" || state === "closed";
-
-      if (peerDisconnected) {
-        endCall();
-      }
-    });
-
     // Listen to the call document, then set remote description
-    onSnapshot(callDocRef, async (snapshot) => {
+    if (firestoreUnsub.current) firestoreUnsub.current();
+    firestoreUnsub.current = onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.offer &&
@@ -221,7 +202,7 @@ export function useWebRTCCall(
     });
 
     // Listen for ICE candidates from the caller
-    onChildAdded(offerCandidatesRef, (snapshot) => {
+    const off = onChildAdded(offerCandidatesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
@@ -232,18 +213,49 @@ export function useWebRTCCall(
         }
       }
     });
+    rtdbListeners.current.push(() => off());
   }
 
   async function endCall() {
-    peerConnection.current?.close();
+    // Close the peer connection and stop all tracks
+    // Remove event listeners
+    peerConnection.current?.removeEventListener(
+      "icecandidate",
+      handleIceCandidate
+    );
+    peerConnection.current?.removeEventListener("track", handleTrack);
+    peerConnection.current?.removeEventListener(
+      "iceconnectionstatechange",
+      handleIceConnectionStateChange
+    );
+
     localStream?.getTracks().forEach((track) => track.stop());
     remoteStream?.getTracks().forEach((track) => track.stop());
+
+    peerConnection.current?.close();
+    peerConnection.current = null;
 
     const chatDocRef = doc(db, "chats", chatId);
     await updateDoc(chatDocRef, { hasActiveCall: false });
 
-    await remove(offerCandidatesRef);
-    await remove(answerCandidatesRef);
+    try {
+      await remove(offerCandidatesRef);
+    } catch (e) {
+      console.error("[RTDB] Failed to remove offer candidates:", e);
+    }
+
+    try {
+      await remove(answerCandidatesRef);
+    } catch (e) {
+      console.error("[RTDB] Failed to remove answer candidates:", e);
+    }
+
+    // Unsubscribe Firestore listener
+    firestoreUnsub.current?.();
+
+    // Remove all RTDB listeners
+    rtdbListeners.current.forEach((off) => off());
+    rtdbListeners.current = [];
   }
 
   async function switchCamera() {

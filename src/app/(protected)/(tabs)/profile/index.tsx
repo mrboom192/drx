@@ -16,7 +16,7 @@ const Profile = () => {
   const userData = useUserData();
   const isPatient = userData?.role === "patient";
 
-  const color = isPatient ? Colors.primary : Colors.gold;
+  const color = "#000";
   const links = isPatient ? patientLinks : doctorLinks;
 
   return (
@@ -64,7 +64,7 @@ const Profile = () => {
           <TextRegular
             style={{
               fontSize: 16,
-              color,
+              color: isPatient ? Colors.primary : Colors.gold,
             }}
           >
             {userData?.role ? userData?.role : "Role not found"}

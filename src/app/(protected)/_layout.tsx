@@ -101,6 +101,14 @@ export default function ProtectedLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="bookmarked"
+        options={{
+          title: "Bookmarked Doctors",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

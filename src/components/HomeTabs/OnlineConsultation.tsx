@@ -3,7 +3,7 @@ import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import LottieView from "lottie-react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -267,6 +267,9 @@ const OnlineConsultation = () => {
 
               paddingHorizontal: 16,
               paddingVertical: 16,
+            }}
+            onPress={() => {
+              router.push("/bookmarked");
             }}
           >
             <CustomIcon

@@ -1,11 +1,22 @@
 import PageScrollView from "@/components/PageScrollView";
-import { TextRegular } from "@/components/StyledText";
+import { TextSemiBold } from "@/components/StyledText";
+import Colors from "@/constants/Colors";
 import React from "react";
 
 const Notifications = () => {
   return (
     <PageScrollView>
-      <TextRegular>notifications</TextRegular>
+      <TextSemiBold
+        style={{
+          fontSize: 16,
+          textAlign: "center",
+          color: Colors.grey,
+          marginTop: 20,
+          marginBottom: 20,
+        }}
+      >
+        You have no notifications.
+      </TextSemiBold>
     </PageScrollView>
   );
 };

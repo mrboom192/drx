@@ -147,6 +147,13 @@ function RootLayoutNav() {
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
+                      name="terms-of-service"
+                      options={{
+                        title: "Terms of Service",
+                        header: (props) => <PageHeader {...props} />,
+                      }}
+                    />
+                    <Stack.Screen
                       name="privacy-policy"
                       options={{
                         title: "Privacy Policy",

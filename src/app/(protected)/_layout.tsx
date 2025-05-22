@@ -109,6 +109,14 @@ export default function ProtectedLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="medical-records"
+        options={{
+          title: "Medical Record",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

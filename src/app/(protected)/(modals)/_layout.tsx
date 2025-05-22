@@ -26,6 +26,15 @@ export default function ModalsLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen name="[date]" />
+      <Stack.Screen
+        name="[recordId]"
+        options={{
+          title: "Medical Record",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

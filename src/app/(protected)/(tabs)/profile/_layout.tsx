@@ -33,6 +33,13 @@ const ProfileLayout = () => {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="patients"
+        options={{
+          title: "Patients",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 };

@@ -28,9 +28,9 @@ export const doctorLinks = [
     url: "/(tabs)/profile/personal",
   },
   {
-    icon: "call-outline",
-    label: "Contact customer support",
-    url: "/(tabs)/profile",
+    icon: "medical-outline",
+    label: "View your patients",
+    url: "/(tabs)/profile/patients",
   },
   {
     icon: "card-outline",

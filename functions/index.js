@@ -18,17 +18,14 @@
 const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
 const axios = require("axios");
-admin.initializeApp();
 const { Logging } = require("@google-cloud/logging");
 const logging = new Logging({
   projectId: process.env.GCLOUD_PROJECT,
 });
 
-const { Stripe } = require("stripe");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const stripe = new Stripe(functions.config().stripe.secret, {
-  apiVersion: "2020-08-27",
-});
+admin.initializeApp();
 
 /**
  * When a user is created, create a Stripe customer object for them.
@@ -222,8 +219,8 @@ function userFacingMessage(error) {
 /**
  * Generate TURN credentials for the WebRTC connection.
  */
-const TURN_KEY_ID = functions.config().turn.key_id;
-const TURN_API_TOKEN = functions.config().turn.api_token;
+const TURN_KEY_ID = process.env.TURN_KEY_ID;
+const TURN_API_TOKEN = process.env.TURN_API_TOKEN;
 
 exports.getTurnCredentials = functions.https.onCall(async (data, context) => {
   // Ensure that the user is authenticated
@@ -329,6 +326,50 @@ exports.getPaymentIntent = functions.https.onCall(async (data, context) => {
 });
 
 /**
- * Generate a SetupIntent for Stripe.
- * This is used to create a payment method for the user.
+ * Cancel a PaymentIntent.
+ * This is used to cancel a payment that is in progress.
+ * Id, which is the payment intent ID, is passed from the client.
  */
+exports.cancelPaymentIntent = functions.https.onCall(async (data, context) => {
+  const { id } = data;
+  try {
+    await stripe.paymentIntents.cancel(id);
+    return { id, message: "Canceled" };
+  } catch (error) {
+    throw new functions.https.HttpsError("unknown", error);
+  }
+});
+
+/**
+ * Webhook to handle Stripe events.
+ * Handle events like payment success, failure, etc.
+ */
+exports.handleStripeWebhook = functions.https.onRequest(async (req, res) => {
+  const sig = req.headers["stripe-signature"];
+  const endpointSecret =
+    "whsec_48a2f4e83daada168e6cf8d7d589cceabf8300a2333e76edb9a60b5a25b05166";
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle successful payment event
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+
+    // Perform your logic: e.g. grant access, update Firestore, etc.
+    const userId = session.metadata.userId; // You can pass metadata when creating the session
+    await admin.firestore().collection("users").doc(userId).update({
+      subscriptionStatus: "active",
+    });
+
+    console.log("Payment succeeded for user:", userId);
+  }
+
+  res.status(200).send("Webhook received");
+});

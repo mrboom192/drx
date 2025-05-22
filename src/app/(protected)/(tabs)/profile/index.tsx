@@ -1,5 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 
+import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
 import Colors from "@/constants/Colors";
@@ -20,18 +21,7 @@ const Profile = () => {
   const links = isPatient ? patientLinks : doctorLinks;
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#FFF",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        paddingTop: insets.top,
-        alignItems: "center",
-        paddingHorizontal: 16,
-        paddingBottom: insets.bottom,
-      }}
-    >
+    <PageScrollView style={{ paddingTop: insets.top }}>
       {/* User Card */}
       <View
         style={{
@@ -135,7 +125,7 @@ const Profile = () => {
           Log out
         </TextSemiBold>
       </TouchableOpacity>
-    </View>
+    </PageScrollView>
   );
 };
 

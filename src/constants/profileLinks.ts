@@ -9,11 +9,11 @@ export const patientLinks = [
     label: "View your medical records",
     url: "/(tabs)/profile/medical-record",
   },
-  {
-    icon: "card-outline",
-    label: "Payment methods",
-    url: "/(tabs)/profile/payment-methods",
-  },
+  // {
+  //   icon: "card-outline",
+  //   label: "Payment methods",
+  //   url: "/(tabs)/profile/payment-methods",
+  // },
   {
     icon: "shield-checkmark-outline",
     label: "View our app's privacy policy",
@@ -32,11 +32,11 @@ export const doctorLinks = [
     label: "View your patients",
     url: "/(tabs)/profile/patients",
   },
-  {
-    icon: "card-outline",
-    label: "Payment methods",
-    url: "/(tabs)/profile/payment-methods",
-  },
+  // {
+  //   icon: "card-outline",
+  //   label: "Payment methods",
+  //   url: "/(tabs)/profile/payment-methods",
+  // },
   {
     icon: "shield-checkmark-outline",
     label: "View our app's privacy policy",

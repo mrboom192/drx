@@ -4,6 +4,7 @@ import {
   sessionConstraints,
 } from "@/config/webrtcConfig";
 import { onChildAdded, push, ref, remove, set } from "@firebase/database";
+import { router } from "expo-router";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -53,7 +54,6 @@ export function useWebRTCCall(
     }
 
     return () => {
-      // Just in case the call is not ended properly
       endCall();
     };
   }, []);
@@ -86,7 +86,7 @@ export function useWebRTCCall(
       state === "disconnected" || state === "failed" || state === "closed";
 
     if (peerDisconnected) {
-      endCall();
+      router.back();
     }
   };
 

@@ -1,11 +1,8 @@
-import {
-  mediaConstraints,
-  peerConstraints,
-  sessionConstraints,
-} from "@/config/webrtcConfig";
+import { mediaConstraints, sessionConstraints } from "@/config/webrtcConfig";
 import { onChildAdded, push, ref, remove, set } from "@firebase/database";
 import { router } from "expo-router";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { useEffect, useRef, useState } from "react";
 import {
   mediaDevices,
@@ -14,7 +11,7 @@ import {
   RTCPeerConnection,
   RTCSessionDescription,
 } from "react-native-webrtc";
-import { database, db } from "../../firebaseConfig";
+import { database, db, functions } from "../../firebaseConfig";
 
 export function useWebRTCCall(
   chatId: string,
@@ -45,13 +42,31 @@ export function useWebRTCCall(
   const answerCandidatesRef = ref(database, `calls/${callId}/answerCandidates`);
 
   useEffect(() => {
-    peerConnection.current = new RTCPeerConnection(peerConstraints);
+    (async () => {
+      try {
+        const getTurnCredentials = httpsCallable(
+          functions,
+          "getTurnCredentials"
+        );
+        const response = await getTurnCredentials();
+        const { iceServers } = response.data as { iceServers: RTCIceServer[] };
 
-    if (isCaller) {
-      hostCall();
-    } else {
-      joinCall();
-    }
+        peerConnection.current = new RTCPeerConnection({ iceServers });
+      } catch (err) {
+        console.error("Failed to fetch ICE servers:", err);
+
+        // Fallback to default STUN server if TURN server fetch fails
+        peerConnection.current = new RTCPeerConnection({
+          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+        });
+      }
+
+      if (isCaller) {
+        hostCall();
+      } else {
+        joinCall();
+      }
+    })();
 
     return () => {
       endCall();

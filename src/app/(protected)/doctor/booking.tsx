@@ -1,10 +1,12 @@
-import { db } from "@/../firebaseConfig";
+import { db, functions } from "@/../firebaseConfig";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import { TimeSlot } from "@/types/timeSlot";
 import { formatDate, generateTimeSlots } from "@/utils/bookingUtils";
 import { Ionicons } from "@expo/vector-icons";
+import { useStripe } from "@stripe/stripe-react-native";
+import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   collection,
@@ -14,10 +16,12 @@ import {
   Timestamp,
   writeBatch,
 } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   TouchableOpacity,
   View,
@@ -25,6 +29,8 @@ import {
 import DatePicker from "react-native-date-picker";
 import "react-native-get-random-values";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const getPaymentIntent = httpsCallable(functions, "getPaymentIntent");
 
 const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -36,6 +42,8 @@ const BookingPage = () => {
   const [isBooking, setIsBooking] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
@@ -60,16 +68,71 @@ const BookingPage = () => {
     }
   }, [id, selectedDate]);
 
-  const onDateChange = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (selectedDate) {
-      setSelectedDate(selectedDate);
-      setSelectedSlot(null);
+  const initializePaymentSheet = async ({ amount }: { amount: number }) => {
+    if (!userData) {
+      Alert.alert("Error", "User not logged in.");
+      return false;
+    }
+
+    if (!amount || typeof amount !== "number") {
+      Alert.alert("Error", "Invalid or missing amount.");
+      return false;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await getPaymentIntent({
+        amount,
+        currency: "usd",
+      });
+
+      const { paymentIntent, ephemeralKey, customer } = result.data as any;
+
+      const { error: initError } = await initPaymentSheet({
+        merchantDisplayName: "DRX Genius LLC",
+        customerId: customer,
+        customerEphemeralKeySecret: ephemeralKey,
+        paymentIntentClientSecret: paymentIntent,
+        allowsDelayedPaymentMethods: true,
+        returnURL: Linking.createURL("stripe-redirect"),
+        applePay: {
+          merchantCountryCode: "US",
+        },
+      });
+
+      if (initError) {
+        Alert.alert("Init failed", initError.message);
+        return false;
+      }
+
+      const { error: paymentError } = await presentPaymentSheet();
+
+      if (paymentError) {
+        Alert.alert("Payment failed", paymentError.message);
+        return false;
+      }
+
+      Alert.alert("Success", "Booking was successful!");
+      return true;
+    } catch (err) {
+      console.error("Payment error:", err);
+      Alert.alert("Error", "Something went wrong");
+      return false;
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Move this to firebase functions in the future
   const handleBooking = async () => {
     if (!selectedSlot || !doctor || !userData) return;
+
+    const paymentSuccess = await initializePaymentSheet({
+      amount: doctor?.consultationPrice,
+    });
+
+    if (!paymentSuccess) return;
 
     try {
       setIsBooking(true);
@@ -311,7 +374,7 @@ const BookingPage = () => {
             alignItems: "center",
           }}
         >
-          {isBooking ? (
+          {isBooking || loading ? (
             <ActivityIndicator color="#FFF" />
           ) : (
             <TextSemiBold

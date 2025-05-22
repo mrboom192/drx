@@ -255,3 +255,80 @@ exports.getTurnCredentials = functions.https.onCall(async (data, context) => {
     );
   }
 });
+
+/**
+ * Generate a PaymentIntent for Stripe.
+ * This is used to display the Stripe PaymentSheet to the user.
+ */
+exports.getPaymentIntent = functions.https.onCall(async (data, context) => {
+  // Only authenticated users
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "User must be authenticated to create a PaymentIntent"
+    );
+  }
+
+  const uid = context.auth.uid;
+  const { amount, currency } = data;
+
+  // Basic validation
+  if (!amount || !currency || typeof amount !== "number") {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "Amount and currency are required and must be valid."
+    );
+  }
+
+  try {
+    // Get the Stripe customer_id from Firestore
+    const customerDoc = await admin
+      .firestore()
+      .collection("stripe_customers")
+      .doc(uid)
+      .get();
+
+    if (!customerDoc.exists || !customerDoc.data()?.customer_id) {
+      throw new functions.https.HttpsError(
+        "not-found",
+        "Stripe customer ID not found for this user."
+      );
+    }
+
+    const customerId = customerDoc.data().customer_id;
+
+    // Create an ephemeral key
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      { customer: customerId },
+      { apiVersion: "2020-08-27" }
+    );
+
+    // Create the payment intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.floor(amount * 100), // convert dollars to cents
+      currency,
+      customer: customerId,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    return {
+      paymentIntent: paymentIntent.client_secret,
+      ephemeralKey: ephemeralKey.secret,
+      customer: customerId,
+      publishableKey: functions.config().stripe.pk,
+    };
+  } catch (err) {
+    console.error("Failed to create PaymentIntent:", err);
+    throw new functions.https.HttpsError(
+      "internal",
+      "Unable to create PaymentIntent"
+    );
+  }
+});
+
+/**
+ * Generate a SetupIntent for Stripe.
+ * This is used to create a payment method for the user.
+ */

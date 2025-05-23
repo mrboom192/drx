@@ -24,6 +24,11 @@ const logging = new Logging({
 });
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const { nanoid } = require("nanoid");
+
+const { NODE_ENV } = process.env;
+const stripeSigningSecret =
+  process.env[`STRIPE_HANDLE_EVENT_SECRET_${NODE_ENV}`];
 
 admin.initializeApp();
 
@@ -267,7 +272,7 @@ exports.getPaymentIntent = functions.https.onCall(async (data, context) => {
   }
 
   const uid = context.auth.uid;
-  const { amount, currency } = data;
+  const { amount, currency, metadata } = data;
 
   // Basic validation
   if (!amount || !currency || typeof amount !== "number") {
@@ -308,13 +313,14 @@ exports.getPaymentIntent = functions.https.onCall(async (data, context) => {
       automatic_payment_methods: {
         enabled: true,
       },
+      metadata,
     });
 
     return {
+      paymentIntentId: paymentIntent.id,
       paymentIntent: paymentIntent.client_secret,
       ephemeralKey: ephemeralKey.secret,
       customer: customerId,
-      publishableKey: functions.config().stripe.pk,
     };
   } catch (err) {
     console.error("Failed to create PaymentIntent:", err);
@@ -345,31 +351,166 @@ exports.cancelPaymentIntent = functions.https.onCall(async (data, context) => {
  * Handle events like payment success, failure, etc.
  */
 exports.handleStripeWebhook = functions.https.onRequest(async (req, res) => {
-  const sig = req.headers["stripe-signature"];
-  const endpointSecret =
-    "whsec_48a2f4e83daada168e6cf8d7d589cceabf8300a2333e76edb9a60b5a25b05166";
+  const stripeSigningSecret =
+    process.env.STRIPE_HANDLE_EVENT_SECRET_DEVELOPMENT;
+
+  if (!stripeSigningSecret) {
+    console.error("Missing Stripe signing secret for environment");
+    return res.status(500).send("Server misconfiguration.");
+  }
+
+  let signature = req.headers["stripe-signature"];
 
   let event;
-
   try {
-    event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
-  } catch (err) {
-    console.error("Webhook signature verification failed:", err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    event = stripe.webhooks.constructEvent(
+      req.rawBody, // req.body will cause an error
+      signature,
+      stripeSigningSecret
+    );
+
+    // logic to handle the event here
+    let paymentIntent = null;
+    switch (event.type) {
+      case "payment_intent.created":
+        paymentIntent = event.data.object;
+        functions.logger.log("Payment Intent Created", paymentIntent.id);
+        break;
+      case "payment_intent.succeeded":
+        paymentIntent = event.data.object;
+        functions.logger.log("Payment Intent Succeeded", paymentIntent.id);
+
+        const metadata = paymentIntent.metadata;
+
+        const patientId = metadata?.patientId;
+        const doctorId = metadata?.doctorId;
+        const dateStr = metadata?.date;
+        const timeSlotStr = metadata?.timeSlot;
+
+        if (!patientId || !doctorId || !dateStr || !timeSlotStr) {
+          console.warn("Missing metadata fields for appointment creation");
+          return res.status(400).send("Missing required metadata");
+        }
+
+        try {
+          const [doctorSnap, patientSnap] = await Promise.all([
+            admin.firestore().collection("publicProfiles").doc(doctorId).get(),
+            admin.firestore().collection("users").doc(patientId).get(),
+          ]);
+
+          if (!doctorSnap.exists || !patientSnap.exists) {
+            console.error("Doctor or patient does not exist");
+            return res.status(404).send("Doctor or patient not found");
+          }
+
+          const doctor = doctorSnap.data();
+          const patient = patientSnap.data();
+          const timeSlot = JSON.parse(timeSlotStr);
+          const date = new Date(dateStr);
+
+          const batch = admin.firestore().batch();
+
+          const appointmentRef = admin
+            .firestore()
+            .collection("appointments")
+            .doc();
+
+          const appointmentData = {
+            doctorId,
+            patientId,
+            doctor: {
+              firstName: doctor.firstName,
+              lastName: doctor.lastName,
+            },
+            patient: {
+              firstName: patient.firstName,
+              lastName: patient.lastName,
+              image: patient.image || null,
+            },
+            timeSlot,
+            date: admin.firestore.Timestamp.fromDate(date),
+            price: doctor.consultationPrice,
+            status: "confirmed",
+            createdAt: admin.firestore.Timestamp.now(),
+            scheduledFor: admin.firestore.Timestamp.fromDate(
+              new Date(
+                date.setHours(parseInt(timeSlot.startTime.split(":")[0]))
+              )
+            ),
+          };
+
+          batch.set(appointmentRef, appointmentData);
+
+          // Create chat
+          const chatId = [doctorId, patientId].sort().join("_");
+          const chatRef = admin.firestore().collection("chats").doc(chatId);
+          const chatSnap = await chatRef.get();
+
+          if (!chatSnap.exists) {
+            batch.set(chatRef, {
+              users: [patientId, doctorId],
+              participants: {
+                doctor: {
+                  uid: doctorId,
+                  firstName: doctor.firstName,
+                  lastName: doctor.lastName,
+                  image: doctor.image || null,
+                },
+                patient: {
+                  uid: patientId,
+                  firstName: patient.firstName,
+                  lastName: patient.lastName,
+                  image: patient.image || null,
+                },
+              },
+              lastMessage: {
+                text: "New consultation created",
+                senderId: "system",
+                timestamp: admin.firestore.FieldValue.serverTimestamp(),
+              },
+              status: "ongoing",
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+          }
+
+          const messageId = nanoid();
+          const messageRef = chatRef.collection("messages").doc(messageId);
+
+          batch.set(messageRef, {
+            id: messageId,
+            text: "New consultation created",
+            senderId: "system",
+            createdAt: admin.firestore.Timestamp.now(),
+            system: true,
+            sent: false,
+            received: false,
+            pending: true,
+          });
+
+          await batch.commit();
+          functions.logger.log("Appointment and chat successfully created");
+
+          return res.status(200).send("Appointment created");
+        } catch (err) {
+          console.error("Error creating appointment:", err);
+          return res.status(500).send("Internal server error");
+        }
+
+      case "payment_intent.canceled":
+        paymentIntent = event.data.object;
+        functions.logger.log("Payment Intent Cancelled", paymentIntent.id);
+        break;
+      default:
+        functions.logger.log("Unhandled event type", event.type);
+        break;
+    }
+
+    res.send();
+  } catch (error) {
+    throw new functions.https.HttpsError(
+      "unknown",
+      `Error constructing Stripe event: ${error}`
+    );
   }
-
-  // Handle successful payment event
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-
-    // Perform your logic: e.g. grant access, update Firestore, etc.
-    const userId = session.metadata.userId; // You can pass metadata when creating the session
-    await admin.firestore().collection("users").doc(userId).update({
-      subscriptionStatus: "active",
-    });
-
-    console.log("Payment succeeded for user:", userId);
-  }
-
-  res.status(200).send("Webhook received");
 });

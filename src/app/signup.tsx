@@ -4,7 +4,6 @@ import { useSession } from "@/contexts/AuthContext";
 import { useSignUp } from "@/contexts/SignupContext";
 import { SignupUser } from "@/types/user";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -16,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import DatePicker from "react-native-date-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignUp = () => {
@@ -201,16 +201,20 @@ const SignUp = () => {
             color={Colors.light.grey}
           />
         </Pressable>
-        {showDatePicker && (
-          <DateTimePicker
-            value={signUpData.dateOfBirth || new Date(2000, 0, 1)}
-            mode="date"
-            display="default"
-            maximumDate={new Date()}
-            onChange={handleDateChange}
-          />
-        )}
-
+        <DatePicker
+          modal
+          mode="date"
+          open={showDatePicker}
+          date={new Date()}
+          maximumDate={new Date()}
+          onConfirm={(date) => {
+            setShowDatePicker(false);
+            setSignUpData({ dateOfBirth: date });
+          }}
+          onCancel={() => {
+            setShowDatePicker(false);
+          }}
+        />
         {/* Password */}
         <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
           Password

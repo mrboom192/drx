@@ -6,7 +6,6 @@ import Language from "@/components/icons/Language";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
-import { Stack } from "expo-router";
 import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -19,7 +18,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 interface Specialization {
   id: string;
@@ -86,6 +88,7 @@ const PublicProfile = () => {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const insets = useSafeAreaInsets();
 
   // Store initial values for change detection
   const [initialValues, setInitialValues] = useState({
@@ -278,32 +281,7 @@ const PublicProfile = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Stack.Screen
-        options={{
-          title: "Edit Public Profile",
-          headerTitleStyle: { fontFamily: "DMSans_600SemiBold" },
-          headerTitleAlign: "center",
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                backgroundColor: !hasChanges ? Colors.light.faintGrey : "#000",
-                paddingVertical: 6,
-                paddingHorizontal: 12,
-                borderRadius: 6,
-                opacity: isSaving ? 0.5 : 1,
-              }}
-              onPress={handleSave}
-              disabled={isSaving || !hasChanges}
-            >
-              <TextSemiBold style={{ color: "#fff", fontSize: 14 }}>
-                {isSaving ? "Saving..." : "Save"}
-              </TextSemiBold>
-            </TouchableOpacity>
-          ),
-        }}
-      />
-
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       {saveStatus && (
         <View
           style={{
@@ -328,7 +306,13 @@ const PublicProfile = () => {
         visible={showSpecializationsModal}
         onRequestClose={() => setShowSpecializationsModal(false)}
       >
-        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            paddingTop: insets.top,
+          }}
+        >
           <SafeAreaView style={{ flex: 1 }}>
             <View style={{ padding: 16 }}>
               <View
@@ -385,7 +369,7 @@ const PublicProfile = () => {
                 keyExtractor={(item) => item.id}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 20 }}
+                contentContainerStyle={{ paddingBottom: insets.bottom + 64 }}
               />
             </View>
           </SafeAreaView>
@@ -719,8 +703,25 @@ const PublicProfile = () => {
             </TextRegular>
           </View>
         </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: !hasChanges ? Colors.light.faintGrey : "#000",
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            borderRadius: 8,
+            opacity: isSaving ? 0.5 : 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onPress={handleSave}
+          disabled={isSaving || !hasChanges}
+        >
+          <TextSemiBold style={{ color: "#fff", fontSize: 16 }}>
+            {isSaving ? "Saving..." : "Save"}
+          </TextSemiBold>
+        </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

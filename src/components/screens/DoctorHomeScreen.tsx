@@ -71,20 +71,6 @@ const DoctorHomeScreen = () => {
       <Stack.Screen
         options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
       />
-
-      {(userData?.verification === "unverified" || !userData?.verification) && (
-        <VerificationAlert />
-      )}
-      {(userData?.verification === "pending" || !userData?.verification) && (
-        <PendingAlert />
-      )}
-      {!userData?.hasPublicProfile && <MissingPublicProfileAlert />}
-      {/* <TextRegular>Error: {notificationError?.message}</TextRegular>
-      <TextSemiBold>Your push token: {expoPushToken}</TextSemiBold>
-      <TextSemiBold>
-        Latest Notification: {notification?.request.content.title} -{" "}
-        {notification?.request.content.body}
-      </TextSemiBold> */}
       <Notifications />
       <View
         style={{
@@ -101,7 +87,7 @@ const DoctorHomeScreen = () => {
 
 export default DoctorHomeScreen;
 
-const VerificationAlert = () => {
+export const VerificationAlert = () => {
   const handleNavigate = () => {
     router.push("/profile");
   };
@@ -161,7 +147,7 @@ const VerificationAlert = () => {
   );
 };
 
-const PendingAlert = () => {
+export const PendingAlert = () => {
   return (
     <View
       style={{
@@ -196,7 +182,7 @@ const PendingAlert = () => {
   );
 };
 
-const MissingPublicProfileAlert = () => {
+export const MissingPublicProfileAlert = () => {
   return (
     <View
       style={{

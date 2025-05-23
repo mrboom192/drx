@@ -110,7 +110,9 @@ const Personal = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                router.push("/(protected)/(tabs)/profile/doctor-verification");
+                router.push({
+                  pathname: "/(protected)/(modals)/doctor-verification",
+                });
               }}
               style={{
                 paddingVertical: 16,

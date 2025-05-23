@@ -286,7 +286,7 @@ const OnlineConsultation = () => {
                 textAlign: "center",
               }}
             >
-              View bookmarked (6)
+              View bookmarked (0)
             </TextSemiBold>
           </TouchableOpacity>
           <Link href={"/search"} asChild>

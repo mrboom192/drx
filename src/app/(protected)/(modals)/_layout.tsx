@@ -35,6 +35,14 @@ export default function ModalsLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="doctor-verification"
+        options={{
+          title: "Verification",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

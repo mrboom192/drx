@@ -18,6 +18,20 @@ const Patients = () => {
       {chats.map((chat) => (
         <PatientRow key={chat.id} chat={chat} />
       ))}
+      {chats.length === 0 && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingVertical: 20,
+          }}
+        >
+          <TextSemiBold style={{ color: Colors.grey }}>
+            No patients found.
+          </TextSemiBold>
+        </View>
+      )}
     </PageScrollView>
   );
 };

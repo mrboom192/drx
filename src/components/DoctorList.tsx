@@ -1,37 +1,29 @@
-import {
-  View,
-  Text,
-  ListRenderItem,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Touchable,
-  useColorScheme,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { defaultStyles, themedStyles } from "@/constants/Styles";
+import { themedStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  BottomSheetFlatList,
-  BottomSheetFlatListMethods,
-} from "@gorhom/bottom-sheet";
-import { Doctor } from "@/types/doctor";
+  Image,
+  ListRenderItem,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Rating from "./Rating";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
-  doctors: Doctor[];
+  doctors: any[];
   specialty: string;
-  refresh: number;
+  refresh?: number;
 }
 
 const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
   const [loading, setLoading] = useState(false);
-  const listRef = useRef<BottomSheetFlatListMethods>(null);
+  const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -51,19 +43,22 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
   const themeBorderStyle =
     colorScheme === "light"
       ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
+      : // : themedStyles.darkBorder;
+        themedStyles.lightBorder;
 
   const themeTextStylePrimary =
     colorScheme === "light"
       ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
+      : // : themedStyles.darkTextPrimary;
+        themedStyles.lightTextPrimary;
 
   const themeTextStyleSecondary =
     colorScheme === "light"
       ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
+      : // : themedStyles.darkTextSecondary;
+        themedStyles.lightTextSecondary;
 
-  const renderRow: ListRenderItem<Doctor> = ({ item }) => (
+  const renderRow: ListRenderItem<any> = ({ item }) => (
     <Link href={`/doctor/${item.id}` as any} asChild>
       <TouchableOpacity>
         <Animated.View
@@ -107,7 +102,7 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
   );
 
   return (
-    <BottomSheetFlatList
+    <FlatList
       renderItem={renderRow}
       data={loading ? [] : items}
       ref={listRef}

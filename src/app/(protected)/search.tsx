@@ -1,6 +1,5 @@
 import doctorsData from "@/../assets/data/doctors.json";
-import DoctorMap from "@/components/DoctorMap";
-import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";
+import DoctorList from "@/components/DoctorList";
 import DoctorsHeader from "@/components/DoctorsHeader";
 import { View } from "@/components/Themed";
 import { Stack } from "expo-router";
@@ -21,8 +20,9 @@ const Page = () => {
           header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,
         }}
       />
-      <DoctorMap doctors={doctors} />
-      <DoctorsBottomSheet doctors={doctors} specialty={specialty} />
+      {/* <DoctorMap doctors={doctors} /> */}
+      {/* <DoctorsBottomSheet doctors={doctors} specialty={specialty} /> */}
+      <DoctorList doctors={doctors} specialty={specialty} />
     </View>
   );
 };

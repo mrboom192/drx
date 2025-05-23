@@ -34,17 +34,20 @@ const MessagesHeader = ({}: Props) => {
   const themeTextStylePrimary =
     colorScheme === "light"
       ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
+      : // : themedStyles.darkTextPrimary;
+        themedStyles.lightTextPrimary;
 
   const themeTextStyleSecondary =
     colorScheme === "light"
       ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
+      : // : themedStyles.darkTextSecondary;
+        themedStyles.lightTextSecondary;
 
   const themeBorderStyle =
     colorScheme === "light"
       ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
+      : // : themedStyles.darkBorder;
+        themedStyles.lightBorder;
 
   const selectCategory = (index: number) => {
     const selected = itemsRef.current[index];
@@ -96,7 +99,7 @@ const MessagesHeader = ({}: Props) => {
             <TouchableOpacity
               onPress={() => selectCategory(index)}
               key={index}
-              ref={(el) => (itemsRef.current[index] = el)}
+              ref={(el: any) => (itemsRef.current[index] = el)}
               style={[
                 {
                   boxSizing: "border-box",
@@ -106,13 +109,15 @@ const MessagesHeader = ({}: Props) => {
                       ? "none"
                       : colorScheme === "light"
                       ? Colors.light.faintGrey
-                      : Colors.dark.faintGrey,
+                      : // : Colors.dark.faintGrey,
+                        Colors.light.faintGrey,
                   borderWidth: 1,
                   backgroundColor:
                     activeIndex === index
                       ? colorScheme === "light"
                         ? "#000"
-                        : "#fff"
+                        : // : "#fff"
+                          "#000"
                       : "transparent",
                 },
                 styles.filterPill,
@@ -125,7 +130,8 @@ const MessagesHeader = ({}: Props) => {
                         color:
                           colorScheme === "light"
                             ? "#fff"
-                            : Colors.dark.background,
+                            : // : Colors.dark.background,
+                              "#fff",
                         textTransform: "capitalize",
                       }
                     : [themeTextStyleSecondary, { textTransform: "capitalize" }]

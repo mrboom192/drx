@@ -48,7 +48,8 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
           backgroundColor:
             colorScheme === "light"
               ? Colors.light.background
-              : Colors.dark.background,
+              : // : Colors.dark.background,
+                Colors.light.background,
         }}
         snapPoints={snapPoints}
         index={1}

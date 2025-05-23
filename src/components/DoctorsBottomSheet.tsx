@@ -1,25 +1,18 @@
 import Colors from "@/constants/Colors";
-import { Doctor } from "@/types/doctor";
 import { Ionicons } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { useMemo, useRef, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import DoctorList from "./DoctorList";
 import { TextSemiBold } from "./StyledText";
 
 interface Props {
-  doctors: Doctor[];
+  doctors: any[];
   specialty: string;
 }
 
 const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const colorScheme = useColorScheme();
   const [refresh, setRefresh] = useState(0);
   const snapPoints = useMemo(() => ["4%", "100%"], []);
 
@@ -32,18 +25,12 @@ const DoctorsBottomSheet = ({ doctors, specialty }: Props) => {
     <BottomSheet
       style={[
         {
-          backgroundColor:
-            colorScheme === "light"
-              ? Colors.light.background
-              : Colors.dark.background,
+          backgroundColor: Colors.light.background,
         },
         styles.sheetContainer,
       ]}
       backgroundStyle={{
-        backgroundColor:
-          colorScheme === "light"
-            ? Colors.light.background
-            : Colors.dark.background,
+        backgroundColor: Colors.light.background,
       }}
       snapPoints={snapPoints}
       index={2}

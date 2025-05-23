@@ -218,7 +218,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             <TouchableOpacity
               onPress={() => selectCategory(index)}
               key={index}
-              ref={(el) => (itemsRef.current[index] = el)}
+              ref={(el: any) => (itemsRef.current[index] = el)}
               style={{
                 flexDirection: "column",
                 justifyContent: "center",

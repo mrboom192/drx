@@ -359,7 +359,11 @@ const DoctorCard = ({ item }: { item: any }) => {
             width: "100%",
           }}
         >
-          <Avatar size={56} uri={item.image} />
+          <Avatar
+            size={56}
+            uri={item.image}
+            initials={item.firstName[0] + item.lastName[0]}
+          />
           <View style={{ flex: 1 }}>
             <TextSemiBold
               style={{ fontSize: 16, marginBottom: 4 }}

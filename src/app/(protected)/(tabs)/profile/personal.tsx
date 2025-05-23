@@ -2,7 +2,7 @@ import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 
@@ -86,7 +86,7 @@ const Personal = () => {
                     <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                       Public profile
                     </TextSemiBold>
-                    {userData.hasPublicProfile && (
+                    {!userData.hasPublicProfile && (
                       <Ionicons
                         name="alert-circle-outline"
                         size={20}

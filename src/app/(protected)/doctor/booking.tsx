@@ -158,10 +158,7 @@ const BookingPage = () => {
       });
 
       router.replace({
-        pathname: `/(protected)/(chat)/[chatId]`,
-        params: {
-          chatId: [doctor.uid, userData.uid].sort().join("_"),
-        },
+        pathname: `/(protected)/(tabs)/messages`,
       });
     } catch (error: any) {
       Alert.alert("Error", error);

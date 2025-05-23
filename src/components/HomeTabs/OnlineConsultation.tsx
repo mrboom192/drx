@@ -1,6 +1,7 @@
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import { useUserData } from "@/stores/useUserStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Link, router } from "expo-router";
@@ -19,6 +20,7 @@ const OnlineConsultation = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [doctors, setDoctors] = useState<any[]>([]);
+  const userData = useUserData();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -155,6 +157,12 @@ const OnlineConsultation = () => {
                   gap: 8,
                 },
               ]}
+              onPress={() =>
+                router.push({
+                  pathname: "/(protected)/medical-records/[id]",
+                  params: { id: userData.uid },
+                })
+              } // Navigate to medical records
             >
               <CustomIcon
                 name="health-and-safety"

@@ -101,8 +101,8 @@ const Avatar = ({
       ) : (
         <TextSemiBold
           style={{
+            fontSize: size * 0.4,
             color: "#555",
-            marginHorizontal: 8,
             textAlign: "center",
           }}
         >

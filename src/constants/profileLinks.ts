@@ -19,6 +19,11 @@ export const patientLinks = [
     label: "View our app's privacy policy",
     url: "/privacy-policy",
   },
+  {
+    icon: "information-circle-outline",
+    label: "View our app's terms of service",
+    url: "/terms-of-service",
+  },
 ];
 
 export const doctorLinks = [
@@ -41,5 +46,10 @@ export const doctorLinks = [
     icon: "shield-checkmark-outline",
     label: "View our app's privacy policy",
     url: "/privacy-policy",
+  },
+  {
+    icon: "information-circle-outline",
+    label: "View our app's terms of service",
+    url: "/terms-of-service",
   },
 ];

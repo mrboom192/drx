@@ -117,6 +117,16 @@ export default function ProtectedLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="search-modal"
+        options={{
+          title: "Search Doctors",
+          animation: "fade",
+          animationDuration: 125,
+          headerShadowVisible: false,
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

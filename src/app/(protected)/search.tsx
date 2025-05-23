@@ -1,13 +1,11 @@
-import doctorsData from "@/../assets/data/doctors.json";
 import DoctorList from "@/components/DoctorList";
 import DoctorsHeader from "@/components/DoctorsHeader";
 import { View } from "@/components/Themed";
 import { Stack } from "expo-router";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 const Page = () => {
-  const doctors = useMemo(() => doctorsData as any, []);
-  const [specialty, setSpecialty] = useState("General Practice");
+  const [specialty, setSpecialty] = useState("all");
 
   const onDataChanged = (specialty: string) => {
     setSpecialty(specialty);
@@ -22,7 +20,7 @@ const Page = () => {
       />
       {/* <DoctorMap doctors={doctors} /> */}
       {/* <DoctorsBottomSheet doctors={doctors} specialty={specialty} /> */}
-      <DoctorList doctors={doctors} specialty={specialty} />
+      <DoctorList specialty={specialty} />
     </View>
   );
 };

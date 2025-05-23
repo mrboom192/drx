@@ -1,8 +1,9 @@
+import Colors from "@/constants/Colors";
 import { themedStyles } from "@/constants/Styles";
+import { useFilteredDoctors } from "@/stores/useDoctorSearch";
 import { Link } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Image,
   ListRenderItem,
   StyleSheet,
   TouchableOpacity,
@@ -11,17 +12,16 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import Rating from "./Rating";
+import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
-  doctors: any[];
   specialty: string;
   refresh?: number;
 }
 
-const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
+const DoctorList = ({ specialty, refresh }: Props) => {
+  const doctors = useFilteredDoctors(specialty);
   const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
@@ -62,38 +62,33 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
     <Link href={`/doctor/${item.id}` as any} asChild>
       <TouchableOpacity>
         <Animated.View
-          style={[
-            {
-              backgroundColor:
-                colorScheme === "light"
-                  ? Colors.light.background
-                  : Colors.dark.background,
-            },
-            themeBorderStyle,
-            styles.listing,
-          ]}
+          style={[themeBorderStyle, styles.listing]}
           entering={FadeInRight}
           exiting={FadeOutLeft}
         >
           {/* Image */}
           <View style={{ flexDirection: "row", gap: 16 }}>
-            <Image source={{ uri: item.photo_url }} style={styles.image} />
+            <Avatar
+              uri={item.image}
+              size={64}
+              initials={item.firstName[0] + item.lastName[0]}
+            />
 
             <View style={styles.info}>
               <View>
                 <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
-                  {item.name}
+                  {item.firstName} {item.lastName}
                 </TextSemiBold>
                 <TextRegular style={themeTextStyleSecondary}>
-                  {item.specialty.join(", ")}
+                  {item.specializations.join(", ")}
                 </TextRegular>
               </View>
-              <Rating rating={4.5} reviews={223} />
+              {/* <Rating rating={4.5} reviews={223} /> */}
             </View>
           </View>
           <View style={[themeBorderStyle, styles.price]}>
             <TextRegular style={[themeTextStylePrimary, { fontSize: 20 }]}>
-              ${item.consultation_price}
+              ${item.consultationPrice}
             </TextRegular>
           </View>
         </Animated.View>
@@ -101,10 +96,25 @@ const DoctorList = ({ doctors: items, specialty, refresh }: Props) => {
     </Link>
   );
 
-  return (
+  return doctors.length === 0 && !loading ? (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 16,
+      }}
+    >
+      <TextSemiBold
+        style={[themeTextStylePrimary, { fontSize: 16, color: Colors.grey }]}
+      >
+        No doctors found
+      </TextSemiBold>
+    </View>
+  ) : (
     <FlatList
       renderItem={renderRow}
-      data={loading ? [] : items}
+      data={loading ? [] : doctors}
       ref={listRef}
     />
   );
@@ -118,11 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 16,
     justifyContent: "space-between",
-  },
-  image: {
-    width: 64,
-    height: 64,
-    borderRadius: 9999,
   },
   info: {
     flexDirection: "column",

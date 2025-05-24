@@ -76,8 +76,10 @@ export function useWebRTCCall(
   const handleIceCandidate = async (event: any) => {
     if (event.candidate) {
       const candidateJSON = event.candidate.toJSON();
+      const refToUse = isCaller ? offerCandidatesRef : answerCandidatesRef;
+
       try {
-        const newRef = push(offerCandidatesRef);
+        const newRef = push(refToUse);
         await set(newRef, candidateJSON);
       } catch (err) {
         console.error("[RTDB] Failed to store ICE candidate:", err);
@@ -86,17 +88,14 @@ export function useWebRTCCall(
   };
 
   const handleTrack = (event: any) => {
-    if (!remoteStreamRef.current) {
-      remoteStreamRef.current = new MediaStream();
-      setRemoteStream(remoteStreamRef.current);
-    }
-    if (event.track.kind === "video" || event.track.kind === "audio") {
-      remoteStreamRef.current.addTrack(event.track);
-    }
+    remoteStreamRef.current = remoteStreamRef.current || new MediaStream();
+    remoteStreamRef.current.addTrack(event.track);
+    setRemoteStream(remoteStreamRef.current);
   };
 
   const handleIceConnectionStateChange = () => {
     const state = peerConnection.current.iceConnectionState;
+    console.log("ICE connection state:", state);
     const peerDisconnected =
       state === "disconnected" || state === "failed" || state === "closed";
 
@@ -126,6 +125,12 @@ export function useWebRTCCall(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
+    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+      console.log(
+        "[ICE] Gathering state:",
+        peerConnection.current.iceGatheringState
+      );
+    });
 
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current.addTrack(track, mediaStream);
@@ -135,12 +140,13 @@ export function useWebRTCCall(
     await peerConnection.current.setLocalDescription(offer);
     await setDoc(callDocRef, { offer });
 
+    // Listen to the call document, then set remote description
     if (firestoreUnsub.current) firestoreUnsub.current();
     firestoreUnsub.current = onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.answer &&
-        !peerConnection.current.currentRemoteDescription &&
+        !peerConnection.current.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
@@ -185,6 +191,12 @@ export function useWebRTCCall(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
+    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+      console.log(
+        "[ICE] Gathering state:",
+        peerConnection.current.iceGatheringState
+      );
+    });
 
     // Listen to the call document, then set remote description
     if (firestoreUnsub.current) firestoreUnsub.current();
@@ -192,7 +204,7 @@ export function useWebRTCCall(
       const data = snapshot.data();
       if (
         data?.offer &&
-        !peerConnection.current.currentRemoteDescription &&
+        !peerConnection.current.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;

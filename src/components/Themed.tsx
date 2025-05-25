@@ -1,18 +1,17 @@
-import {
-  Text as DefaultText,
-  View as DefaultView,
-  SafeAreaView as DefaultSafeAreaView,
-  TouchableOpacity as DefaultTouchableOpacity,
-  ScrollView as DefaultScrollView,
-  TextProps as RNTextProps,
-  ViewProps as RNViewProps,
-  ScrollViewProps as RNScrollViewProps,
-  TouchableOpacityProps as RNTouchableOpacityProps,
-} from "react-native";
 import Colors from "@/constants/Colors";
-import { useColorScheme } from "react-native";
+import {
+  SafeAreaView as DefaultSafeAreaView,
+  ScrollView as DefaultScrollView,
+  Text as DefaultText,
+  TouchableOpacity as DefaultTouchableOpacity,
+  View as DefaultView,
+  ScrollViewProps as RNScrollViewProps,
+  TextProps as RNTextProps,
+  TouchableOpacityProps as RNTouchableOpacityProps,
+  ViewProps as RNViewProps,
+} from "react-native";
 
-import React, { forwardRef } from "react";
+import React, { ComponentRef, forwardRef } from "react";
 
 // Shared theme props
 type ThemeProps = {
@@ -32,7 +31,8 @@ export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  const theme = useColorScheme() ?? "light";
+  // const theme = useColorScheme() ?? "light";
+  const theme = "light";
 
   return props[theme] ?? Colors[theme][colorName];
 }
@@ -83,7 +83,7 @@ export function SafeAreaView({
 
 // Themed TouchableOpacity component
 export const TouchableOpacity = forwardRef<
-  DefaultTouchableOpacity,
+  ComponentRef<typeof DefaultTouchableOpacity>,
   TouchableOpacityProps
 >(({ style, lightColor, darkColor, ...otherProps }, ref) => {
   const backgroundColor = useThemeColor(

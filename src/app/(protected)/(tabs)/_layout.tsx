@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
@@ -7,6 +8,8 @@ export default function TabLayout() {
       screenOptions={({ route }) => ({
         tabBarStyle: {
           display: route.name === "chats" ? "none" : "flex",
+          backgroundColor: "#FFF",
+          borderColor: Colors.faintGrey,
         },
       })}
     >

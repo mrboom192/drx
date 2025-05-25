@@ -3,6 +3,7 @@ import { SignupUser, User } from "@/types/user";
 import {
   arrayUnion,
   doc,
+  getDoc,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -87,4 +88,16 @@ export async function updateItemInMedicalRecord<T extends { id: string }>(
     [field]: updatedItems,
     updatedAt: serverTimestamp(),
   });
+}
+
+// Fetch the medical record of a user by their ID
+export async function fetchMedicalRecord(userId: string) {
+  const userRef = doc(db, "records", userId);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    return userDoc.data() as MedicalRecord;
+  } else {
+    throw new Error("Medical record not found");
+  }
 }

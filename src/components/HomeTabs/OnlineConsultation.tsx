@@ -1,14 +1,18 @@
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import {
+  useDoctors,
+  useFetchSomeDoctors,
+  useIsFetchingDoctors,
+} from "@/stores/useDoctorSearch";
+import { useUserData } from "@/stores/useUserStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Link } from "expo-router";
-import { collection, getDocs, limit, query } from "firebase/firestore";
+import { Link, router } from "expo-router";
 import LottieView from "lottie-react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import { db } from "../../../firebaseConfig";
 import Avatar from "../Avatar";
 import CustomIcon from "../icons/CustomIcon";
 import { TextRegular, TextSemiBold } from "../StyledText";
@@ -16,9 +20,10 @@ import { TextRegular, TextSemiBold } from "../StyledText";
 const OnlineConsultation = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
     useThemedStyles();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [doctors, setDoctors] = useState<any[]>([]);
+  const fetchSomeDoctors = useFetchSomeDoctors();
+  const doctors = useDoctors();
+  const isFetchingDoctors = useIsFetchingDoctors();
+  const userData = useUserData();
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -26,34 +31,9 @@ const OnlineConsultation = () => {
     bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
   }, []);
 
-  const fetchRandomDoctors = useCallback(async () => {
-    setLoading(true);
-    setError(null); // Reset error state before fetching
-
-    try {
-      const doctorsRef = collection(db, "publicProfiles");
-
-      // Fetch up to 50 doctors (to allow better randomness)
-      const q = query(doctorsRef, limit(7));
-      const querySnapshot = await getDocs(q);
-
-      let doctorsList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setDoctors(doctorsList);
-    } catch (error) {
-      console.error("Error fetching random doctors:", error);
-      setError("Failed to load doctors. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchRandomDoctors();
-  }, [fetchRandomDoctors]);
+    fetchSomeDoctors();
+  }, [fetchSomeDoctors]);
 
   const renderDetails = () => {
     return (
@@ -110,6 +90,22 @@ const OnlineConsultation = () => {
     );
   };
 
+  if (isFetchingDoctors) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
+          Loading doctors...
+        </TextSemiBold>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1 }}>
       {/* Widgets */}
@@ -155,6 +151,12 @@ const OnlineConsultation = () => {
                   gap: 8,
                 },
               ]}
+              onPress={() =>
+                router.push({
+                  pathname: "/(protected)/medical-records/[id]",
+                  params: { id: userData!.uid },
+                })
+              } // Navigate to medical records
             >
               <CustomIcon
                 name="health-and-safety"
@@ -247,8 +249,8 @@ const OnlineConsultation = () => {
             paddingHorizontal: 16,
           }}
         >
-          {doctors.map((item, index) => (
-            <DoctorCard key={item.uid} item={item} />
+          {doctors.map((item: unknown, index: any) => (
+            <DoctorCard key={(item as any).uid} item={item} />
           ))}
         </ScrollView>
 
@@ -268,6 +270,9 @@ const OnlineConsultation = () => {
               paddingHorizontal: 16,
               paddingVertical: 16,
             }}
+            onPress={() => {
+              router.push("/bookmarked");
+            }}
           >
             <CustomIcon
               name="bookmark"
@@ -281,7 +286,7 @@ const OnlineConsultation = () => {
                 textAlign: "center",
               }}
             >
-              View bookmarked (6)
+              View bookmarked (0)
             </TextSemiBold>
           </TouchableOpacity>
           <Link href={"/search"} asChild>
@@ -354,7 +359,11 @@ const DoctorCard = ({ item }: { item: any }) => {
             width: "100%",
           }}
         >
-          <Avatar size={56} uri={item.image} />
+          <Avatar
+            size={56}
+            uri={item.image}
+            initials={item.firstName[0] + item.lastName[0]}
+          />
           <View style={{ flex: 1 }}>
             <TextSemiBold
               style={{ fontSize: 16, marginBottom: 4 }}

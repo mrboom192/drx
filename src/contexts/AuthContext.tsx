@@ -8,6 +8,7 @@ import { RelativePathString, router } from "expo-router";
 import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -61,6 +62,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
         createdAt: serverTimestamp(),
         ...data,
       } as SignupUser & Pick<User, "uid" | "email" | "createdAt">;
+
+      await sendEmailVerification(user);
 
       // Store user information in Firestore, merging user-specific data
       await setDoc(doc(db, "users", user.uid), userData);

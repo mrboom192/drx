@@ -1,6 +1,6 @@
-import { useColorScheme } from "react-native";
-import { useMemo } from "react";
 import { themedStyles } from "@/constants/Styles";
+import { useMemo } from "react";
+import { useColorScheme } from "react-native";
 
 export function useThemedStyles() {
   const colorScheme = useColorScheme();
@@ -11,15 +11,18 @@ export function useThemedStyles() {
       themeTextStylePrimary:
         colorScheme === "light"
           ? themedStyles.lightTextPrimary
-          : themedStyles.darkTextPrimary,
+          : // : themedStyles.darkTextPrimary,
+            themedStyles.lightTextPrimary,
       themeTextStyleSecondary:
         colorScheme === "light"
           ? themedStyles.lightTextSecondary
-          : themedStyles.darkTextSecondary,
+          : // : themedStyles.darkTextSecondary,
+            themedStyles.lightTextSecondary,
       themeBorderStyle:
         colorScheme === "light"
           ? themedStyles.lightBorder
-          : themedStyles.darkBorder,
+          : // : themedStyles.darkBorder,
+            themedStyles.lightBorder,
     };
   }, [colorScheme]);
 }

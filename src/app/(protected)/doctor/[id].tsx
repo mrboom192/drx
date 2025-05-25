@@ -112,7 +112,11 @@ const Page = () => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-            <Avatar size={48} uri={doctor.image || undefined} />
+            <Avatar
+              size={48}
+              uri={doctor.image || undefined}
+              initials={doctor.firstName[0] + doctor.lastName[0]}
+            />
             <View style={{ flex: 1 }}>
               <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
                 Dr. {doctor.firstName} {doctor.lastName}

@@ -6,7 +6,7 @@ import { useImagePicker } from "@/hooks/useImagePicker";
 import { Stack } from "expo-router";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { auth, db } from "../../../../../firebaseConfig";
+import { auth, db } from "../../../../firebaseConfig";
 
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { useUserData } from "@/stores/useUserStore";
@@ -57,14 +57,6 @@ const DoctorVerification = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff", padding: 20 }}>
-      <Stack.Screen
-        options={{
-          title: "Verification",
-          headerTitleStyle: { fontFamily: "DMSans_600SemiBold" },
-          headerTitleAlign: "center",
-        }}
-      />
-
       {isVerified ? (
         <View style={{ alignItems: "center", marginTop: 40 }}>
           <TextSemiBold

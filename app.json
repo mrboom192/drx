@@ -15,6 +15,9 @@
       "appleTeamId": "46LZA2WXBP",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
+      },
+      "entitlements": {
+        "com.apple.developer.in-app-payments": ["merchant.com.doctorx.drx"]
       }
     },
     "android": {
@@ -59,7 +62,7 @@
         "@stripe/stripe-react-native",
         {
           "merchantIdentifier": "merchant.com.doctorx.drx",
-          "publishableKey": "pk_test_51N1v2aKx4r7X0q3j5gk6m8Z9epk_live_51Q6gpGJIvTh9EQNO1CZxko18GxTEMe5FrMqyFBAxN5E3DnruXRBMMBv3vJaJIXxgn7BxkOm79h7aKHZbwtlQafQW00xIvxrDKP",
+          "publishableKey": "pk_test_51Q6gpGJIvTh9EQNO1y7Pw01eTx65Rd2euqkfunq2bS8pao2EEYxDv6j4B2qtsj8AD9OE7kzXFVEvFxttFWEc75XY0087lWVVFy",
           "enableGooglePay": true
         }
       ]

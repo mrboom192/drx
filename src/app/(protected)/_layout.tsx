@@ -3,6 +3,10 @@ import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
 import { useIsAuthReady } from "@/stores/useAuthInitStore";
 import {
+  useStartBillingListener,
+  useStopBillingListener,
+} from "@/stores/useBillingDetails";
+import {
   useStartChatsListener,
   useStopChatsListener,
 } from "@/stores/useChatStore";
@@ -16,11 +20,26 @@ export default function ProtectedLayout() {
   const { session, isLoading } = useSession();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
+
+  const startBillingListener = useStartBillingListener();
+  const stopBillingListener = useStopBillingListener();
+
+  // Chats
   const startChatsListener = useStartChatsListener();
   const stopChatsListener = useStopChatsListener();
   const isAuthReady = useIsAuthReady();
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
+
+  // Fetch billing details
+  useEffect(() => {
+    if (!session || !isAuthReady) return;
+    startBillingListener();
+
+    return () => {
+      stopBillingListener();
+    };
+  }, [isAuthReady, session]);
 
   // Fetch chats from Firebase immediately
   useEffect(() => {
@@ -79,6 +98,32 @@ export default function ProtectedLayout() {
         options={{
           title: "Notifications",
           presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="bookmarked"
+        options={{
+          title: "Bookmarked Doctors",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="medical-records"
+        options={{
+          title: "Medical Record",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="search-modal"
+        options={{
+          title: "Search Doctors",
+          animation: "fade",
+          animationDuration: 125,
+          headerShadowVisible: false,
           header: (props) => <PageHeader {...props} />,
         }}
       />

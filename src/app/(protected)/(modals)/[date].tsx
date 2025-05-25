@@ -80,7 +80,14 @@ const DayInfo = () => {
               <View
                 style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
               >
-                <Avatar uri={appointment.patient.image} size={24} />
+                <Avatar
+                  uri={appointment.patient.image}
+                  size={24}
+                  initials={
+                    appointment.patient.firstName[0] +
+                    appointment.patient.lastName[0]
+                  }
+                />
                 <TextSemiBold style={{ fontSize: 16 }}>
                   {appointment.patient.firstName} {appointment.patient.lastName}
                 </TextSemiBold>

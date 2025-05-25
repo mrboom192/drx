@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, useColorScheme } from "react-native";
-import React from "react";
 import Colors from "@/constants/Colors";
-import { FontAwesome } from "@expo/vector-icons";
 import { themedStyles } from "@/constants/Styles";
+import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, useColorScheme, View } from "react-native";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
 interface Props {
@@ -16,12 +16,14 @@ const Rating = ({ rating, reviews }: Props) => {
   const themeTextStylePrimary =
     colorScheme === "light"
       ? themedStyles.lightTextPrimary
-      : themedStyles.darkTextPrimary;
+      : // : themedStyles.darkTextPrimary;
+        themedStyles.lightTextPrimary;
 
   const themeTextStyleSecondary =
     colorScheme === "light"
       ? themedStyles.lightTextSecondary
-      : themedStyles.darkTextSecondary;
+      : // : themedStyles.darkTextSecondary;
+        themedStyles.lightTextSecondary;
 
   const stars = [];
 

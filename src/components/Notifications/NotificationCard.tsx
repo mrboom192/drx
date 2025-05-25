@@ -1,4 +1,5 @@
 import Colors from "@/constants/Colors";
+import { Route, router } from "expo-router";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import CustomIcon from "../icons/CustomIcon";
 import { TextRegular, TextSemiBold } from "../StyledText";
@@ -6,14 +7,21 @@ import { TextRegular, TextSemiBold } from "../StyledText";
 const NotificationCard = ({
   title,
   message,
+  color = Colors.green,
+  url,
 }: {
   title: string;
   message: string;
+  color?: string;
+  url?: Route; // update to deep linking later
 }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => url && router.push(url)}
+    >
       <View style={styles.titleRow}>
-        <CustomIcon name="circle" size={8} color={Colors.green} />
+        <CustomIcon name="circle" size={8} color={color} />
         <TextSemiBold style={styles.title}>{title}</TextSemiBold>
       </View>
       <TextRegular style={styles.message}>{message}</TextRegular>

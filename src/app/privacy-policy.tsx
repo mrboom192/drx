@@ -27,8 +27,7 @@ export default function PrivacyPolicyScreen() {
         <TextRegular style={{ marginBottom: 12 }}>
           We use Your Personal data to provide and improve the Service. By using
           the Service, You agree to the collection and use of information in
-          accordance with this Privacy Policy. This Privacy Policy has been
-          created with the help of the Privacy Policy Generator.
+          accordance with this Privacy Policy.
         </TextRegular>
 
         <TextSemiBold style={{ fontSize: 20, marginTop: 24, marginBottom: 8 }}>

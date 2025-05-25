@@ -3,7 +3,7 @@ import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { useSignUp } from "@/contexts/SignupContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { fetchSignInMethodsForEmail } from "firebase/auth";
 import React, { useState } from "react";
 import {
@@ -42,7 +42,10 @@ const SignIn = () => {
       if (methods.length > 0) {
         setShowPasswordInput(true);
       } else {
-        router.push("/signup");
+        router.push({
+          pathname: "/signup",
+          params: { email: signUpData.email },
+        });
       }
     } catch (error) {
       console.error("Firebase check error:", error);
@@ -81,7 +84,7 @@ const SignIn = () => {
             marginBottom: 32,
           }}
         >
-          Log in or sign up into DrX
+          Welcome to DrX
         </TextSemiBold>
 
         <View
@@ -214,8 +217,7 @@ const SignIn = () => {
           </TouchableOpacity>
         )}
 
-        {/* OR Separator */}
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -246,8 +248,6 @@ const SignIn = () => {
             }}
           />
         </View>
-
-        {/* Recover link */}
         <TouchableOpacity
           disabled={checking}
           onPress={handleRecover}
@@ -267,20 +267,31 @@ const SignIn = () => {
           >
             Recover my account
           </TextSemiBold>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </KeyboardAvoidingView>
 
       <TextRegular
         style={{
-          fontSize: 12,
+          fontSize: 14,
           color: "#666",
           textAlign: "center",
-          lineHeight: 16,
+          marginHorizontal: 16,
         }}
       >
-        By proceeding, you consent to get calls, WhatsApp or SMS/RCS messages,
-        including by automated dialer, from DrX and its affiliates to the number
-        provided. Text "STOP" to 89203 to opt out.
+        By using our app, you agree to our{" "}
+        <Link href="/terms-of-service" asChild>
+          <TextSemiBold style={{ color: Colors.primary }}>
+            Terms of Service
+          </TextSemiBold>
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy-policy">
+          {" "}
+          <TextSemiBold style={{ color: Colors.primary }}>
+            Privacy Policy
+          </TextSemiBold>
+        </Link>
+        .
       </TextRegular>
     </SafeAreaView>
   );

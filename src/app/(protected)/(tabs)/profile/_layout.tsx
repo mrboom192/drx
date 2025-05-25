@@ -26,6 +26,27 @@ const ProfileLayout = () => {
         }}
       />
       <Stack.Screen name="medical-record" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="payment-methods"
+        options={{
+          title: "Payment Methods",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="patients"
+        options={{
+          title: "Patients",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="public-profile"
+        options={{
+          title: "Edit Public Profile",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 };

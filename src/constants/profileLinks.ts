@@ -9,15 +9,20 @@ export const patientLinks = [
     label: "View your medical records",
     url: "/(tabs)/profile/medical-record",
   },
-  {
-    icon: "notifications-outline",
-    label: "Notification settings",
-    url: "/(tabs)/profile",
-  },
+  // {
+  //   icon: "card-outline",
+  //   label: "Payment methods",
+  //   url: "/(tabs)/profile/payment-methods",
+  // },
   {
     icon: "shield-checkmark-outline",
     label: "View our app's privacy policy",
     url: "/privacy-policy",
+  },
+  {
+    icon: "information-circle-outline",
+    label: "View our app's terms of service",
+    url: "/terms-of-service",
   },
 ];
 
@@ -28,18 +33,23 @@ export const doctorLinks = [
     url: "/(tabs)/profile/personal",
   },
   {
-    icon: "call-outline",
-    label: "Contact customer support",
-    url: "/(tabs)/profile",
+    icon: "medical-outline",
+    label: "View your patients",
+    url: "/(tabs)/profile/patients",
   },
-  {
-    icon: "notifications-outline",
-    label: "Notification settings",
-    url: "/(tabs)/profile",
-  },
+  // {
+  //   icon: "card-outline",
+  //   label: "Payment methods",
+  //   url: "/(tabs)/profile/payment-methods",
+  // },
   {
     icon: "shield-checkmark-outline",
     label: "View our app's privacy policy",
     url: "/privacy-policy",
+  },
+  {
+    icon: "information-circle-outline",
+    label: "View our app's terms of service",
+    url: "/terms-of-service",
   },
 ];

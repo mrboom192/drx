@@ -68,8 +68,8 @@ export default function RootLayout() {
 
   // Start notifications when the app loads
   useEffect(() => {
-    const unsubscribe = startNotifications();
-    return unsubscribe;
+    const unsubscribeNotifications = startNotifications();
+    return unsubscribeNotifications;
   }, [startNotifications]);
 
   useEffect(() => {
@@ -147,15 +147,25 @@ function RootLayoutNav() {
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
+                      name="signup"
+                      options={{
+                        title: "Finish signing up",
+                        header: (props) => <PageHeader {...props} />,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="terms-of-service"
+                      options={{
+                        title: "Terms of Service",
+                        header: (props) => <PageHeader {...props} />,
+                      }}
+                    />
+                    <Stack.Screen
                       name="privacy-policy"
                       options={{
                         title: "Privacy Policy",
                         header: (props) => <PageHeader {...props} />,
                       }}
-                    />
-                    <Stack.Screen
-                      name="signup"
-                      options={{ headerShown: false }}
                     />
                   </Stack>
                 </SignUpProvider>

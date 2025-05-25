@@ -20,9 +20,22 @@ const ExpoStripeProvider = (
     "publishableKey" | "merchantIdentifier"
   >
 ) => {
+  const stripePlugin = Constants.expoConfig?.plugins?.find(
+    (p) => Array.isArray(p) && p[0] === "@stripe/stripe-react-native"
+  );
+
+  const publishableKey = stripePlugin?.[1]?.publishableKey;
+  const merchantId = stripePlugin?.[1]?.merchantIdentifier;
+
+  if (!publishableKey || !merchantId) {
+    throw new Error(
+      "Stripe publishable key or merchant ID is missing in app.json."
+    );
+  }
+
   return (
     <StripeProvider
-      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+      publishableKey={publishableKey}
       merchantIdentifier={merchantId}
       urlScheme={Linking.createURL("/")?.split(":")[0]}
       {...props}

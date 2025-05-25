@@ -162,19 +162,19 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
               name="chevron-back"
               size={24}
               color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
               }
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => router.push("/")}
+            onPress={() => router.push({ pathname: "/search-modal" })}
             style={[themeBorderStyle, styles.searchBtn]}
           >
             <Ionicons
               name="search"
               size={24}
               color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
               }
             />
             <View>
@@ -192,7 +192,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
               name="options-outline"
               size={24}
               color={
-                colorScheme === "light" ? Colors.light.grey : Colors.dark.grey
+                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
               }
             />
           </TouchableOpacity>
@@ -218,7 +218,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             <TouchableOpacity
               onPress={() => selectCategory(index)}
               key={index}
-              ref={(el) => (itemsRef.current[index] = el)}
+              ref={(el: any) => (itemsRef.current[index] = el)}
               style={{
                 flexDirection: "column",
                 justifyContent: "center",

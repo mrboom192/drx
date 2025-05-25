@@ -1,261 +1,94 @@
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
-import { useSignUp } from "@/contexts/SignupContext";
-import { SignupUser } from "@/types/user";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { format } from "date-fns";
-import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import DatePicker from "react-native-date-picker";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import ControllerDatePicker from "@/components/ControllerDatePicker";
+import ControllerInput from "@/components/ControllerInput";
+import ControllerRoleSelector from "@/components/screens/signup/ControllerRoleSelector";
+import { SignupUser } from "@/types/user";
+import { useLocalSearchParams } from "expo-router";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const SignUp = () => {
-  const { signUpData, setSignUpData } = useSignUp();
+  const { email } = useLocalSearchParams();
   const { signUp } = useSession();
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: { role: "patient" },
+  });
+
   const [submitting, setSubmitting] = useState(false);
 
-  const handleDateChange = (_: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (selectedDate) {
-      setSignUpData({ dateOfBirth: selectedDate });
-    }
-  };
-
-  const handleSignUp = async () => {
-    const { email, password, ...userInfo } = signUpData;
+  const onSubmit: SubmitHandler<SignupUser & { password: string }> = async (
+    data
+  ) => {
+    // Data without password
+    const { password, ...rest } = data;
 
     try {
       setSubmitting(true);
-      await signUp(email, password, userInfo as SignupUser);
-    } catch (e) {
-      // Already handled in the context, but you could add UI feedback here
+      await signUp(email as string, data.password, { ...rest });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#fff",
-      }}
-    >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          paddingHorizontal: 24,
-          paddingTop: 32,
-          paddingBottom: 16,
-        }}
+    <View style={styles.container}>
+      <KeyboardAwareScrollView
+        bottomOffset={62}
+        contentContainerStyle={styles.keyboardAwareScrollView}
       >
-        <TouchableOpacity
-          onPress={() => {
-            router.back();
-          }}
-          disabled={submitting}
-        >
-          <Ionicons
-            name="chevron-back"
-            size={24}
-            color={submitting ? "#aaa" : "#000"}
-          />
-        </TouchableOpacity>
-
-        <TextSemiBold
-          style={{
-            fontSize: 20,
-            marginVertical: 24,
-            textAlign: "center",
-          }}
-        >
-          Finish signing up
-        </TextSemiBold>
-
         {/* Role Selector */}
-        <View
-          style={{
-            flexDirection: "row",
-            borderWidth: 1,
-            borderColor: Colors.light.faintGrey,
-            borderRadius: 100,
-            padding: 4,
-            marginBottom: 24,
-          }}
-        >
-          {["Patient", "Doctor"].map((option) => (
-            <TouchableOpacity
-              key={option}
-              disabled={submitting}
-              onPress={() => {
-                setSignUpData({
-                  role: option.toLowerCase() as "patient" | "doctor",
-                });
-              }}
-              style={{
-                flex: 1,
-                backgroundColor:
-                  signUpData.role === option.toLowerCase()
-                    ? "#8854D0"
-                    : "transparent",
-                paddingVertical: 12,
-                borderRadius: 100,
-                alignItems: "center",
-              }}
-            >
-              <TextSemiBold
-                style={{
-                  color:
-                    signUpData.role === option.toLowerCase() ? "#fff" : "#000",
-                }}
-              >
-                {option}
-              </TextSemiBold>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <ControllerRoleSelector
+          control={control}
+          name="role"
+          rules={{ required: "Please select a role" }}
+        />
 
         {/* First Name */}
-        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
-          First name
-        </TextRegular>
-        <TextInput
-          editable={!submitting}
-          style={{
-            borderColor: Colors.light.faintGrey,
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 16,
-            paddingVertical: 14,
-            fontSize: 16,
-            fontFamily: "DMSans_400Regular",
-            marginBottom: 16,
+        <ControllerInput
+          control={control}
+          rules={{
+            required: "First name is required",
           }}
-          placeholder="e.g. John"
-          value={signUpData.firstName}
-          onChangeText={(text) => setSignUpData({ firstName: text })}
+          name="firstName"
+          label={"First Name"}
+          placeholder={"e.g. John"}
         />
 
         {/* Last Name */}
-        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
-          Last name
-        </TextRegular>
-        <TextInput
-          editable={!submitting}
-          style={{
-            borderColor: Colors.light.faintGrey,
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 16,
-            paddingVertical: 14,
-            fontSize: 16,
-            fontFamily: "DMSans_400Regular",
-            marginBottom: 16,
+        <ControllerInput
+          control={control}
+          rules={{
+            required: "Last name is required",
           }}
-          placeholder="e.g. Smith"
-          value={signUpData.lastName}
-          onChangeText={(text) => setSignUpData({ lastName: text })}
+          name="lastName"
+          label={"Last Name"}
+          placeholder={"e.g. Doe"}
         />
 
         {/* Date of Birth */}
-        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
-          Date of birth
-        </TextRegular>
-        <Pressable
-          onPress={() => !submitting && setShowDatePicker(true)}
-          style={{
-            borderColor: Colors.light.faintGrey,
-            borderWidth: 1,
-            borderRadius: 8,
-            flexDirection: "row",
-            paddingHorizontal: 16,
-            paddingVertical: 14,
-            marginBottom: 16,
-            justifyContent: "space-between",
-          }}
-        >
-          <TextRegular
-            style={{
-              color: signUpData.dateOfBirth ? "#000" : Colors.light.grey,
-            }}
-          >
-            {signUpData.dateOfBirth
-              ? format(signUpData.dateOfBirth, "MMMM d, yyyy")
-              : "Birthdate"}
-          </TextRegular>
-          <Ionicons
-            name="calendar-outline"
-            size={20}
-            color={Colors.light.grey}
-          />
-        </Pressable>
-        <DatePicker
-          modal
-          mode="date"
-          open={showDatePicker}
-          date={new Date()}
-          maximumDate={new Date()}
-          onConfirm={(date) => {
-            setShowDatePicker(false);
-            setSignUpData({ dateOfBirth: date });
-          }}
-          onCancel={() => {
-            setShowDatePicker(false);
-          }}
+        <ControllerDatePicker
+          control={control}
+          name="dateOfBirth"
+          label="Date of Birth"
+          rules={{ required: "Date of birth is required" }}
         />
+
         {/* Password */}
-        <TextRegular style={{ fontSize: 14, marginBottom: 6 }}>
-          Password
-        </TextRegular>
-        <View
-          style={{
-            borderColor: Colors.light.faintGrey,
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 16,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingVertical: 4,
-            marginBottom: 16,
+        <ControllerInput
+          control={control}
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          rules={{
+            required: "Password is required",
+            minLength: { value: 6, message: "At least 6 characters" },
           }}
-        >
-          <TextInput
-            editable={!submitting}
-            style={{
-              flex: 1,
-              fontSize: 16,
-              fontFamily: "DMSans_400Regular",
-              paddingVertical: 10,
-            }}
-            placeholder="Password"
-            secureTextEntry={!showPassword}
-            value={signUpData.password}
-            onChangeText={(text) => setSignUpData({ password: text })}
-          />
-          <TouchableOpacity
-            disabled={submitting}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <Ionicons
-              name={showPassword ? "eye-off-outline" : "eye-outline"}
-              size={20}
-              color={Colors.light.grey}
-            />
-          </TouchableOpacity>
-        </View>
+          sensitive
+        />
 
         {/* Terms */}
         <TextRegular
@@ -287,8 +120,9 @@ const SignUp = () => {
             borderRadius: 8,
             paddingVertical: 16,
             alignItems: "center",
+            marginBottom: 64,
           }}
-          onPress={handleSignUp}
+          onPress={handleSubmit(onSubmit)}
         >
           <TextSemiBold
             style={{
@@ -300,9 +134,21 @@ const SignUp = () => {
             {submitting ? "Signing up..." : "Agree and continue"}
           </TextSemiBold>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </KeyboardAwareScrollView>
+    </View>
   );
 };
 
 export default SignUp;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  keyboardAwareScrollView: {
+    backgroundColor: "#fff",
+    padding: 16,
+    position: "relative",
+  },
+});

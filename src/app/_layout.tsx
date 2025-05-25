@@ -147,6 +147,13 @@ function RootLayoutNav() {
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
+                      name="signup"
+                      options={{
+                        title: "Finish signing up",
+                        header: (props) => <PageHeader {...props} />,
+                      }}
+                    />
+                    <Stack.Screen
                       name="terms-of-service"
                       options={{
                         title: "Terms of Service",
@@ -159,10 +166,6 @@ function RootLayoutNav() {
                         title: "Privacy Policy",
                         header: (props) => <PageHeader {...props} />,
                       }}
-                    />
-                    <Stack.Screen
-                      name="signup"
-                      options={{ headerShown: false }}
                     />
                   </Stack>
                 </SignUpProvider>

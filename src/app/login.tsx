@@ -42,7 +42,10 @@ const SignIn = () => {
       if (methods.length > 0) {
         setShowPasswordInput(true);
       } else {
-        router.push("/signup");
+        router.push({
+          pathname: "/signup",
+          params: { email: signUpData.email },
+        });
       }
     } catch (error) {
       console.error("Firebase check error:", error);
@@ -81,7 +84,7 @@ const SignIn = () => {
             marginBottom: 32,
           }}
         >
-          Log in or sign up into DrX
+          Welcome to DrX
         </TextSemiBold>
 
         <View

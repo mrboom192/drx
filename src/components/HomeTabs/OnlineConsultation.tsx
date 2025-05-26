@@ -146,7 +146,6 @@ const OnlineConsultation = () => {
                   borderRadius: 16,
                   padding: 16,
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignItems: "center",
                   gap: 8,
                 },
@@ -164,7 +163,7 @@ const OnlineConsultation = () => {
                 color={"#FF4346"}
               />
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
-                View medical record
+                {`Medical\nRecord`}
               </TextSemiBold>
             </TouchableOpacity>
           </View>

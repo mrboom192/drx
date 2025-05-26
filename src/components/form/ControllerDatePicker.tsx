@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import React, { useState } from "react";
@@ -5,7 +6,6 @@ import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
-import Colors from "@/constants/Colors";
 
 const ControllerDatePicker = ({
   control,
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 14,
-    marginBottom: 16,
     justifyContent: "space-between",
   },
 });

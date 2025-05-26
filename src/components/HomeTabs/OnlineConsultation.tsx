@@ -18,8 +18,7 @@ import CustomIcon from "../icons/CustomIcon";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const OnlineConsultation = () => {
-  const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
-    useThemedStyles();
+  const { themeBorderStyle, themeTextStylePrimary } = useThemedStyles();
   const fetchSomeDoctors = useFetchSomeDoctors();
   const doctors = useDoctors();
   const isFetchingDoctors = useIsFetchingDoctors();
@@ -124,15 +123,13 @@ const OnlineConsultation = () => {
           <View style={{ flexDirection: "column", gap: 8, flex: 1 }}>
             <TouchableOpacity
               onPress={handlePresentModalPress}
-              style={[
-                { backgroundColor: Colors.peach },
-                {
-                  borderRadius: 16,
-                  padding: 16,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                },
-              ]}
+              style={{
+                backgroundColor: Colors.peach,
+                borderRadius: 16,
+                padding: 16,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
               <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
                 About
@@ -314,21 +311,6 @@ const OnlineConsultation = () => {
       </View>
 
       <InfoBottomSheet content={renderDetails()} ref={bottomSheetModalRef} />
-    </View>
-  );
-};
-
-const Tag = ({ name, color }: { name: string; color: string }) => {
-  return (
-    <View
-      style={{
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        borderRadius: 4,
-        backgroundColor: color,
-      }}
-    >
-      <TextRegular style={{ color: "#000", fontSize: 14 }}>{name}</TextRegular>
     </View>
   );
 };

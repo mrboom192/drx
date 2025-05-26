@@ -17,7 +17,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { nanoid } from "nanoid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -86,7 +86,7 @@ const ChatRoom = () => {
   }, []);
 
   // Handle whenever the user sends a message
-  const onSend = useCallback(async (newMessages: Message[] = []) => {
+  const onSend = async (newMessages: Message[] = []) => {
     if (!userData || !chatId || newMessages.length === 0) return;
 
     const message = newMessages[0]; // GiftedChat sends 1 at a time by default
@@ -113,7 +113,7 @@ const ChatRoom = () => {
     } catch (err) {
       console.error("Error sending message:", err);
     }
-  }, []);
+  };
 
   // Loading logic
   if (loading || !userData) {

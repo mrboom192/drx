@@ -18,7 +18,6 @@ const PatientHomeTabs = ({
   tabs: TabItem[];
   onTabChange: (tabName: string) => void;
 }) => {
-  const { themeTextStyleSecondary } = useThemedStyles();
   const scrollRef = useRef<ScrollView | null>(null);
   const itemsRef = useRef<Array<View | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);

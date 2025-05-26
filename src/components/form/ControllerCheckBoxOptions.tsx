@@ -49,7 +49,7 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
             : selectedValues.includes(option);
 
         return (
-          <>
+          <View>
             <View style={styles.labelContainer}>
               <TextRegular style={styles.label}>{label}</TextRegular>
               <TextRegular style={styles.error}>{error?.message}</TextRegular>
@@ -75,11 +75,13 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
                     size={16}
                     color={Colors.black}
                   />
-                  <TextRegular style={styles.optionValue}>{option}</TextRegular>
+                  <TextRegular style={styles.optionValue}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </TextRegular>
                 </TouchableOpacity>
               ))}
             </View>
-          </>
+          </View>
         );
       }}
     />
@@ -108,7 +110,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
-    marginBottom: 16,
   },
   option: {
     flexDirection: "row",

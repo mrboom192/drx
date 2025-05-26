@@ -2,7 +2,7 @@ import { Timestamp } from "firebase/firestore";
 
 export interface User {
   uid: string;
-  dateOfBirth: Timestamp | Date;
+  dateOfBirth: Timestamp;
   firstName: string;
   lastName: string;
   email: string;

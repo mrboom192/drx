@@ -10,10 +10,11 @@ import CustomIcon from "../icons/CustomIcon";
 import Emergency from "../icons/Emergency";
 import PsychologyAlt from "../icons/PsychologyAlt";
 import Radiology from "../icons/Radiology";
+import PageScrollView from "../PageScrollView";
 import { PatientHomeHeader } from "../PatientHomeHeader";
 import { ScreenTransition } from "../ScreenTransition";
 import { TextRegular } from "../StyledText";
-import { View } from "../Themed";
+import PatientHomeTabs from "./patient/tabs";
 
 const tabs = [
   {
@@ -59,6 +60,7 @@ const PatientHomeScreen = () => {
   const [tab, setTab] = useState("Online\nConsultation");
   const [isForward, setIsForward] = useState(false);
 
+  // Trying to handle tab animations
   const onTabChange = (newTab: string) => {
     if (newTab === tab) return; // No-op if you're already on that tab
 
@@ -81,14 +83,13 @@ const PatientHomeScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <PageScrollView showsVerticalScrollIndicator={false} style={{ padding: 0 }}>
       <Stack.Screen
         options={{
-          header: () => (
-            <PatientHomeHeader onTabChange={onTabChange} tabs={tabs} />
-          ),
+          header: () => <PatientHomeHeader />,
         }}
       />
+      <PatientHomeTabs onTabChange={onTabChange} tabs={tabs} />
       <ScreenTransition
         key={tab}
         direction={isForward ? "Forward" : "Backward"}
@@ -96,7 +97,7 @@ const PatientHomeScreen = () => {
       >
         {tabComponents[tab] || <TextRegular>Tab not found</TextRegular>}
       </ScreenTransition>
-    </View>
+    </PageScrollView>
   );
 };
 export default PatientHomeScreen;

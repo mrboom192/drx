@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 type PageScrollViewProps = {
-  children: ReactNode;
+  children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 };
 

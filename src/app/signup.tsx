@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import ControllerDatePicker from "@/components/ControllerDatePicker";
-import ControllerInput from "@/components/ControllerInput";
+import ControllerDatePicker from "@/components/form/ControllerDatePicker";
+import ControllerInput from "@/components/form/ControllerInput";
 import ControllerRoleSelector from "@/components/screens/signup/ControllerRoleSelector";
 import { SignupUser } from "@/types/user";
 import { useLocalSearchParams } from "expo-router";

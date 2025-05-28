@@ -1,8 +1,8 @@
+import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import ControllerInput from "@/components/form/ControllerInput";
 import { TextSemiBold } from "@/components/StyledText";
-import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
@@ -76,7 +76,7 @@ const AccountInfo = () => {
         placeholder={"e.g. Doe"}
       />
 
-      <View style={styles.divider} />
+      <Divider />
 
       <ControllerInput
         label={"Phone Number"}
@@ -93,7 +93,7 @@ const AccountInfo = () => {
         placeholder={"Select your date of birth"}
       />
 
-      <View style={styles.divider} />
+      <Divider />
 
       <ControllerCheckBoxOptions
         label={"Gender"}
@@ -103,7 +103,7 @@ const AccountInfo = () => {
         singleSelect
       />
 
-      <View style={styles.divider} />
+      <Divider />
 
       {/* Save Button */}
       <TouchableOpacity
@@ -146,5 +146,4 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
-  divider: { height: 1, backgroundColor: Colors.faintGrey, marginVertical: 8 },
 });

@@ -193,14 +193,16 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
 
       // Send a call notification to the other user
       // Pass in the other user's uid
-      httpsCallable(
-        functions,
-        "sendCallNotification"
-      )({
-        callId,
-        calleeId: otherUser.uid,
-        lastName: userData?.lastName,
-      });
+      if (userData?.role === "doctor") {
+        httpsCallable(
+          functions,
+          "sendCallNotification"
+        )({
+          callId,
+          calleeId: otherUser.uid,
+          lastName: userData?.lastName,
+        });
+      }
     } catch (err) {
       console.error("Error updating chat document:", err);
     }

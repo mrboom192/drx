@@ -20,10 +20,10 @@ type AllergyForm = {
 };
 
 const UpdateAllergy = () => {
-  const { mode, allergyId } = useLocalSearchParams();
+  const { mode, id } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
-  const allergy = useRecordStoreAllergyById(allergyId as string);
+  const allergy = useRecordStoreAllergyById(id as string);
   const medicalRecord = useMedicalRecord();
 
   const initialValues =

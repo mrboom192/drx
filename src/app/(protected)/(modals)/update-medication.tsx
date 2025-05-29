@@ -25,10 +25,10 @@ type MedicationForm = {
 };
 
 const UpdateMedication = () => {
-  const { mode, medicationId } = useLocalSearchParams();
+  const { mode, id } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
-  const medication = useRecordStoreMedicationById(medicationId as string);
+  const medication = useRecordStoreMedicationById(id as string);
   const medicalRecord = useMedicalRecord();
 
   const defaultValues =

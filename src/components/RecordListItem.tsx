@@ -55,7 +55,7 @@ const RecordListItem = ({
           onPress={() =>
             router.push({
               pathname: editPath,
-              params: { mode: "edit", [`${deleteType.slice(0, -1)}Id`]: id },
+              params: { mode: "edit", id },
             } as Href & NavigationOptions)
           }
         />

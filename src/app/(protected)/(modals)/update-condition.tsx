@@ -17,10 +17,10 @@ import Animated, { useAnimatedStyle } from "react-native-reanimated";
 type ConditionForm = Pick<Condition, "name" | "comments">;
 
 const UpdateCondition = () => {
-  const { mode, conditionId } = useLocalSearchParams();
+  const { mode, id } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
-  const condition = useRecordStoreConditionById(conditionId as string);
+  const condition = useRecordStoreConditionById(id as string);
   const medicalRecord = useMedicalRecord();
 
   const defaultValues: ConditionForm =

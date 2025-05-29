@@ -5,7 +5,7 @@ import Colors from "@/constants/Colors";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChatsById } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";
-import { getSenderAvatar, getSenderName } from "@/utils/chatUtils";
+import { getChatId, getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
   addDoc,
@@ -183,7 +183,7 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
     : chatData.participants.doctor;
 
   const presence = useUserPresence(otherUser.uid);
-  const callId = [userData?.uid, otherUser.uid].sort().join("_");
+  const callId = getChatId(userData?.uid as string, otherUser.uid);
 
   const handleCall = async () => {
     try {

@@ -526,3 +526,90 @@ exports.handleStripeWebhook = functions.https.onRequest(async (req, res) => {
     );
   }
 });
+
+/**
+ * Function to handle call notifications.
+ * This function is triggered when a call is initiated.
+ */
+exports.sendCallNotification = functions.https.onCall(async (data, context) => {
+  try {
+    // Ensure the user is logged in
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "User must be authenticated."
+      );
+    }
+
+    const { calleeId, callId, lastName } = data;
+
+    if (!calleeId || !lastName) {
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Missing calleeId or lastName."
+      );
+    }
+
+    const calleeDoc = await admin
+      .firestore()
+      .collection("users")
+      .doc(calleeId)
+      .get();
+
+    if (!calleeDoc.exists) {
+      throw new functions.https.HttpsError("not-found", "Callee not found.");
+    }
+
+    const calleeData = calleeDoc.data();
+    const calleeTokens = calleeData.expoPushTokens || [];
+
+    if (calleeTokens.length === 0) {
+      throw new functions.https.HttpsError(
+        "not-found",
+        "No Expo push tokens for the callee."
+      );
+    }
+
+    // Notification payload
+    const messages = calleeTokens.map((token) => ({
+      to: token,
+      sound: "default",
+      title: "DrX Telehealth",
+      body: `Dr. ${lastName} is calling...`,
+      data: {
+        type: "call",
+        calleeId,
+        callId,
+      },
+    }));
+
+    const axios = require("axios");
+    const response = await axios.post(
+      "https://exp.host/--/api/v2/push/send",
+      messages,
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    // Remove token if that device is not registered
+    for (const ticket of response.data.data) {
+      if (
+        ticket.status === "error" &&
+        ticket.details?.error === "DeviceNotRegistered"
+      ) {
+        await admin
+          .firestore()
+          .collection("users")
+          .doc(calleeId)
+          .update({
+            expoPushTokens: admin.firestore.FieldValue.arrayRemove(ticket.to),
+          });
+      }
+    }
+  } catch (error) {
+    console.error("Error sending call notification:", error);
+    throw new functions.https.HttpsError(
+      "internal",
+      "Failed to send call notification."
+    );
+  }
+});

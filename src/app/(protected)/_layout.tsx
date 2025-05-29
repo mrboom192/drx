@@ -1,3 +1,4 @@
+import { getAndRegisterPushToken } from "@/api/notifications";
 import PageHeader from "@/components/PageHeader";
 import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
@@ -31,22 +32,17 @@ export default function ProtectedLayout() {
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
 
-  // Fetch billing details
-  useEffect(() => {
-    if (!session || !isAuthReady) return;
-    startBillingListener();
-
-    return () => {
-      stopBillingListener();
-    };
-  }, [isAuthReady, session]);
-
   // Fetch chats from Firebase immediately
   useEffect(() => {
     if (!session || !isAuthReady) return;
-    startChatsListener();
+    startChatsListener(); // Start listening to chats
+    startBillingListener(); // Start listening to billing details
+    getAndRegisterPushToken(); // Just in case, lets register the push token
 
-    return () => stopChatsListener(); // Clean up on unmount
+    return () => {
+      stopChatsListener();
+      stopBillingListener();
+    }; // Clean up on unmount
   }, [isAuthReady, session]);
 
   // You can keep the splash screen open, or render a loading screen like we do here.

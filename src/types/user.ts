@@ -16,6 +16,9 @@ export interface User {
   hasPublicProfile?: boolean;
   licenseImage?: string;
   verification?: string;
+
+  // For notifications
+  expoPushTokens?: string[];
 }
 
 export type SignupUser = Pick<

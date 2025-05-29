@@ -1,6 +1,11 @@
 import { auth, database, db } from "@/../firebaseConfig";
 import { createMedicalRecord } from "@/api/medicalRecords";
+import {
+  getAndRegisterPushToken,
+  unregisterPushToken,
+} from "@/api/notifications";
 import { isOfflineForDatabase } from "@/constants/Presence";
+import { useExpoPushToken } from "@/stores/useNotificationStore";
 import { useStopRecordsListener } from "@/stores/useRecordStore";
 import { useStopUserListener } from "@/stores/useUserStore";
 import { SignupUser, User } from "@/types/user";
@@ -45,6 +50,7 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
+  const expoPushToken = useExpoPushToken();
   const stopUserListener = useStopUserListener();
   const stopRecordsListener = useStopRecordsListener();
 
@@ -91,6 +97,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
       const user = userCredential.user;
 
       // Save the user UID or token to session state
+      await getAndRegisterPushToken();
       setSession(user.uid); // Or user.email or user.getIdToken() for token
       router.replace("/" as RelativePathString); // Lets go home!!!
     } catch (error) {
@@ -100,12 +107,18 @@ export function SessionProvider({ children }: PropsWithChildren) {
   }
 
   async function signOutUser() {
+    if (!auth.currentUser) {
+      console.warn("Cannot log out if no user is logged in.");
+      return;
+    }
+
     try {
       // Set the user's status to offline in the database
       await set(
-        ref(database, `/status/${auth.currentUser?.uid}`),
+        ref(database, `/status/${auth.currentUser.uid}`),
         isOfflineForDatabase
       );
+      await unregisterPushToken();
       stopUserListener(); // Stop the user listener
       stopRecordsListener(); // Stop the records listener (if any)
       await signOut(auth);

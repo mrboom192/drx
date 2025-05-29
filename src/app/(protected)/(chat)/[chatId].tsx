@@ -16,12 +16,13 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
+import { httpsCallable } from "firebase/functions";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { db } from "../../../../firebaseConfig";
+import { db, functions } from "../../../../firebaseConfig";
 
 interface Message {
   _id: number;
@@ -189,6 +190,17 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
     try {
       const docRef = doc(db, "chats", chatId);
       await updateDoc(docRef, { hasActiveCall: true });
+
+      // Send a call notification to the other user
+      // Pass in the other user's uid
+      httpsCallable(
+        functions,
+        "sendCallNotification"
+      )({
+        callId,
+        calleeId: otherUser.uid,
+        lastName: userData?.lastName,
+      });
     } catch (err) {
       console.error("Error updating chat document:", err);
     }

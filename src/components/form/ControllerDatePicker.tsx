@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { TextRegular } from "./StyledText";
+import { TextRegular } from "../StyledText";
 
 const ControllerDatePicker = ({
   control,
@@ -13,12 +13,16 @@ const ControllerDatePicker = ({
   rules = {},
   label,
   disabled = false,
+  placeholder = "Select Date",
+  formatDate = "MMMM d, yyyy",
 }: {
   control: Control;
   name: string;
   rules?: any;
   label: string;
   disabled?: boolean;
+  placeholder?: string;
+  formatDate?: string;
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -29,7 +33,7 @@ const ControllerDatePicker = ({
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         return (
-          <>
+          <View>
             <View style={styles.labelContainer}>
               <TextRegular style={styles.label}>{label}</TextRegular>
               {error && (
@@ -41,7 +45,7 @@ const ControllerDatePicker = ({
               onPress={() => !disabled && setShowDatePicker(true)}
               style={[
                 styles.inputContainer,
-                { borderColor: error ? Colors.pink : Colors.light.faintGrey },
+                { borderColor: error ? Colors.pink : Colors.faintGrey },
               ]}
             >
               <TextRegular
@@ -49,13 +53,9 @@ const ControllerDatePicker = ({
                   color: value ? "#000" : Colors.lightText,
                 }}
               >
-                {value ? format(value, "MMMM d, yyyy") : "Select Date"}
+                {value ? format(value, formatDate) : placeholder}
               </TextRegular>
-              <Ionicons
-                name="calendar-outline"
-                size={20}
-                color={Colors.light.grey}
-              />
+              <Ionicons name="calendar-outline" size={20} color={Colors.grey} />
             </Pressable>
 
             <DatePicker
@@ -70,7 +70,7 @@ const ControllerDatePicker = ({
               }}
               onCancel={() => setShowDatePicker(false)}
             />
-          </>
+          </View>
         );
       }}
     />
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
   error: {
     color: Colors.pink,
     fontSize: 12,
-    marginLeft: 8,
   },
   inputContainer: {
     borderWidth: 1,
@@ -103,7 +102,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 14,
-    marginBottom: 16,
     justifyContent: "space-between",
   },
 });

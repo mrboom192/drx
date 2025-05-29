@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   },
   calendarDayText: {
     textAlign: "center",
+    fontSize: 10,
   },
   calendar: {
     backgroundColor: "transparent",

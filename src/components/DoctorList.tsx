@@ -76,10 +76,28 @@ const DoctorList = ({ specialty, refresh }: Props) => {
 
             <View style={styles.info}>
               <View>
-                <TextSemiBold style={[themeTextStylePrimary, { fontSize: 16 }]}>
+                <TextSemiBold
+                  style={[
+                    themeTextStylePrimary,
+                    { fontSize: 16, width: "100%" },
+                  ]}
+                >
                   {item.firstName} {item.lastName}
                 </TextSemiBold>
-                <TextRegular style={themeTextStyleSecondary}>
+                <TextRegular
+                  style={[
+                    themeTextStyleSecondary,
+                    {
+                      flex: 1,
+                      textTransform: "capitalize",
+                      width: "100%",
+                      // Optional but can help enforce single-line layout
+                      overflow: "hidden",
+                    },
+                  ]}
+                  numberOfLines={1} // This truncates after 1 line
+                  ellipsizeMode="tail" // Shows "..." at the end
+                >
                   {item.specializations.join(", ")}
                 </TextRegular>
               </View>

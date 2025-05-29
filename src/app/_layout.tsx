@@ -149,7 +149,7 @@ function RootLayoutNav() {
                     <Stack.Screen
                       name="signup"
                       options={{
-                        title: "Finish signing up",
+                        title: "Sign up with DrX",
                         header: (props) => <PageHeader {...props} />,
                       }}
                     />

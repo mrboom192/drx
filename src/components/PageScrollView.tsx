@@ -1,14 +1,23 @@
 import React, { ReactNode } from "react";
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import {
+  ScrollViewProps,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-type PageScrollViewProps = {
-  children: ReactNode;
+type PageScrollViewProps = ScrollViewProps & {
+  children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 };
 
-const PageScrollView = ({ children, style }: PageScrollViewProps) => {
-  return <ScrollView style={[styles.container, style]}>{children}</ScrollView>;
+const PageScrollView = ({ children, style, ...props }: PageScrollViewProps) => {
+  return (
+    <ScrollView {...props} style={[styles.container, style]}>
+      {children}
+    </ScrollView>
+  );
 };
 
 export default PageScrollView;

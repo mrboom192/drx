@@ -1,11 +1,10 @@
-import CustomIcon from "@/components/icons/CustomIcon";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import CallButtons from "@/components/screens/call/CallButtons";
+import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useWebRTCCall } from "@/hooks/useWebRTCCall";
-import { BlurView } from "expo-blur";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RTCView } from "react-native-webrtc";
 
@@ -34,6 +33,8 @@ const Call = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Start the timer when the page mounts
+  // In the future, grab start time from firestore and calculate elapsed time
+  // when call ends, save the end time to firestore
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setSecondsElapsed((prev) => prev + 1);
@@ -44,15 +45,6 @@ const Call = () => {
     };
   }, []);
 
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600).toString();
-    const mins = Math.floor((seconds % 3600) / 60)
-      .toString()
-      .padStart(2, "0");
-    const secs = (seconds % 60).toString().padStart(2, "0");
-    return `${hrs}:${mins}:${secs}`;
-  };
-
   const {
     localStream,
     remoteStream,
@@ -62,50 +54,6 @@ const Call = () => {
     isVideoEnabled,
     isMuted,
   } = useWebRTCCall(chatId, callId, isCaller);
-
-  const CallButtons = () => {
-    return (
-      <View style={[footer.container, { bottom: insets.bottom }]}>
-        <BlurView intensity={50} tint="dark" style={footer.blurView}>
-          <View style={footer.userRow}>
-            <TextRegular style={footer.otherPersonName}>
-              {otherPersonFirstName} {otherPersonLastName}
-            </TextRegular>
-
-            <TextSemiBold style={footer.timer}>
-              {formatTime(secondsElapsed)}
-            </TextSemiBold>
-          </View>
-          <View style={footer.divider} />
-          <View style={footer.buttonsContainer}>
-            <TouchableOpacity style={footer.button} onPress={toggleVideo}>
-              <CustomIcon
-                name={isVideoEnabled ? "videocam" : "videocam-off"}
-                size={24}
-                color="#FFF"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={footer.button} onPress={toggleMute}>
-              <CustomIcon
-                name={isMuted ? "mic-off" : "mic"}
-                size={24}
-                color="#FFF"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={footer.button} onPress={switchCamera}>
-              <CustomIcon name="camera-switch" size={24} color="#FFF" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={footer.endCallButton}
-              onPress={() => router.back()}
-            >
-              <CustomIcon name="call" size={24} color="#FFF" />
-            </TouchableOpacity>
-          </View>
-        </BlurView>
-      </View>
-    );
-  };
 
   return (
     <View style={[styles.container]}>
@@ -135,70 +83,18 @@ const Call = () => {
           </TextSemiBold>
         </View>
       )}
-      <CallButtons />
+      <CallButtons
+        switchCamera={switchCamera}
+        toggleMute={toggleMute}
+        toggleVideo={toggleVideo}
+        isVideoEnabled={isVideoEnabled}
+        name={`${otherPersonFirstName} ${otherPersonLastName}`}
+        secondsElapsed={secondsElapsed}
+        isMuted={isMuted}
+      />
     </View>
   );
 };
-
-const footer = StyleSheet.create({
-  container: {
-    position: "absolute",
-    left: "50%",
-    transform: [{ translateX: "-50%" }],
-    zIndex: 9999,
-    borderRadius: 24,
-    overflow: "hidden",
-  },
-  userRow: {
-    flexDirection: "row",
-    gap: 8,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  timer: {
-    fontSize: 14,
-    color: "#FFF7",
-  },
-  otherPersonName: {
-    fontSize: 14,
-    color: "#FFF",
-  },
-  divider: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "#FFF2",
-  },
-  blurView: {
-    flexDirection: "column",
-    gap: 16,
-    padding: 16,
-    backgroundColor: "#FFF2",
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    gap: 24,
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  button: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFF1",
-    borderWidth: 1,
-    borderColor: "#FFF1",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  endCallButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: Colors.pink,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 const styles = StyleSheet.create({
   container: {

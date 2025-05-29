@@ -179,7 +179,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             />
             <View>
               <TextSemiBold style={themeTextStyleSecondary}>
-                Find the perfect doctor
+                Search
               </TextSemiBold>
             </View>
           </TouchableOpacity>

@@ -1,7 +1,13 @@
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  RegisterOptions,
+} from "react-hook-form";
 import {
   StyleProp,
   StyleSheet,
@@ -14,7 +20,20 @@ import CustomIcon from "../icons/CustomIcon";
 import { IconName } from "../icons/iconsMap";
 import { TextRegular } from "../StyledText";
 
-const ControllerInput = ({
+interface ControllerInputProps<TFieldValues extends FieldValues> {
+  label: string;
+  placeholder: string;
+  control: Control<TFieldValues>;
+  rules?: RegisterOptions<TFieldValues>;
+  name: Path<TFieldValues>;
+  sensitive?: boolean;
+  multiline?: boolean;
+  textInputStyle?: StyleProp<TextStyle>;
+  keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
+  iconLeft?: IconName;
+}
+
+const ControllerInput = <TFieldValues extends FieldValues>({
   label,
   placeholder,
   control,
@@ -25,18 +44,7 @@ const ControllerInput = ({
   textInputStyle = null,
   keyboardType = "default",
   iconLeft,
-}: {
-  label: string;
-  placeholder: string;
-  control: Control;
-  rules?: any;
-  name: string;
-  sensitive?: boolean;
-  multiline?: boolean;
-  textInputStyle?: StyleProp<TextStyle>;
-  keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
-  iconLeft?: IconName;
-}) => {
+}: ControllerInputProps<TFieldValues>) => {
   const [showSensitive, setShowSensitive] = useState(false);
 
   return (

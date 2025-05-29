@@ -3,22 +3,31 @@ import {
   updateItemInMedicalRecord,
 } from "@/api/medicalRecords";
 import Footer from "@/components/AddFooter";
+import Divider from "@/components/Divider";
+import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
+import ControllerInput from "@/components/form/ControllerInput";
 import PageScrollView from "@/components/PageScrollView";
-import RegularTextInput from "@/components/RegularTextInput";
-import { TextRegular } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
 import {
   useMedicalRecord,
   useRecordStoreMedicationById,
 } from "@/stores/useRecordStore";
-import { Picker } from "@react-native-picker/picker";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { nanoid } from "nanoid";
-import React, { useMemo, useState } from "react";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { auth } from "../../../../firebaseConfig";
+
+type MedicationForm = {
+  name: string;
+  dosage: string;
+  route: string;
+  frequency: string;
+  interval: string;
+};
 
 const UpdateMedication = () => {
   const { mode, medicationId } = useLocalSearchParams();
@@ -26,131 +35,133 @@ const UpdateMedication = () => {
   const isEditMode = mode === "edit";
   const medication = useRecordStoreMedicationById(medicationId as string);
   const medicalRecord = useMedicalRecord();
-  const [submitting, setSubmitting] = useState(false);
 
-  const fakeView = useAnimatedStyle(() => {
-    return {
-      height: Math.abs(height.value),
-    };
-  }, []);
+  useEffect(() => {
+    console.log(medicationId);
+  }, [medicationId]);
 
-  const initialState =
+  const defaultValues =
     isEditMode && medication
-      ? medication
+      ? {
+          name: medication.name,
+          dosage: medication.dosage || "", // fallback if older data
+          route: medication.route || "",
+          frequency: medication.frequency,
+          interval: medication.interval,
+        }
       : {
-          id: nanoid(),
           name: "",
           dosage: "",
+          route: "",
           frequency: "",
           interval: "day",
         };
 
-  const [formData, setFormData] = useState(initialState);
+  const { control, handleSubmit, formState } = useForm<MedicationForm>({
+    defaultValues,
+    mode: "onChange",
+  });
 
-  const hasChange = useMemo(() => {
-    if (!isEditMode || !medication) return true;
-    return (
-      medication.name !== formData.name ||
-      medication.dosage !== formData.dosage ||
-      medication.frequency !== formData.frequency ||
-      medication.interval !== formData.interval
-    );
-  }, [formData, isEditMode, medication]);
+  const { isDirty, isValid, isSubmitting } = formState;
 
-  const canSubmit = useMemo(() => {
-    return (
-      formData.name.length > 0 &&
-      formData.dosage.length > 0 &&
-      formData.frequency.length > 0
-    );
-  }, [formData]);
-
-  const handleChange = (key: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmit = async () => {
-    if (!canSubmit) return;
-
+  const onSubmit: SubmitHandler<MedicationForm> = async (data) => {
     try {
-      setSubmitting(true);
+      const payload = isEditMode
+        ? { ...medication, ...data, id: medication!.id }
+        : { id: nanoid(), ...data };
 
       if (isEditMode) {
         await updateItemInMedicalRecord(
           auth.currentUser!.uid,
           medicalRecord!,
-          formData,
+          payload,
           "medications"
         );
       } else {
         await addItemToMedicalRecord(
           auth.currentUser!.uid,
           "medications",
-          formData
+          payload
         );
       }
 
-      // Handle successful submission
-    } catch (error) {
-      // Handle error
-      console.error("Error adding medication:", error);
-    } finally {
-      setSubmitting(false);
       router.dismiss();
+    } catch (error) {
+      console.error("Error saving medication:", error);
     }
   };
+
+  const fakeView = useAnimatedStyle(() => ({
+    height: Math.abs(height.value),
+  }));
 
   return (
     <View style={styles.container}>
       <Stack.Screen
         options={{ title: isEditMode ? "Edit Medication" : "Add Medication" }}
       />
-      <PageScrollView>
-        <RegularTextInput
+      <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
+        <ControllerInput
+          control={control}
+          name="name"
+          rules={{ required: "Medication name is required" }}
           label="Medication Name"
-          value={formData.name}
-          onChangeText={(val) => handleChange("name", val)}
           placeholder="e.g. Atorvastatin"
         />
-        <RegularTextInput
+        <ControllerInput
+          control={control}
+          name="dosage"
+          rules={{ required: "Dosage amount is required" }}
           label="Dosage"
-          value={formData.dosage}
-          onChangeText={(val) => handleChange("dosage", val)}
-          placeholder="e.g. 10mg pill"
+          placeholder="e.g. 10mg"
+          keyboardType="default"
         />
-        <View style={styles.frequencyContainer}>
-          <View style={styles.frequencyRow}>
-            <RegularTextInput
-              value={formData.frequency}
-              label="Frequency"
-              keyboardType="numeric"
-              onChangeText={(val) => handleChange("frequency", val)}
-              placeholder="e.g. 2"
-            />
-            <TextRegular style={styles.timesPer}>times per</TextRegular>
-            <View style={styles.dropdownWrapper}>
-              <Picker
-                selectedValue={formData.interval}
-                onValueChange={(itemValue) =>
-                  handleChange("interval", itemValue)
-                }
-                style={styles.picker}
-                mode="dropdown"
-              >
-                <Picker.Item label="Day" value="day" />
-                <Picker.Item label="Week" value="week" />
-                <Picker.Item label="Year" value="year" />
-              </Picker>
-            </View>
-          </View>
-        </View>
+        <ControllerCheckBoxOptions
+          control={control}
+          name="route"
+          label="Medication Route"
+          options={[
+            "oral",
+            "topical",
+            "inhalation",
+            "nasal",
+            "ocular",
+            "otic",
+            "rectal",
+            "vaginal",
+            "intravenous",
+            "intramuscular",
+            "subcutaneous",
+          ]}
+          rules={{ required: "Please select a dosage route" }}
+          singleSelect
+        />
+        <Divider />
+        <ControllerInput
+          control={control}
+          rules={{
+            required: "Please enter a frequency",
+          }}
+          name="frequency"
+          label={"How often do you take this?"}
+          placeholder={"e.g. 2"}
+          keyboardType="numeric"
+        />
+        <ControllerCheckBoxOptions
+          control={control}
+          label={"What is the interval?"}
+          name="interval"
+          options={["daily", "monthly", "weekly"]}
+          rules={{ required: "Please select an interval" }}
+          singleSelect
+        />
       </PageScrollView>
 
       <Footer
         keyboardHeightShared={height}
-        canSubmit={canSubmit && hasChange}
-        submitting={submitting}
-        handleSubmit={handleSubmit}
+        canSubmit={isDirty && isValid}
+        submitting={isSubmitting}
+        handleSubmit={handleSubmit(onSubmit)}
       />
 
       <Animated.View style={fakeView} />
@@ -165,18 +176,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  frequencyContainer: {},
-  label: {
-    marginBottom: 8,
-    fontSize: 16,
+  pageScrollViewContent: {
+    flexDirection: "column",
+    gap: 16,
   },
   frequencyRow: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  frequencyInput: {
-    flex: 1,
-    marginRight: 8,
   },
   timesPer: {
     marginHorizontal: 8,

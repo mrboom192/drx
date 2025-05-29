@@ -30,6 +30,7 @@ export type Medication = {
   id: string;
   name: string;
   dosage: string;
+  route: string;
   interval: string;
   frequency: string;
 };

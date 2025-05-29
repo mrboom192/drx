@@ -5,7 +5,7 @@ import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,9 +14,9 @@ const SignIn = () => {
   const { signIn } = useSession();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-  const { control, handleSubmit } = useForm<any>();
+  const { control, handleSubmit } = useForm();
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
     try {
       await signIn(data.email, data.password);

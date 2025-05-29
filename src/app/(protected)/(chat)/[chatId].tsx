@@ -37,10 +37,10 @@ interface User {
 }
 
 const ChatRoom = () => {
+  const { chatId } = useLocalSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const userData = useUserData();
   const [loading, setLoading] = useState(true);
-  const { chatId } = useLocalSearchParams();
   const chat = useChatsById(chatId as string);
   const insets = useSafeAreaInsets();
 

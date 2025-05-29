@@ -4,6 +4,7 @@ import CustomIcon from "@/components/icons/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useAppointmentsByDate } from "@/stores/useAppointmentStore";
+import { getChatId } from "@/utils/chatUtils";
 import { format, parseISO } from "date-fns";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -71,7 +72,10 @@ const DayInfo = () => {
               router.replace({
                 pathname: `/(protected)/(chat)/[chatId]`,
                 params: {
-                  chatId: `${appointment.doctorId}_${appointment.patientId}`,
+                  chatId: getChatId(
+                    appointment.patientId,
+                    appointment.doctorId
+                  ),
                 },
               })
             }

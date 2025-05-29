@@ -24,3 +24,8 @@ export const getSenderAvatar = (uid: string, chat: Chat): string => {
 
   return "";
 };
+
+export const getChatId = (doctorId: string, patientId: string): string => {
+  // Ensure the IDs are sorted to maintain consistency
+  return [doctorId, patientId].sort().join("_");
+};

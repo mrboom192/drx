@@ -12,6 +12,13 @@ export default function ModalsLayout() {
         }}
       />
       <Stack.Screen
+        name="update-condition"
+        options={{
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name="update-allergy"
         options={{
           presentation: "modal",

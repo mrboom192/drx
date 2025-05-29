@@ -10,6 +10,7 @@ export type MedicalRecord = {
   gender: string;
 
   patientId: string;
+  conditions: Condition[]; // e.g., diabetes, hypertension, etc.
   medications: Medication[];
   allergies: Allergy[];
   screenings: string[];
@@ -24,6 +25,21 @@ export type MedicalRecord = {
   // Metadata
   createdAt: Timestamp;
   updatedAt: Timestamp;
+};
+
+export type Condition = {
+  id: string;
+  name: string;
+  description: string;
+  comments?: string; // e.g., additional notes or observations
+
+  status: "active" | "inactive" | "resolved";
+  onsetDate: Timestamp | Date;
+  resolutionDate?: Timestamp | Date;
+  severity?: "mild" | "moderate" | "severe";
+  complications?: string[]; // e.g., related conditions or complications
+  treatment?: string; // e.g., treatment plan or medications
+  notes?: string; // e.g., additional notes or observations
 };
 
 export type Medication = {

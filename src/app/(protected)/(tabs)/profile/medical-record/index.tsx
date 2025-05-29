@@ -10,11 +10,6 @@ import React, { useEffect } from "react";
 
 const pages = [
   {
-    title: "General Information",
-    description: "View and update your general medical information.",
-    href: "/(protected)/(tabs)/profile/medical-record/general",
-  },
-  {
     title: "Allergies",
     description: "Manage your allergies and intolerances.",
     href: "/(protected)/(tabs)/profile/medical-record/allergies",
@@ -23,6 +18,11 @@ const pages = [
     title: "Medications",
     description: "View and manage your current medications.",
     href: "/(protected)/(tabs)/profile/medical-record/medications",
+  },
+  {
+    title: "Diseases & Conditions",
+    description: "View and manage your diseases and conditions.",
+    href: "/(protected)/(tabs)/profile/medical-record/conditions",
   },
 ];
 
@@ -43,7 +43,7 @@ const MedicalInfo = () => {
   }
 
   return (
-    <PageScrollView>
+    <PageScrollView style={{ paddingVertical: 0 }}>
       {pages.map((page, idx) => (
         <PageListLink
           key={idx}

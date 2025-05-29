@@ -5,46 +5,48 @@ import PageScrollView from "@/components/PageScrollView";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
 import {
   useMedicalRecord,
-  useRecordStoreAllergyById,
-} from "@/stores/useRecordStore";
+  useRecordStoreConditionById,
+} from "@/stores/useRecordStore"; // Update to use correct hook
+import { Condition } from "@/types/medicalRecord";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { auth } from "../../../../firebaseConfig";
 
-type AllergyForm = {
-  name: string;
-  reaction: string;
-};
+type ConditionForm = Pick<Condition, "name" | "comments">;
 
-const UpdateAllergy = () => {
-  const { mode, allergyId } = useLocalSearchParams();
+const UpdateCondition = () => {
+  const { mode, conditionId } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
-  const allergy = useRecordStoreAllergyById(allergyId as string);
+  const condition = useRecordStoreConditionById(conditionId as string);
   const medicalRecord = useMedicalRecord();
 
-  const initialValues =
-    isEditMode && allergy
-      ? { name: allergy.name, reaction: allergy.reaction }
-      : { name: "", reaction: "" };
+  const defaultValues: ConditionForm =
+    isEditMode && condition
+      ? {
+          name: condition.name,
+          comments: condition.comments || "", // Assuming comments field in condition
+        }
+      : {
+          name: "",
+          comments: "",
+        };
 
-  const { control, handleSubmit, formState } = useForm<AllergyForm>({
-    defaultValues: initialValues,
+  const { control, handleSubmit, formState } = useForm<ConditionForm>({
+    defaultValues,
     mode: "onChange",
   });
 
-  const { isSubmitting, isValid, isDirty } = formState;
+  const { isDirty, isValid, isSubmitting } = formState;
 
-  const onSubmit: SubmitHandler<AllergyForm> = async (data) => {
+  const onSubmit: SubmitHandler<ConditionForm> = async (data) => {
     try {
-      await saveItem(isEditMode, medicalRecord!, data, allergy, "allergies");
-
+      await saveItem(isEditMode, medicalRecord!, data, condition, "conditions");
       router.dismiss();
     } catch (error) {
-      console.error("Error saving allergy:", error);
+      console.error("Error saving condition:", error);
     }
   };
 
@@ -55,22 +57,21 @@ const UpdateAllergy = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: isEditMode ? "Edit Allergy" : "Add Allergy" }}
+        options={{ title: `${isEditMode ? "Edit" : "Add"} Condition` }}
       />
       <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
         <ControllerInput
           control={control}
           name="name"
-          label="Allergy name"
-          rules={{ required: "Allergy name is required" }}
-          placeholder="e.g. Pollen"
+          rules={{ required: "Condition name is required" }}
+          label="Condition Name"
+          placeholder="e.g. Diabetes"
         />
         <ControllerInput
           control={control}
-          name="reaction"
-          label="Reaction Description"
-          rules={{ required: "Reaction description is required" }}
-          placeholder="e.g. Hives and swelling"
+          name="comments"
+          label="Condition Comments"
+          placeholder="e.g. Additional details"
           multiline
           textInputStyle={styles.multilineInputStyle}
         />
@@ -78,7 +79,7 @@ const UpdateAllergy = () => {
 
       <Footer
         keyboardHeightShared={height}
-        canSubmit={isValid && isDirty}
+        canSubmit={isDirty && isValid}
         submitting={isSubmitting}
         handleSubmit={handleSubmit(onSubmit)}
       />
@@ -88,7 +89,7 @@ const UpdateAllergy = () => {
   );
 };
 
-export default UpdateAllergy;
+export default UpdateCondition;
 
 const styles = StyleSheet.create({
   container: {

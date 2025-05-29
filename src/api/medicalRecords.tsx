@@ -8,7 +8,10 @@ import {
   setDoc,
   updateDoc,
 } from "@firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { nanoid } from "nanoid";
+import { auth, db } from "../../firebaseConfig";
+
+export type FieldCategory = "medications" | "allergies" | "conditions";
 
 export async function createMedicalRecord(
   user: SignupUser & Pick<User, "uid" | "email" | "createdAt">
@@ -42,7 +45,7 @@ export async function createMedicalRecord(
 
 export async function addItemToMedicalRecord<T extends Record<string, any>>(
   userId: string,
-  field: "medications" | "allergies",
+  field: FieldCategory,
   item: T
 ) {
   const userRef = doc(db, "records", userId);
@@ -56,7 +59,7 @@ export async function deleteItemFromMedicalRecord(
   userId: string,
   medicalRecord: MedicalRecord,
   itemId: string,
-  field: "medications" | "allergies"
+  field: FieldCategory
 ) {
   const userRef = doc(db, "records", userId);
 
@@ -74,7 +77,7 @@ export async function updateItemInMedicalRecord<T extends { id: string }>(
   userId: string,
   medicalRecord: MedicalRecord,
   updatedItem: T,
-  field: "medications" | "allergies"
+  field: FieldCategory
 ) {
   const userRef = doc(db, "records", userId);
 
@@ -99,5 +102,32 @@ export async function fetchMedicalRecord(userId: string) {
     return userDoc.data() as MedicalRecord;
   } else {
     throw new Error("Medical record not found");
+  }
+}
+
+export async function saveItem<T>(
+  isEditMode: boolean,
+  medicalRecord: any,
+  data: T,
+  existingItem: T | undefined,
+  collection: FieldCategory
+) {
+  if (!auth.currentUser) {
+    throw new Error("User must be authenticated to save items.");
+  }
+
+  const payload = isEditMode
+    ? { ...existingItem, ...data, id: (existingItem as any).id }
+    : { id: nanoid(), ...data };
+
+  if (isEditMode) {
+    await updateItemInMedicalRecord(
+      auth.currentUser.uid,
+      medicalRecord,
+      payload,
+      collection
+    );
+  } else {
+    await addItemToMedicalRecord(auth.currentUser.uid, collection, payload);
   }
 }

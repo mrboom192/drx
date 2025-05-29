@@ -1,7 +1,4 @@
-import {
-  addItemToMedicalRecord,
-  updateItemInMedicalRecord,
-} from "@/api/medicalRecords";
+import { saveItem } from "@/api/medicalRecords";
 import Footer from "@/components/AddFooter";
 import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
@@ -14,12 +11,10 @@ import {
   useRecordStoreMedicationById,
 } from "@/stores/useRecordStore";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { nanoid } from "nanoid";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { auth } from "../../../../firebaseConfig";
 
 type MedicationForm = {
   name: string;
@@ -35,10 +30,6 @@ const UpdateMedication = () => {
   const isEditMode = mode === "edit";
   const medication = useRecordStoreMedicationById(medicationId as string);
   const medicalRecord = useMedicalRecord();
-
-  useEffect(() => {
-    console.log(medicationId);
-  }, [medicationId]);
 
   const defaultValues =
     isEditMode && medication
@@ -66,24 +57,13 @@ const UpdateMedication = () => {
 
   const onSubmit: SubmitHandler<MedicationForm> = async (data) => {
     try {
-      const payload = isEditMode
-        ? { ...medication, ...data, id: medication!.id }
-        : { id: nanoid(), ...data };
-
-      if (isEditMode) {
-        await updateItemInMedicalRecord(
-          auth.currentUser!.uid,
-          medicalRecord!,
-          payload,
-          "medications"
-        );
-      } else {
-        await addItemToMedicalRecord(
-          auth.currentUser!.uid,
-          "medications",
-          payload
-        );
-      }
+      await saveItem(
+        isEditMode,
+        medicalRecord!,
+        data,
+        medication,
+        "medications"
+      );
 
       router.dismiss();
     } catch (error) {
@@ -98,7 +78,7 @@ const UpdateMedication = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: isEditMode ? "Edit Medication" : "Add Medication" }}
+        options={{ title: `${isEditMode ? "Edit" : "Add"} Medication` }}
       />
       <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
         <ControllerInput

@@ -17,9 +17,20 @@ const MedicalInformationLayout = () => {
         }}
       />
       <Stack.Screen
-        name="general"
+        name="conditions"
         options={{
-          title: "General Information",
+          title: "Diseases & Conditions",
+          headerRight: () => (
+            <IconButton
+              name="add"
+              onPress={() =>
+                router.push({
+                  pathname: "/(protected)/(modals)/update-condition",
+                  params: { mode: "add", medicationId: "" },
+                })
+              }
+            />
+          ),
         }}
       />
       <Stack.Screen

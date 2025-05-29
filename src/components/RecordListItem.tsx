@@ -14,7 +14,7 @@ type RecordListItemProps = {
   subText?: string; // e.g. "10mg (oral)" or "Hives and swelling"
   extraInfo?: string; // e.g. "2/daily"
   editPath: Href; // e.g. "/(protected)/(modals)/update-allergy"
-  deleteType: "allergies" | "medications";
+  deleteType: "allergies" | "medications" | "conditions";
 };
 
 const RecordListItem = ({

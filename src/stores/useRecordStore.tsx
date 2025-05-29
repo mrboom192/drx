@@ -89,6 +89,16 @@ export const useRecordStoreAllergyById = (id: string) =>
     state.medicalRecord?.allergies.find((allergy) => allergy.id === id)
   );
 
+// Returns diseases
+export const useRecordStoreConditions = () =>
+  useRecordStore((state) => state.medicalRecord?.conditions);
+
+// Returns allergy given an id
+export const useRecordStoreConditionById = (id: string) =>
+  useRecordStore((state) =>
+    state.medicalRecord?.conditions?.find((condition) => condition.id === id)
+  );
+
 // Returns medications
 export const useRecordStoreMedications = () =>
   useRecordStore((state) => state.medicalRecord?.medications);

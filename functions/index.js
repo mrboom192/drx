@@ -488,6 +488,18 @@ exports.handleStripeWebhook = functions.https.onRequest(async (req, res) => {
             pending: true,
           });
 
+          // Update the doctor's patient list
+          const patientMedicalRecordRef = admin
+            .firestore()
+            .collection("records")
+            .doc(patientId);
+
+          batch.set(
+            patientMedicalRecordRef,
+            { doctorIds: admin.firestore.FieldValue.arrayUnion(doctorId) },
+            { merge: true }
+          );
+
           await batch.commit();
           functions.logger.log("Appointment and chat successfully created");
 

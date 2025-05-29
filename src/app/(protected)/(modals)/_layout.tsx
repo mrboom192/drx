@@ -28,14 +28,6 @@ export default function ModalsLayout() {
       />
       <Stack.Screen name="[date]" />
       <Stack.Screen
-        name="[recordId]"
-        options={{
-          title: "Medical Record",
-          presentation: "modal",
-          header: (props) => <PageHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
         name="doctor-verification"
         options={{
           title: "Verification",

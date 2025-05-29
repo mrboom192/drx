@@ -38,7 +38,7 @@ const MedicalRecord = () => {
       ) : error ? (
         <TextRegular style={{ padding: 24, color: "red" }}>{error}</TextRegular>
       ) : record ? (
-        <View style={{ padding: 24, gap: 12 }}>
+        <View style={{ gap: 12 }}>
           <TextRegular style={{ fontSize: 18, fontWeight: "bold" }}>
             Medical Record
           </TextRegular>

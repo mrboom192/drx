@@ -27,6 +27,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "react-native-get-random-values"; // Required for nanoid
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";

@@ -19,7 +19,6 @@ import {
   View,
 } from "react-native";
 import DatePicker from "react-native-date-picker";
-import "react-native-get-random-values";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type GetPaymentIntentRequest = {

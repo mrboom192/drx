@@ -64,9 +64,9 @@ const Call = () => {
           objectFit="cover"
         />
       ) : (
-        <View style={styles.localVideo}>
+        <View style={[styles.localVideo, { top: insets.top }]}>
           <TextSemiBold style={styles.status}>
-            Waiting for local stream...
+            Waiting for camera...
           </TextSemiBold>
         </View>
       )}
@@ -79,7 +79,7 @@ const Call = () => {
       ) : (
         <View style={styles.remoteVideo}>
           <TextSemiBold style={styles.status}>
-            Waiting for remote stream...
+            Calling {otherPersonFirstName} {otherPersonLastName}...
           </TextSemiBold>
         </View>
       )}

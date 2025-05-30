@@ -1,20 +1,16 @@
 import { saveItem } from "@/api/medicalRecords";
-import Footer from "@/components/AddFooter";
 import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerInput from "@/components/form/ControllerInput";
-import PageScrollView from "@/components/PageScrollView";
-import Colors from "@/constants/Colors";
-import useGradualAnimation from "@/hooks/useGradualAnimation";
+import FormPage from "@/components/FormPage";
 import {
   useMedicalRecord,
   useRecordStoreMedicationById,
 } from "@/stores/useRecordStore";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
 type MedicationForm = {
   name: string;
@@ -26,7 +22,6 @@ type MedicationForm = {
 
 const UpdateMedication = () => {
   const { mode, id } = useLocalSearchParams();
-  const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
   const medication = useRecordStoreMedicationById(id as string);
   const medicalRecord = useMedicalRecord();
@@ -71,16 +66,17 @@ const UpdateMedication = () => {
     }
   };
 
-  const fakeView = useAnimatedStyle(() => ({
-    height: Math.abs(height.value),
-  }));
-
   return (
     <View style={styles.container}>
       <Stack.Screen
         options={{ title: `${isEditMode ? "Edit" : "Add"} Medication` }}
       />
-      <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
+
+      <FormPage
+        canSubmit={isValid && isDirty}
+        isSubmitting={isSubmitting}
+        handleSubmit={handleSubmit(onSubmit)}
+      >
         <ControllerInput
           control={control}
           name="name"
@@ -135,16 +131,7 @@ const UpdateMedication = () => {
           rules={{ required: "Please select an interval" }}
           singleSelect
         />
-      </PageScrollView>
-
-      <Footer
-        keyboardHeightShared={height}
-        canSubmit={isDirty && isValid}
-        submitting={isSubmitting}
-        handleSubmit={handleSubmit(onSubmit)}
-      />
-
-      <Animated.View style={fakeView} />
+      </FormPage>
     </View>
   );
 };
@@ -155,27 +142,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  pageScrollViewContent: {
-    flexDirection: "column",
-    gap: 16,
-  },
-  frequencyRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  timesPer: {
-    marginHorizontal: 8,
-    fontSize: 16,
-  },
-  dropdownWrapper: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.faintGrey,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  picker: {
-    width: "100%",
   },
 });

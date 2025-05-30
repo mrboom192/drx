@@ -1,3 +1,4 @@
+import LoadingScreen from "@/components/LoadingScreen";
 import PageHeader from "@/components/PageHeader";
 import ExpoStripeProvider from "@/components/stripe-provider";
 import { SignUpProvider } from "@/contexts/SignupContext";
@@ -54,6 +55,11 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
 
 export default function RootLayout() {
   const startNotifications = useStartNotifications();
@@ -115,7 +121,7 @@ export default function RootLayout() {
   }, [fontsLoaded, isAuthReady]);
 
   if (!fontsLoaded && !fontError) {
-    return null;
+    return <LoadingScreen />;
   }
 
   return <RootLayoutNav />;

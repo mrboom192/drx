@@ -3,16 +3,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Colors from "@/constants/Colors";
 import { useImagePicker } from "@/hooks/useImagePicker";
-import { Stack } from "expo-router";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { auth, db } from "../../../../firebaseConfig";
 
+import { uploadFile } from "@/api/files";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { useUserData } from "@/stores/useUserStore";
 
 const DoctorVerification = () => {
-  const { pickImage, uploadImage, isUploading } = useImagePicker();
+  const { pickImage, isUploading } = useImagePicker();
   const userData = useUserData();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uri, setUri] = useState<string | null>(null);
@@ -32,7 +32,7 @@ const DoctorVerification = () => {
     setIsSubmitting(true);
 
     try {
-      const url = await uploadImage(uri, `licenses/${uid}.jpg`);
+      const url = await uploadFile(uri, `licenses/${uid}.jpg`);
       if (!url) throw new Error("Upload failed");
 
       await setDoc(doc(db, "pendingVerifications", uid), {

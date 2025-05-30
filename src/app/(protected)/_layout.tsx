@@ -1,6 +1,6 @@
 import { getAndRegisterPushToken } from "@/api/notifications";
+import LoadingScreen from "@/components/LoadingScreen";
 import PageHeader from "@/components/PageHeader";
-import { TextRegular } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
 import { useIsAuthReady } from "@/stores/useAuthInitStore";
 import {
@@ -14,7 +14,6 @@ import {
 import { useIsFetchingUser, useIsUserLoggedIn } from "@/stores/useUserStore";
 import { Redirect, Stack } from "expo-router";
 import { useEffect } from "react";
-import { View } from "react-native";
 import { auth } from "../../../firebaseConfig";
 
 export default function ProtectedLayout() {
@@ -46,27 +45,7 @@ export default function ProtectedLayout() {
   }, [isAuthReady, session]);
 
   // You can keep the splash screen open, or render a loading screen like we do here.
-  if (isLoading || isFetchingUser || !isAuthReady)
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TextRegular
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          Loading...
-        </TextRegular>
-      </View>
-    );
+  if (isLoading || isFetchingUser || !isAuthReady) return <LoadingScreen />;
 
   // Update this to the new router Expo SDK 53
 

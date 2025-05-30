@@ -1,3 +1,4 @@
+import { uploadFile } from "@/api/files";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useUserData } from "@/stores/useUserStore";
@@ -16,14 +17,17 @@ const UserAvatar = ({
   canUpload?: boolean;
 }) => {
   const userData = useUserData();
-  const { pickImage, uploadImage, isUploading } = useImagePicker();
+  const { pickImage, isUploading } = useImagePicker();
   const [isUpdatingUserDoc, setIsUpdatingUserDoc] = useState(false);
   const uid = auth.currentUser?.uid;
 
   const handleUpload = async () => {
     setIsUpdatingUserDoc(true);
     const uri = await pickImage();
-    const imageURL = await uploadImage(uri as string, `users/${uid}.jpg`);
+    const imageURL = await uploadFile(
+      uri as string,
+      `users/${uid}/profile.jpg`
+    );
 
     if (!imageURL) {
       setIsUpdatingUserDoc(false);

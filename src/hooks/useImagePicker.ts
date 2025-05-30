@@ -1,8 +1,6 @@
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
-import { auth, storage } from "../../firebaseConfig";
 
 export function useImagePicker() {
   const [isUploading, setIsUploading] = useState(false);
@@ -38,42 +36,5 @@ export function useImagePicker() {
     }
   };
 
-  async function uploadImage(imageUri: string, path: string) {
-    let uploadedImageURL: string | null = null;
-    const uid = auth.currentUser?.uid;
-
-    if (!uid || !imageUri) return null;
-
-    // Upload image if exists
-    const fileRef = ref(storage, path);
-
-    const blob: Blob = await new Promise<Blob>((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        console.log(e);
-        reject(new TypeError("Network request failed"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", imageUri, true);
-      xhr.send(null);
-    });
-
-    try {
-      await uploadBytes(fileRef, blob);
-    } catch (error) {
-      console.error("uploadBytes failed:", error);
-    }
-
-    // Clean up blob (optional chaining for safety)
-    // @ts-ignore
-    blob.close?.();
-
-    uploadedImageURL = await getDownloadURL(fileRef);
-    return uploadedImageURL;
-  }
-
-  return { pickImage, uploadImage, isUploading };
+  return { pickImage, isUploading };
 }

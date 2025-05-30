@@ -2,7 +2,7 @@ import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
@@ -315,6 +315,9 @@ const SecondOpinion = () => {
             paddingHorizontal: 16,
             paddingVertical: 16,
           }}
+          onPress={() =>
+            router.push("/(protected)/(modals)/create-second-opinion")
+          } // Navigate to new case screen
         >
           <TextSemiBold
             style={{

@@ -1,5 +1,4 @@
 import Colors from "@/constants/Colors";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -11,7 +10,6 @@ import IconButton from "./IconButton";
 
 const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
   ({ content = <></> }, ref) => {
-    const { themeBorderStyle, colorScheme } = useThemedStyles();
     const snapPoints = useMemo(() => ["65%"], []);
 
     const renderBackdrop = useCallback(
@@ -45,11 +43,7 @@ const InfoBottomSheet = forwardRef<BottomSheetModal, { content?: ReactNode }>(
           },
         }}
         backgroundStyle={{
-          backgroundColor:
-            colorScheme === "light"
-              ? Colors.light.background
-              : // : Colors.dark.background,
-                Colors.light.background,
+          backgroundColor: Colors.light.background,
         }}
         snapPoints={snapPoints}
         index={1}

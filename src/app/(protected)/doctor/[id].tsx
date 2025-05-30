@@ -1,5 +1,6 @@
 import { db } from "@/../firebaseConfig";
 import Avatar from "@/components/Avatar";
+import LoadingScreen from "@/components/LoadingScreen";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import CustomIcon from "@/components/icons/CustomIcon";
 import Biography from "@/components/screens/doctor/Biography";
@@ -9,12 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface PublicProfile {
@@ -65,13 +61,7 @@ const Page = () => {
     router.push(`/doctor/booking?id=${id}`);
   };
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <LoadingScreen />;
 
   if (error || !doctor) {
     return (

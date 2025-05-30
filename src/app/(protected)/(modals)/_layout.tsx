@@ -26,6 +26,14 @@ export default function ModalsLayout() {
         }}
       />
       <Stack.Screen
+        name="create-second-opinion"
+        options={{
+          title: "Create Second Opinion",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name="add-card"
         options={{
           title: "Add Card",

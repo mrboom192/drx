@@ -204,6 +204,21 @@ const SecondOpinion = () => {
               },
             ]}
           >
+            {cases.length === 0 && (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TextRegular
+                  style={[themeTextStyleSecondary, { fontSize: 16 }]}
+                >
+                  No cases available
+                </TextRegular>
+              </View>
+            )}
             {cases.map((item) => (
               <TouchableOpacity
                 key={item.id}

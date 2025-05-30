@@ -3,10 +3,8 @@ import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Link } from "expo-router";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import { db } from "../../../firebaseConfig";
 import CustomIcon from "../icons/CustomIcon";
 import Filter from "../icons/Filter";
 import { TextRegular, TextSemiBold } from "../StyledText";
@@ -38,44 +36,12 @@ const mockCases = [
 const RemoteManagement = () => {
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
     useThemedStyles();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [doctors, setDoctors] = useState<any[]>([]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
   }, []);
-
-  const fetchRandomDoctors = useCallback(async () => {
-    setLoading(true);
-    setError(null); // Reset error state before fetching
-
-    try {
-      const doctorsRef = collection(db, "publicProfiles");
-
-      // Fetch up to 50 doctors (to allow better randomness)
-      const q = query(doctorsRef, limit(7));
-      const querySnapshot = await getDocs(q);
-
-      let doctorsList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setDoctors(doctorsList);
-    } catch (error) {
-      console.error("Error fetching random doctors:", error);
-      setError("Failed to load doctors. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchRandomDoctors();
-  }, [fetchRandomDoctors]);
 
   return (
     <View style={{ flex: 1 }}>

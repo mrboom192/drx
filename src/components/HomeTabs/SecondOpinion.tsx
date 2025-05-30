@@ -1,14 +1,18 @@
 import InfoBottomSheet from "@/components/InfoBottomSheet";
 import Colors from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/useThemeStyles";
+import {
+  useCases,
+  useIsFetchingCases,
+  useStartCasesListener,
+} from "@/stores/useCaseStore";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Link, router } from "expo-router";
-import { collection, getDocs, limit, query } from "firebase/firestore";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { router } from "expo-router";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import { db } from "../../../firebaseConfig";
 import CustomIcon from "../icons/CustomIcon";
 import Filter from "../icons/Filter";
+import LoadingScreen from "../LoadingScreen";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const mockCases = [
@@ -36,46 +40,22 @@ const mockCases = [
 ];
 
 const SecondOpinion = () => {
+  const startCasesListener = useStartCasesListener();
+  const cases = useCases();
+  const isFetchingCases = useIsFetchingCases();
   const { themeBorderStyle, themeTextStylePrimary, themeTextStyleSecondary } =
     useThemedStyles();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [doctors, setDoctors] = useState<any[]>([]);
-
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present(); // Collapses bottom sheet, showing map
   }, []);
 
-  const fetchRandomDoctors = useCallback(async () => {
-    setLoading(true);
-    setError(null); // Reset error state before fetching
-
-    try {
-      const doctorsRef = collection(db, "publicProfiles");
-
-      // Fetch up to 50 doctors (to allow better randomness)
-      const q = query(doctorsRef, limit(7));
-      const querySnapshot = await getDocs(q);
-
-      let doctorsList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setDoctors(doctorsList);
-    } catch (error) {
-      console.error("Error fetching random doctors:", error);
-      setError("Failed to load doctors. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    startCasesListener(); // Doesnt run if there is already a listener
   }, []);
 
-  useEffect(() => {
-    fetchRandomDoctors();
-  }, [fetchRandomDoctors]);
+  if (isFetchingCases) return <LoadingScreen />;
 
   return (
     <View style={{ flex: 1 }}>
@@ -144,7 +124,7 @@ const SecondOpinion = () => {
             <TextSemiBold style={{ fontSize: 16 }}>
               Number of Opinions
             </TextSemiBold>
-            <TextSemiBold style={{ fontSize: 28 }}>1</TextSemiBold>
+            <TextSemiBold style={{ fontSize: 28 }}>{cases.length}</TextSemiBold>
           </View>
         </View>
       </View>
@@ -179,31 +159,31 @@ const SecondOpinion = () => {
               Cases
             </TextSemiBold>
             <TextRegular style={[themeTextStyleSecondary, { fontSize: 16 }]}>
-              1/2 Cases reviewed
+              {`${cases.filter((c) => c.status === "reviewed").length}/${
+                cases.length
+              } Cases reviewed`}
             </TextRegular>
           </View>
-          <Link href={`/(protected)/(tabs)`} asChild>
-            <TouchableOpacity
+          <TouchableOpacity
+            style={{
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+              borderRadius: 32,
+              borderWidth: 1,
+              borderColor: Colors.light.grey,
+              justifyContent: "center",
+            }}
+          >
+            <TextSemiBold
               style={{
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                borderRadius: 32,
-                borderWidth: 1,
-                borderColor: Colors.light.grey,
-                justifyContent: "center",
+                color: Colors.light.grey,
+                textAlign: "center",
+                fontSize: 12,
               }}
             >
-              <TextSemiBold
-                style={{
-                  color: Colors.light.grey,
-                  textAlign: "center",
-                  fontSize: 12,
-                }}
-              >
-                View All
-              </TextSemiBold>
-            </TouchableOpacity>
-          </Link>
+              View All
+            </TextSemiBold>
+          </TouchableOpacity>
         </View>
 
         {/* Second Opinion Requests */}
@@ -224,82 +204,87 @@ const SecondOpinion = () => {
               },
             ]}
           >
-            {mockCases.map((item) => (
-              <Link href={`/(protected)/(tabs)`} key={item.id} asChild>
-                <TouchableOpacity
-                  style={{
-                    borderWidth: 1,
-                    borderColor: Colors.light.faintGrey,
-                    padding: 16,
-                    flexDirection: "column",
-                    width: 155,
-                    height: 155,
-                    backgroundColor: "#FFF",
-                    justifyContent: "space-between",
-                    borderRadius: 8,
-                  }}
+            {cases.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() =>
+                  router.push({
+                    pathname: "/(protected)/case/[id]",
+                    params: { id: item.id },
+                  })
+                }
+                style={{
+                  borderWidth: 1,
+                  borderColor: Colors.light.faintGrey,
+                  padding: 16,
+                  flexDirection: "column",
+                  width: 155,
+                  height: 155,
+                  backgroundColor: "#FFF",
+                  justifyContent: "space-between",
+                  borderRadius: 8,
+                }}
+              >
+                <TextSemiBold
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  style={[themeTextStylePrimary, { fontSize: 16 }]}
                 >
-                  <TextSemiBold
-                    ellipsizeMode="tail"
-                    numberOfLines={2}
-                    style={[themeTextStylePrimary, { fontSize: 16 }]}
+                  {item.name}
+                </TextSemiBold>
+                <TextRegular
+                  ellipsizeMode="tail"
+                  numberOfLines={2}
+                  style={[themeTextStyleSecondary, { fontSize: 12 }]}
+                >
+                  {item.description}
+                </TextRegular>
+                {item.status === "reviewed" ? (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: "4",
+                      alignItems: "center",
+                    }}
                   >
-                    {item.title}
-                  </TextSemiBold>
-                  <TextRegular
-                    ellipsizeMode="tail"
-                    numberOfLines={2}
-                    style={[themeTextStyleSecondary, { fontSize: 12 }]}
-                  >
-                    {item.description}
-                  </TextRegular>
-                  {item.reviewed ? (
-                    <View
+                    <CustomIcon
+                      name="check-mark"
+                      size={24}
+                      color={Colors.green}
+                    />
+                    <TextSemiBold
                       style={{
-                        flexDirection: "row",
-                        gap: "4",
-                        alignItems: "center",
+                        color: Colors.green,
+                        fontSize: 12,
                       }}
                     >
-                      <CustomIcon
-                        name="check-mark"
-                        size={24}
-                        color={Colors.green}
-                      />
-                      <TextSemiBold
-                        style={{
-                          color: Colors.green,
-                          fontSize: 12,
-                        }}
-                      >
-                        Reviewed by 1
-                      </TextSemiBold>
-                    </View>
-                  ) : (
-                    <View
+                      Reviewed by 1
+                    </TextSemiBold>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: "4",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CustomIcon
+                      name="schedule"
+                      size={24}
+                      color={Colors.onlineConsultation}
+                    />
+                    <TextSemiBold
                       style={{
-                        flexDirection: "row",
-                        gap: "4",
-                        alignItems: "center",
+                        color: Colors.onlineConsultation,
+                        fontSize: 12,
                       }}
                     >
-                      <CustomIcon
-                        name="schedule"
-                        size={24}
-                        color={Colors.onlineConsultation}
-                      />
-                      <TextSemiBold
-                        style={{
-                          color: Colors.onlineConsultation,
-                          fontSize: 12,
-                        }}
-                      >
-                        Pending
-                      </TextSemiBold>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              </Link>
+                      Pending
+                    </TextSemiBold>
+                  </View>
+                )}
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>

@@ -15,6 +15,7 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Avatar from "../Avatar";
 import CustomIcon from "../icons/CustomIcon";
+import LoadingScreen from "../LoadingScreen";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const OnlineConsultation = () => {
@@ -89,21 +90,7 @@ const OnlineConsultation = () => {
     );
   };
 
-  if (isFetchingDoctors) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TextSemiBold style={[themeTextStylePrimary, { fontSize: 20 }]}>
-          Loading doctors...
-        </TextSemiBold>
-      </View>
-    );
-  }
+  if (isFetchingDoctors) return <LoadingScreen />;
 
   return (
     <View style={{ flex: 1 }}>

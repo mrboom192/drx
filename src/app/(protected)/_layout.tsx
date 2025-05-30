@@ -7,6 +7,7 @@ import {
   useStartBillingListener,
   useStopBillingListener,
 } from "@/stores/useBillingDetails";
+import { useStopCasesListener } from "@/stores/useCaseStore";
 import {
   useStartChatsListener,
   useStopChatsListener,
@@ -27,6 +28,7 @@ export default function ProtectedLayout() {
   // Chats
   const startChatsListener = useStartChatsListener();
   const stopChatsListener = useStopChatsListener();
+  const stopCasesListener = useStopCasesListener();
   const isAuthReady = useIsAuthReady();
   const shouldRedirect =
     !session || auth.currentUser === null || !isUserLoggedIn;
@@ -40,6 +42,7 @@ export default function ProtectedLayout() {
 
     return () => {
       stopChatsListener();
+      stopCasesListener();
       stopBillingListener();
     }; // Clean up on unmount
   }, [isAuthReady, session]);
@@ -80,6 +83,14 @@ export default function ProtectedLayout() {
         name="bookmarked"
         options={{
           title: "Bookmarked Doctors",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="case"
+        options={{
+          title: "Case information",
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}

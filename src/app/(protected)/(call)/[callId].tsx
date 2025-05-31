@@ -32,6 +32,16 @@ const Call = () => {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const {
+    localStream,
+    remoteStream,
+    switchCamera,
+    toggleMute,
+    toggleVideo,
+    isVideoEnabled,
+    isMuted,
+  } = useWebRTCCall(chatId, callId, isCaller);
+
   // Start the timer when the page mounts
   // In the future, grab start time from firestore and calculate elapsed time
   // when call ends, save the end time to firestore
@@ -44,16 +54,6 @@ const Call = () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
-
-  const {
-    localStream,
-    remoteStream,
-    switchCamera,
-    toggleMute,
-    toggleVideo,
-    isVideoEnabled,
-    isMuted,
-  } = useWebRTCCall(chatId, callId, isCaller);
 
   return (
     <View style={[styles.container]}>

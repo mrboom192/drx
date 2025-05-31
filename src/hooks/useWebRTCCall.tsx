@@ -250,23 +250,9 @@ export function useWebRTCCall(
   }
 
   async function endCall() {
-    // Close the peer connection and stop all tracks
-    // Remove event listeners
-    peerConnection.current?.removeEventListener(
-      "icecandidate",
-      handleIceCandidate
-    );
-    peerConnection.current?.removeEventListener("track", handleTrack);
-    peerConnection.current?.removeEventListener(
-      "iceconnectionstatechange",
-      handleIceConnectionStateChange
-    );
-
-    localStream?.getTracks().forEach((track) => track.stop());
-    remoteStream?.getTracks().forEach((track) => track.stop());
-
+    localStream?.getTracks().forEach((t) => t.stop());
+    localStream?.release();
     peerConnection.current?.close();
-    peerConnection.current = null;
 
     const chatDocRef = doc(db, "chats", chatId);
     await updateDoc(chatDocRef, { hasActiveCall: false });

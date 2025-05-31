@@ -1,4 +1,5 @@
 import { mediaConstraints, sessionConstraints } from "@/config/webrtcConfig";
+import RTCPeerConnection from "@/webrtc/ExtendedRTCPeerConnection";
 import { onChildAdded, push, ref, remove, set } from "@firebase/database";
 import { router } from "expo-router";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
@@ -8,7 +9,6 @@ import {
   mediaDevices,
   MediaStream,
   RTCIceCandidate,
-  RTCPeerConnection,
   RTCSessionDescription,
 } from "react-native-webrtc";
 import { database, db, functions } from "../../firebaseConfig";
@@ -27,7 +27,7 @@ export function useWebRTCCall(
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
 
-  const peerConnection = useRef<any>(null); // Peer connection reference
+  const peerConnection = useRef<RTCPeerConnection | null>(null); // Peer connection reference
   const remoteStreamRef = useRef<MediaStream | null>(null); // Remote stream reference
   const hasSetRemoteDescription = useRef(false); // Flag to check if remote description is set to prevent constant updates
   const queuedCandidates = useRef<RTCIceCandidateInit[]>([]);
@@ -94,7 +94,7 @@ export function useWebRTCCall(
   };
 
   const handleIceConnectionStateChange = () => {
-    const state = peerConnection.current.iceConnectionState;
+    const state = peerConnection.current?.iceConnectionState;
     console.log("ICE connection state:", state);
     const peerDisconnected =
       state === "disconnected" || state === "failed" || state === "closed";
@@ -119,25 +119,28 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
-    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
-    peerConnection.current.addEventListener("track", handleTrack);
-    peerConnection.current.addEventListener(
+    peerConnection.current?.addEventListener(
+      "icecandidate",
+      handleIceCandidate
+    );
+    peerConnection.current?.addEventListener("track", handleTrack);
+    peerConnection.current?.addEventListener(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
-    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+    peerConnection.current?.addEventListener("icegatheringstatechange", () => {
       console.log(
         "[ICE] Gathering state:",
-        peerConnection.current.iceGatheringState
+        peerConnection.current?.iceGatheringState
       );
     });
 
     mediaStream.getTracks().forEach((track) => {
-      peerConnection.current.addTrack(track, mediaStream);
+      peerConnection.current!.addTrack(track, mediaStream);
     });
 
-    const offer = await peerConnection.current.createOffer(sessionConstraints);
-    await peerConnection.current.setLocalDescription(offer);
+    const offer = await peerConnection.current?.createOffer(sessionConstraints);
+    await peerConnection.current?.setLocalDescription(offer);
     await setDoc(callDocRef, { offer });
 
     // Listen to the call document, then set remote description
@@ -146,16 +149,16 @@ export function useWebRTCCall(
       const data = snapshot.data();
       if (
         data?.answer &&
-        !peerConnection.current.remoteDescription &&
+        !peerConnection.current?.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
-        await peerConnection.current.setRemoteDescription(
+        await peerConnection.current?.setRemoteDescription(
           new RTCSessionDescription(data.answer)
         );
 
         for (const candidate of queuedCandidates.current) {
-          await peerConnection.current.addIceCandidate(
+          await peerConnection.current?.addIceCandidate(
             new RTCIceCandidate(candidate)
           );
         }
@@ -167,7 +170,7 @@ export function useWebRTCCall(
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
-        if (peerConnection.current.remoteDescription) {
+        if (peerConnection.current?.remoteDescription) {
           peerConnection.current.addIceCandidate(candidate);
         } else {
           queuedCandidates.current.push(data);
@@ -182,19 +185,22 @@ export function useWebRTCCall(
     if (!mediaStream) return;
 
     mediaStream.getTracks().forEach((track) => {
-      peerConnection.current.addTrack(track, mediaStream);
+      peerConnection.current?.addTrack(track, mediaStream);
     });
 
-    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
-    peerConnection.current.addEventListener("track", handleTrack);
-    peerConnection.current.addEventListener(
+    peerConnection.current?.addEventListener(
+      "icecandidate",
+      handleIceCandidate
+    );
+    peerConnection.current?.addEventListener("track", handleTrack);
+    peerConnection.current?.addEventListener(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
-    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+    peerConnection.current?.addEventListener("icegatheringstatechange", () => {
       console.log(
         "[ICE] Gathering state:",
-        peerConnection.current.iceGatheringState
+        peerConnection.current?.iceGatheringState
       );
     });
 
@@ -204,20 +210,20 @@ export function useWebRTCCall(
       const data = snapshot.data();
       if (
         data?.offer &&
-        !peerConnection.current.remoteDescription &&
+        !peerConnection.current?.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
         try {
-          await peerConnection.current.setRemoteDescription(
+          await peerConnection.current?.setRemoteDescription(
             new RTCSessionDescription(data.offer)
           );
-          const answer = await peerConnection.current.createAnswer();
-          await peerConnection.current.setLocalDescription(answer);
+          const answer = await peerConnection.current?.createAnswer();
+          await peerConnection.current?.setLocalDescription(answer);
           await updateDoc(callDocRef, { answer });
 
           for (const candidate of queuedCandidates.current) {
-            await peerConnection.current.addIceCandidate(
+            await peerConnection.current?.addIceCandidate(
               new RTCIceCandidate(candidate)
             );
           }
@@ -233,7 +239,7 @@ export function useWebRTCCall(
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
-        if (peerConnection.current.remoteDescription) {
+        if (peerConnection.current?.remoteDescription) {
           peerConnection.current.addIceCandidate(candidate);
         } else {
           queuedCandidates.current.push(data);
@@ -305,7 +311,7 @@ export function useWebRTCCall(
       const newVideoTrack = newStream.getVideoTracks()[0];
       const videoSender = peerConnection.current
         .getSenders()
-        .find((s: { track: { kind: string } }) => s.track?.kind === "video");
+        .find((s) => s.track && s.track.kind === "video");
 
       if (videoSender && newVideoTrack) {
         await videoSender.replaceTrack(newVideoTrack);

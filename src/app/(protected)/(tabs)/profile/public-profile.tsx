@@ -1,4 +1,5 @@
 import { db } from "@/../firebaseConfig";
+import LoadingScreen from "@/components/LoadingScreen";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
 import CustomIcon from "@/components/icons/CustomIcon";
@@ -9,7 +10,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  ActivityIndicator,
   FlatList,
   Modal,
   Pressable,
@@ -272,13 +272,7 @@ const PublicProfile = () => {
     </TouchableOpacity>
   );
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>

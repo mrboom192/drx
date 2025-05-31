@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, { FadeOut } from "react-native-reanimated";
 
-const SIZE = 100; // Size of the loading animation
+const SIZE = 256; // Size of the loading animation
 
 function LoadingScreen() {
   return (

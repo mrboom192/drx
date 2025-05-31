@@ -1,4 +1,3 @@
-import LoadingScreen from "@/components/LoadingScreen";
 import PageHeader from "@/components/PageHeader";
 import ExpoStripeProvider from "@/components/stripe-provider";
 import { SignUpProvider } from "@/contexts/SignupContext";
@@ -121,7 +120,7 @@ export default function RootLayout() {
   }, [fontsLoaded, isAuthReady]);
 
   if (!fontsLoaded && !fontError) {
-    return <LoadingScreen />;
+    return null;
   }
 
   return <RootLayoutNav />;

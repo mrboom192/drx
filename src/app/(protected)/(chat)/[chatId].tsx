@@ -1,6 +1,7 @@
+import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
 import CustomIcon from "@/components/icons/CustomIcon";
-import { TextSemiBold } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChatsById } from "@/stores/useChatStore";
@@ -20,7 +21,13 @@ import { httpsCallable } from "firebase/functions";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import {
+  Bubble,
+  Composer,
+  GiftedChat,
+  InputToolbar,
+  Send,
+} from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db, functions } from "../../../../firebaseConfig";
 
@@ -142,21 +149,157 @@ const ChatRoom = () => {
         user={{
           _id: userData.uid, // Let giftedchat know who is the current user
         }}
+        renderInputToolbar={(props) => {
+          return (
+            <InputToolbar
+              {...props}
+              primaryStyle={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            />
+          );
+        }}
+        renderComposer={(props) => (
+          <Composer
+            {...props}
+            textInputStyle={{
+              color: Colors.black,
+              backgroundColor: "#FFF",
+              borderWidth: 1,
+              borderColor: Colors.faintGrey,
+              alignItems: "center",
+              borderRadius: 20,
+              paddingHorizontal: 12,
+              paddingVertical: 10,
+              marginRight: 8,
+              fontSize: 16,
+            }}
+            placeholder="Type a message..."
+            placeholderTextColor={Colors.grey}
+          />
+        )}
+        renderSend={(props) => {
+          return (
+            <Send
+              {...props}
+              containerStyle={{
+                justifyContent: "center",
+                alignItems: "center",
+                paddingHorizontal: 8,
+                width: 40,
+                height: 40,
+                borderRadius: 9999,
+                borderWidth: 1,
+                borderColor: Colors.faintGrey,
+                marginRight: 16,
+              }}
+            >
+              <CustomIcon name="send" size={24} color={Colors.black} />
+            </Send>
+          );
+        }}
+        renderAvatar={(props) => {
+          return (
+            <Avatar
+              {...props}
+              size={40}
+              uri={props.currentMessage.user.avatar}
+              // Gets users initials
+              initials={props.currentMessage.user.name
+                .split(" ")
+                .map((name) => name.charAt(0))
+                .join("")}
+            />
+          );
+        }}
+        renderDay={(props) => {
+          const date = props.createdAt ? new Date(props.createdAt) : new Date();
+
+          return (
+            <View
+              style={{
+                alignItems: "center",
+                marginVertical: 16,
+              }}
+            >
+              <TextRegular style={{ color: Colors.lightText, fontSize: 12 }}>
+                {date.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </TextRegular>
+            </View>
+          );
+        }}
+        renderTime={(props) => {
+          const time = props.currentMessage.createdAt
+            ? new Date(props.currentMessage.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true, // Change to false if you prefer 24-hour format
+              })
+            : "";
+
+          return (
+            <View
+              style={{
+                borderRadius: 12,
+                paddingVertical: 2,
+                alignSelf:
+                  props.position === "left" ? "flex-start" : "flex-end",
+                marginHorizontal: 8,
+                marginBottom: 4,
+              }}
+            >
+              <TextRegular
+                style={{
+                  color: Colors.black,
+                  fontSize: 10,
+                  textAlign: "center",
+                }}
+              >
+                {time}
+              </TextRegular>
+            </View>
+          );
+        }}
+        renderMessageText={(props) => {
+          const { currentMessage, position } = props;
+
+          return (
+            <View
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+              }}
+            >
+              <TextRegular
+                style={{
+                  fontSize: 14,
+                  color: Colors.black,
+                  lineHeight: 20,
+                  textAlign: "left", // Keep text left-aligned inside bubbles
+                }}
+              >
+                {currentMessage.text}
+              </TextRegular>
+            </View>
+          );
+        }}
         renderBubble={(props) => {
           return (
             <Bubble
               {...props}
-              textStyle={{
-                right: {
-                  color: "#000",
-                },
-              }}
               wrapperStyle={{
                 left: {
                   backgroundColor: Colors.peach,
+                  padding: 8,
                 },
                 right: {
                   backgroundColor: Colors.lightLavender,
+                  padding: 8,
                 },
               }}
             />
@@ -273,6 +416,7 @@ const header = StyleSheet.create({
     flexDirection: "column",
   },
   chatTitle: {
+    flex: 1,
     fontSize: 16,
   },
   onlineStatus: {

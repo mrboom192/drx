@@ -11,6 +11,8 @@ export default function TabLayout() {
           backgroundColor: "#FFF",
           borderColor: Colors.faintGrey,
         },
+        tabBarActiveTintColor: Colors.black,
+        tabBarInactiveTintColor: Colors.lightText,
       })}
     >
       <Tabs.Screen

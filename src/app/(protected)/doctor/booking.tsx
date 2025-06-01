@@ -1,16 +1,16 @@
-import { db, functions } from "@/../firebaseConfig";
+import { functions } from "@/../firebaseConfig";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { useDoctorById } from "@/stores/useDoctorSearch";
 import { useUserData } from "@/stores/useUserStore";
 import { TimeSlot } from "@/types/timeSlot";
-import { formatDate, generateTimeSlots } from "@/utils/bookingUtils";
+import { formatDate } from "@/utils/bookingUtils";
 import { Ionicons } from "@expo/vector-icons";
 import { useStripe } from "@stripe/stripe-react-native";
 import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
-import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -55,38 +55,15 @@ const cancelPaymentIntent = httpsCallable<
 
 const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
   const userData = useUserData();
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
-  const [doctor, setDoctor] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-
-  useEffect(() => {
-    const fetchDoctorProfile = async () => {
-      try {
-        const publicProfileRef = doc(db, "publicProfiles", id);
-        const docSnap = await getDoc(publicProfileRef);
-
-        if (docSnap.exists()) {
-          setDoctor(docSnap.data());
-        }
-      } catch (err) {
-        console.error("Error fetching doctor profile:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchDoctorProfile();
-      setTimeSlots(generateTimeSlots(selectedDate));
-    }
-  }, [id, selectedDate]);
 
   const initializePaymentSheet = async ({ amount }: { amount: number }) => {
     if (!userData) {
@@ -131,17 +108,14 @@ const BookingPage = () => {
       const { error: paymentError } = await presentPaymentSheet();
 
       if (paymentError) {
-        Alert.alert("Payment failed", paymentError.message);
-        cancelPaymentIntent({
-          id: paymentIntentId,
-        });
+        await cancelPaymentIntent({ id: paymentIntentId });
         throw new Error(paymentError.message);
       }
 
       Alert.alert("Success", "Booking was successful!");
-      return;
-    } catch (err: any) {
-      throw new Error(err.message);
+      return "success";
+    } catch (err) {
+      throw new Error("Failed to initialize payment sheet");
     }
   };
 
@@ -160,18 +134,10 @@ const BookingPage = () => {
         pathname: `/(protected)/(tabs)/messages`,
       });
     } catch (error: any) {
-      Alert.alert("Error", error);
+      Alert.alert("Payment failed");
       setLoading(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
 
   return (
     <View

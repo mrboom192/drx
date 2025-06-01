@@ -1,10 +1,9 @@
-import Divider from "@/components/Divider";
-import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
-import ControllerInput from "@/components/form/ControllerInput";
-import FormPage from "@/components/FormPage";
-import LoadingScreen from "@/components/LoadingScreen";
-import { TextSemiBold } from "@/components/StyledText";
-import UserAvatar from "@/components/UserAvatar";
+import { router } from "expo-router";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+
 import Colors from "@/constants/Colors";
 import { SPECIALIZATIONS } from "@/constants/specializations";
 import {
@@ -13,14 +12,19 @@ import {
   usePublicProfile,
 } from "@/stores/usePublicProfileStore";
 import { useUserData } from "@/stores/useUserStore";
-import { router } from "expo-router";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
-import React, { useEffect } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
 import { db } from "../../../../firebaseConfig";
 
-const countryCodeMap: { [key: string]: string } = {
+import Divider from "@/components/Divider";
+import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
+import ControllerInput from "@/components/form/ControllerInput";
+import ControllerTimePicker from "@/components/form/ControllerTimePicker";
+import FormPage from "@/components/FormPage";
+import IconButton from "@/components/IconButton";
+import LoadingScreen from "@/components/LoadingScreen";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import UserAvatar from "@/components/UserAvatar";
+
+const countryCodeMap = {
   "United States": "us",
   Egypt: "eg",
   Jordan: "jo",
@@ -37,75 +41,102 @@ const UpdatePublicProfile = () => {
   const fetchPublicProfile = useFetchPublicProfile();
   const isFetchingPublicProfile = useIsFetchingPublicProfile();
 
-  useEffect(() => {
-    fetchPublicProfile();
-  }, []);
-
   const { control, handleSubmit, formState, watch, reset } =
     useForm<FieldValues>({
       mode: "onChange",
-      defaultValues: publicProfile
-        ? {
-            specializations: publicProfile.specializations || [],
-            languages: publicProfile.languages || [],
-            experience: publicProfile.experience?.toString() || "",
-            biography: publicProfile.biography || "",
-            countries: (publicProfile.countries || []).map(
-              (code: string) => countryNameMap[code] || code
-            ),
-            consultationPrice:
-              publicProfile.consultationPrice?.toString() || "",
-            secondOpinionPrice:
-              publicProfile.secondOpinionPrice?.toString() || "",
-            weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
-            radiologyPrice: publicProfile.radiologyPrice?.toString() || "",
-            services: publicProfile.services || [],
-          }
-        : {},
+      defaultValues: {},
     });
 
   const { isDirty, isValid, isSubmitting } = formState;
   const watchedServices = watch("services", []);
+  const watchedDays = watch("availableDays", []);
+
+  // Dynamic time slots per day
+  const [timeSlotCounts, setTimeSlotCounts] = useState<{
+    [day: string]: number;
+  }>({});
+
+  const addTimeSlot = (day: string) => {
+    setTimeSlotCounts((prev) => ({
+      ...prev,
+      [day]: (prev[day] || 1) + 1,
+    }));
+  };
+
+  useEffect(() => {
+    fetchPublicProfile();
+  }, []);
+
+  useEffect(() => {
+    if (publicProfile) {
+      reset({
+        specializations: publicProfile.specializations || [],
+        languages: publicProfile.languages || [],
+        experience: publicProfile.experience?.toString() || "",
+        biography: publicProfile.biography || "",
+        countries: (publicProfile.countries || []).map(
+          (code: string) => countryNameMap[code] || code
+        ),
+        consultationPrice: publicProfile.consultationPrice?.toString() || "",
+        secondOpinionPrice: publicProfile.secondOpinionPrice?.toString() || "",
+        weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
+        radiologyPrice: publicProfile.radiologyPrice?.toString() || "",
+        services: publicProfile.services || [],
+        availableDays: publicProfile.availableDays || [],
+      });
+    }
+  }, [publicProfile, reset]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
 
-    try {
-      // Map selected country names to codes
-      const selectedCountryCodes = (formData.countries || []).map(
-        (countryName: string) => countryCodeMap[countryName] || countryName // fallback to name if not found
-      );
+    const selectedCountryCodes = (formData.countries || []).map(
+      (countryName: string) =>
+        countryCodeMap[countryName as keyof typeof countryCodeMap] ||
+        countryName
+    );
 
+    const buildPrice = (service: string, field: string) =>
+      watchedServices.includes(service)
+        ? parseInt(formData[field], 10) || 0
+        : null;
+
+    const timeSlots: { [day: string]: { start: string; end: string }[] } = {};
+    watchedDays.forEach((day: string) => {
+      const slots: { start: string; end: string }[] = [];
+      for (let i = 0; i < (timeSlotCounts[day] || 1); i++) {
+        const start = formData[`${day}_start_${i}`] || "";
+        const end = formData[`${day}_end_${i}`] || "";
+        if (start && end) slots.push({ start, end });
+      }
+      if (slots.length) timeSlots[day] = slots;
+    });
+
+    try {
       const dataToSave = {
         uid: userData.uid,
-        specializations: formData.specializations || [],
-        languages: formData.languages || [],
-        experience: parseInt(formData.experience, 10) || 0,
-        biography: formData.biography || "",
-        countries: selectedCountryCodes, // <-- use country codes here
-        consultationPrice: watchedServices?.includes("consultation")
-          ? parseInt(formData.consultationPrice, 10) || 0
-          : null,
-        secondOpinionPrice: watchedServices?.includes("second opinion")
-          ? parseInt(formData.secondOpinionPrice, 10) || 0
-          : null,
-        radiologyPrice: watchedServices?.includes("radiology")
-          ? parseInt(formData.radiologyPrice, 10) || 0
-          : null,
-        weightLossPrice: watchedServices?.includes("weight loss")
-          ? parseInt(formData.weightLossPrice, 10) || 0
-          : null,
-        services: formData.services || [],
         firstName: userData.firstName,
         lastName: userData.lastName,
         image: userData.image || null,
         updatedAt: Timestamp.now(),
+        specializations: formData.specializations || [],
+        languages: formData.languages || [],
+        experience: parseInt(formData.experience, 10) || 0,
+        biography: formData.biography || "",
+        countries: selectedCountryCodes,
+        services: formData.services || [],
+        consultationPrice: buildPrice("consultation", "consultationPrice"),
+        secondOpinionPrice: buildPrice("second opinion", "secondOpinionPrice"),
+        radiologyPrice: buildPrice("radiology", "radiologyPrice"),
+        weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
+        availableDays: formData.availableDays || [],
+        availableTimeSlots: timeSlots,
       };
 
-      const publicProfileRef = doc(db, "publicProfiles", userData.uid);
-      await setDoc(publicProfileRef, dataToSave, { merge: true });
-
-      router.back(); // Go back after successful update
+      await setDoc(doc(db, "publicProfiles", userData.uid), dataToSave, {
+        merge: true,
+      });
+      router.back();
     } catch (error) {
       console.error("Error updating public profile:", error);
     }
@@ -120,20 +151,13 @@ const UpdatePublicProfile = () => {
         isSubmitting={isSubmitting}
         handleSubmit={handleSubmit(onSubmit)}
       >
-        <View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>
+        <View style={styles.header}>
           <UserAvatar size={48} />
           <View>
-            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
-              Dr. {userData?.firstName + " " + userData?.lastName}
+            <TextSemiBold style={styles.nameText}>
+              Dr. {userData?.firstName} {userData?.lastName}
             </TextSemiBold>
-            <TextSemiBold
-              style={{
-                fontSize: 14,
-                color: Colors.onlineConsultation,
-              }}
-            >
-              doctor
-            </TextSemiBold>
+            <TextSemiBold style={styles.roleText}>doctor</TextSemiBold>
           </View>
         </View>
 
@@ -149,8 +173,8 @@ const UpdatePublicProfile = () => {
           label="Countries you are licensed in"
           name="countries"
           control={control}
-          rules={{ required: "At least one is required" }}
-          options={["United States", "Egypt", "Jordan", "India"]}
+          rules={{ required: "At least one country is required" }}
+          options={Object.keys(countryCodeMap)}
         />
 
         <ControllerInput
@@ -160,10 +184,7 @@ const UpdatePublicProfile = () => {
           control={control}
           rules={{
             required: "Experience is required",
-            pattern: {
-              value: /^\d+$/,
-              message: "Experience must be a valid number",
-            },
+            pattern: { value: /^\d+$/, message: "Must be a valid number" },
           }}
           keyboardType="numeric"
         />
@@ -175,10 +196,7 @@ const UpdatePublicProfile = () => {
           placeholder="Tell us about yourself"
           name="biography"
           control={control}
-          // Atleast 20 characters are required
-          rules={{
-            required: "Please create a biography",
-          }}
+          rules={{ required: "Biography is required" }}
           multiline
           textInputStyle={{ height: 128 }}
         />
@@ -189,7 +207,6 @@ const UpdatePublicProfile = () => {
           label="Select services you provide"
           name="services"
           control={control}
-          // Atleast one service is required
           rules={{ required: "At least one service is required" }}
           options={[
             "consultation",
@@ -199,68 +216,22 @@ const UpdatePublicProfile = () => {
           ]}
         />
 
-        {watchedServices?.includes("consultation") && (
-          <ControllerInput
-            label="Consultation Price (in USD)"
-            placeholder="e.g. 50"
-            name="consultationPrice"
-            control={control}
-            rules={{
-              required: watchedServices?.includes("consultation")
-                ? "This field is required"
-                : false,
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-
-        {watchedServices?.includes("second opinion") && (
-          <ControllerInput
-            label="Second Opinion Price (in USD)"
-            placeholder="e.g. 50"
-            name="secondOpinionPrice"
-            rules={{
-              required: watchedServices?.includes("second opinion")
-                ? "This field is required"
-                : false,
-            }}
-            control={control}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-
-        {watchedServices?.includes("radiology") && (
-          <ControllerInput
-            label="Radiology Price (in USD)"
-            placeholder="e.g. 50"
-            name="radiologyPrice"
-            control={control}
-            rules={{
-              required: watchedServices?.includes("radiology")
-                ? "This field is required"
-                : false,
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-
-        {watchedServices?.includes("weight loss") && (
-          <ControllerInput
-            label="Weight Loss Price (in USD)"
-            placeholder="e.g. 50"
-            name="weightLossPrice"
-            control={control}
-            rules={{
-              required: watchedServices?.includes("weight loss")
-                ? "This field is required"
-                : false,
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
+        {["consultation", "second opinion", "radiology", "weight loss"].map(
+          (service) =>
+            watchedServices.includes(service) ? (
+              <ControllerInput
+                key={service}
+                label={`${
+                  service.charAt(0).toUpperCase() + service.slice(1)
+                } Price (in USD)`}
+                placeholder="e.g. 50"
+                name={`${service.replace(" ", "")}Price`}
+                control={control}
+                rules={{ required: `Price for ${service} is required` }}
+                keyboardType="numeric"
+                textInputStyle={{ width: "100%" }}
+              />
+            ) : null
         )}
 
         <Divider />
@@ -268,10 +239,79 @@ const UpdatePublicProfile = () => {
         <ControllerCheckBoxOptions
           label="Specializations"
           name="specializations"
-          rules={{ required: "At least one specialization is required" }}
           control={control}
+          rules={{ required: "At least one specialization is required" }}
           options={SPECIALIZATIONS.map((spec) => spec.name)}
         />
+
+        <Divider />
+
+        <ControllerInput
+          label="How long are your calls? (in minutes)"
+          control={control}
+          placeholder="e.g. 15"
+          name="consultationDuration"
+          rules={{
+            required: "Duration is required",
+            pattern: { value: /^\d+$/, message: "Must be a valid number" },
+          }}
+          keyboardType="numeric"
+        />
+
+        <ControllerCheckBoxOptions
+          label="What days are you available?"
+          name="availableDays"
+          control={control}
+          rules={{ required: "At least one day is required" }}
+          options={[
+            "sunday",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+          ]}
+        />
+
+        {watchedDays.map((day: string) => (
+          <View key={day}>
+            <View style={styles.actionRow}>
+              <TextRegular
+                style={styles.timeslotHeader}
+              >{`${day} time slots`}</TextRegular>
+              <IconButton
+                size={24}
+                name="add"
+                onPress={() => addTimeSlot(day)}
+              />
+            </View>
+
+            {Array.from({ length: timeSlotCounts[day] || 1 }).map(
+              (_, index) => (
+                <View key={`${day}_${index}`} style={styles.timeSlot}>
+                  <TextSemiBold style={styles.timeslotCount}>
+                    {index}
+                  </TextSemiBold>
+                  <View style={{ flex: 1 }}>
+                    <ControllerTimePicker
+                      name={`${day}_start_${index}`}
+                      placeholder="Start time"
+                      control={control}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <ControllerTimePicker
+                      name={`${day}_end_${index}`}
+                      placeholder="End time"
+                      control={control}
+                    />
+                  </View>
+                </View>
+              )
+            )}
+          </View>
+        ))}
       </FormPage>
     </View>
   );
@@ -280,8 +320,32 @@ const UpdatePublicProfile = () => {
 export default UpdatePublicProfile;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  container: { flex: 1, backgroundColor: "#fff" },
+  header: { flexDirection: "row", gap: 16, alignItems: "center" },
+  nameText: { fontSize: 20, color: "#000" },
+  roleText: { fontSize: 14, color: Colors.onlineConsultation },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  timeslotHeader: {
+    fontSize: 14,
+    color: Colors.black,
+    textTransform: "capitalize",
+  },
+  timeSlot: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    gap: 8,
+    marginVertical: 4,
+  },
+  timeslotCount: {
+    fontSize: 14,
+    color: Colors.black,
+    width: 24,
+    textAlign: "center",
   },
 });

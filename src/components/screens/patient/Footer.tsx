@@ -1,6 +1,7 @@
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { Image } from "expo-image";
+import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -9,8 +10,16 @@ const Footer = () => {
     <View style={styles.container}>
       <TextRegular style={styles.footerText}>
         DrX Telehealth is committed to providing you with excellent care and
-        support. Learn more by reviewing our terms of services and privacy
-        policy.
+        support. Learn more by reviewing our{" "}
+        <Link href="/terms-of-service">
+          <TextRegular style={styles.textLink}>Terms of Service</TextRegular>
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy-policy">
+          {" "}
+          <TextRegular style={styles.textLink}>Privacy Policy</TextRegular>
+        </Link>
+        .
       </TextRegular>
       <View style={styles.trademark}>
         <Image
@@ -41,6 +50,9 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginHorizontal: 16,
     textAlign: "center", // Center the text
+  },
+  textLink: {
+    textDecorationLine: "underline",
   },
   trademark: {
     backgroundColor: Colors.black,

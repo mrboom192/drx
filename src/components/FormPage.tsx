@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   pageScrollViewContent: {
     flexDirection: "column",
     gap: 16,
+    paddingBottom: 64,
   },
   frequencyRow: {
     flexDirection: "row",

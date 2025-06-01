@@ -140,5 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "DMSans_400Regular",
     paddingVertical: 10,
+    textAlignVertical: "top",
+    textAlign: "left",
   },
 });

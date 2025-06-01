@@ -113,10 +113,10 @@ const styles = StyleSheet.create({
   description: {
     paddingHorizontal: 12,
     paddingVertical: 8,
+    marginRight: -1, // Hide any seams
     width: "63%",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    backgroundColor: "#f4f4f4", // fallback, overridden by inline style
   },
   button: {
     backgroundColor: "#fff",

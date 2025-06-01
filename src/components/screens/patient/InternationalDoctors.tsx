@@ -1,8 +1,10 @@
 import CustomIcon from "@/components/icons/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { countries } from "@/constants/countries";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import React from "react";
 import {
   ImageSourcePropType,
@@ -12,38 +14,26 @@ import {
   View,
 } from "react-native";
 
-const countries = [
-  {
-    name: "American doctors",
-    image: require("@/../assets/images/countries/us.png"),
-    backgroundColor: "#FFD79F",
-    // link:
-  },
-  {
-    name: "Arabic doctors",
-    image: require("@/../assets/images/countries/sa.png"),
-    backgroundColor: "#F4BCFF",
-    // link:
-  },
-  {
-    name: "Indian doctors",
-    image: require("@/../assets/images/countries/in.png"),
-    backgroundColor: "#FFBCBD",
-    // link:
-  },
-];
-
 type Item = {
   name: string;
   image: ImageSourcePropType;
+  params: { countries: string[] };
   backgroundColor: string;
 };
 
 const InternationalDoctors = ({}: {}) => {
-  const onPress = () => {
+  const onPress = (params: { countries: string[] }) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // Redirect here
+    const query = new URLSearchParams();
+    if (params.countries) {
+      query.append("countries", params.countries.join(","));
+    }
+
+    router.push({
+      pathname: `/search`,
+      params: Object.fromEntries(query.entries()),
+    });
   };
 
   return (
@@ -56,7 +46,7 @@ const InternationalDoctors = ({}: {}) => {
       >
         {countries.map((item: Item, index: number) => (
           <TouchableOpacity
-            onPress={() => onPress()}
+            onPress={() => onPress(item.params)}
             key={index}
             style={styles.item}
           >

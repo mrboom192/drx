@@ -18,7 +18,7 @@ const actions: Item[] = [
     name: "Update your medical record",
     description: "An up-to-date record is recommended",
     icon: "ecg-heart",
-    href: "/(tabs)/profile" as Href,
+    href: "/(tabs)/profile/medical-record" as Href,
   },
   {
     name: "View your cases",
@@ -40,7 +40,7 @@ const PatientActions = ({}: {}) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
-    router.push(href);
+    router.push(href, { withAnchor: true });
   };
 
   return (

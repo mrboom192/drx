@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // Overscroll effect
-    paddingBottom: 9999,
-    marginBottom: -9999,
+    paddingBottom: 999,
+    marginBottom: -999,
   },
   logo: {
-    width: 80,
-    height: 80,
+    width: 64,
+    height: 64,
   },
   logoDescription: {
     color: "#FFF",

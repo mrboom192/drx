@@ -18,8 +18,6 @@ const Page = () => {
           header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,
         }}
       />
-      {/* <DoctorMap doctors={doctors} /> */}
-      {/* <DoctorsBottomSheet doctors={doctors} specialty={specialty} /> */}
       <DoctorList specialty={specialty} />
     </View>
   );

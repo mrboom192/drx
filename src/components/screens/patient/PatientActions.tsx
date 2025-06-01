@@ -3,27 +3,28 @@ import { IconName } from "@/components/icons/iconsMap";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
+import { Href, router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-const actions = [
+const actions: Item[] = [
   {
     name: "Find a provider",
     description: "Browse and choose the perfect doctor",
     icon: "stethoscope",
-    //link
+    href: "/search" as Href,
   },
   {
     name: "Update your medical record",
     description: "An up-to-date record is recommended",
     icon: "ecg-heart",
-    //link
+    href: "/(tabs)/profile" as Href,
   },
   {
     name: "View your cases",
     description: "Browse your pending cases",
     icon: "library-books",
-    //link
+    href: "/search" as Href,
   },
 ];
 
@@ -31,20 +32,26 @@ type Item = {
   name: string;
   description: string;
   icon: string;
+  href: Href;
 };
 
 const PatientActions = ({}: {}) => {
-  const onPress = () => {
+  const onPress = (href: Href) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
+    router.push(href);
   };
 
   return (
     <View style={styles.container}>
       <TextSemiBold style={styles.header}>Patient actions</TextSemiBold>
       {actions.map((item: Item, index: number) => (
-        <TouchableOpacity key={index} onPress={onPress} style={styles.action}>
+        <TouchableOpacity
+          key={index}
+          onPress={() => onPress(item.href)}
+          style={styles.action}
+        >
           <CustomIcon
             name={item.icon as IconName}
             size={24}

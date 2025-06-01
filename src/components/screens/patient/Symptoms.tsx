@@ -3,7 +3,7 @@ import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const symptoms = [
   {
@@ -57,7 +57,7 @@ const Symptoms = ({}: {}) => {
         contentContainerStyle={styles.scrollViewContentContainer}
       >
         {symptoms.map((item: TabItem, index: number) => (
-          <View key={index} style={styles.item}>
+          <TouchableOpacity key={index} style={styles.item}>
             <Image
               style={styles.image}
               source={item.image}
@@ -65,7 +65,7 @@ const Symptoms = ({}: {}) => {
               transition={1000}
             />
             <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>

@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    // Overscroll effect
+    paddingBottom: 9999,
+    marginBottom: -9999,
   },
   logo: {
     width: 80,

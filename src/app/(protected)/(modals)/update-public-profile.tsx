@@ -1,3 +1,4 @@
+import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerInput from "@/components/form/ControllerInput";
 import FormPage from "@/components/FormPage";
@@ -56,6 +57,7 @@ const UpdatePublicProfile = () => {
               publicProfile.consultationPrice?.toString() || "",
             secondOpinionPrice:
               publicProfile.secondOpinionPrice?.toString() || "",
+            weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
             radiologyPrice: publicProfile.radiologyPrice?.toString() || "",
             services: publicProfile.services || [],
           }
@@ -89,6 +91,9 @@ const UpdatePublicProfile = () => {
           : null,
         radiologyPrice: watchedServices?.includes("radiology")
           ? parseInt(formData.radiologyPrice, 10) || 0
+          : null,
+        weightLossPrice: watchedServices?.includes("weight loss")
+          ? parseInt(formData.weightLossPrice, 10) || 0
           : null,
         services: formData.services || [],
         firstName: userData.firstName,
@@ -140,6 +145,14 @@ const UpdatePublicProfile = () => {
           options={["english", "arabic", "hindu"]}
         />
 
+        <ControllerCheckBoxOptions
+          label="Countries you are licensed in"
+          name="countries"
+          control={control}
+          rules={{ required: "At least one is required" }}
+          options={["United States", "Egypt", "Jordan", "India"]}
+        />
+
         <ControllerInput
           label="Experience (in years)"
           placeholder="e.g. 5"
@@ -155,13 +168,7 @@ const UpdatePublicProfile = () => {
           keyboardType="numeric"
         />
 
-        <ControllerCheckBoxOptions
-          label="Countries you are licensed in"
-          name="countries"
-          control={control}
-          rules={{ required: "At least one is required" }}
-          options={["United States", "Egypt", "Jordan", "India"]}
-        />
+        <Divider />
 
         <ControllerInput
           label="Biography"
@@ -176,13 +183,20 @@ const UpdatePublicProfile = () => {
           textInputStyle={{ height: 128 }}
         />
 
+        <Divider />
+
         <ControllerCheckBoxOptions
           label="Select services you provide"
           name="services"
           control={control}
           // Atleast one service is required
           rules={{ required: "At least one service is required" }}
-          options={["consultation", "second opinion", "radiology"]}
+          options={[
+            "consultation",
+            "second opinion",
+            "radiology",
+            "weight loss",
+          ]}
         />
 
         {watchedServices?.includes("consultation") && (
@@ -233,9 +247,28 @@ const UpdatePublicProfile = () => {
           />
         )}
 
+        {watchedServices?.includes("weight loss") && (
+          <ControllerInput
+            label="Weight Loss Price (in USD)"
+            placeholder="e.g. 50"
+            name="weightLossPrice"
+            control={control}
+            rules={{
+              required: watchedServices?.includes("weight loss")
+                ? "This field is required"
+                : false,
+            }}
+            keyboardType="numeric"
+            textInputStyle={{ width: "100%" }}
+          />
+        )}
+
+        <Divider />
+
         <ControllerCheckBoxOptions
           label="Specializations"
           name="specializations"
+          rules={{ required: "At least one specialization is required" }}
           control={control}
           options={SPECIALIZATIONS.map((spec) => spec.name)}
         />

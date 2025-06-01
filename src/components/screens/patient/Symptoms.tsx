@@ -2,52 +2,86 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ImageSourcePropType,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const symptoms = [
   {
     name: "Diarrhea",
     image: require("@/../assets/images/symptoms/diarrhea.png"),
+    params: {
+      specializations: ["gastroenterology", "internal", "family"],
+    },
   },
   {
     name: "Acne",
     image: require("@/../assets/images/symptoms/acne.png"),
+    params: {
+      specializations: ["dermatology", "family", "internal"],
+    },
   },
   {
     name: "Heart",
     image: require("@/../assets/images/symptoms/heart.png"),
+    params: {
+      specializations: ["cardiology", "emergency", "internal"],
+    },
   },
   {
     name: "Allergies",
     image: require("@/../assets/images/symptoms/allergies.png"),
+    params: {
+      specializations: ["allergy", "immunology", "pulmonology"],
+    },
   },
   {
     name: "Depression",
     image: require("@/../assets/images/symptoms/depression.png"),
+    params: {
+      specializations: ["psychiatry", "psychology", "family"],
+    },
   },
-
   {
     name: "UTI",
     image: require("@/../assets/images/symptoms/uti.png"),
+    params: {
+      specializations: ["urology", "family", "internal"],
+    },
   },
 ];
 
 type TabItem = {
   name: string;
-  image: any; // or use ImageSourcePropType if available
+  image: ImageSourcePropType;
+  params: {
+    specializations: string[];
+  };
 };
 
 const Symptoms = ({}: {}) => {
-  const selectCategory = (index: number) => {
+  const onPress = (item: TabItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // Redirect here
+    const query = new URLSearchParams();
+    item.params.specializations.forEach((spec) =>
+      query.append("specializations", spec)
+    );
+
+    // Navigate with query
+    router.navigate({
+      pathname: "/search",
+      params: {
+        query: query.toString(),
+      },
+    });
   };
-
-  const blurhash =
-    "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
-
   return (
     <View style={styles.container}>
       <TextSemiBold style={styles.header}>What can we help with?</TextSemiBold>
@@ -57,7 +91,11 @@ const Symptoms = ({}: {}) => {
         contentContainerStyle={styles.scrollViewContentContainer}
       >
         {symptoms.map((item: TabItem, index: number) => (
-          <TouchableOpacity key={index} style={styles.item}>
+          <TouchableOpacity
+            onPress={() => onPress(item)}
+            key={index}
+            style={styles.item}
+          >
             <Image
               style={styles.image}
               source={item.image}

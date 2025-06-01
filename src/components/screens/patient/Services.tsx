@@ -1,6 +1,7 @@
 import { TextSemiBold } from "@/components/StyledText";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
+import { Href, router } from "expo-router";
 import React from "react";
 import {
   ImageSourcePropType,
@@ -16,21 +17,21 @@ const services = [
     buttonText: "Start a request",
     image: require("@/../assets/images/services/relax.png"),
     backgroundColor: "#F4BCFF",
-    // link:
+    href: "/(protected)/(modals)/create-second-opinion" as Href,
   },
   {
     name: "Have a doctor review your radiology scans",
     buttonText: "Submit a review",
     image: require("@/../assets/images/services/radiology.png"),
     backgroundColor: "#CDEAFB",
-    // link:
+    href: "/search" as Href,
   },
   {
     name: "Start your weight loss journey with DrX",
     buttonText: "Find a doctor",
     image: require("@/../assets/images/services/runners.png"),
     backgroundColor: "#B0C1BF",
-    // link:
+    href: "/search" as Href,
   },
 ];
 
@@ -39,13 +40,15 @@ type Item = {
   image: ImageSourcePropType;
   buttonText: string;
   backgroundColor: string;
+  href: Href;
 };
 
 const Services = ({}: {}) => {
-  const onPress = () => {
+  const onPress = (item: Item) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
+    router.push(item.href);
   };
 
   return (
@@ -65,7 +68,10 @@ const Services = ({}: {}) => {
               ]}
             >
               <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
-              <TouchableOpacity onPress={() => onPress()} style={styles.button}>
+              <TouchableOpacity
+                onPress={() => onPress(item)}
+                style={styles.button}
+              >
                 <TextSemiBold style={styles.buttonText}>
                   {item.buttonText}
                 </TextSemiBold>

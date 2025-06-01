@@ -96,8 +96,7 @@ export function useWebRTCCall(
   const handleIceConnectionStateChange = () => {
     const state = peerConnection.current?.iceConnectionState;
     console.log("ICE connection state:", state);
-    const peerDisconnected =
-      state === "disconnected" || state === "failed" || state === "closed";
+    const peerDisconnected = state === "disconnected";
 
     if (peerDisconnected) {
       router.back();

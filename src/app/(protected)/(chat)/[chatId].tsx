@@ -21,13 +21,7 @@ import { httpsCallable } from "firebase/functions";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import {
-  Bubble,
-  Composer,
-  GiftedChat,
-  InputToolbar,
-  Send,
-} from "react-native-gifted-chat";
+import { Bubble, GiftedChat } from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db, functions } from "../../../../firebaseConfig";
 
@@ -55,6 +49,11 @@ const ChatRoom = () => {
   // Firestore references
   const chatDocRef = doc(db, "chats", chatId as string);
   const messagesRef = collection(db, "chats", chatId as string, "messages");
+
+  const otherUser =
+    userData?.role === "doctor"
+      ? chat?.participants.patient
+      : chat?.participants.doctor;
 
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
@@ -149,62 +148,16 @@ const ChatRoom = () => {
         user={{
           _id: userData.uid, // Let giftedchat know who is the current user
         }}
-        renderInputToolbar={(props) => {
-          return (
-            <InputToolbar
-              {...props}
-              primaryStyle={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            />
-          );
-        }}
-        renderComposer={(props) => (
-          <Composer
-            {...props}
-            textInputStyle={{
-              color: Colors.black,
-              backgroundColor: "#FFF",
-              borderWidth: 1,
-              borderColor: Colors.faintGrey,
-              alignItems: "center",
-              borderRadius: 20,
-              paddingHorizontal: 12,
-              paddingVertical: 10,
-              marginRight: 8,
-              fontSize: 16,
-            }}
-            placeholder="Type a message..."
-            placeholderTextColor={Colors.grey}
-          />
-        )}
-        renderSend={(props) => {
-          return (
-            <Send
-              {...props}
-              containerStyle={{
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: 8,
-                width: 40,
-                height: 40,
-                borderRadius: 9999,
-                borderWidth: 1,
-                borderColor: Colors.faintGrey,
-                marginRight: 16,
-              }}
-            >
-              <CustomIcon name="send" size={24} color={Colors.black} />
-            </Send>
-          );
-        }}
         renderAvatar={(props) => {
           return (
             <Avatar
               {...props}
               size={40}
-              uri={props.currentMessage.user.avatar}
+              uri={
+                props.currentMessage.user.name === "system"
+                  ? ""
+                  : otherUser!.image
+              }
               // Gets users initials
               initials={props.currentMessage.user.name
                 .split(" ")

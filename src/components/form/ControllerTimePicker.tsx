@@ -14,7 +14,6 @@ const ControllerTimePicker = ({
   label,
   disabled = false,
   placeholder = "Select Time",
-  formatDate = "h:mm a",
 }: {
   control: Control;
   name: string;
@@ -22,7 +21,6 @@ const ControllerTimePicker = ({
   label?: string;
   disabled?: boolean;
   placeholder?: string;
-  formatDate?: string;
 }) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -32,11 +30,14 @@ const ControllerTimePicker = ({
       name={name}
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
+        // Convert internal "HH:mm" value to Date for display and picker
+        const dateValue = value ? timeStringToDate(value) : new Date();
+        const displayValue = value ? format(dateValue, "h:mm a") : "";
+
         return (
           <View>
             <View style={styles.labelContainer}>
               {label && <TextRegular style={styles.label}>{label}</TextRegular>}
-
               {error && (
                 <TextRegular style={styles.error}>{error?.message}</TextRegular>
               )}
@@ -49,12 +50,8 @@ const ControllerTimePicker = ({
                 { borderColor: error ? Colors.pink : Colors.faintGrey },
               ]}
             >
-              <TextRegular
-                style={{
-                  color: value ? "#000" : Colors.lightText,
-                }}
-              >
-                {value ? format(value, formatDate) : placeholder}
+              <TextRegular style={{ color: value ? "#000" : Colors.lightText }}>
+                {value ? displayValue : placeholder}
               </TextRegular>
               <Ionicons name="time-outline" size={20} color={Colors.grey} />
             </Pressable>
@@ -63,11 +60,11 @@ const ControllerTimePicker = ({
               modal
               mode="time"
               open={showTimePicker}
-              date={value || new Date()}
-              maximumDate={new Date()}
+              date={dateValue}
               onConfirm={(date) => {
                 setShowTimePicker(false);
-                onChange(date);
+                const timeString = format(date, "HH:mm"); // Store as "HH:mm"
+                onChange(timeString);
               }}
               onCancel={() => setShowTimePicker(false)}
             />
@@ -76,6 +73,14 @@ const ControllerTimePicker = ({
       }}
     />
   );
+};
+
+// Converts "HH:mm" string to Date object
+const timeStringToDate = (timeStr: string) => {
+  const [hour, minute] = timeStr.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hour, minute, 0, 0);
+  return date;
 };
 
 export default ControllerTimePicker;

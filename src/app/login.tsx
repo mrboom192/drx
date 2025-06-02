@@ -1,6 +1,7 @@
 import Divider from "@/components/Divider";
 import ControllerInput from "@/components/form/ControllerInput";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { Link, router } from "expo-router";
@@ -63,20 +64,13 @@ const SignIn = () => {
         }}
       />
 
-      <TouchableOpacity
+      <SubmitButton
+        text="Log in"
+        style={{ marginTop: 20 }}
+        loading={loading}
         disabled={loading}
-        style={[
-          styles.loginButton,
-          {
-            opacity: loading ? 0.5 : 1,
-          },
-        ]}
         onPress={handleSubmit(onSubmit)}
-      >
-        <TextSemiBold style={styles.loginButtonText}>
-          {loading ? "Loading..." : "Log in"}
-        </TextSemiBold>
-      </TouchableOpacity>
+      />
 
       <View style={styles.orContainer}>
         <Divider />
@@ -84,18 +78,12 @@ const SignIn = () => {
         <Divider />
       </View>
 
-      <TouchableOpacity
+      <SubmitButton
+        text="Sign up"
+        variant="secondary"
         disabled={loading}
         onPress={() => router.push("/signup")}
-        style={[
-          styles.signUpButton,
-          {
-            opacity: loading ? 0.5 : 1,
-          },
-        ]}
-      >
-        <TextSemiBold style={styles.signUpButtonText}>Sign up</TextSemiBold>
-      </TouchableOpacity>
+      />
 
       <TextRegular style={styles.disclaimerText}>
         By using our app, you agree to our{" "}
@@ -134,17 +122,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 24,
   },
-  loginButton: {
-    backgroundColor: "#000",
-    borderRadius: 8,
-    paddingVertical: 16,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  loginButtonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
   orContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -153,20 +130,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     fontSize: 16,
     color: "#444",
-  },
-  signUpButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 6,
-    borderRadius: 8,
-    paddingVertical: 16,
-    borderWidth: 1,
-    borderColor: Colors.grey,
-  },
-  signUpButtonText: {
-    fontSize: 16,
-    color: "#000",
   },
   disclaimerText: {
     fontSize: 14,

@@ -71,6 +71,8 @@ const SignUp = () => {
       {/* Date of Birth */}
       <ControllerDatePicker
         control={control}
+        maximumDate={new Date()}
+        minimumDate={new Date(1900, 0, 1)}
         name="dateOfBirth"
         label="Date of Birth"
         rules={{ required: "Date of birth is required" }}

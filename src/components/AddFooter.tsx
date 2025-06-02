@@ -7,6 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextSemiBold } from "./StyledText";
+import SubmitButton from "./SubmitButton";
 
 const Footer = ({
   keyboardHeightShared,
@@ -39,17 +40,16 @@ const Footer = ({
 
   return (
     <Animated.View style={[footer.container, animatedStyle]}>
-      <TouchableOpacity
-        style={[footer.button, { opacity: canSubmit && !submitting ? 1 : 0.5 }]}
+      <SubmitButton
+        text="Save"
         disabled={!canSubmit || submitting}
+        loading={submitting}
         onPress={() => {
           if (canSubmit && !submitting) {
             handleSubmit?.();
           }
         }}
-      >
-        <TextSemiBold style={footer.text}>Save</TextSemiBold>
-      </TouchableOpacity>
+      />
     </Animated.View>
   );
 };
@@ -61,18 +61,5 @@ const footer = StyleSheet.create({
     padding: 16,
     borderTopColor: Colors.faintGrey,
     borderTopWidth: 1,
-  },
-  button: {
-    borderColor: Colors.dark.background,
-    borderWidth: 1,
-    borderRadius: 8,
-    backgroundColor: Colors.dark.background,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  text: {
-    color: "#FFF",
-    fontSize: 16,
-    textAlign: "center",
   },
 });

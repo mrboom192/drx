@@ -1,26 +1,18 @@
 import { functions } from "@/../firebaseConfig";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
+import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
 import { useDoctorById } from "@/stores/useDoctorSearch";
 import { useUserData } from "@/stores/useUserStore";
 import { TimeSlot } from "@/types/timeSlot";
-import { formatDate } from "@/utils/bookingUtils";
-import { Ionicons } from "@expo/vector-icons";
 import { useStripe } from "@stripe/stripe-react-native";
 import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
 import { httpsCallable } from "firebase/functions";
-import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import DatePicker from "react-native-date-picker";
+import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type GetPaymentIntentRequest = {
@@ -59,24 +51,27 @@ const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
   const userData = useUserData();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
 
-  const { control, handleSubmit, watch, setValue } = useForm<FieldValues>({
-    defaultValues: {
-      timeSlot: null, // Initialize with null
-    },
-  });
+  const { control, handleSubmit, watch, setValue, formState } =
+    useForm<FieldValues>({
+      defaultValues: {
+        selectedDate: new Date(),
+        timeSlot: null, // Initialize with null
+      },
+    });
+
+  const { isSubmitting } = formState;
 
   const initializePaymentSheet = async ({
     amount,
     timeSlot,
+    selectedDate,
   }: {
     amount: number;
     timeSlot: TimeSlot;
+    selectedDate: Date;
   }) => {
     if (!userData) {
       throw new Error("Patient not logged in!");
@@ -137,6 +132,7 @@ const BookingPage = () => {
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
         timeSlot: formData.timeSlot,
+        selectedDate: formData.selectedDate,
       });
 
       router.replace({
@@ -144,12 +140,11 @@ const BookingPage = () => {
       });
     } catch (error: any) {
       Alert.alert("Payment failed");
-      setLoading(false);
     }
   };
 
   // Extract day of the week from selectedDate
-  const dayOfWeek = selectedDate
+  const dayOfWeek = watch("selectedDate")
     .toLocaleDateString("en-US", { weekday: "long" })
     .toLowerCase();
 
@@ -206,29 +201,16 @@ const BookingPage = () => {
           </View>
         </View>
 
-        {/* Date Selection */}
-        <View>
-          <TextSemiBold style={{ fontSize: 16, marginBottom: 12 }}>
-            Select Date
-          </TextSemiBold>
-          <TouchableOpacity
-            onPress={() => setShowDatePicker(true)}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              borderWidth: 1,
-              borderColor: "#E5E5E5",
-              borderRadius: 8,
-              padding: 12,
-            }}
-          >
-            <TextRegular style={{ fontSize: 14, color: "#000" }}>
-              {formatDate(selectedDate)}
-            </TextRegular>
-            <Ionicons name="calendar" size={20} color="#666" />
-          </TouchableOpacity>
-        </View>
+        <ControllerDatePicker
+          label="Select date"
+          name="selectedDate"
+          control={control}
+          minimumDate={new Date()}
+          maximumDate={undefined}
+          rules={{
+            required: "Please select a date",
+          }}
+        />
 
         {/* Time Slots */}
         <ControllerCheckBoxOptions
@@ -257,46 +239,13 @@ const BookingPage = () => {
           backgroundColor: "#fff",
         }}
       >
-        <TouchableOpacity
+        <SubmitButton
+          text="Book Consultation"
           onPress={handleSubmit(onSubmit)}
-          disabled={!watch("timeSlot") || loading}
-          style={{
-            backgroundColor: watch("timeSlot") ? Colors.black : "#E5E5E5",
-            paddingVertical: 12,
-            borderRadius: 8,
-            alignItems: "center",
-          }}
-        >
-          {loading ? (
-            <ActivityIndicator color="#FFF" />
-          ) : (
-            <TextSemiBold
-              style={{
-                color: watch("timeSlot") ? "#FFF" : "#666",
-                fontSize: 16,
-              }}
-            >
-              Book Consultation
-            </TextSemiBold>
-          )}
-        </TouchableOpacity>
+          disabled={!watch("timeSlot") || isSubmitting}
+          loading={isSubmitting}
+        />
       </View>
-
-      <DatePicker
-        modal
-        mode="date"
-        open={showDatePicker}
-        minimumDate={new Date()}
-        date={new Date(selectedDate)}
-        onConfirm={(date) => {
-          setShowDatePicker(false);
-          setSelectedDate(date);
-          setValue("timeSlot", null);
-        }}
-        onCancel={() => {
-          setShowDatePicker(false);
-        }}
-      />
     </View>
   );
 };

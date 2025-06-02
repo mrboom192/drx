@@ -10,6 +10,7 @@ import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, RelativePathString } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SubmitButton from "@/components/SubmitButton";
 
 const Profile = () => {
   const insets = useSafeAreaInsets();
@@ -105,26 +106,11 @@ const Profile = () => {
       </View>
 
       {/* Logout button */}
-      <TouchableOpacity
+      <SubmitButton
+        style={{ marginTop: 16 }}
+        text="Log out"
         onPress={signOut}
-        style={{
-          marginTop: 24,
-          paddingVertical: 12,
-          paddingHorizontal: 32,
-          backgroundColor: color,
-          borderRadius: 8,
-        }}
-      >
-        <TextSemiBold
-          style={{
-            color: "#FFF",
-            fontSize: 16,
-            textAlign: "center",
-          }}
-        >
-          Log out
-        </TextSemiBold>
-      </TouchableOpacity>
+      />
     </PageScrollView>
   );
 };

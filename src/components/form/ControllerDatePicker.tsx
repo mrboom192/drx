@@ -15,6 +15,8 @@ const ControllerDatePicker = ({
   disabled = false,
   placeholder = "Select Date",
   formatDate = "MMMM d, yyyy",
+  maximumDate = undefined,
+  minimumDate = undefined,
 }: {
   control: Control;
   name: string;
@@ -23,6 +25,8 @@ const ControllerDatePicker = ({
   disabled?: boolean;
   placeholder?: string;
   formatDate?: string;
+  maximumDate?: Date;
+  minimumDate?: Date;
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -63,7 +67,8 @@ const ControllerDatePicker = ({
               mode="date"
               open={showDatePicker}
               date={value || new Date()}
-              maximumDate={new Date()}
+              maximumDate={maximumDate}
+              minimumDate={minimumDate}
               onConfirm={(date) => {
                 setShowDatePicker(false);
                 onChange(date);

@@ -87,6 +87,8 @@ const AccountInfo = () => {
       />
       <ControllerDatePicker
         label={"Date of Birth"}
+        maximumDate={new Date()}
+        minimumDate={new Date(1900, 0, 1)}
         control={control}
         name={"dateOfBirth"}
         rules={{ required: "Date of birth is required" }}

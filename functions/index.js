@@ -613,3 +613,87 @@ exports.sendCallNotification = functions.https.onCall(async (data, context) => {
     );
   }
 });
+
+/**
+ * Function to handle messaging notifications.
+ */
+exports.sendMessageNotification = functions.firestore
+  .document("chats/{chatId}/messages/{messageId}")
+  .onCreate(async (snap, context) => {
+    const messageData = snap.data();
+    const { senderId, receiverId, text } = messageData;
+
+    if (!receiverId || !senderId) {
+      console.error("Missing receiverId or senderId in message data");
+      return;
+    }
+
+    // Fetch the receiver's push tokens from Firestore
+    const receiverDoc = await admin
+      .firestore()
+      .collection("users")
+      .doc(receiverId)
+      .get();
+    if (!receiverDoc.exists) {
+      console.error("Receiver not found:", receiverId);
+      return;
+    }
+    const receiverData = receiverDoc.data();
+    const expoTokens = receiverData.expoPushTokens || [];
+    if (expoTokens.length === 0) {
+      console.log("No Expo push tokens for this user.");
+      return;
+    }
+
+    // Fetch the sender's last name from Firestore (assuming sender is a doctor)
+    const senderDoc = await admin
+      .firestore()
+      .collection("users")
+      .doc(senderId)
+      .get();
+    let senderLastName = "Unknown";
+    if (senderDoc.exists) {
+      const senderData = senderDoc.data();
+      senderLastName = senderData.lastName || "Unknown";
+    }
+
+    // Prepare notification messages with custom title
+    const messages = expoTokens.map((token) => ({
+      to: token,
+      sound: "default",
+      title: `Dr. ${senderLastName}`, // Custom title
+      body: `${text}`,
+      data: {
+        type: "message",
+        senderId,
+        chatId: context.params.chatId,
+      },
+    }));
+
+    try {
+      const axios = require("axios");
+      const response = await axios.post(
+        "https://exp.host/--/api/v2/push/send",
+        messages,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      // Handle unregistered devices
+      for (const ticket of response.data.data) {
+        if (
+          ticket.status === "error" &&
+          ticket.details?.error === "DeviceNotRegistered"
+        ) {
+          await admin
+            .firestore()
+            .collection("users")
+            .doc(receiverId)
+            .update({
+              expoPushTokens: admin.firestore.FieldValue.arrayRemove(ticket.to),
+            });
+        }
+      }
+    } catch (error) {
+      console.error("Error sending message notification:", error);
+    }
+  });

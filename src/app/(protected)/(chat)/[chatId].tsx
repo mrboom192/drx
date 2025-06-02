@@ -102,6 +102,7 @@ const ChatRoom = () => {
       id: nanoid(), // optional, Firestore doc ID also works
       text: message.text,
       senderId: userData.uid,
+      receiverId: otherUser?.uid,
       avatar: userData.image || "",
       createdAt: serverTimestamp(),
     };
@@ -113,6 +114,7 @@ const ChatRoom = () => {
         lastMessage: {
           text: message.text,
           senderId: userData.uid,
+          receiverId: otherUser?.uid,
           timestamp: serverTimestamp(),
         },
         updatedAt: serverTimestamp(),

@@ -40,6 +40,7 @@ const UpdatePublicProfile = () => {
   const publicProfile = usePublicProfile();
   const fetchPublicProfile = useFetchPublicProfile();
   const isFetchingPublicProfile = useIsFetchingPublicProfile();
+  const [currentWatchedDays, setCurrentWatchedDays] = useState<string[]>([]);
 
   const { control, handleSubmit, formState, watch, reset } =
     useForm<FieldValues>({
@@ -101,10 +102,19 @@ const UpdatePublicProfile = () => {
         }
       });
 
-      setTimeSlotCounts(slotCounts);
       reset(defaultValues);
+      setTimeSlotCounts(slotCounts);
     }
   }, [publicProfile, reset]);
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (value.availableDays) {
+        setCurrentWatchedDays(value.availableDays);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
@@ -374,7 +384,7 @@ const UpdatePublicProfile = () => {
           ]}
         />
 
-        {watchedDays.map((day: string) => (
+        {currentWatchedDays.map((day: string) => (
           <View key={day}>
             <View style={styles.actionRow}>
               <TextRegular
@@ -434,12 +444,6 @@ const toCamelCase = (str: string) =>
         : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
     )
     .join("");
-
-const timeStrToMinutes = (str: string) => {
-  if (!str) return 0; // Handle empty or undefined
-  const [hour, min] = str.split(":").map(Number);
-  return hour * 60 + min;
-};
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },

@@ -651,17 +651,25 @@ exports.sendMessageNotification = functions.firestore
       .collection("users")
       .doc(senderId)
       .get();
+
     let senderLastName = "Unknown";
+    let senderFirstName = "Unknown";
     if (senderDoc.exists) {
       const senderData = senderDoc.data();
       senderLastName = senderData.lastName || "Unknown";
+      senderFirstName = senderData.firstName || "Unknown";
     }
+
+    const title =
+      receiverData.role === "doctor"
+        ? `Patient: ${senderFirstName} ${senderLastName}`
+        : `Dr. ${senderLastName}`;
 
     // Prepare notification messages with custom title
     const messages = expoTokens.map((token) => ({
       to: token,
       sound: "default",
-      title: `Dr. ${senderLastName}`, // Custom title
+      title,
       body: `sent you a message • 💬`,
       data: {
         type: "message",

@@ -1,4 +1,5 @@
 import { functions } from "@/../firebaseConfig";
+import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useDoctorById } from "@/stores/useDoctorSearch";
@@ -11,6 +12,7 @@ import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
 import { httpsCallable } from "firebase/functions";
 import React, { useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Alert,
@@ -57,15 +59,25 @@ const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
   const userData = useUserData();
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
-  const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
 
-  const initializePaymentSheet = async ({ amount }: { amount: number }) => {
+  const { control, handleSubmit, watch, setValue } = useForm<FieldValues>({
+    defaultValues: {
+      timeSlot: null, // Initialize with null
+    },
+  });
+
+  const initializePaymentSheet = async ({
+    amount,
+    timeSlot,
+  }: {
+    amount: number;
+    timeSlot: TimeSlot;
+  }) => {
     if (!userData) {
       throw new Error("Patient not logged in!");
     }
@@ -82,7 +94,7 @@ const BookingPage = () => {
           patientId: userData.uid,
           doctorId: doctor.uid,
           date: selectedDate.toISOString(),
-          timeSlot: JSON.stringify(selectedSlot), // pass as string
+          timeSlot: JSON.stringify(timeSlot), // pass as string
         },
       });
 
@@ -120,14 +132,11 @@ const BookingPage = () => {
   };
 
   // Move this to firebase functions in the future
-  const handleBooking = async () => {
-    if (!selectedSlot || !doctor || !userData) return;
-
-    setLoading(true);
-
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
+        timeSlot: formData.timeSlot,
       });
 
       router.replace({
@@ -138,6 +147,19 @@ const BookingPage = () => {
       setLoading(false);
     }
   };
+
+  // Extract day of the week from selectedDate
+  const dayOfWeek = selectedDate
+    .toLocaleDateString("en-US", { weekday: "long" })
+    .toLowerCase();
+
+  // Get available slots for the selected date
+  const rawSlots = doctor?.subTimeSlotsPerDuration?.[dayOfWeek] || [];
+
+  // Map to "start-end" string format
+  const timeSlotOptions: string[] = rawSlots.map(
+    (slot: { start: string; end: string }) => `${slot.start}-${slot.end}`
+  );
 
   return (
     <View
@@ -209,44 +231,21 @@ const BookingPage = () => {
         </View>
 
         {/* Time Slots */}
-        <View>
-          <TextSemiBold style={{ fontSize: 16, marginBottom: 16 }}>
-            Select a Time Slot
+        <ControllerCheckBoxOptions
+          label="Select a time slot"
+          name="timeSlot"
+          control={control}
+          singleSelect
+          options={timeSlotOptions}
+          rules={{
+            required: "Please select a time slot",
+          }}
+        />
+        {timeSlotOptions.length === 0 && (
+          <TextSemiBold style={{ color: Colors.lightText, fontSize: 14 }}>
+            No available time slots for this date.
           </TextSemiBold>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 8,
-            }}
-          >
-            {timeSlots.map((slot) => (
-              <TouchableOpacity
-                key={slot.id}
-                onPress={() => setSelectedSlot(slot)}
-                style={{
-                  backgroundColor:
-                    selectedSlot?.id === slot.id ? "#000" : "#F5F5F5",
-                  paddingVertical: 8,
-                  paddingHorizontal: 16,
-                  borderRadius: 8,
-                  borderWidth: 1,
-                  borderColor:
-                    selectedSlot?.id === slot.id ? "#000" : "#E5E5E5",
-                }}
-              >
-                <TextRegular
-                  style={{
-                    fontSize: 14,
-                    color: selectedSlot?.id === slot.id ? "#FFF" : "#000",
-                  }}
-                >
-                  {slot.startTime} - {slot.endTime}
-                </TextRegular>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+        )}
       </ScrollView>
 
       {/* Bottom CTA */}
@@ -259,10 +258,10 @@ const BookingPage = () => {
         }}
       >
         <TouchableOpacity
-          onPress={handleBooking}
-          disabled={!selectedSlot}
+          onPress={handleSubmit(onSubmit)}
+          disabled={!watch("timeSlot") || loading}
           style={{
-            backgroundColor: selectedSlot ? "#000" : "#E5E5E5",
+            backgroundColor: watch("timeSlot") ? Colors.black : "#E5E5E5",
             paddingVertical: 12,
             borderRadius: 8,
             alignItems: "center",
@@ -273,7 +272,7 @@ const BookingPage = () => {
           ) : (
             <TextSemiBold
               style={{
-                color: selectedSlot ? "#FFF" : "#666",
+                color: watch("timeSlot") ? "#FFF" : "#666",
                 fontSize: 16,
               }}
             >
@@ -292,6 +291,7 @@ const BookingPage = () => {
         onConfirm={(date) => {
           setShowDatePicker(false);
           setSelectedDate(date);
+          setValue("timeSlot", null);
         }}
         onCancel={() => {
           setShowDatePicker(false);

@@ -662,7 +662,7 @@ exports.sendMessageNotification = functions.firestore
       to: token,
       sound: "default",
       title: `Dr. ${senderLastName}`, // Custom title
-      body: `${text}`,
+      body: `sent you a message • 💬`,
       data: {
         type: "message",
         senderId,

@@ -138,7 +138,8 @@ const DoctorList = ({ specialty, refresh }: Props) => {
 
 const styles = StyleSheet.create({
   listing: {
-    padding: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",

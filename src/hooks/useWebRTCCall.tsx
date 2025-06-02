@@ -1,17 +1,24 @@
 import { mediaConstraints, sessionConstraints } from "@/config/webrtcConfig";
+import RTCPeerConnection from "@/webrtc/ExtendedRTCPeerConnection";
 import { onChildAdded, push, ref, remove, set } from "@firebase/database";
 import { router } from "expo-router";
-import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useEffect, useRef, useState } from "react";
 import {
   mediaDevices,
   MediaStream,
   RTCIceCandidate,
-  RTCPeerConnection,
   RTCSessionDescription,
 } from "react-native-webrtc";
 import { database, db, functions } from "../../firebaseConfig";
+import RTCTrackEvent from "react-native-webrtc/lib/typescript/RTCTrackEvent";
 
 export function useWebRTCCall(
   chatId: string,
@@ -27,7 +34,7 @@ export function useWebRTCCall(
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
 
-  const peerConnection = useRef<any>(null); // Peer connection reference
+  const peerConnection = useRef<RTCPeerConnection | null>(null); // Peer connection reference
   const remoteStreamRef = useRef<MediaStream | null>(null); // Remote stream reference
   const hasSetRemoteDescription = useRef(false); // Flag to check if remote description is set to prevent constant updates
   const queuedCandidates = useRef<RTCIceCandidateInit[]>([]);
@@ -73,7 +80,7 @@ export function useWebRTCCall(
     };
   }, []);
 
-  const handleIceCandidate = async (event: any) => {
+  const handleIceCandidate = async (event: RTCPeerConnectionIceEvent) => {
     if (event.candidate) {
       const candidateJSON = event.candidate.toJSON();
       const refToUse = isCaller ? offerCandidatesRef : answerCandidatesRef;
@@ -87,27 +94,34 @@ export function useWebRTCCall(
     }
   };
 
-  const handleTrack = (event: any) => {
+  const handleTrack = (event: RTCTrackEvent<"track">) => {
     remoteStreamRef.current = remoteStreamRef.current || new MediaStream();
-    remoteStreamRef.current.addTrack(event.track);
-    setRemoteStream(remoteStreamRef.current);
+    if (event.track) {
+      remoteStreamRef.current.addTrack(event.track);
+      setRemoteStream(remoteStreamRef.current);
+    }
   };
 
   const handleIceConnectionStateChange = () => {
-    const state = peerConnection.current.iceConnectionState;
+    const state = peerConnection.current?.iceConnectionState;
     console.log("ICE connection state:", state);
-    const peerDisconnected =
-      state === "disconnected" || state === "failed" || state === "closed";
+    const peerDisconnected = state === "disconnected";
 
     if (peerDisconnected) {
       router.back();
     }
   };
 
+  const handleNegotiationNeeded = async () => {
+    const offer = await peerConnection.current?.createOffer(sessionConstraints);
+    await peerConnection.current?.setLocalDescription(offer);
+    await setDoc(callDocRef, { offer });
+  };
+
   async function getMediaStream() {
     try {
       const mediaStream = await mediaDevices.getUserMedia(mediaConstraints);
-      setLocalStream(mediaStream);
+      setLocalStream(mediaStream); // For video
       return mediaStream;
     } catch (err) {
       console.error("[Media] Failed to get user media:", err);
@@ -119,43 +133,45 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
-    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
-    peerConnection.current.addEventListener("track", handleTrack);
-    peerConnection.current.addEventListener(
+    mediaStream.getTracks().forEach((track) => {
+      peerConnection.current?.addTrack(track, mediaStream);
+    });
+
+    peerConnection.current?.addEventListener(
+      "icecandidate",
+      handleIceCandidate
+    );
+    peerConnection.current?.addEventListener("track", handleTrack);
+    peerConnection.current?.addEventListener(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
-    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+    peerConnection.current?.addEventListener("icegatheringstatechange", () => {
       console.log(
         "[ICE] Gathering state:",
-        peerConnection.current.iceGatheringState
+        peerConnection.current?.iceGatheringState
       );
     });
-
-    mediaStream.getTracks().forEach((track) => {
-      peerConnection.current.addTrack(track, mediaStream);
-    });
-
-    const offer = await peerConnection.current.createOffer(sessionConstraints);
-    await peerConnection.current.setLocalDescription(offer);
-    await setDoc(callDocRef, { offer });
+    peerConnection.current?.addEventListener(
+      "negotiationneeded",
+      handleNegotiationNeeded
+    );
 
     // Listen to the call document, then set remote description
-    if (firestoreUnsub.current) firestoreUnsub.current();
     firestoreUnsub.current = onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.answer &&
-        !peerConnection.current.remoteDescription &&
+        !peerConnection.current?.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
-        await peerConnection.current.setRemoteDescription(
+        await peerConnection.current?.setRemoteDescription(
           new RTCSessionDescription(data.answer)
         );
 
         for (const candidate of queuedCandidates.current) {
-          await peerConnection.current.addIceCandidate(
+          await peerConnection.current?.addIceCandidate(
             new RTCIceCandidate(candidate)
           );
         }
@@ -167,7 +183,7 @@ export function useWebRTCCall(
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
-        if (peerConnection.current.remoteDescription) {
+        if (peerConnection.current?.remoteDescription) {
           peerConnection.current.addIceCandidate(candidate);
         } else {
           queuedCandidates.current.push(data);
@@ -181,43 +197,45 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
-    mediaStream.getTracks().forEach((track) => {
-      peerConnection.current.addTrack(track, mediaStream);
-    });
-
-    peerConnection.current.addEventListener("icecandidate", handleIceCandidate);
-    peerConnection.current.addEventListener("track", handleTrack);
-    peerConnection.current.addEventListener(
+    peerConnection.current?.addEventListener(
+      "icecandidate",
+      handleIceCandidate
+    );
+    peerConnection.current?.addEventListener("track", handleTrack);
+    peerConnection.current?.addEventListener(
       "iceconnectionstatechange",
       handleIceConnectionStateChange
     );
-    peerConnection.current.addEventListener("icegatheringstatechange", () => {
+    peerConnection.current?.addEventListener("icegatheringstatechange", () => {
       console.log(
         "[ICE] Gathering state:",
-        peerConnection.current.iceGatheringState
+        peerConnection.current?.iceGatheringState
       );
     });
 
+    mediaStream.getTracks().forEach((track) => {
+      peerConnection.current?.addTrack(track, mediaStream);
+    });
+
     // Listen to the call document, then set remote description
-    if (firestoreUnsub.current) firestoreUnsub.current();
     firestoreUnsub.current = onSnapshot(callDocRef, async (snapshot) => {
       const data = snapshot.data();
       if (
         data?.offer &&
-        !peerConnection.current.remoteDescription &&
+        !peerConnection.current?.remoteDescription &&
         !hasSetRemoteDescription.current
       ) {
         hasSetRemoteDescription.current = true;
         try {
-          await peerConnection.current.setRemoteDescription(
+          await peerConnection.current?.setRemoteDescription(
             new RTCSessionDescription(data.offer)
           );
-          const answer = await peerConnection.current.createAnswer();
-          await peerConnection.current.setLocalDescription(answer);
+          const answer = await peerConnection.current?.createAnswer();
+          await peerConnection.current?.setLocalDescription(answer);
           await updateDoc(callDocRef, { answer });
 
           for (const candidate of queuedCandidates.current) {
-            await peerConnection.current.addIceCandidate(
+            await peerConnection.current?.addIceCandidate(
               new RTCIceCandidate(candidate)
             );
           }
@@ -233,7 +251,7 @@ export function useWebRTCCall(
       const data = snapshot.val();
       if (data) {
         const candidate = new RTCIceCandidate(data);
-        if (peerConnection.current.remoteDescription) {
+        if (peerConnection.current?.remoteDescription) {
           peerConnection.current.addIceCandidate(candidate);
         } else {
           queuedCandidates.current.push(data);
@@ -244,26 +262,27 @@ export function useWebRTCCall(
   }
 
   async function endCall() {
-    // Close the peer connection and stop all tracks
-    // Remove event listeners
-    peerConnection.current?.removeEventListener(
-      "icecandidate",
-      handleIceCandidate
-    );
-    peerConnection.current?.removeEventListener("track", handleTrack);
-    peerConnection.current?.removeEventListener(
-      "iceconnectionstatechange",
-      handleIceConnectionStateChange
-    );
+    localStream?.getTracks().forEach((t) => t.stop());
+    localStream?.release();
+    setLocalStream(null);
 
-    localStream?.getTracks().forEach((track) => track.stop());
-    remoteStream?.getTracks().forEach((track) => track.stop());
+    remoteStreamRef.current?.getTracks().forEach((t) => t.stop());
+    remoteStreamRef.current?.release();
+    setRemoteStream(null);
+    remoteStreamRef.current = null;
 
     peerConnection.current?.close();
     peerConnection.current = null;
 
     const chatDocRef = doc(db, "chats", chatId);
     await updateDoc(chatDocRef, { hasActiveCall: false });
+
+    // Delete the call document to prevent race conditions
+    try {
+      await deleteDoc(callDocRef);
+    } catch (e) {
+      console.error("[Firestore] Failed to delete call document:", e);
+    }
 
     try {
       await remove(offerCandidatesRef);
@@ -305,7 +324,7 @@ export function useWebRTCCall(
       const newVideoTrack = newStream.getVideoTracks()[0];
       const videoSender = peerConnection.current
         .getSenders()
-        .find((s: { track: { kind: string } }) => s.track?.kind === "video");
+        .find((s) => s.track && s.track.kind === "video");
 
       if (videoSender && newVideoTrack) {
         await videoSender.replaceTrack(newVideoTrack);

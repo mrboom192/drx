@@ -69,3 +69,9 @@ export const useFilteredDoctors = (specialty: string) => {
 
   return filteredDoctors;
 };
+
+// Get a doctor by ID
+export const useDoctorById = (doctorId: string) => {
+  const doctors = useDoctors();
+  return doctors.find((doctor) => doctor.id === doctorId) || null;
+};

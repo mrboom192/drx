@@ -1,5 +1,5 @@
 import Colors from "@/constants/Colors";
-import { themedStyles } from "@/constants/Styles";
+import { SPECIALIZATIONS } from "@/constants/specializations";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
 import { Link } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -7,7 +7,6 @@ import {
   ListRenderItem,
   StyleSheet,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -24,7 +23,6 @@ const DoctorList = ({ specialty, refresh }: Props) => {
   const doctors = useFilteredDoctors(specialty);
   const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
-  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (refresh) {
@@ -40,79 +38,81 @@ const DoctorList = ({ specialty, refresh }: Props) => {
     }, 200);
   }, [specialty]);
 
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : // : themedStyles.darkBorder;
-        themedStyles.lightBorder;
+  const renderRow: ListRenderItem<any> = ({ item }) => {
+    const maxRows = 1;
+    const itemsPerRow = 3; // Adjust based on your design
+    const maxPills = maxRows * itemsPerRow;
 
-  const themeTextStylePrimary =
-    colorScheme === "light"
-      ? themedStyles.lightTextPrimary
-      : // : themedStyles.darkTextPrimary;
-        themedStyles.lightTextPrimary;
+    const specializations = item.specializations || [];
+    const pillsToShow = specializations.slice(0, maxPills);
+    const remaining = specializations.length - maxPills;
 
-  const themeTextStyleSecondary =
-    colorScheme === "light"
-      ? themedStyles.lightTextSecondary
-      : // : themedStyles.darkTextSecondary;
-        themedStyles.lightTextSecondary;
+    return (
+      <Link href={`/doctor/${item.id}` as any} asChild>
+        <TouchableOpacity>
+          <Animated.View
+            style={styles.listing}
+            entering={FadeInRight}
+            exiting={FadeOutLeft}
+          >
+            <View style={styles.left}>
+              <Avatar
+                uri={item.image}
+                size={48}
+                initials={item.firstName[0] + item.lastName[0]}
+              />
 
-  const renderRow: ListRenderItem<any> = ({ item }) => (
-    <Link href={`/doctor/${item.id}` as any} asChild>
-      <TouchableOpacity>
-        <Animated.View
-          style={[themeBorderStyle, styles.listing]}
-          entering={FadeInRight}
-          exiting={FadeOutLeft}
-        >
-          {/* Image */}
-          <View style={{ flexDirection: "row", gap: 16 }}>
-            <Avatar
-              uri={item.image}
-              size={64}
-              initials={item.firstName[0] + item.lastName[0]}
-            />
+              <View style={styles.info}>
+                <View>
+                  <TextSemiBold style={{ fontSize: 16, width: "100%" }}>
+                    {item.firstName} {item.lastName}
+                  </TextSemiBold>
 
-            <View style={styles.info}>
-              <View>
-                <TextSemiBold
-                  style={[
-                    themeTextStylePrimary,
-                    { fontSize: 16, width: "100%" },
-                  ]}
-                >
-                  {item.firstName} {item.lastName}
-                </TextSemiBold>
-                <TextRegular
-                  style={[
-                    themeTextStyleSecondary,
-                    {
-                      flex: 1,
-                      textTransform: "capitalize",
-                      width: "100%",
-                      // Optional but can help enforce single-line layout
-                      overflow: "hidden",
-                    },
-                  ]}
-                  numberOfLines={1} // This truncates after 1 line
-                  ellipsizeMode="tail" // Shows "..." at the end
-                >
-                  {item.specializations.join(", ")}
-                </TextRegular>
+                  <View style={styles.specializationsContainer}>
+                    {pillsToShow.map((spec: string, index: number) => {
+                      const specialization = SPECIALIZATIONS.find(
+                        (s) => s.name.toLowerCase() === spec.toLowerCase()
+                      );
+                      const pillColor = specialization?.color;
+                      return (
+                        <View
+                          key={index}
+                          style={[styles.pill, { backgroundColor: pillColor }]}
+                        >
+                          <TextRegular style={styles.pillText}>
+                            {spec}
+                          </TextRegular>
+                        </View>
+                      );
+                    })}
+                    {remaining > 0 && (
+                      <View
+                        style={[
+                          styles.pill,
+                          { backgroundColor: Colors.faintGrey },
+                        ]}
+                      >
+                        <TextRegular style={styles.pillText}>
+                          +{remaining}
+                        </TextRegular>
+                      </View>
+                    )}
+                  </View>
+                </View>
               </View>
-              {/* <Rating rating={4.5} reviews={223} /> */}
             </View>
-          </View>
-          <View style={[themeBorderStyle, styles.price]}>
-            <TextRegular style={[themeTextStylePrimary, { fontSize: 20 }]}>
-              ${item.consultationPrice}
-            </TextRegular>
-          </View>
-        </Animated.View>
-      </TouchableOpacity>
-    </Link>
-  );
+
+            <View style={styles.price}>
+              <TextSemiBold style={styles.priceText}>
+                {" "}
+                ${item.consultationPrice}
+              </TextSemiBold>
+            </View>
+          </Animated.View>
+        </TouchableOpacity>
+      </Link>
+    );
+  };
 
   return doctors.length === 0 && !loading ? (
     <View
@@ -123,9 +123,7 @@ const DoctorList = ({ specialty, refresh }: Props) => {
         paddingVertical: 16,
       }}
     >
-      <TextSemiBold
-        style={[themeTextStylePrimary, { fontSize: 16, color: Colors.grey }]}
-      >
+      <TextSemiBold style={{ fontSize: 16, color: Colors.grey }}>
         No doctors found
       </TextSemiBold>
     </View>
@@ -140,16 +138,28 @@ const DoctorList = ({ specialty, refresh }: Props) => {
 
 const styles = StyleSheet.create({
   listing: {
-    padding: 16,
-    marginHorizontal: 16,
-    marginVertical: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    width: "100%",
     flexDirection: "row",
-    borderRadius: 16,
     justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.faintGrey,
+  },
+  left: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 16,
   },
   info: {
     flexDirection: "column",
     justifyContent: "space-between",
+  },
+  specializations: {
+    textTransform: "capitalize",
+    color: Colors.grey,
   },
   price: {
     height: 64,
@@ -157,6 +167,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  specializationsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 4,
+    marginTop: 4,
+  },
+  pill: {
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  pillText: {
+    fontSize: 12,
+    color: Colors.black,
+    textTransform: "capitalize",
+  },
+  priceText: {
+    fontSize: 16,
   },
 });
 

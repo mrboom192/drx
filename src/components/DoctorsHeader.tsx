@@ -229,8 +229,8 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
               <TextSemiBold
                 style={
                   activeIndex === index
-                    ? { color: Colors.primary }
-                    : themeTextStyleSecondary
+                    ? { color: Colors.black }
+                    : { color: Colors.lightText }
                 }
               >
                 {item.name}

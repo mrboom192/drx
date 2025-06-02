@@ -1,6 +1,7 @@
+import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
 import CustomIcon from "@/components/icons/CustomIcon";
-import { TextSemiBold } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChatsById } from "@/stores/useChatStore";
@@ -49,6 +50,11 @@ const ChatRoom = () => {
   const chatDocRef = doc(db, "chats", chatId as string);
   const messagesRef = collection(db, "chats", chatId as string, "messages");
 
+  const otherUser =
+    userData?.role === "doctor"
+      ? chat?.participants.patient
+      : chat?.participants.doctor;
+
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
     if (!chat) {
@@ -96,6 +102,7 @@ const ChatRoom = () => {
       id: nanoid(), // optional, Firestore doc ID also works
       text: message.text,
       senderId: userData.uid,
+      receiverId: otherUser?.uid,
       avatar: userData.image || "",
       createdAt: serverTimestamp(),
     };
@@ -107,6 +114,7 @@ const ChatRoom = () => {
         lastMessage: {
           text: message.text,
           senderId: userData.uid,
+          receiverId: otherUser?.uid,
           timestamp: serverTimestamp(),
         },
         updatedAt: serverTimestamp(),
@@ -142,21 +150,111 @@ const ChatRoom = () => {
         user={{
           _id: userData.uid, // Let giftedchat know who is the current user
         }}
+        renderAvatar={(props) => {
+          return (
+            <Avatar
+              {...props}
+              size={40}
+              uri={
+                props.currentMessage.user.name === "system"
+                  ? ""
+                  : otherUser!.image
+              }
+              // Gets users initials
+              initials={props.currentMessage.user.name
+                .split(" ")
+                .map((name) => name.charAt(0))
+                .join("")}
+            />
+          );
+        }}
+        renderDay={(props) => {
+          const date = props.createdAt ? new Date(props.createdAt) : new Date();
+
+          return (
+            <View
+              style={{
+                alignItems: "center",
+                marginVertical: 16,
+              }}
+            >
+              <TextRegular style={{ color: Colors.lightText, fontSize: 12 }}>
+                {date.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </TextRegular>
+            </View>
+          );
+        }}
+        renderTime={(props) => {
+          const time = props.currentMessage.createdAt
+            ? new Date(props.currentMessage.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true, // Change to false if you prefer 24-hour format
+              })
+            : "";
+
+          return (
+            <View
+              style={{
+                borderRadius: 12,
+                paddingVertical: 2,
+                alignSelf:
+                  props.position === "left" ? "flex-start" : "flex-end",
+                marginHorizontal: 8,
+                marginBottom: 4,
+              }}
+            >
+              <TextRegular
+                style={{
+                  color: Colors.black,
+                  fontSize: 10,
+                  textAlign: "center",
+                }}
+              >
+                {time}
+              </TextRegular>
+            </View>
+          );
+        }}
+        renderMessageText={(props) => {
+          const { currentMessage, position } = props;
+
+          return (
+            <View
+              style={{
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+              }}
+            >
+              <TextRegular
+                style={{
+                  fontSize: 14,
+                  color: Colors.black,
+                  lineHeight: 20,
+                  textAlign: "left", // Keep text left-aligned inside bubbles
+                }}
+              >
+                {currentMessage.text}
+              </TextRegular>
+            </View>
+          );
+        }}
         renderBubble={(props) => {
           return (
             <Bubble
               {...props}
-              textStyle={{
-                right: {
-                  color: "#000",
-                },
-              }}
               wrapperStyle={{
                 left: {
                   backgroundColor: Colors.peach,
+                  padding: 8,
                 },
                 right: {
                   backgroundColor: Colors.lightLavender,
+                  padding: 8,
                 },
               }}
             />
@@ -273,6 +371,7 @@ const header = StyleSheet.create({
     flexDirection: "column",
   },
   chatTitle: {
+    flex: 1,
     fontSize: 16,
   },
   onlineStatus: {

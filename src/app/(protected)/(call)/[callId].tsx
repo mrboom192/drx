@@ -3,7 +3,7 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useWebRTCCall } from "@/hooks/useWebRTCCall";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RTCView } from "react-native-webrtc";
@@ -32,6 +32,16 @@ const Call = () => {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const {
+    localStream,
+    remoteStream,
+    switchCamera,
+    toggleMute,
+    toggleVideo,
+    isVideoEnabled,
+    isMuted,
+  } = useWebRTCCall(chatId, callId, isCaller);
+
   // Start the timer when the page mounts
   // In the future, grab start time from firestore and calculate elapsed time
   // when call ends, save the end time to firestore
@@ -45,16 +55,6 @@ const Call = () => {
     };
   }, []);
 
-  const {
-    localStream,
-    remoteStream,
-    switchCamera,
-    toggleMute,
-    toggleVideo,
-    isVideoEnabled,
-    isMuted,
-  } = useWebRTCCall(chatId, callId, isCaller);
-
   return (
     <View style={[styles.container]}>
       {localStream ? (
@@ -62,6 +62,8 @@ const Call = () => {
           streamURL={localStream.toURL()}
           style={[styles.localVideo, { top: insets.top }]}
           objectFit="cover"
+          mirror={true}
+          zOrder={1}
         />
       ) : (
         <View style={[styles.localVideo, { top: insets.top }]}>
@@ -75,6 +77,7 @@ const Call = () => {
           streamURL={remoteStream.toURL()}
           style={styles.remoteVideo}
           objectFit="cover"
+          zOrder={0}
         />
       ) : (
         <View style={styles.remoteVideo}>
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
   },
   localVideo: {
     borderRadius: 8,
-    zIndex: 9999,
+    zIndex: 9999, // zOrder does this also
     width: 128,
     height: 256,
     position: "absolute",

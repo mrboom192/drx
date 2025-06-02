@@ -40,13 +40,6 @@ const ProfileLayout = () => {
           header: (props) => <PageHeader {...props} />,
         }}
       />
-      <Stack.Screen
-        name="public-profile"
-        options={{
-          title: "Edit Public Profile",
-          header: (props) => <PageHeader {...props} />,
-        }}
-      />
     </Stack>
   );
 };

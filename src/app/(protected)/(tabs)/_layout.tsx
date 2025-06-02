@@ -10,7 +10,12 @@ export default function TabLayout() {
           display: route.name === "chats" ? "none" : "flex",
           backgroundColor: "#FFF",
           borderColor: Colors.faintGrey,
+          borderTopWidth: 1,
+          paddingHorizontal: 60,
+          paddingTop: 8,
         },
+        tabBarActiveTintColor: Colors.black,
+        tabBarInactiveTintColor: Colors.lightText,
       })}
     >
       <Tabs.Screen

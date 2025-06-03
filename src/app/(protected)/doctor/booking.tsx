@@ -131,7 +131,7 @@ const BookingPage = () => {
     try {
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
-        timeSlot: formData.timeSlot,
+        timeSlot: parseTimeSlot(formData.timeSlot),
         selectedDate: formData.selectedDate,
       });
 
@@ -251,3 +251,8 @@ const BookingPage = () => {
 };
 
 export default BookingPage;
+
+function parseTimeSlot(timeSlotStr: string) {
+  const [startTime, endTime] = timeSlotStr.split("-");
+  return { startTime, endTime };
+}

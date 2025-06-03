@@ -23,7 +23,7 @@ const DoctorMap = memo(({ doctors }: Props) => {
   const router = useRouter();
 
   const onMarkerSelected = (item: Doctor) => {
-    //   router.push(`/listing/${item.properties.id}`);
+    //   router.navigate(`/listing/${item.properties.id}`);
   };
 
   const renderCluster = (cluster: any) => {

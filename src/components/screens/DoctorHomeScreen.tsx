@@ -89,7 +89,7 @@ export default DoctorHomeScreen;
 
 export const VerificationAlert = () => {
   const handleNavigate = () => {
-    router.push("/profile");
+    router.navigate("/profile");
   };
 
   return (

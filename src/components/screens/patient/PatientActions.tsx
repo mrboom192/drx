@@ -40,7 +40,7 @@ const PatientActions = ({}: {}) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
-    router.push(href, { withAnchor: true });
+    router.navigate(href, { withAnchor: true });
   };
 
   return (

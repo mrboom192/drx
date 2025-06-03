@@ -24,7 +24,7 @@ const MedicalInformationLayout = () => {
             <IconButton
               name="add"
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/(modals)/update-condition",
                   params: { mode: "add", medicationId: "" },
                 })
@@ -41,7 +41,7 @@ const MedicalInformationLayout = () => {
             <IconButton
               name="add"
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/(modals)/update-allergy",
                   params: { mode: "add", medicationId: "" },
                 })
@@ -58,7 +58,7 @@ const MedicalInformationLayout = () => {
             <IconButton
               name="add"
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/(modals)/update-medication",
                   params: { mode: "add", medicationId: "" },
                 })

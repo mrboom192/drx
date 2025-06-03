@@ -18,7 +18,7 @@ const NotificationCard = ({
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => url && router.push(url)}
+      onPress={() => url && router.navigate(url)}
     >
       <View style={styles.titleRow}>
         <CustomIcon name="circle" size={8} color={color} />

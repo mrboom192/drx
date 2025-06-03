@@ -30,7 +30,7 @@ const InternationalDoctors = ({}: {}) => {
       query.append("countries", params.countries.join(","));
     }
 
-    router.push({
+    router.navigate({
       pathname: `/search`,
       params: Object.fromEntries(query.entries()),
     });

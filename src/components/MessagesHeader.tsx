@@ -75,7 +75,9 @@ const MessagesHeader = ({}: Props) => {
           <IconButton
             name="search"
             onPress={() =>
-              router.push({ pathname: "/(protected)/(tabs)/messages/search" })
+              router.navigate({
+                pathname: "/(protected)/(tabs)/messages/search",
+              })
             }
           />
         </View>

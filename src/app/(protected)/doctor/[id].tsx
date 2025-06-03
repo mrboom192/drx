@@ -58,7 +58,7 @@ const Page = () => {
   }, [id]);
 
   const handleBooking = () => {
-    router.push(`/doctor/booking?id=${id}`);
+    router.navigate(`/doctor/booking?id=${id}`);
   };
 
   if (isLoading) return <LoadingScreen />;

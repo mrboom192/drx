@@ -33,7 +33,7 @@ export default function SearchModal() {
 
   const handleResultPress = (doctor: any) => {
     // Naviagate to the chat screen
-    router.push({
+    router.navigate({
       pathname: "/(protected)/doctor/[id]",
       params: { id: doctor.uid },
     });

@@ -36,7 +36,7 @@ export default function SearchModal() {
 
   const handleResultPress = (chat: Chat) => {
     // Naviagate to the chat screen
-    router.push({
+    router.navigate({
       pathname: "/(protected)/(chat)/[chatId]",
       params: { chatId: chat.id },
     });

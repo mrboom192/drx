@@ -82,7 +82,7 @@ const SignIn = () => {
         text="Sign up"
         variant="secondary"
         disabled={loading}
-        onPress={() => router.push("/signup")}
+        onPress={() => router.navigate("/signup")}
       />
 
       <TextRegular style={styles.disclaimerText}>

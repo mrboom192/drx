@@ -33,7 +33,7 @@ const DoctorCalendar = () => {
     if (!date) return;
 
     setSelectedDate(date.dateString);
-    router.push({
+    router.navigate({
       pathname: "/(protected)/(modals)/[date]",
       params: { date: date.dateString },
     });

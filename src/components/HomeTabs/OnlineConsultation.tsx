@@ -135,7 +135,7 @@ const OnlineConsultation = () => {
                 },
               ]}
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/medical-records/[id]",
                   params: { id: userData!.uid },
                 })
@@ -254,7 +254,7 @@ const OnlineConsultation = () => {
               paddingVertical: 16,
             }}
             onPress={() => {
-              router.push("/bookmarked");
+              router.navigate("/bookmarked");
             }}
           >
             <CustomIcon

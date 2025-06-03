@@ -223,7 +223,7 @@ const SecondOpinion = () => {
               <TouchableOpacity
                 key={item.id}
                 onPress={() =>
-                  router.push({
+                  router.navigate({
                     pathname: "/(protected)/case/[id]",
                     params: { id: item.id },
                   })
@@ -316,7 +316,7 @@ const SecondOpinion = () => {
             paddingVertical: 16,
           }}
           onPress={() =>
-            router.push("/(protected)/(modals)/create-second-opinion")
+            router.navigate("/(protected)/(modals)/create-second-opinion")
           } // Navigate to new case screen
         >
           <TextSemiBold

@@ -167,7 +167,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => router.push({ pathname: "/search-modal" })}
+            onPress={() => router.navigate({ pathname: "/search-modal" })}
             style={[themeBorderStyle, styles.searchBtn]}
           >
             <Ionicons
@@ -185,7 +185,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push("/(protected)/(modals)/filter")}
+            onPress={() => router.navigate("/(protected)/(modals)/filter")}
             style={[themeBorderStyle, styles.filterBtn]}
           >
             <Ionicons

@@ -48,7 +48,7 @@ const Services = ({}: {}) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
-    router.push(item.href);
+    router.navigate(item.href);
   };
 
   return (

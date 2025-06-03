@@ -53,7 +53,7 @@ const RecordListItem = ({
         <IconButton
           name="stylus"
           onPress={() =>
-            router.push({
+            router.navigate({
               pathname: editPath,
               params: { mode: "edit", id },
             } as Href & NavigationOptions)

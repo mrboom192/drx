@@ -33,7 +33,7 @@ const UserRow = () => {
         <IconButton
           name={"notification-bell"}
           onPress={() => {
-            router.push("/(protected)/notifications");
+            router.navigate("/(protected)/notifications");
           }}
         />
         <UserAvatar size={40} canUpload={false} />

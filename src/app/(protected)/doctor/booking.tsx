@@ -50,6 +50,7 @@ const cancelPaymentIntent = httpsCallable<
 const BookingPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
+  console.log("Doctor data:", doctor);
   const userData = useUserData();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const insets = useSafeAreaInsets();

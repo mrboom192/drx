@@ -12,8 +12,8 @@ import Colors from "@/constants/Colors";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { filterMap } from "@/constants/filterMap";
 import LoadingScreen from "@/components/LoadingScreen";
-import { getDoctorsByField } from "@/api/doctors";
 import { renderDoctorRow } from "@/components/DoctorListItem";
+import { useFetchDoctorsByField } from "@/stores/useDoctorSearch";
 
 type Filter = { filter: keyof typeof filterMap };
 
@@ -28,6 +28,7 @@ type Content = {
 const FilteredListPage = () => {
   const { filter } = useLocalSearchParams<Filter>();
   const [doctors, setDoctors] = useState<any[]>([]);
+  const fetchDoctorsByField = useFetchDoctorsByField();
   const [loading, setLoading] = useState<boolean>(true);
 
   const content: Content = filterMap[filter] ?? filterMap.fallback;
@@ -36,7 +37,7 @@ const FilteredListPage = () => {
     const fetchDoctors = async () => {
       if (content && content.key && content.filters.length > 0) {
         setLoading(true);
-        const result = await getDoctorsByField(content.key, content.filters);
+        const result = await fetchDoctorsByField(content.key, content.filters);
         setDoctors(result);
         setLoading(false);
       } else {

@@ -40,7 +40,7 @@ const DoctorList = ({ specialty, refresh }: Props) => {
 
   const renderRow: ListRenderItem<any> = ({ item }) => {
     const maxRows = 1;
-    const itemsPerRow = 3; // Adjust based on your design
+    const itemsPerRow = 2; // Adjust based on your design
     const maxPills = maxRows * itemsPerRow;
 
     const specializations = item.specializations || [];

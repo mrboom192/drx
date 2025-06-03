@@ -17,22 +17,21 @@ import {
 type Item = {
   name: string;
   image: ImageSourcePropType;
-  params: { countries: string[] };
+  filter: string;
   backgroundColor: string;
 };
 
 const InternationalDoctors = ({}: {}) => {
-  const onPress = (params: { countries: string[] }) => {
+  const onPress = (filter: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     const query = new URLSearchParams();
-    if (params.countries) {
-      query.append("countries", params.countries.join(","));
-    }
 
-    router.navigate({
-      pathname: `/search`,
-      params: Object.fromEntries(query.entries()),
+    router.push({
+      pathname: `/filtered`,
+      params: {
+        filter: filter,
+      },
     });
   };
 
@@ -46,7 +45,7 @@ const InternationalDoctors = ({}: {}) => {
       >
         {countries.map((item: Item, index: number) => (
           <TouchableOpacity
-            onPress={() => onPress(item.params)}
+            onPress={() => onPress(item.filter)}
             key={index}
             style={styles.item}
           >
@@ -60,7 +59,7 @@ const InternationalDoctors = ({}: {}) => {
                 style={styles.image}
                 source={item.image}
                 contentFit="contain"
-                transition={250}
+                transition={1000}
               />
             </View>
             <View style={styles.bottomText}>

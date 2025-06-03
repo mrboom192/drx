@@ -1,0 +1,73 @@
+export const filterMap = {
+  fallback: {
+    title: "Oops! We couldn't find what you're looking for.",
+    description:
+      "It seems this page doesn't match any of our records. Please check the link or return to the main page. If you continue to experience this issue, feel free to contact us.",
+    image: null,
+    key: null,
+    filters: [],
+  },
+  us: {
+    title: "American Doctors",
+    description: "Doctors licensed in the US.",
+    image: require("@/../assets/images/countries/us.png"),
+    key: "countries",
+    filters: ["us"],
+  },
+  sa: {
+    title: "Arabic Doctors",
+    description: "Doctors licensed in the US.",
+    image: require("@/../assets/images/countries/sa.png"),
+    key: "countries",
+    filters: ["eg", "jo"],
+  },
+  in: {
+    title: "Indian Doctors",
+    description: "Doctors licensed in India.",
+    image: require("@/../assets/images/countries/in.png"),
+    key: "countries",
+    filters: ["in"],
+  },
+  diarrhea: {
+    title: "Diarrhea",
+    description: "Doctors who treat the symptoms of diarrhea.",
+    image: require("@/../assets/images/symptoms/diarrhea.png"),
+    key: "specializations",
+    filters: ["gastroenterology", "internal", "family"],
+  },
+  acne: {
+    title: "Acne",
+    description: "Doctors who treat acne and skin conditions.",
+    image: require("@/../assets/images/symptoms/acne.png"),
+    key: "specializations",
+    filters: ["general practice", "dermatology", "family"],
+  },
+  heart: {
+    title: "Heart Conditions",
+    description: "Doctors specializing in heart health.",
+    image: require("@/../assets/images/symptoms/heart.png"),
+    key: "specializations",
+    filters: ["cardiology", "internal", "family"],
+  },
+  allergies: {
+    title: "Allergies",
+    description: "Doctors who treat allergies and related conditions.",
+    image: require("@/../assets/images/symptoms/allergies.png"),
+    key: "specializations",
+    filters: ["allergy", "immunology", "family"],
+  },
+  depression: {
+    title: "Depression",
+    description: "Doctors who specialize in mental health and depression.",
+    image: require("@/../assets/images/symptoms/depression.png"),
+    key: "specializations",
+    filters: ["psychiatry", "psychology", "family"],
+  },
+  uti: {
+    title: "Urinary Tract Infections",
+    description: "Doctors who treat urinary tract infections.",
+    image: require("@/../assets/images/symptoms/uti.png"),
+    key: "specializations",
+    filters: ["urology", "internal", "family"],
+  },
+};

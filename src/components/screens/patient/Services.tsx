@@ -81,7 +81,7 @@ const Services = ({}: {}) => {
               style={styles.image}
               source={item.image}
               contentFit="cover"
-              transition={1000}
+              transition={250}
             />
           </View>
         ))}

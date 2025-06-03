@@ -60,7 +60,7 @@ const InternationalDoctors = ({}: {}) => {
                 style={styles.image}
                 source={item.image}
                 contentFit="contain"
-                transition={1000}
+                transition={250}
               />
             </View>
             <View style={styles.bottomText}>

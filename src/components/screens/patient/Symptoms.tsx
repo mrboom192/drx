@@ -16,69 +16,50 @@ const symptoms = [
   {
     name: "Diarrhea",
     image: require("@/../assets/images/symptoms/diarrhea.png"),
-    params: {
-      specializations: ["gastroenterology", "internal", "family"],
-    },
+    filter: "diarrhea",
   },
   {
     name: "Acne",
     image: require("@/../assets/images/symptoms/acne.png"),
-    params: {
-      specializations: ["dermatology", "family", "internal"],
-    },
+    filter: "acne",
   },
   {
     name: "Heart",
     image: require("@/../assets/images/symptoms/heart.png"),
-    params: {
-      specializations: ["cardiology", "emergency", "internal"],
-    },
+    filter: "heart",
   },
   {
     name: "Allergies",
     image: require("@/../assets/images/symptoms/allergies.png"),
-    params: {
-      specializations: ["allergy", "immunology", "pulmonology"],
-    },
+    filter: "allergies",
   },
   {
     name: "Depression",
     image: require("@/../assets/images/symptoms/depression.png"),
-    params: {
-      specializations: ["psychiatry", "psychology", "family"],
-    },
+    filter: "depression",
   },
   {
     name: "UTI",
     image: require("@/../assets/images/symptoms/uti.png"),
-    params: {
-      specializations: ["urology", "family", "internal"],
-    },
+    filter: "uti",
   },
 ];
 
 type TabItem = {
   name: string;
   image: ImageSourcePropType;
-  params: {
-    specializations: string[];
-  };
+  filter: string | undefined;
 };
 
 const Symptoms = ({}: {}) => {
   const onPress = (item: TabItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    const query = new URLSearchParams();
-    item.params.specializations.forEach((spec) =>
-      query.append("specializations", spec)
-    );
-
     // Navigate with query
     router.navigate({
-      pathname: "/search",
+      pathname: "/filtered",
       params: {
-        query: query.toString(),
+        filter: item.filter,
       },
     });
   };
@@ -100,7 +81,7 @@ const Symptoms = ({}: {}) => {
               style={styles.image}
               source={item.image}
               contentFit="cover"
-              transition={1000}
+              transition={250}
             />
             <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
           </TouchableOpacity>

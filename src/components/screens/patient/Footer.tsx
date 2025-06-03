@@ -26,7 +26,7 @@ const Footer = () => {
           style={styles.logo}
           source={require("@/../assets/images/icon.png")}
           contentFit="contain"
-          transition={1000}
+          transition={250}
         />
         <TextSemiBold style={styles.logoDescription}>
           By DRX GENIUS LLC

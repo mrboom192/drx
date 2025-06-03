@@ -104,6 +104,13 @@ export default function ProtectedLayout() {
         }}
       />
       <Stack.Screen
+        name="filtered"
+        options={{
+          title: "",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name="search-modal"
         options={{
           title: "Search Doctors",

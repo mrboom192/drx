@@ -75,7 +75,7 @@ const Personal = () => {
                   alignItems: "center",
                 }}
               >
-                <View>
+                <View style={{ flexShrink: 1 }}>
                   <View
                     style={{
                       flexDirection: "row",
@@ -127,7 +127,7 @@ const Personal = () => {
                   alignItems: "center",
                 }}
               >
-                <View>
+                <View style={{ flexShrink: 1 }}>
                   <View
                     style={{
                       flexDirection: "row",

@@ -1,32 +1,35 @@
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { TextSemiBold } from "../StyledText";
 import NotificationCard from "./NotificationCard";
 
 const Notifications = () => {
-  const hasNoNotifications = false; // Replace with actual logic to check for notifications
   const userData = useUserData();
+  const hasNoNotifications =
+    userData?.verification !== "unverified" || userData?.hasPublicProfile; // Replace with actual logic to check for notifications
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
+    <>
       {hasNoNotifications ? (
-        <TextSemiBold style={styles.noNotifications}>
-          No new notifications
-        </TextSemiBold>
+        <View style={styles.noNotificationsContainer}>
+          <TextSemiBold style={styles.noNotifications}>
+            No new notifications
+          </TextSemiBold>
+        </View>
       ) : (
-        <>
-          <NotificationCard
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {/* <NotificationCard
             title="New Appointment"
             message="You have a new appointment scheduled."
-          />
+          /> */}
           {(userData?.verification === "unverified" ||
             !userData?.verification) && (
             <NotificationCard
@@ -51,9 +54,9 @@ const Notifications = () => {
               color={Colors.pink}
             />
           )}
-        </>
+        </ScrollView>
       )}
-    </ScrollView>
+    </>
   );
 };
 
@@ -61,7 +64,7 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
+    marginVertical: 16,
     flexGrow: 0,
   },
   contentContainer: {
@@ -69,9 +72,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 8,
   },
-  noNotifications: {
-    textAlign: "center",
+  noNotificationsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
     height: 70,
-    color: Colors.grey,
+  },
+  noNotifications: {
+    color: Colors.lightText,
   },
 });

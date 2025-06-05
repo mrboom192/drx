@@ -70,7 +70,6 @@ const DoctorHomeScreen = () => {
       <Notifications />
       <View
         style={{
-          marginTop: 16,
           marginHorizontal: 16,
           borderBottomWidth: 1,
           borderBottomColor: Colors.faintGrey,

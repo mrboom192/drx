@@ -12,8 +12,8 @@ import Colors from "@/constants/Colors";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { filterMap } from "@/constants/filterMap";
 import LoadingScreen from "@/components/LoadingScreen";
-import { renderDoctorRow } from "@/components/DoctorListItem";
 import { useFetchDoctorsByField } from "@/stores/useDoctorSearch";
+import { renderDoctorRow } from "@/components/DoctorList/DoctorListItem";
 
 type Filter = { filter: keyof typeof filterMap };
 

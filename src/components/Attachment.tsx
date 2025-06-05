@@ -3,7 +3,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import IconButton from "./IconButton";
 import { TextRegular } from "./StyledText";
-import CustomIcon from "./icons/CustomIcon";
+import CustomIcon from "./CustomIcon";
 
 const SIZE = 64;
 

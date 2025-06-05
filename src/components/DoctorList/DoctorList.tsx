@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
-import Avatar from "./Avatar";
-import { TextRegular, TextSemiBold } from "./StyledText";
+import Avatar from "../Avatar";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 interface Props {
   specialty: string;

@@ -1,4 +1,4 @@
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { countries } from "@/constants/countries";

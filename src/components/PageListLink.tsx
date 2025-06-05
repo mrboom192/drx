@@ -3,7 +3,7 @@ import { LinkProps, router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular, TextSemiBold } from "./StyledText";
-import CustomIcon from "./icons/CustomIcon";
+import CustomIcon from "./CustomIcon";
 
 const PageListLink = ({
   title,

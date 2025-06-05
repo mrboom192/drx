@@ -6,7 +6,6 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TextSemiBold } from "./StyledText";
 import SubmitButton from "./SubmitButton";
 
 const Footer = ({

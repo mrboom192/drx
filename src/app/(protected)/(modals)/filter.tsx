@@ -40,14 +40,7 @@ const Page = () => {
 
   return (
     <PageScrollView>
-      <Stack.Screen
-        options={{
-          title: "Filters",
-          presentation: "modal",
-          header: (props) => <PageHeader {...props} />,
-        }}
-      />
-      <TextSemiBold style={{ fontSize: 24, color: "#000" }}>
+      <TextSemiBold style={{ fontSize: 16, color: "#000", marginBottom: 16 }}>
         Provider language
       </TextSemiBold>
       <View

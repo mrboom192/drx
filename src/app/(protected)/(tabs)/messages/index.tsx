@@ -1,13 +1,14 @@
 import ChatsList from "@/components/ChatsList";
 import MessagesHeader from "@/components/MessagesHeader";
-import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { Stack } from "expo-router";
+import { View } from "react-native";
 
 const Messages = () => {
   return (
     <View
       style={{
+        backgroundColor: "#FFF",
         flex: 1,
         borderWidth: 0,
         borderTopWidth: 1,

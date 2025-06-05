@@ -17,7 +17,6 @@ import React, { useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
-import DoctorHomeHeader from "../DoctorHomeHeader";
 import Notifications from "../Notifications/Notifications";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
@@ -68,9 +67,6 @@ const DoctorHomeScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <Stack.Screen
-        options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
-      />
       <Notifications />
       <View
         style={{

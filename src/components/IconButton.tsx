@@ -7,8 +7,8 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import CustomIcon from "./icons/CustomIcon";
-import { IconName } from "./icons/iconsMap";
+import CustomIcon from "./CustomIcon";
+import { IconName } from "../constants/iconsMap";
 
 const DEFAULT_ICONBUTTON_SIZE = 40;
 

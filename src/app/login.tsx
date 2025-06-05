@@ -5,6 +5,7 @@ import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { Link, router } from "expo-router";
+import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
@@ -15,14 +16,23 @@ const SignIn = () => {
   const { signIn } = useSession();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
-  const { control, handleSubmit } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
     try {
       await signIn(data.email, data.password);
-    } catch (error) {
-      console.error("Sign in error:", error);
+    } catch (error: any) {
+      setError("other", {
+        type: "custom",
+        message: getErrorMessage(error),
+      });
     } finally {
       setLoading(false);
     }
@@ -64,13 +74,20 @@ const SignIn = () => {
         }}
       />
 
-      <SubmitButton
-        text="Log in"
-        style={{ marginTop: 20 }}
-        loading={loading}
-        disabled={loading}
-        onPress={handleSubmit(onSubmit)}
-      />
+      <View style={styles.loginButtonContainer}>
+        {typeof errors.other?.message === "string" && (
+          <TextRegular style={styles.error}>{errors.other.message}</TextRegular>
+        )}
+        <SubmitButton
+          text="Log in"
+          loading={loading}
+          disabled={loading}
+          onPress={() => {
+            clearErrors("other");
+            handleSubmit(onSubmit)();
+          }}
+        />
+      </View>
 
       <View style={styles.orContainer}>
         <Divider />
@@ -142,4 +159,28 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     textDecorationLine: "underline",
   },
+  loginButtonContainer: {
+    position: "relative",
+    marginTop: 20,
+  },
+  error: {
+    position: "absolute",
+    top: -24,
+    left: 0,
+    color: Colors.pink,
+    fontSize: 12,
+  },
 });
+
+function getErrorMessage(error: FirebaseError): string {
+  if (!(error instanceof FirebaseError)) {
+    return "An unexpected error occurred. Please try again later.";
+  }
+
+  switch (error.code) {
+    case "auth/invalid-credential":
+      return "Wrong email or password. Please try again.";
+    default:
+      return "An unexpected error occurred. Please try again later.";
+  }
+}

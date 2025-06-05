@@ -3,13 +3,15 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useUserData } from "@/stores/useUserStore";
 import { router } from "expo-router";
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import UserAvatar from "./UserAvatar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const UserRow = () => {
   const userData = useUserData();
+  const insets = useSafeAreaInsets();
 
   if (!userData) {
     return null;
@@ -19,10 +21,12 @@ const UserRow = () => {
     <View
       style={{
         paddingHorizontal: 16,
+        paddingTop: insets.top,
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        backgroundColor: "#FFF",
       }}
     >
       <WelcomeMessage
@@ -43,28 +47,20 @@ const UserRow = () => {
 };
 
 const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
-  const { themeTextStyleSecondary } = useThemedStyles();
   const color = role === "patient" ? Colors.primary : Colors.gold;
 
   return (
     <View>
-      <TextRegular
-        style={[
-          themeTextStyleSecondary,
-          {
-            fontSize: 14,
-          },
-        ]}
-      >
-        Welcome back,
-      </TextRegular>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <TextSemiBold style={{ fontSize: 20 }}>{name}</TextSemiBold>
+      <TextRegular style={styles.welcomeText}>Welcome back,</TextRegular>
+      <View style={styles.textContainer}>
+        <TextSemiBold style={styles.nameText}>{name}</TextSemiBold>
         <TextSemiBold
-          style={{
-            fontSize: 12,
-            color,
-          }}
+          style={[
+            styles.roleText,
+            {
+              color,
+            },
+          ]}
         >
           {role}
         </TextSemiBold>
@@ -74,3 +70,18 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
 };
 
 export default UserRow;
+
+const styles = StyleSheet.create({
+  welcomeText: {
+    color: Colors.grey,
+    fontSize: 14,
+  },
+  textContainer: { flexDirection: "row", alignItems: "center", gap: 8 },
+  nameText: {
+    fontSize: 20,
+    color: Colors.black,
+  },
+  roleText: {
+    fontSize: 12,
+  },
+});

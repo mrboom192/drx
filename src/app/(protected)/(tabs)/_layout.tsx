@@ -1,3 +1,4 @@
+import UserRow from "@/components/UserRow";
 import Colors from "@/constants/Colors";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
@@ -22,7 +23,7 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarLabel: "Home",
-          // headerShown: false,
+          header: () => <UserRow />,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),

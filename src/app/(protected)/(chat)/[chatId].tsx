@@ -1,6 +1,6 @@
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserPresence } from "@/hooks/useUserPresence";

@@ -6,9 +6,9 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { TextRegular, TextSemiBold } from "./StyledText";
-import Avatar from "./Avatar";
 import { SPECIALIZATIONS } from "@/constants/specializations";
+import Avatar from "../Avatar";
+import { TextRegular, TextSemiBold } from "../StyledText";
 
 export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
   const maxRows = 1;

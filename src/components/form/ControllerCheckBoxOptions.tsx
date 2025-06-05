@@ -3,7 +3,7 @@ import React from "react";
 import { Control, Controller, RegisterOptions } from "react-hook-form";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular } from "../StyledText";
-import CustomIcon from "../icons/CustomIcon";
+import CustomIcon from "../CustomIcon";
 
 interface Props {
   label: string;

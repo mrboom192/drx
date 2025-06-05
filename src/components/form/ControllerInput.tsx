@@ -16,8 +16,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import CustomIcon from "../icons/CustomIcon";
-import { IconName } from "../icons/iconsMap";
+import CustomIcon from "../CustomIcon";
+import { IconName } from "../../constants/iconsMap";
 import { TextRegular } from "../StyledText";
 
 interface ControllerInputProps<TFieldValues extends FieldValues> {

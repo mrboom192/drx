@@ -66,6 +66,14 @@ export default function ModalsLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="filters"
+        options={{
+          title: "Filters",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

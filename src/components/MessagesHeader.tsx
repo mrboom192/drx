@@ -3,11 +3,16 @@ import { themedStyles } from "@/constants/Styles";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import React, { useRef, useState } from "react";
-import { StyleSheet, useColorScheme } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
-import { ScrollView, TouchableOpacity, View } from "./Themed";
 
 const tabs = [
   {

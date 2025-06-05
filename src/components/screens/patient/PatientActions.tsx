@@ -1,5 +1,5 @@
-import CustomIcon from "@/components/icons/CustomIcon";
-import { IconName } from "@/components/icons/iconsMap";
+import CustomIcon from "@/components/CustomIcon";
+import { IconName } from "@/constants/iconsMap";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import * as Haptics from "expo-haptics";

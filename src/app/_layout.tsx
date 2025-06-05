@@ -1,7 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import ExpoStripeProvider from "@/components/stripe-provider";
 import { SignUpProvider } from "@/contexts/SignupContext";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useIsAuthReady, useSetIsAuthReady } from "@/stores/useAuthInitStore";
 import { useStartNotifications } from "@/stores/useNotificationStore";
 import {
@@ -127,56 +126,47 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { colorScheme } = useThemedStyles();
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
         <BottomSheetModalProvider>
           <ExpoStripeProvider>
-            <ThemeProvider
-              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            >
-              <SessionProvider>
-                <SignUpProvider>
-                  <Stack
-                    screenOptions={{
-                      navigationBarColor: "#FFF",
+            <SessionProvider>
+              <SignUpProvider>
+                <Stack
+                  screenOptions={{
+                    navigationBarColor: "#FFF",
+                  }}
+                >
+                  <Stack.Screen
+                    name="(protected)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="login" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="signup"
+                    options={{
+                      title: "Sign up with DrX",
+                      header: (props) => <PageHeader {...props} />,
                     }}
-                  >
-                    <Stack.Screen
-                      name="(protected)"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="login"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="signup"
-                      options={{
-                        title: "Sign up with DrX",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="terms-of-service"
-                      options={{
-                        title: "Terms of Service",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="privacy-policy"
-                      options={{
-                        title: "Privacy Policy",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                  </Stack>
-                </SignUpProvider>
-              </SessionProvider>
-            </ThemeProvider>
+                  />
+                  <Stack.Screen
+                    name="terms-of-service"
+                    options={{
+                      title: "Terms of Service",
+                      header: (props) => <PageHeader {...props} />,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="privacy-policy"
+                    options={{
+                      title: "Privacy Policy",
+                      header: (props) => <PageHeader {...props} />,
+                    }}
+                  />
+                </Stack>
+              </SignUpProvider>
+            </SessionProvider>
           </ExpoStripeProvider>
         </BottomSheetModalProvider>
       </KeyboardProvider>

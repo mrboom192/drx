@@ -100,9 +100,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
       await getAndRegisterPushToken();
       setSession(user.uid); // Or user.email or user.getIdToken() for token
       router.replace("/" as RelativePathString); // Lets go home!!!
-    } catch (error) {
-      console.error("Error signing in:", error);
-      throw error; // Re-throw to handle errors in the UI
+    } catch (error: any) {
+      throw error;
     }
   }
 

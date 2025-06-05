@@ -2,7 +2,7 @@ import { db } from "@/../firebaseConfig";
 import Avatar from "@/components/Avatar";
 import LoadingScreen from "@/components/LoadingScreen";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import Biography from "@/components/screens/doctor/Biography";
 import Specializations from "@/components/screens/doctor/Specializations";
 import Colors from "@/constants/Colors";

@@ -13,7 +13,7 @@ import DatePicker from "react-native-date-picker";
 import Avatar from "../Avatar";
 import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
-import CustomIcon from "../icons/CustomIcon";
+import CustomIcon from "../CustomIcon";
 
 const DoctorCalendar = () => {
   const appointments = useAppointments();

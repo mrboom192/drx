@@ -18,7 +18,7 @@ import {
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 
-const ChatsList = () => {
+const ChatsList = ({ filter }: { filter: string }) => {
   const userData = useUserData();
   const listRef = useRef<FlatList>(null);
   const colorScheme = useColorScheme();
@@ -35,12 +35,15 @@ const ChatsList = () => {
     );
   }
 
+  const filteredChats =
+    filter !== "all" ? chats.filter((chat) => chat.status === filter) : chats;
+
   const themeBorderStyle =
     colorScheme === "light"
       ? themedStyles.lightBorder
       : themedStyles.darkBorder;
 
-  if (chats.length === 0) {
+  if (filteredChats.length === 0) {
     return (
       <View
         style={[
@@ -61,7 +64,9 @@ const ChatsList = () => {
             textAlign: "center",
           }}
         >
-          {userData?.role === "doctor"
+          {filter !== "all"
+            ? "No chats found"
+            : userData?.role === "doctor"
             ? "You currently have no chats"
             : "Book a consultation to start chatting with a doctor"}
         </TextSemiBold>
@@ -72,7 +77,7 @@ const ChatsList = () => {
   return (
     <FlatList
       renderItem={({ item }) => <ChatRow chat={item} />}
-      data={isFetchingChats ? [] : chats}
+      data={isFetchingChats ? [] : filteredChats}
       ref={listRef}
     />
   );

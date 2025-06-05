@@ -4,7 +4,11 @@ import Colors from "@/constants/Colors";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 
+import { useState } from "react";
+
 const Messages = () => {
+  const [filter, setFilter] = useState<string>("");
+
   return (
     <View
       style={{
@@ -17,10 +21,10 @@ const Messages = () => {
     >
       <Stack.Screen
         options={{
-          header: () => <MessagesHeader />,
+          header: () => <MessagesHeader setFilter={setFilter} />,
         }}
       />
-      <ChatsList />
+      <ChatsList filter={filter} />
     </View>
   );
 };

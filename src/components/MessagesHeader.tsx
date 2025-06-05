@@ -27,9 +27,11 @@ const tabs = [
   { name: "pending" },
 ];
 
-interface Props {}
+interface Props {
+  setFilter: (filter: string) => void;
+}
 
-const MessagesHeader = ({}: Props) => {
+const MessagesHeader = ({ setFilter }: Props) => {
   const scrollRef = useRef<typeof ScrollView | null>(null);
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
@@ -54,8 +56,9 @@ const MessagesHeader = ({}: Props) => {
       : // : themedStyles.darkBorder;
         themedStyles.lightBorder;
 
-  const selectCategory = (index: number) => {
+  const selectCategory = (filter: string, index: number) => {
     const selected = itemsRef.current[index];
+    setFilter(filter);
     setActiveIndex(index);
 
     (selected as any)?.measure((x: number) => {
@@ -104,7 +107,7 @@ const MessagesHeader = ({}: Props) => {
         >
           {tabs.map((item, index) => (
             <TouchableOpacity
-              onPress={() => selectCategory(index)}
+              onPress={() => selectCategory(item.name, index)}
               key={index}
               ref={(el: any) => (itemsRef.current[index] = el)}
               style={[

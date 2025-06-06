@@ -6,17 +6,27 @@
   "button": {
     "log-out": "تسجيل الخروج"
   },
+  "chats": {
+    "book-a-consultation-to-start-chatting-with-a-doctor": "",
+    "no-chats-found": "لم يتم العثور على دردشات",
+    "you-currently-have-no-chats": ""
+  },
   "common": {
+    "all": "الجميع",
+    "consultations": "المشاورات",
     "doctor": "طبيب",
     "email": "البريد الإلكتروني",
     "email-invalid": "يرجى إدخال عنوان بريد إلكتروني صالح.",
     "email-placeholder": "مثال: john@email.com",
     "email-required": "البريد الإلكتروني مطلوب",
+    "finished": "انتهى",
+    "ongoing": "مستمر",
     "password": "كلمة المرور",
     "password-min-length": "6 أحرف على الأقل",
     "password-placeholder": "أدخل كلمة المرور الخاصة بك",
     "password-required": "كلمة المرور مطلوبة",
-    "patient": "مريض"
+    "patient": "مريض",
+    "pending": "قيد الانتظار"
   },
   "form": {
     "select-date": "اختر التاريخ"

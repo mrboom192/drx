@@ -1,8 +1,7 @@
 import Colors from "@/constants/Colors";
-import { themedStyles } from "@/constants/Styles";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -13,61 +12,36 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
-
-const tabs = [
-  {
-    name: "all",
-  },
-  {
-    name: "ongoing",
-  },
-  {
-    name: "finished",
-  },
-  { name: "pending" },
-];
+import { useTranslation } from "react-i18next";
+import { getTabs } from "@/constants/tabs";
 
 interface Props {
   setFilter: (filter: string) => void;
 }
 
 const MessagesHeader = ({ setFilter }: Props) => {
-  const scrollRef = useRef<typeof ScrollView | null>(null);
+  const { t } = useTranslation();
+  const tabs = useMemo(() => getTabs(t), [t]);
+  const scrollRef = useRef<ScrollView | null>(null);
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
   const colorScheme = useColorScheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const insets = useSafeAreaInsets();
 
-  const themeTextStylePrimary =
-    colorScheme === "light"
-      ? themedStyles.lightTextPrimary
-      : // : themedStyles.darkTextPrimary;
-        themedStyles.lightTextPrimary;
-
-  const themeTextStyleSecondary =
-    colorScheme === "light"
-      ? themedStyles.lightTextSecondary
-      : // : themedStyles.darkTextSecondary;
-        themedStyles.lightTextSecondary;
-
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : // : themedStyles.darkBorder;
-        themedStyles.lightBorder;
-
   const selectCategory = (filter: string, index: number) => {
-    const selected = itemsRef.current[index];
+    const selected = itemsRef.current[index] as View | null;
     setFilter(filter);
     setActiveIndex(index);
 
-    (selected as any)?.measure((x: number) => {
-      (scrollRef.current as any)?.scrollTo({
-        x: x - 16,
-        y: 0,
-        animated: true,
-      });
-    });
+    // if (selected && scrollRef.current) {
+    //   selected.measure((fx, fy, width, height, px, py) => {
+    //     scrollRef.current?.scrollTo({
+    //       x: px - 16,
+    //       y: 0,
+    //       animated: true,
+    //     });
+    //   });
+    // }
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
@@ -77,8 +51,8 @@ const MessagesHeader = ({ setFilter }: Props) => {
       <View style={styles.container}>
         <View style={styles.actionRow}>
           {/* Messages title */}
-          <TextSemiBold style={[themeTextStylePrimary, { fontSize: 32 }]}>
-            Consultations
+          <TextSemiBold style={{ fontSize: 32 }}>
+            {t("common.consultations")}
           </TextSemiBold>
           <IconButton
             name="search"
@@ -94,41 +68,27 @@ const MessagesHeader = ({ setFilter }: Props) => {
           ref={scrollRef as any}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[
-            themeBorderStyle,
-            {
-              borderWidth: 0,
-              alignItems: "center",
-              gap: 8,
-              paddingHorizontal: 16,
-              paddingBottom: 16,
-            },
-          ]}
+          contentContainerStyle={{
+            borderWidth: 0,
+            alignItems: "center",
+            gap: 8,
+            paddingHorizontal: 16,
+            paddingBottom: 16,
+          }}
         >
           {tabs.map((item, index) => (
             <TouchableOpacity
-              onPress={() => selectCategory(item.name, index)}
+              onPress={() => selectCategory(item.id, index)}
               key={index}
               ref={(el: any) => (itemsRef.current[index] = el)}
               style={[
                 {
                   boxSizing: "border-box",
-                  // Not proud of this
                   borderColor:
-                    activeIndex === index
-                      ? "none"
-                      : colorScheme === "light"
-                      ? Colors.light.faintGrey
-                      : // : Colors.dark.faintGrey,
-                        Colors.light.faintGrey,
+                    activeIndex === index ? "none" : Colors.light.faintGrey,
                   borderWidth: 1,
                   backgroundColor:
-                    activeIndex === index
-                      ? colorScheme === "light"
-                        ? "#000"
-                        : // : "#fff"
-                          "#000"
-                      : "transparent",
+                    activeIndex === index ? "#000" : "transparent",
                 },
                 styles.filterPill,
               ]}
@@ -137,14 +97,10 @@ const MessagesHeader = ({ setFilter }: Props) => {
                 style={
                   activeIndex === index
                     ? {
-                        color:
-                          colorScheme === "light"
-                            ? "#fff"
-                            : // : Colors.dark.background,
-                              "#fff",
+                        color: "#fff",
                         textTransform: "capitalize",
                       }
-                    : [themeTextStyleSecondary, { textTransform: "capitalize" }]
+                    : { textTransform: "capitalize", color: Colors.grey }
                 }
               >
                 {item.name}

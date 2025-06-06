@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { useState } from "react";
 
 const Messages = () => {
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>("all");
 
   return (
     <View

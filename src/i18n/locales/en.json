@@ -6,17 +6,27 @@
   "button": {
     "log-out": "Log out"
   },
+  "chats": {
+    "book-a-consultation-to-start-chatting-with-a-doctor": "Book a consultation to start chatting with a doctor",
+    "no-chats-found": "No chats found",
+    "you-currently-have-no-chats": "You currently have no chats"
+  },
   "common": {
+    "all": "all",
+    "consultations": "Consultations",
     "doctor": "Doctor",
     "email": "Email",
     "email-invalid": "Please enter a valid email address.",
     "email-placeholder": "e.g. john@email.com",
     "email-required": "Email is required",
+    "finished": "finished",
+    "ongoing": "ongoing",
     "password": "Password",
     "password-min-length": "At least 6 characters",
     "password-placeholder": "Enter your password",
     "password-required": "Password is required",
-    "patient": "Patient"
+    "patient": "Patient",
+    "pending": "pending"
   },
   "form": {
     "select-date": "Select Date"

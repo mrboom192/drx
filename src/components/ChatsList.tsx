@@ -17,11 +17,12 @@ import {
 } from "react-native";
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
+import { useTranslation } from "react-i18next";
 
 const ChatsList = ({ filter }: { filter: string }) => {
+  const { t } = useTranslation();
   const userData = useUserData();
   const listRef = useRef<FlatList>(null);
-  const colorScheme = useColorScheme();
   const chats = useChats();
   const isFetchingChats = useIsFetchingChats();
 
@@ -38,23 +39,14 @@ const ChatsList = ({ filter }: { filter: string }) => {
   const filteredChats =
     filter !== "all" ? chats.filter((chat) => chat.status === filter) : chats;
 
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
-
   if (filteredChats.length === 0) {
     return (
       <View
-        style={[
-          themeBorderStyle,
-          {
-            flex: 1,
-            borderWidth: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        ]}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <TextSemiBold
           style={{
@@ -65,10 +57,10 @@ const ChatsList = ({ filter }: { filter: string }) => {
           }}
         >
           {filter !== "all"
-            ? "No chats found"
+            ? t("chats.no-chats-found")
             : userData?.role === "doctor"
-            ? "You currently have no chats"
-            : "Book a consultation to start chatting with a doctor"}
+            ? t("chats.you-currently-have-no-chats")
+            : t("chats.book-a-consultation-to-start-chatting-with-a-doctor")}
         </TextSemiBold>
       </View>
     );

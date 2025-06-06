@@ -1,6 +1,6 @@
+import LoadingScreen from "@/components/LoadingScreen";
 import PageListLink from "@/components/PageListLink";
 import PageScrollView from "@/components/PageScrollView";
-import { TextSemiBold } from "@/components/StyledText";
 import {
   useIsFetchingMedicalRecords,
   useStartRecordsListener,
@@ -34,16 +34,10 @@ const MedicalInfo = () => {
     startRecordsListener();
   }, []);
 
-  if (isFetchingRecords) {
-    return (
-      <PageScrollView>
-        <TextSemiBold>Loading...</TextSemiBold>
-      </PageScrollView>
-    );
-  }
+  if (isFetchingRecords) <LoadingScreen />;
 
   return (
-    <PageScrollView style={{ paddingVertical: 0 }}>
+    <PageScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
       {pages.map((page, idx) => (
         <PageListLink
           key={idx}

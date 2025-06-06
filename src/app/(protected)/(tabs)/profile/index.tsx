@@ -23,7 +23,10 @@ const Profile = () => {
   const links = isPatient ? patientLinks : doctorLinks;
 
   return (
-    <PageScrollView style={{ paddingTop: insets.top }}>
+    <PageScrollView
+      style={{ paddingTop: insets.top }}
+      contentContainerStyle={{ paddingHorizontal: 16 }}
+    >
       {/* User Card */}
       <View
         style={{

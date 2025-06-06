@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   pageScrollViewContent: {
     flexDirection: "column",
     gap: 16,
+    padding: 16,
   },
   multilineInputStyle: {
     height: 128,

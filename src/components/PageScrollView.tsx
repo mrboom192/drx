@@ -10,14 +10,20 @@ import {
 type PageScrollViewProps = ScrollViewProps & {
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
-const PageScrollView = ({ children, style, ...props }: PageScrollViewProps) => {
+const PageScrollView = ({
+  children,
+  style,
+  contentContainerStyle,
+  ...props
+}: PageScrollViewProps) => {
   return (
     <ScrollView
       {...props}
-      style={[styles.container]}
-      contentContainerStyle={[styles.contentContainer, style]}
+      style={[styles.container, style]}
+      contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
     >
       {children}
     </ScrollView>
@@ -32,7 +38,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   contentContainer: {
-    paddingHorizontal: 16,
     position: "relative",
   },
 });

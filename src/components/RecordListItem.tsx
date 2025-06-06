@@ -88,6 +88,8 @@ const itemStyles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
     flex: 1,
   },
   name: {

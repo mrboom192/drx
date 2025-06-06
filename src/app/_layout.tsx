@@ -30,6 +30,11 @@ import "react-native-get-random-values"; // Required for nanoid
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
+import { I18nManager } from "react-native";
+import "../i18n/config";
+
+// Only runs on app load
+I18nManager.forceRTL(true);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

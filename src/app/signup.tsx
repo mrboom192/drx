@@ -12,6 +12,7 @@ import { SignupUser } from "@/types/user";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const SignUp = () => {
+  const { t } = useTranslation("signup");
   const { signUp } = useSession();
   const { control, handleSubmit } = useForm<any>({
     defaultValues: { role: "patient" },

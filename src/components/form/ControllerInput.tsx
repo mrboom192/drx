@@ -19,6 +19,7 @@ import {
 import CustomIcon from "../CustomIcon";
 import { IconName } from "../../constants/iconsMap";
 import { TextRegular } from "../StyledText";
+import i18next from "i18next";
 
 interface ControllerInputProps<TFieldValues extends FieldValues> {
   label: string;
@@ -78,7 +79,14 @@ const ControllerInput = <TFieldValues extends FieldValues>({
               </View>
             )}
             <TextInput
-              style={[styles.input, textInputStyle]}
+              style={[
+                styles.input,
+                {
+                  textAlign: i18next.dir() === "rtl" ? "right" : "left",
+                  writingDirection: i18next.dir() === "rtl" ? "rtl" : "ltr",
+                },
+                textInputStyle,
+              ]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}

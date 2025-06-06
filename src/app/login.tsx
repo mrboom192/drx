@@ -8,11 +8,15 @@ import { Link, router } from "expo-router";
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "login",
+  });
   const { signIn } = useSession();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
@@ -31,7 +35,7 @@ const SignIn = () => {
     } catch (error: any) {
       setError("other", {
         type: "custom",
-        message: getErrorMessage(error),
+        message: getErrorMessage(error, t),
       });
     } finally {
       setLoading(false);
@@ -44,33 +48,33 @@ const SignIn = () => {
       style={[styles.container, { paddingTop: insets.top }]}
       contentContainerStyle={styles.keyboardAwareScrollView}
     >
-      <TextSemiBold style={styles.headerText}>Welcome to DrX</TextSemiBold>
+      <TextSemiBold style={styles.headerText}>{t("header")}</TextSemiBold>
 
       {/* Email */}
       <ControllerInput
         control={control}
         rules={{
-          required: "Email is required",
+          required: t("emailRequired"),
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Please enter a valid email address.",
+            message: t("emailInvalid"),
           },
         }}
-        label="Email"
+        label={t("email")}
         name="email"
-        placeholder="e.g. john@email.com"
+        placeholder={t("emailPlaceholder")}
       />
 
       {/* Password */}
       <ControllerInput
         control={control}
         name="password"
-        label="Password"
-        placeholder="Enter your password"
+        label={t("password")}
+        placeholder={t("passwordPlaceholder")}
         sensitive
         rules={{
-          required: "Password is required",
-          minLength: { value: 6, message: "At least 6 characters" },
+          required: t("passwordRequired"),
+          minLength: { value: 6, message: t("passwordMinLength") },
         }}
       />
 
@@ -79,7 +83,7 @@ const SignIn = () => {
           <TextRegular style={styles.error}>{errors.other.message}</TextRegular>
         )}
         <SubmitButton
-          text="Log in"
+          text={t("login")}
           loading={loading}
           disabled={loading}
           onPress={() => {
@@ -91,28 +95,27 @@ const SignIn = () => {
 
       <View style={styles.orContainer}>
         <Divider />
-        <TextSemiBold style={styles.orText}>or</TextSemiBold>
+        <TextSemiBold style={styles.orText}>{t("or")}</TextSemiBold>
         <Divider />
       </View>
 
       <SubmitButton
-        text="Sign up"
+        text={t("signup")}
         variant="secondary"
         disabled={loading}
         onPress={() => router.navigate("/signup")}
       />
 
       <TextRegular style={styles.disclaimerText}>
-        By using our app, you agree to our{" "}
-        <Link href="/terms-of-service" asChild>
-          <TextSemiBold style={styles.linkText}>Terms of Service</TextSemiBold>
+        {t("disclaimerStart")}{" "}
+        <Link href="/terms-of-service">
+          <TextSemiBold style={styles.linkText}>{t("terms")}</TextSemiBold>
         </Link>{" "}
-        and{" "}
+        {t("and")}{" "}
         <Link href="/privacy-policy">
-          {" "}
-          <TextSemiBold style={styles.linkText}>Privacy Policy</TextSemiBold>
+          <TextSemiBold style={styles.linkText}>{t("privacy")}</TextSemiBold>
         </Link>
-        .
+        {t("period")}
       </TextRegular>
     </KeyboardAwareScrollView>
   );
@@ -172,15 +175,18 @@ const styles = StyleSheet.create({
   },
 });
 
-function getErrorMessage(error: FirebaseError): string {
+function getErrorMessage(
+  error: FirebaseError,
+  t: (key: string) => string
+): string {
   if (!(error instanceof FirebaseError)) {
-    return "An unexpected error occurred. Please try again later.";
+    return t("error.unknown");
   }
 
   switch (error.code) {
     case "auth/invalid-credential":
-      return "Wrong email or password. Please try again.";
+      return t("error.invalidCredentials");
     default:
-      return "An unexpected error occurred. Please try again later.";
+      return t("unknown");
   }
 }

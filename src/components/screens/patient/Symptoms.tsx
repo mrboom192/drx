@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
   },
   scrollViewContentContainer: {
     alignItems: "center",

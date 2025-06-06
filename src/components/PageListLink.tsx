@@ -4,6 +4,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import CustomIcon from "./CustomIcon";
+import i18next from "i18next";
 
 const PageListLink = ({
   title,
@@ -26,7 +27,11 @@ const PageListLink = ({
           <TextSemiBold style={styles.title}>{title}</TextSemiBold>
           <TextRegular style={styles.description}>{description}</TextRegular>
         </View>
-        <CustomIcon name="chevron-right" size={24} color="#000" />
+        <CustomIcon
+          name={i18next.dir() === "ltr" ? "chevron-right" : "chevron-left"}
+          size={24}
+          color="#000"
+        />
       </View>
     </TouchableOpacity>
   );
@@ -47,6 +52,8 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexShrink: 1,
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   title: {
     fontSize: 16,

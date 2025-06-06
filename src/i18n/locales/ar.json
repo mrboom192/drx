@@ -1,4 +1,11 @@
 {
+  "actions": {
+    "browse-and-choose-the-perfect-doctor": "تصفح واختر الطبيب المثالي",
+    "find-a-provider": "ابحث عن مزود"
+  },
+  "button": {
+    "log-out": "تسجيل الخروج"
+  },
   "common": {
     "doctor": "طبيب",
     "email": "البريد الإلكتروني",

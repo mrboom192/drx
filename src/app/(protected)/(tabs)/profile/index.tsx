@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, RelativePathString } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SubmitButton from "@/components/SubmitButton";
+import i18next from "i18next";
 
 const Profile = () => {
   const insets = useSafeAreaInsets();
@@ -108,7 +109,7 @@ const Profile = () => {
       {/* Logout button */}
       <SubmitButton
         style={{ marginTop: 16 }}
-        text="Log out"
+        text={i18next.t("button.log-out")}
         onPress={signOut}
       />
     </PageScrollView>

@@ -1,4 +1,11 @@
 {
+  "actions": {
+    "browse-and-choose-the-perfect-doctor": "Browse and choose the perfect doctor",
+    "find-a-provider": "Find a provider"
+  },
+  "button": {
+    "log-out": "Log out"
+  },
   "common": {
     "doctor": "Doctor",
     "email": "Email",

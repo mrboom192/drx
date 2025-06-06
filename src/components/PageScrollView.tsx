@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
 import {
+  ScrollView,
   ScrollViewProps,
   StyleProp,
   StyleSheet,
   ViewStyle,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
 type PageScrollViewProps = ScrollViewProps & {
   children?: ReactNode;
@@ -14,7 +14,11 @@ type PageScrollViewProps = ScrollViewProps & {
 
 const PageScrollView = ({ children, style, ...props }: PageScrollViewProps) => {
   return (
-    <ScrollView {...props} style={[styles.container, style]}>
+    <ScrollView
+      {...props}
+      style={[styles.container]}
+      contentContainerStyle={[styles.contentContainer, style]}
+    >
       {children}
     </ScrollView>
   );
@@ -26,7 +30,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 16,
+  },
+  contentContainer: {
+    paddingHorizontal: 16,
     position: "relative",
   },
 });

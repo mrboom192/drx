@@ -6,27 +6,7 @@ import * as Haptics from "expo-haptics";
 import { Href, router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-
-const actions: Item[] = [
-  {
-    name: "Find a provider",
-    description: "Browse and choose the perfect doctor",
-    icon: "stethoscope",
-    href: "/search" as Href,
-  },
-  {
-    name: "Update your medical record",
-    description: "An up-to-date record is recommended",
-    icon: "ecg-heart",
-    href: "/(tabs)/profile/medical-record" as Href,
-  },
-  {
-    name: "View your cases",
-    description: "Browse your pending cases",
-    icon: "library-books",
-    href: "/search" as Href,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 type Item = {
   name: string;
@@ -36,12 +16,34 @@ type Item = {
 };
 
 const PatientActions = ({}: {}) => {
+  const { t } = useTranslation();
   const onPress = (href: Href) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     // Redirect here
     router.navigate(href, { withAnchor: true });
   };
+
+  const actions: Item[] = [
+    {
+      name: t("actions.find-a-provider"),
+      description: t("actions.browse-and-choose-the-perfect-doctor"),
+      icon: "stethoscope",
+      href: "/search" as Href,
+    },
+    {
+      name: "Update your medical record",
+      description: "An up-to-date record is recommended",
+      icon: "ecg-heart",
+      href: "/(tabs)/profile/medical-record" as Href,
+    },
+    {
+      name: "View your cases",
+      description: "Browse your pending cases",
+      icon: "library-books",
+      href: "/search" as Href,
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -96,6 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 16,
     alignItems: "center",
+    justifyContent: "flex-start",
     padding: 16,
     borderRadius: 12,
     borderWidth: 2,
@@ -103,5 +106,7 @@ const styles = StyleSheet.create({
   },
   actionRight: {
     flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
 });

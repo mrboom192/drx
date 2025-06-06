@@ -8,6 +8,7 @@ import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import UserAvatar from "./UserAvatar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 const UserRow = () => {
   const userData = useUserData();
@@ -47,10 +48,11 @@ const UserRow = () => {
 };
 
 const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
+  const { t } = useTranslation();
   const color = role === "patient" ? Colors.primary : Colors.gold;
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextRegular style={styles.welcomeText}>Welcome back,</TextRegular>
       <View style={styles.textContainer}>
         <TextSemiBold style={styles.nameText}>{name}</TextSemiBold>
@@ -62,7 +64,7 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
             },
           ]}
         >
-          {role}
+          {t(`common.${role}`)}
         </TextSemiBold>
       </View>
     </View>
@@ -72,6 +74,7 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
 export default UserRow;
 
 const styles = StyleSheet.create({
+  container: { justifyContent: "center", alignItems: "flex-start" },
   welcomeText: {
     color: Colors.grey,
     fontSize: 14,

@@ -10,15 +10,19 @@ import ControllerInput from "@/components/form/ControllerInput";
 import ControllerRoleSelector from "@/components/screens/signup/ControllerRoleSelector";
 import { SignupUser } from "@/types/user";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useTranslation } from "react-i18next";
+import Colors from "@/constants/Colors";
+import { Link } from "expo-router";
+import SubmitButton from "@/components/SubmitButton";
 
 const SignUp = () => {
-  const { t } = useTranslation("signup");
+  const { t } = useTranslation();
   const { signUp } = useSession();
-  const { control, handleSubmit } = useForm<any>({
-    defaultValues: { role: "patient" },
+  const { control, handleSubmit, formState } = useForm<any>({
+    defaultValues: { role: t("common.patient") },
   });
 
-  const [submitting, setSubmitting] = useState(false);
+  const { isSubmitting, isValid } = formState;
 
   const onSubmit: SubmitHandler<
     SignupUser & { password: string; email: string }
@@ -26,12 +30,8 @@ const SignUp = () => {
     // Data without password
     const { email, password, ...rest } = data;
 
-    try {
-      setSubmitting(true);
-      await signUp(email, password, { ...rest }); // Due to how signUp is defined
-    } finally {
-      setSubmitting(false);
-    }
+    // Need to handle errors
+    await signUp(email, password, { ...rest }); // Due to how signUp is defined
   };
 
   return (
@@ -44,29 +44,29 @@ const SignUp = () => {
       <ControllerRoleSelector
         control={control}
         name="role"
-        rules={{ required: "Please select a role" }}
+        rules={{ required: t("signup.please-select-a-role") }}
       />
 
       {/* First Name */}
       <ControllerInput
         control={control}
         rules={{
-          required: "First name is required",
+          required: t("signup.first-name-is-required"),
         }}
         name="firstName"
-        label={"First Name"}
-        placeholder={"e.g. John"}
+        label={t("signup.first-name")}
+        placeholder={t("signup.e-g-john")}
       />
 
       {/* Last Name */}
       <ControllerInput
         control={control}
         rules={{
-          required: "Last name is required",
+          required: t("signup.last-name-is-required"),
         }}
         name="lastName"
-        label={"Last Name"}
-        placeholder={"e.g. Doe"}
+        label={t("signup.last-name")}
+        placeholder={t("signup.e-g-doe")}
       />
 
       {/* Date of Birth */}
@@ -75,8 +75,8 @@ const SignUp = () => {
         maximumDate={new Date()}
         minimumDate={new Date(1900, 0, 1)}
         name="dateOfBirth"
-        label="Date of Birth"
-        rules={{ required: "Date of birth is required" }}
+        label={t("signup.date-of-birth")}
+        rules={{ required: t("signup.date-of-birth-is-required") }}
       />
 
       <Divider />
@@ -85,74 +85,53 @@ const SignUp = () => {
       <ControllerInput
         control={control}
         rules={{
-          required: "Email is required",
+          required: t("common.email-required"),
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Please enter a valid email address.",
+            message: t("common.email-invalid"),
           },
         }}
-        label="Email"
+        label={t("common.email")}
         name="email"
-        placeholder="e.g. john@email.com"
+        placeholder={t("common.email-placeholder")}
       />
 
       {/* Password */}
       <ControllerInput
         control={control}
         name="password"
-        label="Password"
-        placeholder="Enter your password"
+        label={t("common.password")}
+        placeholder={t("common.password-placeholder")}
         rules={{
-          required: "Password is required",
-          minLength: { value: 6, message: "At least 6 characters" },
+          required: t("common.password-required"),
+          minLength: { value: 6, message: t("common.password-min-length") },
         }}
         sensitive
       />
 
-      {/* Terms */}
-      <TextRegular
-        style={{
-          fontSize: 12,
-          color: "#666",
-          textAlign: "center",
-          lineHeight: 16,
-          marginTop: 24,
-        }}
-      >
-        By selecting Agree and continue, I agree to DrX's{" "}
-        <TextRegular style={{ textDecorationLine: "underline" }}>
-          Terms of Service, Payments Terms of Service and Nondiscrimination
-          Policy
-        </TextRegular>{" "}
-        and acknowledge the{" "}
-        <TextRegular style={{ textDecorationLine: "underline" }}>
-          Privacy Policy
-        </TextRegular>
-        .
+      <TextRegular style={styles.disclaimerText}>
+        {t("login.disclaimer-start")}{" "}
+        <Link href="/terms-of-service">
+          <TextSemiBold style={styles.linkText}>
+            {t("login.terms")}
+          </TextSemiBold>
+        </Link>{" "}
+        {t("login.and")}{" "}
+        <Link href="/privacy-policy">
+          <TextSemiBold style={styles.linkText}>
+            {t("login.privacy")}
+          </TextSemiBold>
+        </Link>
+        {t("login.period")}
       </TextRegular>
 
       {/* Agree Button */}
-      <TouchableOpacity
-        disabled={submitting}
-        style={{
-          backgroundColor: "#000",
-          borderRadius: 8,
-          paddingVertical: 16,
-          alignItems: "center",
-          marginBottom: 64,
-        }}
+      <SubmitButton
+        text={t("signup.agree-and-continue")}
+        loading={isSubmitting}
+        disabled={!isValid}
         onPress={handleSubmit(onSubmit)}
-      >
-        <TextSemiBold
-          style={{
-            color: "#fff",
-            fontSize: 16,
-            textAlign: "center",
-          }}
-        >
-          {submitting ? "Signing up..." : "Agree and continue"}
-        </TextSemiBold>
-      </TouchableOpacity>
+      />
     </KeyboardAwareScrollView>
   );
 };
@@ -170,5 +149,43 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 16,
     position: "relative",
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#000",
+    textAlign: "center",
+    marginBottom: 24,
+  },
+  orContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  orText: {
+    marginHorizontal: 12,
+    fontSize: 16,
+    color: "#444",
+  },
+  disclaimerText: {
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+    marginHorizontal: 16,
+    marginTop: 24,
+  },
+  linkText: {
+    color: Colors.primary,
+    textDecorationLine: "underline",
+  },
+  loginButtonContainer: {
+    position: "relative",
+    marginTop: 20,
+  },
+  error: {
+    position: "absolute",
+    top: -24,
+    left: 0,
+    color: Colors.pink,
+    fontSize: 12,
   },
 });

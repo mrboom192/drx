@@ -32,9 +32,10 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import { I18nManager } from "react-native";
 import "../i18n/config";
+import i18next from "i18next";
 
 // Only runs on app load
-I18nManager.forceRTL(true);
+I18nManager.forceRTL(i18next.dir() === "rtl");
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -151,7 +152,7 @@ function RootLayoutNav() {
                   <Stack.Screen
                     name="signup"
                     options={{
-                      title: "Sign up with DrX",
+                      title: i18next.t("signup.sign-up-with-drx"),
                       header: (props) => <PageHeader {...props} />,
                     }}
                   />

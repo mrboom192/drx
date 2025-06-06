@@ -14,9 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
-  const { t } = useTranslation("translation", {
-    keyPrefix: "login",
-  });
+  const { t } = useTranslation();
   const { signIn } = useSession();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
@@ -48,33 +46,33 @@ const SignIn = () => {
       style={[styles.container, { paddingTop: insets.top }]}
       contentContainerStyle={styles.keyboardAwareScrollView}
     >
-      <TextSemiBold style={styles.headerText}>{t("header")}</TextSemiBold>
+      <TextSemiBold style={styles.headerText}>{t("login.header")}</TextSemiBold>
 
       {/* Email */}
       <ControllerInput
         control={control}
         rules={{
-          required: t("emailRequired"),
+          required: t("common.email-required"),
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: t("emailInvalid"),
+            message: t("common.email-invalid"),
           },
         }}
-        label={t("email")}
+        label={t("common.email")}
         name="email"
-        placeholder={t("emailPlaceholder")}
+        placeholder={t("common.email-placeholder")}
       />
 
       {/* Password */}
       <ControllerInput
         control={control}
         name="password"
-        label={t("password")}
-        placeholder={t("passwordPlaceholder")}
+        label={t("common.password")}
+        placeholder={t("common.password-placeholder")}
         sensitive
         rules={{
-          required: t("passwordRequired"),
-          minLength: { value: 6, message: t("passwordMinLength") },
+          required: t("common.password-required"),
+          minLength: { value: 6, message: t("common.password-min-length") },
         }}
       />
 
@@ -83,7 +81,7 @@ const SignIn = () => {
           <TextRegular style={styles.error}>{errors.other.message}</TextRegular>
         )}
         <SubmitButton
-          text={t("login")}
+          text={t("login.login")}
           loading={loading}
           disabled={loading}
           onPress={() => {
@@ -95,27 +93,31 @@ const SignIn = () => {
 
       <View style={styles.orContainer}>
         <Divider />
-        <TextSemiBold style={styles.orText}>{t("or")}</TextSemiBold>
+        <TextSemiBold style={styles.orText}>{t("login.or")}</TextSemiBold>
         <Divider />
       </View>
 
       <SubmitButton
-        text={t("signup")}
+        text={t("login.signup")}
         variant="secondary"
         disabled={loading}
         onPress={() => router.navigate("/signup")}
       />
 
       <TextRegular style={styles.disclaimerText}>
-        {t("disclaimerStart")}{" "}
+        {t("login.disclaimer-start")}{" "}
         <Link href="/terms-of-service">
-          <TextSemiBold style={styles.linkText}>{t("terms")}</TextSemiBold>
+          <TextSemiBold style={styles.linkText}>
+            {t("login.terms")}
+          </TextSemiBold>
         </Link>{" "}
-        {t("and")}{" "}
+        {t("login.and")}{" "}
         <Link href="/privacy-policy">
-          <TextSemiBold style={styles.linkText}>{t("privacy")}</TextSemiBold>
+          <TextSemiBold style={styles.linkText}>
+            {t("login.privacy")}
+          </TextSemiBold>
         </Link>
-        {t("period")}
+        {t("login.period")}
       </TextRegular>
     </KeyboardAwareScrollView>
   );
@@ -180,13 +182,13 @@ function getErrorMessage(
   t: (key: string) => string
 ): string {
   if (!(error instanceof FirebaseError)) {
-    return t("error.unknown");
+    return t("login.error.unknown");
   }
 
   switch (error.code) {
     case "auth/invalid-credential":
-      return t("error.invalidCredentials");
+      return t("login.error.invalid-credentials");
     default:
-      return t("unknown");
+      return t("login.error.unknown");
   }
 }

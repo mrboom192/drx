@@ -1,0 +1,47 @@
+{
+  "common": {
+    "doctor": "Doctor",
+    "email": "Email",
+    "email-invalid": "Please enter a valid email address.",
+    "email-placeholder": "e.g. john@email.com",
+    "email-required": "Email is required",
+    "password": "Password",
+    "password-min-length": "At least 6 characters",
+    "password-placeholder": "Enter your password",
+    "password-required": "Password is required",
+    "patient": "Patient"
+  },
+  "form": {
+    "select-date": "Select Date"
+  },
+  "login": {
+    "and": "and",
+    "disclaimer-start": "By using our app, you agree to our",
+    "error": {
+      "invalid-credentials": "Wrong email or password. Please try again.",
+      "unknown": "An unexpected error occurred. Please try again later."
+    },
+    "header": "Welcome to DrX",
+    "login": "Log in",
+    "or": "or",
+    "period": ".",
+    "privacy": "Privacy Policy",
+    "signup": "Sign up",
+    "terms": "Terms of Service"
+  },
+  "signup": {
+    "agree-and-continue": "Agree and continue",
+    "date-of-birth": "Date of Birth",
+    "date-of-birth-is-required": "Date of birth is required",
+    "e-g-doe": "e.g. Doe",
+    "e-g-john": "e.g. John",
+    "email-is-required": "Email is required",
+    "first-name": "First Name",
+    "first-name-is-required": "First name is required",
+    "last-name": "Last Name",
+    "last-name-is-required": "Last name is required",
+    "please-enter-a-valid-email-address": "Please enter a valid email address.",
+    "please-select-a-role": "Please select a role",
+    "sign-up-with-drx": "Sign up with DrX"
+  }
+}

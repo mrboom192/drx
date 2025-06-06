@@ -6,6 +6,7 @@ import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
+import i18next from "i18next";
 
 const ControllerDatePicker = ({
   control,
@@ -13,7 +14,7 @@ const ControllerDatePicker = ({
   rules = {},
   label,
   disabled = false,
-  placeholder = "Select Date",
+  placeholder = i18next.t("form.select-date"),
   formatDate = "MMMM d, yyyy",
   maximumDate = undefined,
   minimumDate = undefined,

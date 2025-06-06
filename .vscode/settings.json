@@ -1,11 +1,9 @@
 {
-  "i18n-ally.localesPaths": [
-    "src/i18n",
-    "src/app/(protected)/(tabs)/messages",
-    "ios/Pods/RCT-Folly/folly/lang",
-    "ios/Pods/boost/boost/predef/language",
-    "ios/Pods/Headers/Private/RCT-Folly/folly/lang",
-    "ios/Pods/Headers/Public/RCT-Folly/folly/lang"
-  ],
-  "i18n-ally.keystyle": "flat"
+  "i18n-ally.localesPaths": ["src/i18n/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.enabledFrameworks": ["react"],
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.keepFulfilled": true,
+  "i18n-ally.namespace": false
 }

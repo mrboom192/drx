@@ -1,12 +1,14 @@
-export const patientLinks = [
+import { TFunction } from "i18next";
+
+export const getPatientLinks = (t: TFunction) => [
   {
     icon: "person-outline",
-    label: "Manage your personal information",
+    label: t("profile.manage-your-personal-information"),
     url: "/(tabs)/profile/personal",
   },
   {
     icon: "medkit-outline",
-    label: "View your medical records",
+    label: t("profile.view-your-medical-record"),
     url: "/(tabs)/profile/medical-record",
   },
   // {
@@ -16,25 +18,25 @@ export const patientLinks = [
   // },
   {
     icon: "shield-checkmark-outline",
-    label: "View our app's privacy policy",
+    label: t("profile.view-our-apps-privacy-policy"),
     url: "/privacy-policy",
   },
   {
     icon: "information-circle-outline",
-    label: "View our app's terms of service",
+    label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
   },
 ];
 
-export const doctorLinks = [
+export const getDoctorLinks = (t: TFunction) => [
   {
     icon: "person-outline",
-    label: "Manage your personal information",
+    label: t("profile.manage-your-personal-information"),
     url: "/(tabs)/profile/personal",
   },
   {
     icon: "medical-outline",
-    label: "View your patients",
+    label: t("profile.view-your-patients"),
     url: "/(tabs)/profile/patients",
   },
   // {
@@ -44,12 +46,12 @@ export const doctorLinks = [
   // },
   {
     icon: "shield-checkmark-outline",
-    label: "View our app's privacy policy",
+    label: t("profile.view-our-apps-privacy-policy"),
     url: "/privacy-policy",
   },
   {
     icon: "information-circle-outline",
-    label: "View our app's terms of service",
+    label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
   },
 ];

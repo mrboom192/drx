@@ -67,7 +67,7 @@ export default function ModalsLayout() {
         }}
       />
       <Stack.Screen
-        name="filters"
+        name="filter"
         options={{
           title: "Filters",
           presentation: "modal",

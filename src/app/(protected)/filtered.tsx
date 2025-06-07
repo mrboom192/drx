@@ -5,17 +5,16 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { Image } from "expo-image";
 import Colors from "@/constants/Colors";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import { filterMap } from "@/constants/filterMap";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useFetchDoctorsByField } from "@/stores/useDoctorSearch";
 import { renderDoctorRow } from "@/components/DoctorList/DoctorListItem";
-
-type Filter = { filter: keyof typeof filterMap };
+import { useTranslation } from "react-i18next";
+import { getFilterMap } from "@/constants/filterMap";
 
 type Content = {
   title: string;
@@ -26,12 +25,15 @@ type Content = {
 };
 
 const FilteredListPage = () => {
-  const { filter } = useLocalSearchParams<Filter>();
+  const { t } = useTranslation();
+  const filterMap = useMemo(() => getFilterMap(t), [t]);
+  const { filter } = useLocalSearchParams();
   const [doctors, setDoctors] = useState<any[]>([]);
   const fetchDoctorsByField = useFetchDoctorsByField();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const content: Content = filterMap[filter] ?? filterMap.fallback;
+  const content: Content =
+    filterMap[filter as keyof typeof filterMap] ?? filterMap.fallback;
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -78,7 +80,7 @@ const FilteredListPage = () => {
         contentContainerStyle={{ paddingBottom: 16 }}
         ListEmptyComponent={
           <TextSemiBold style={styles.emptyListText}>
-            No doctors found.
+            {t("common.no-doctors-found")}
           </TextSemiBold>
         }
       />
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.faintGrey,
+    alignItems: "flex-start",
   },
   pageHeaderTitle: {
     fontSize: 24,

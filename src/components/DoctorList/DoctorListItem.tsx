@@ -12,7 +12,7 @@ import { TextRegular, TextSemiBold } from "../StyledText";
 
 export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
   const maxRows = 1;
-  const itemsPerRow = 2; // Adjust based on your design
+  const itemsPerRow = 2;
   const maxPills = maxRows * itemsPerRow;
 
   const specializations = item.specializations || [];
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flexDirection: "column",
+    alignItems: "flex-start",
     justifyContent: "space-between",
   },
   specializations: {

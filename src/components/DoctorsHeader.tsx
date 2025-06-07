@@ -3,19 +3,23 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextSemiBold } from "./StyledText";
-import { searchCategories } from "@/constants/searchCategories";
 import IconButton from "./IconButton";
 import CustomIcon from "./CustomIcon";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import { getSearchFilters } from "@/constants/searchCategories";
 
 interface Props {
   onSpecialtyChange: (specialty: string) => void;
 }
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
+  const { t } = useTranslation();
+  const searchFilters = useMemo(() => getSearchFilters(t), [t]);
   const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
@@ -35,7 +39,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(searchCategories[index].name);
+    onSpecialtyChange(searchFilters[index].name);
   };
 
   return (
@@ -43,7 +47,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
       <View style={styles.actionRow}>
         <IconButton
           size={40}
-          name="chevron-left"
+          name={i18next.dir() === "rtl" ? "arrow-forward" : "arrow-back"}
           onPress={() => router.back()}
         />
         <TouchableOpacity
@@ -52,7 +56,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
         >
           <CustomIcon name="search" size={20} color={Colors.black} />
           <TextSemiBold style={{ color: Colors.lightText }}>
-            Search
+            {t("common.search")}
           </TextSemiBold>
         </TouchableOpacity>
 
@@ -73,7 +77,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
           padding: 16,
         }}
       >
-        {searchCategories.map((item, index) => (
+        {searchFilters.map((item, index) => (
           <TouchableOpacity
             onPress={() => selectCategory(index)}
             key={index}

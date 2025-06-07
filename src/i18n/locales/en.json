@@ -25,6 +25,7 @@
     "email-placeholder": "e.g. john@email.com",
     "email-required": "Email is required",
     "finished": "finished",
+    "no-doctors-found": "No doctors found.",
     "ongoing": "ongoing",
     "password": "Password",
     "password-min-length": "At least 6 characters",
@@ -34,6 +35,7 @@
     "pending": "pending",
     "period": ".",
     "privacy-policy": "Privacy Policy",
+    "search": "Search",
     "terms-of-service": "Terms of Service"
   },
   "form": {
@@ -70,6 +72,14 @@
     "signup": "Sign up",
     "terms": "Terms of Service"
   },
+  "profile": {
+    "how-can-we-help-you-userdata-firstname": "How can we help you, {{firstName}}?",
+    "manage-your-personal-information": "Manage your personal information",
+    "view-our-apps-privacy-policy": "View our app's privacy policy",
+    "view-our-apps-terms-of-service": "View our app's terms of service",
+    "view-your-medical-record": "View your medical record",
+    "view-your-patients": "View your patients"
+  },
   "services": {
     "find-a-doctor": "Find a doctor",
     "get-peace-of-mind-with-an-expert-second-opinion": "Get peace of mind with an expert second opinion",
@@ -93,12 +103,54 @@
     "please-select-a-role": "Please select a role",
     "sign-up-with-drx": "Sign up with DrX"
   },
+  "specializations": {
+    "allergy-and-immunology": "Allergy and Immunology",
+    "anesthesiology": "Anesthesiology",
+    "cardiology": "Cardiology",
+    "dermatology": "Dermatology",
+    "diagnostic-radiology": "Diagnostic Radiology",
+    "emergency-medicine": "Emergency Medicine",
+    "family-medicine": "Family Medicine",
+    "gastroenterology": "Gastroenterology",
+    "general-practice": "General Practice",
+    "internal-medicine": "Internal Medicine",
+    "medical-genetics": "Medical Genetics",
+    "neurology": "Neurology",
+    "neurosurgery": "Neurosurgery",
+    "nuclear-medicine": "Nuclear Medicine",
+    "obstetrics-and-gynecology": "Obstetrics and Gynecology",
+    "oncology": "Oncology",
+    "ophthalmology": "Ophthalmology",
+    "orthopedics": "Orthopedics",
+    "pathology": "Pathology",
+    "pediatrics": "Pediatrics",
+    "preventive-medicine": "Preventive Medicine",
+    "psychiatry": "Psychiatry",
+    "radiation-oncology": "Radiation Oncology",
+    "rehab": "Rehab",
+    "surgery": "Surgery",
+    "urology": "Urology"
+  },
   "symptoms": {
     "acne": "Acne",
     "allergies": "Allergies",
     "depression": "Depression",
     "diarrhea": "Diarrhea",
+    "doctors-licensed-in-arabic-countries": "Doctors licensed in Arabic countries 🇸🇦",
+    "doctors-licensed-in-india": "Doctors licensed in India 🇮🇳",
+    "doctors-licensed-in-the-us": "Doctors licensed in the US 🇺🇸",
+    "doctors-specializing-in-heart-health": "Doctors specializing in heart health.",
+    "doctors-who-specialize-in-mental-health-and-depression": "Doctors who specialize in mental health and depression.",
+    "doctors-who-treat-acne-and-skin-conditions": "Doctors who treat acne and skin conditions.",
+    "doctors-who-treat-allergies-and-related-conditions": "Doctors who treat allergies and related conditions.",
+    "doctors-who-treat-the-symptoms-of-diarrhea": "Doctors who treat the symptoms of diarrhea.",
+    "doctors-who-treat-urinary-tract-infections": "Doctors who treat urinary tract infections.",
+    "error": {
+      "description": "It seems this page doesn't match any of our records. Please check the link or return to the main page. If you continue to experience this issue, feel free to contact us.",
+      "title": "Oops! We hit a snag!"
+    },
     "heart": "Heart",
+    "heart-conditions": "Heart Conditions",
     "uti": "UTI"
   },
   "tabs": {

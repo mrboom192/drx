@@ -1,110 +1,112 @@
-export const searchCategories = [
+import { TFunction } from "i18next";
+
+export const getSearchFilters = (t: TFunction) => [
   {
-    name: "All",
+    name: t("common.all"),
     icon: "user",
   },
   {
-    name: "General Practice",
+    name: t("specializations.general-practice"),
     icon: "stethoscope",
   },
   {
-    name: "Pediatrics",
+    name: t("specializations.pediatrics"),
     icon: "child_care",
   },
   {
-    name: "Cardiology",
+    name: t("specializations.cardiology"),
     icon: "favorite",
   },
   {
-    name: "Dermatology",
+    name: t("specializations.dermatology"),
     icon: "healing",
   },
   {
-    name: "Oncology",
+    name: t("specializations.oncology"),
     icon: "coronavirus",
   },
   {
-    name: "Neurology",
+    name: t("specializations.neurology"),
     icon: "psychology",
   },
   {
-    name: "Ophthalmology",
+    name: t("specializations.ophthalmology"),
     icon: "visibility",
   },
   {
-    name: "Orthopedics",
+    name: t("specializations.orthopedics"),
     icon: "accessibility_new",
   },
   {
-    name: "Psychiatry",
+    name: t("specializations.psychiatry"),
     icon: "psychology_alt",
   },
   {
-    name: "Neurosurgery",
+    name: t("specializations.neurosurgery"),
     icon: "medical_services",
   },
   {
-    name: "Allergy and Immunology",
+    name: t("specializations.allergy-and-immunology"),
     icon: "sick",
   },
   {
-    name: "Anesthesiology",
+    name: t("specializations.anesthesiology"),
     icon: "mask",
   },
   {
-    name: "Diagnostic Radiology",
+    name: t("specializations.diagnostic-radiology"),
     icon: "biotech",
   },
   {
-    name: "Emergency Medicine",
+    name: t("specializations.emergency-medicine"),
     icon: "local_hospital",
   },
   {
-    name: "Family Medicine",
+    name: t("specializations.family-medicine"),
     icon: "group",
   },
   {
-    name: "Internal Medicine",
+    name: t("specializations.internal-medicine"),
     icon: "medication",
   },
   {
-    name: "Medical Genetics",
+    name: t("specializations.medical-genetics"),
     icon: "science",
   },
   {
-    name: "Nuclear Medicine",
+    name: t("specializations.nuclear-medicine"),
     icon: "radiology",
   },
   {
-    name: "Obstetrics and Gynecology",
+    name: t("specializations.obstetrics-and-gynecology"),
     icon: "pregnant_woman",
   },
   {
-    name: "Pathology",
+    name: t("specializations.pathology"),
     icon: "microscope",
   },
   {
-    name: "Rehab",
+    name: t("specializations.rehab"),
     icon: "elderly",
   },
   {
-    name: "Preventive Medicine",
+    name: t("specializations.preventive-medicine"),
     icon: "health_and_safety",
   },
   {
-    name: "Radiation Oncology",
+    name: t("specializations.radiation-oncology"),
     icon: "radiology",
   },
   {
-    name: "Surgery",
+    name: t("specializations.surgery"),
     icon: "surgical",
   },
   {
-    name: "Urology",
+    name: t("specializations.urology"),
     icon: "water_drop",
   },
   {
-    name: "Gastroenterology",
+    name: t("specializations.gastroenterology"),
     icon: "stomach",
   },
 ];

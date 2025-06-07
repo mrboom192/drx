@@ -21,7 +21,6 @@ interface Props {
 const DoctorList = ({ specialty, refresh }: Props) => {
   const { t } = useTranslation();
   const doctors = useFilteredDoctors(specialty);
-  const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -30,15 +29,7 @@ const DoctorList = ({ specialty, refresh }: Props) => {
     }
   }, [refresh]);
 
-  useEffect(() => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 200);
-  }, [specialty]);
-
-  return doctors.length === 0 && !loading ? (
+  return doctors.length === 0 ? (
     <View
       style={{
         flex: 1,
@@ -52,11 +43,7 @@ const DoctorList = ({ specialty, refresh }: Props) => {
       </TextSemiBold>
     </View>
   ) : (
-    <FlatList
-      renderItem={renderDoctorRow}
-      data={loading ? [] : doctors}
-      ref={listRef}
-    />
+    <FlatList renderItem={renderDoctorRow} data={doctors} ref={listRef} />
   );
 };
 

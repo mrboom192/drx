@@ -38,7 +38,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(searchFilters[index].name);
+    onSpecialtyChange(searchFilters[index].id);
   };
 
   return (

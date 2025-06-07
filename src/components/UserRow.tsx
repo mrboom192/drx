@@ -53,7 +53,9 @@ const WelcomeMessage = ({ name, role }: { name: string; role: string }) => {
 
   return (
     <View style={styles.container}>
-      <TextRegular style={styles.welcomeText}>Welcome back,</TextRegular>
+      <TextRegular style={styles.welcomeText}>
+        {t("header.welcome-back")}
+      </TextRegular>
       <View style={styles.textContainer}>
         <TextSemiBold style={styles.nameText}>{name}</TextSemiBold>
         <TextSemiBold

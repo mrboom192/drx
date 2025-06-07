@@ -1,9 +1,11 @@
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { getPatientSymptoms } from "@/constants/symptoms";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageSourcePropType,
   ScrollView,
@@ -12,39 +14,6 @@ import {
   View,
 } from "react-native";
 
-const symptoms = [
-  {
-    name: "Diarrhea",
-    image: require("@/../assets/images/symptoms/diarrhea.png"),
-    filter: "diarrhea",
-  },
-  {
-    name: "Acne",
-    image: require("@/../assets/images/symptoms/acne.png"),
-    filter: "acne",
-  },
-  {
-    name: "Heart",
-    image: require("@/../assets/images/symptoms/heart.png"),
-    filter: "heart",
-  },
-  {
-    name: "Allergies",
-    image: require("@/../assets/images/symptoms/allergies.png"),
-    filter: "allergies",
-  },
-  {
-    name: "Depression",
-    image: require("@/../assets/images/symptoms/depression.png"),
-    filter: "depression",
-  },
-  {
-    name: "UTI",
-    image: require("@/../assets/images/symptoms/uti.png"),
-    filter: "uti",
-  },
-];
-
 type TabItem = {
   name: string;
   image: ImageSourcePropType;
@@ -52,6 +21,8 @@ type TabItem = {
 };
 
 const Symptoms = ({}: {}) => {
+  const { t } = useTranslation();
+  const patientSymptoms = useMemo(() => getPatientSymptoms(t), [t]);
   const onPress = (item: TabItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
@@ -65,13 +36,15 @@ const Symptoms = ({}: {}) => {
   };
   return (
     <View style={styles.container}>
-      <TextSemiBold style={styles.header}>What can we help with?</TextSemiBold>
+      <TextSemiBold style={styles.header}>
+        {t("home.what-can-we-help-with")}
+      </TextSemiBold>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContentContainer}
       >
-        {symptoms.map((item: TabItem, index: number) => (
+        {patientSymptoms.map((item: TabItem, index: number) => (
           <TouchableOpacity
             onPress={() => onPress(item)}
             key={index}
@@ -97,6 +70,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 8,
     paddingVertical: 12,
     borderBottomWidth: 1,

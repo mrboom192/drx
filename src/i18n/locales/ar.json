@@ -1,18 +1,23 @@
 {
   "actions": {
+    "an-up-to-date-record-is-recommended": "يوصى بسجل محدث",
     "browse-and-choose-the-perfect-doctor": "تصفح واختر الطبيب المثالي",
-    "find-a-provider": "ابحث عن مزود"
+    "browse-your-pending-cases": "تصفح حالاتك المعلقة",
+    "find-a-provider": "ابحث عن مزود",
+    "update-your-medical-record": "قم بتحديث سجلك الطبي",
+    "view-your-cases": "عرض حالاتك"
   },
   "button": {
     "log-out": "تسجيل الخروج"
   },
   "chats": {
-    "book-a-consultation-to-start-chatting-with-a-doctor": "",
+    "book-a-consultation-to-start-chatting-with-a-doctor": "احجز استشارة لبدء الدردشة مع طبيب",
     "no-chats-found": "لم يتم العثور على دردشات",
-    "you-currently-have-no-chats": ""
+    "you-currently-have-no-chats": "ليس لديك دردشات حاليًا"
   },
   "common": {
     "all": "الجميع",
+    "and": "و",
     "consultations": "المشاورات",
     "doctor": "طبيب",
     "email": "البريد الإلكتروني",
@@ -26,10 +31,29 @@
     "password-placeholder": "أدخل كلمة المرور الخاصة بك",
     "password-required": "كلمة المرور مطلوبة",
     "patient": "مريض",
-    "pending": "قيد الانتظار"
+    "pending": "قيد الانتظار",
+    "period": ".",
+    "privacy-policy": "سياسة الخصوصية",
+    "terms-of-service": "شروط الخدمة"
   },
   "form": {
     "select-date": "اختر التاريخ"
+  },
+  "header": {
+    "welcome-back": "مرحبًا بعودتك،"
+  },
+  "home": {
+    "american-doctors": "الأطباء الأمريكيون",
+    "arabic-doctors": "الأطباء العربي",
+    "by-drx-genius-llc": "بواسطة DRX Genius LLC",
+    "footer": {
+      "commitment-message": "تلتزم DrX Telehealth بتزويدك بالرعاية والدعم الممتازين. \nتعرف على المزيد من خلال مراجعة"
+    },
+    "go-international": "الذهاب الدولية",
+    "indian-doctors": "الأطباء الهنود",
+    "our-services": "خدماتنا",
+    "patient-actions": "تصرفات المريض",
+    "what-can-we-help-with": "ماذا يمكننا المساعدة؟"
   },
   "login": {
     "and": "و",
@@ -46,6 +70,14 @@
     "signup": "إنشاء حساب",
     "terms": "شروط الخدمة"
   },
+  "services": {
+    "find-a-doctor": "ابحث عن طبيب",
+    "get-peace-of-mind-with-an-expert-second-opinion": "احصل على راحة البال مع الرأي الثاني الخبير",
+    "have-a-doctor-review-your-radiology-scans": "اطلب من الطبيب مراجعة فحوصات الأشعة الخاصة بك",
+    "start-a-request": "ابدأ طلبًا",
+    "start-your-weight-loss-journey-with-drx": "ابدأ رحلة فقدان الوزن مع DRX",
+    "submit-a-review": "إرسال مراجعة"
+  },
   "signup": {
     "agree-and-continue": "أوافق وأتابع",
     "date-of-birth": "تاريخ الميلاد",
@@ -60,5 +92,18 @@
     "please-enter-a-valid-email-address": "يرجى إدخال عنوان بريد إلكتروني صالح.",
     "please-select-a-role": "يرجى اختيار دور",
     "sign-up-with-drx": "اشترك مع DRX"
+  },
+  "symptoms": {
+    "acne": "حَبُّ الشّبَاب",
+    "allergies": "الحساسية",
+    "depression": "اكتئاب",
+    "diarrhea": "إسهال",
+    "heart": "قلب",
+    "uti": "عدوى المسالك البولية"
+  },
+  "tabs": {
+    "home": "بيت",
+    "messages": "رسائل",
+    "profile": "حساب تعريفي"
   }
 }

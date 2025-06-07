@@ -5,19 +5,17 @@ import { useChats, useIsFetchingChats } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
+import { enUS, ar } from "date-fns/locale";
 import { format } from "date-fns";
 import { Link } from "expo-router";
 import React, { useRef } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+
+const locales = { enUS, ar };
 
 const ChatsList = ({ filter }: { filter: string }) => {
   const { t } = useTranslation();
@@ -140,7 +138,9 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
           </View>
 
           <TextRegular style={{ fontSize: 16, color: Colors.grey }}>
-            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a")}
+            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a", {
+              locale: i18next.language === "ar" ? locales.ar : locales.enUS, // Support more languages in the future
+            })}
           </TextRegular>
         </View>
       </TouchableOpacity>

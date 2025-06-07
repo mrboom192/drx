@@ -1,8 +1,10 @@
 import { TextSemiBold } from "@/components/StyledText";
+import { getOurServices } from "@/constants/services";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Href, router } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageSourcePropType,
   ScrollView,
@@ -10,30 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const services = [
-  {
-    name: "Get peace of mind with an expert second opinion",
-    buttonText: "Start a request",
-    image: require("@/../assets/images/services/relax.png"),
-    backgroundColor: "#F4BCFF",
-    href: "/(protected)/(modals)/create-second-opinion" as Href,
-  },
-  {
-    name: "Have a doctor review your radiology scans",
-    buttonText: "Submit a review",
-    image: require("@/../assets/images/services/radiology.png"),
-    backgroundColor: "#CDEAFB",
-    href: "/search" as Href,
-  },
-  {
-    name: "Start your weight loss journey with DrX",
-    buttonText: "Find a doctor",
-    image: require("@/../assets/images/services/runners.png"),
-    backgroundColor: "#B0C1BF",
-    href: "/search" as Href,
-  },
-];
 
 type Item = {
   name: string;
@@ -44,6 +22,8 @@ type Item = {
 };
 
 const Services = ({}: {}) => {
+  const { t } = useTranslation();
+  const services = useMemo(() => getOurServices(t), [t]);
   const onPress = (item: Item) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
@@ -53,7 +33,9 @@ const Services = ({}: {}) => {
 
   return (
     <View style={styles.container}>
-      <TextSemiBold style={styles.header}>Our services</TextSemiBold>
+      <TextSemiBold style={styles.header}>
+        {t("home.our-services")}
+      </TextSemiBold>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -95,12 +77,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 8,
     paddingVertical: 12,
   },
   header: {
     fontSize: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
   },
   scrollViewContentContainer: {
     alignItems: "center",

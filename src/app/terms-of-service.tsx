@@ -7,7 +7,10 @@ export default function TermsScreen() {
 
   return (
     <PageScrollView
-      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      contentContainerStyle={{
+        paddingBottom: insets.bottom + 16,
+        paddingHorizontal: 16,
+      }}
     >
       <TextSemiBold style={{ fontSize: 24, marginBottom: 12 }}>
         Terms of Service

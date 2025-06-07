@@ -1,18 +1,20 @@
-export const countries = [
+import { TFunction } from "i18next";
+
+export const getDoctorCountries = (t: TFunction) => [
   {
-    name: "American doctors",
+    name: t("home.american-doctors"),
     image: require("@/../assets/images/countries/us.png"),
     backgroundColor: "#FFD79F",
     filter: "us",
   },
   {
-    name: "Arabic doctors",
+    name: t("home.arabic-doctors"),
     image: require("@/../assets/images/countries/sa.png"),
     backgroundColor: "#F4BCFF",
     filter: "sa",
   },
   {
-    name: "Indian doctors",
+    name: t("home.indian-doctors"),
     image: require("@/../assets/images/countries/in.png"),
     backgroundColor: "#FFBCBD",
     filter: "in",

@@ -1,7 +1,11 @@
 {
   "actions": {
+    "an-up-to-date-record-is-recommended": "An up-to-date record is recommended",
     "browse-and-choose-the-perfect-doctor": "Browse and choose the perfect doctor",
-    "find-a-provider": "Find a provider"
+    "browse-your-pending-cases": "Browse your pending cases",
+    "find-a-provider": "Find a provider",
+    "update-your-medical-record": "Update your medical record",
+    "view-your-cases": "View your cases"
   },
   "button": {
     "log-out": "Log out"
@@ -13,6 +17,7 @@
   },
   "common": {
     "all": "all",
+    "and": "and",
     "consultations": "Consultations",
     "doctor": "Doctor",
     "email": "Email",
@@ -26,10 +31,29 @@
     "password-placeholder": "Enter your password",
     "password-required": "Password is required",
     "patient": "Patient",
-    "pending": "pending"
+    "pending": "pending",
+    "period": ".",
+    "privacy-policy": "Privacy Policy",
+    "terms-of-service": "Terms of Service"
   },
   "form": {
     "select-date": "Select Date"
+  },
+  "header": {
+    "welcome-back": "Welcome back,"
+  },
+  "home": {
+    "american-doctors": "American doctors",
+    "arabic-doctors": "Arabic doctors",
+    "by-drx-genius-llc": "By DRX GENIUS LLC",
+    "footer": {
+      "commitment-message": "DrX Telehealth is committed to providing you with excellent care and support. Learn more by reviewing our "
+    },
+    "go-international": "Go international",
+    "indian-doctors": "Indian doctors",
+    "our-services": "Our services",
+    "patient-actions": "Patient actions",
+    "what-can-we-help-with": "What can we help with?"
   },
   "login": {
     "and": "and",
@@ -46,6 +70,14 @@
     "signup": "Sign up",
     "terms": "Terms of Service"
   },
+  "services": {
+    "find-a-doctor": "Find a doctor",
+    "get-peace-of-mind-with-an-expert-second-opinion": "Get peace of mind with an expert second opinion",
+    "have-a-doctor-review-your-radiology-scans": "Have a doctor review your radiology scans",
+    "start-a-request": "Start a request",
+    "start-your-weight-loss-journey-with-drx": "Start your weight loss journey with DrX",
+    "submit-a-review": "Submit a review"
+  },
   "signup": {
     "agree-and-continue": "Agree and continue",
     "date-of-birth": "Date of Birth",
@@ -60,5 +92,18 @@
     "please-enter-a-valid-email-address": "Please enter a valid email address.",
     "please-select-a-role": "Please select a role",
     "sign-up-with-drx": "Sign up with DrX"
+  },
+  "symptoms": {
+    "acne": "Acne",
+    "allergies": "Allergies",
+    "depression": "Depression",
+    "diarrhea": "Diarrhea",
+    "heart": "Heart",
+    "uti": "UTI"
+  },
+  "tabs": {
+    "home": "Home",
+    "messages": "Messages",
+    "profile": "Profile"
   }
 }

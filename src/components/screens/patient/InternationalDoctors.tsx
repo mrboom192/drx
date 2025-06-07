@@ -1,11 +1,13 @@
 import CustomIcon from "@/components/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { countries } from "@/constants/countries";
+import { getDoctorCountries } from "@/constants/countries";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import React from "react";
+import i18next from "i18next";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageSourcePropType,
   ScrollView,
@@ -22,10 +24,10 @@ type Item = {
 };
 
 const InternationalDoctors = ({}: {}) => {
+  const { t } = useTranslation();
+  const countries = useMemo(() => getDoctorCountries(t), [t]);
   const onPress = (filter: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-    const query = new URLSearchParams();
 
     router.push({
       pathname: `/filtered`,
@@ -37,7 +39,9 @@ const InternationalDoctors = ({}: {}) => {
 
   return (
     <View style={styles.container}>
-      <TextSemiBold style={styles.header}>Go international</TextSemiBold>
+      <TextSemiBold style={styles.header}>
+        {t("home.go-international")}
+      </TextSemiBold>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -64,7 +68,11 @@ const InternationalDoctors = ({}: {}) => {
             </View>
             <View style={styles.bottomText}>
               <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
-              <CustomIcon name="arrow-forward" size={20} color="#000" />
+              <CustomIcon
+                name={i18next.dir() === "ltr" ? "arrow-forward" : "arrow-back"}
+                size={20}
+                color="#000"
+              />
             </View>
           </TouchableOpacity>
         ))}
@@ -78,6 +86,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 8,
     paddingBottom: 12,
     borderBottomColor: Colors.faintGrey,
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
   },
   scrollViewContentContainer: {
     alignItems: "center",

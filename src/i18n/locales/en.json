@@ -10,22 +10,37 @@
   "button": {
     "log-out": "Log out"
   },
+  "call": {
+    "calling-message": "Calling {otherPersonFirstName} {otherPersonLastName}...",
+    "waiting-for-camera": "Waiting for camera..."
+  },
+  "chat": {
+    "type-a-message": "Type a message..."
+  },
   "chats": {
     "book-a-consultation-to-start-chatting-with-a-doctor": "Book a consultation to start chatting with a doctor",
+    "header": "Dr. {{lastName}}'s Consultation Room",
     "no-chats-found": "No chats found",
+    "offline": "{{firstName}} {{lastName}} is offline",
+    "online": "{{firstName}} {{lastName}} is online",
     "you-currently-have-no-chats": "You currently have no chats"
   },
   "common": {
     "all": "all",
     "and": "and",
+    "consultation-price": "Consultation Price",
     "consultations": "Consultations",
     "doctor": "Doctor",
     "email": "Email",
     "email-invalid": "Please enter a valid email address.",
     "email-placeholder": "e.g. john@email.com",
     "email-required": "Email is required",
+    "experience": "Experience",
     "finished": "finished",
+    "languages": "Languages",
+    "medications": "Medications",
     "no-doctors-found": "No doctors found.",
+    "notifications": "Notifications",
     "ongoing": "ongoing",
     "password": "Password",
     "password-min-length": "At least 6 characters",
@@ -36,10 +51,35 @@
     "period": ".",
     "privacy-policy": "Privacy Policy",
     "search": "Search",
+    "specializations": "Specializations",
+    "success": "Success",
     "terms-of-service": "Terms of Service"
   },
+  "comon": {
+    "book": "Book"
+  },
+  "doctor": {
+    "doctor-speaks": "Dr. {{firstName}} speaks {{languages}}.",
+    "experience-description": "Dr. {{lastName}} has over {{count}}+ years of experience.",
+    "name": "Dr. {{lastName}}",
+    "per-consultation": "per consultation"
+  },
   "form": {
-    "select-date": "Select Date"
+    "book-consultation": "Book Consultation",
+    "booking-was-successful": "Booking was successful!",
+    "no-available-time-slots-for-this-date": "No available time slots for this date.",
+    "no-chats-found": "No chats found",
+    "no-doctors-found": "No doctors found",
+    "payment-failed": "Payment failed",
+    "please-select-a-date": "Please select a date",
+    "please-select-a-time-slot": "Please select a time slot",
+    "provider-language": "Provider language",
+    "search-chats": "Search chats...",
+    "search-doctors": "Search doctors...",
+    "select-a-time-slot": "Select a time slot",
+    "select-date": "Select Date",
+    "start-typing-to-search-chats": "Start typing to search chats",
+    "start-typing-to-search-doctors": "Start typing to search doctors"
   },
   "header": {
     "welcome-back": "Welcome back,"
@@ -72,6 +112,32 @@
     "signup": "Sign up",
     "terms": "Terms of Service"
   },
+  "notifications": {
+    "you-have-no-notifications": "You have no notifications."
+  },
+  "page": {
+    "account-info": "Account Info",
+    "add-allergy": "Add Allergy",
+    "add-card": "Add Card",
+    "allergies": "Allergies",
+    "book-consultation": "Book Consultation",
+    "bookmarked-doctors": "Bookmarked Doctors",
+    "case-information": "Case information",
+    "create-second-opinion": "Create Second Opinion",
+    "diseases-and-conditions": "Diseases & Conditions",
+    "doctor-profile": "Doctor Profile",
+    "edit-allergy": "Edit Allergy",
+    "edit-public-profile": "Edit public profile",
+    "filters": "Filters",
+    "medical-record": "Medical Record",
+    "medications": "Medications",
+    "patients": "Patients",
+    "payment-methods": "Payment Methods",
+    "personal-info": "Personal Info",
+    "search-chats": "Search Chats",
+    "search-doctors": "Search Doctors",
+    "verification": "Verification"
+  },
   "profile": {
     "how-can-we-help-you-userdata-firstname": "How can we help you, {{firstName}}?",
     "manage-your-personal-information": "Manage your personal information",
@@ -79,6 +145,12 @@
     "view-our-apps-terms-of-service": "View our app's terms of service",
     "view-your-medical-record": "View your medical record",
     "view-your-patients": "View your patients"
+  },
+  "record": {
+    "diseases-and-conditions": "Diseases & Conditions",
+    "manage-your-allergies-and-intolerances": "Manage your allergies and intolerances.",
+    "view-and-manage-your-current-medications": "View and manage your current medications.",
+    "view-and-manage-your-diseases-and-conditions": "View and manage your diseases and conditions."
   },
   "services": {
     "find-a-doctor": "Find a doctor",

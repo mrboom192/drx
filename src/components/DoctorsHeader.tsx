@@ -11,15 +11,14 @@ import IconButton from "./IconButton";
 import CustomIcon from "./CustomIcon";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
-import { getSearchFilters } from "@/constants/searchCategories";
-
+import { getSpecializations } from "@/constants/specializations";
 interface Props {
   onSpecialtyChange: (specialty: string) => void;
 }
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
   const { t } = useTranslation();
-  const searchFilters = useMemo(() => getSearchFilters(t), [t]);
+  const searchFilters = useMemo(() => getSpecializations(t), [t]);
   const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);

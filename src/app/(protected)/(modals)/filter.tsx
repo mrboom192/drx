@@ -4,6 +4,7 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -25,9 +26,8 @@ const languages = [
 ];
 
 const Page = () => {
-  const router = useRouter();
+  const { t } = useTranslation();
   const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
-  const insets = useSafeAreaInsets();
 
   const handleLanguageSelect = (abbr: string) => {
     setLanguageFilter(
@@ -39,9 +39,9 @@ const Page = () => {
   };
 
   return (
-    <PageScrollView>
+    <PageScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
       <TextSemiBold style={{ fontSize: 16, color: "#000", marginBottom: 16 }}>
-        Provider language
+        {t("form.provider-language")}
       </TextSemiBold>
       <View
         style={{

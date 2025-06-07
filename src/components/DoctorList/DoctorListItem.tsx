@@ -6,18 +6,22 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { SPECIALIZATIONS } from "@/constants/specializations";
 import Avatar from "../Avatar";
 import { TextRegular, TextSemiBold } from "../StyledText";
+import { getSpecializations } from "@/constants/specializations";
+import i18next from "i18next";
+import { useMemo } from "react";
+import Pills from "../Pills";
 
 export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
-  const maxRows = 1;
-  const itemsPerRow = 2;
-  const maxPills = maxRows * itemsPerRow;
+  const specializationMap = Object.fromEntries(
+    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+  );
 
-  const specializations = item.specializations || [];
-  const pillsToShow = specializations.slice(0, maxPills);
-  const remaining = specializations.length - maxPills;
+  // Map the specialization IDs to their names
+  const specializations = item.specializations
+    .map((specId: string) => specializationMap[specId])
+    .filter(Boolean);
 
   return (
     <Link href={`/doctor/${item.id}` as any} asChild>
@@ -35,31 +39,7 @@ export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
                 {item.firstName} {item.lastName}
               </TextSemiBold>
 
-              <View style={styles.specializationsContainer}>
-                {pillsToShow.map((spec: string, index: number) => {
-                  const specialization = SPECIALIZATIONS.find(
-                    (s) => s.name.toLowerCase() === spec.toLowerCase()
-                  );
-                  const pillColor = specialization?.color;
-                  return (
-                    <View
-                      key={index}
-                      style={[styles.pill, { backgroundColor: pillColor }]}
-                    >
-                      <TextRegular style={styles.pillText}>{spec}</TextRegular>
-                    </View>
-                  );
-                })}
-                {remaining > 0 && (
-                  <View
-                    style={[styles.pill, { backgroundColor: Colors.faintGrey }]}
-                  >
-                    <TextRegular style={styles.pillText}>
-                      +{remaining}
-                    </TextRegular>
-                  </View>
-                )}
-              </View>
+              <Pills items={specializations} maxPills={2} />
             </View>
           </View>
         </View>
@@ -107,22 +87,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-  },
-  specializationsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    marginTop: 4,
-  },
-  pill: {
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  pillText: {
-    fontSize: 12,
-    color: Colors.black,
-    textTransform: "capitalize",
   },
   priceText: {
     fontSize: 16,

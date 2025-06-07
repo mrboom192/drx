@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { auth } from "../../../../firebaseConfig";
+import { useTranslation } from "react-i18next";
 
 type AllergyForm = {
   name: string;
@@ -20,6 +21,7 @@ type AllergyForm = {
 };
 
 const UpdateAllergy = () => {
+  const { t } = useTranslation();
   const { mode, id } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
@@ -55,7 +57,9 @@ const UpdateAllergy = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: isEditMode ? "Edit Allergy" : "Add Allergy" }}
+        options={{
+          title: t(isEditMode ? "page.edit-allergy" : "page.add-allergy"),
+        }}
       />
       <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
         <ControllerInput

@@ -6,10 +6,16 @@ import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
 import { enUS, ar } from "date-fns/locale";
-import { format } from "date-fns";
+import { format, Locale } from "date-fns";
 import { Link } from "expo-router";
 import React, { useRef } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  I18nManager,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import { useTranslation } from "react-i18next";
@@ -82,6 +88,8 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
 
   const presence = useUserPresence(otherUser.uid);
 
+  const locales: Record<string, Locale> = { enUS, "ar-US": ar };
+
   return (
     <Link
       href={{
@@ -113,7 +121,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
             />
           </View>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
             <TextSemiBold style={{ fontSize: 16 }}>
               {userData?.role === "doctor"
                 ? chat.participants.patient.firstName +
@@ -123,11 +131,11 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
                   " " +
                   chat.participants.doctor.lastName}
             </TextSemiBold>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
               <TextRegular
                 numberOfLines={2}
-                ellipsizeMode="tail"
-                style={{ flex: 1, color: Colors.grey }}
+                ellipsizeMode={I18nManager.isRTL ? "head" : "tail"}
+                style={{ flex: 1, color: Colors.grey, textAlign: "left" }}
               >
                 <TextSemiBold>
                   {getSenderName(chat.lastMessage.senderId, chat)}:{" "}
@@ -139,7 +147,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
 
           <TextRegular style={{ fontSize: 16, color: Colors.grey }}>
             {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a", {
-              locale: i18next.language === "ar" ? locales.ar : locales.enUS, // Support more languages in the future
+              locale: locales[i18next.language] ?? enUS, // Support more languages in the future
             })}
           </TextRegular>
         </View>

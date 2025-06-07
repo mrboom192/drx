@@ -2,8 +2,11 @@ import PageScrollView from "@/components/PageScrollView";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
+  const { t } = useTranslation();
+
   return (
     <PageScrollView>
       <TextSemiBold
@@ -15,7 +18,7 @@ const Notifications = () => {
           marginBottom: 20,
         }}
       >
-        You have no notifications.
+        {t("notifications.you-have-no-notifications")}
       </TextSemiBold>
     </PageScrollView>
   );

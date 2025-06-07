@@ -1,9 +1,11 @@
 import { functions } from "@/../firebaseConfig";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
+import Pills from "@/components/Pills";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
+import { getSpecializations } from "@/constants/specializations";
 import { useDoctorById } from "@/stores/useDoctorSearch";
 import { useUserData } from "@/stores/useUserStore";
 import { TimeSlot } from "@/types/timeSlot";
@@ -11,7 +13,9 @@ import { useStripe } from "@stripe/stripe-react-native";
 import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
 import { httpsCallable } from "firebase/functions";
+import i18next from "i18next";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -48,12 +52,22 @@ const cancelPaymentIntent = httpsCallable<
 >(functions, "cancelPaymentIntent");
 
 const BookingPage = () => {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
   console.log("Doctor data:", doctor);
   const userData = useUserData();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const insets = useSafeAreaInsets();
+
+  const specializationMap = Object.fromEntries(
+    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+  );
+
+  // Map the specialization IDs to their names
+  const specializations = doctor.specializations
+    .map((specId: string) => specializationMap[specId])
+    .filter(Boolean);
 
   const { control, handleSubmit, watch, setValue, formState } =
     useForm<FieldValues>({
@@ -120,7 +134,7 @@ const BookingPage = () => {
         throw new Error(paymentError.message);
       }
 
-      Alert.alert("Success", "Booking was successful!");
+      Alert.alert(t("common.success"), t("form.booking-was-successful"));
       return "success";
     } catch (err) {
       throw new Error("Failed to initialize payment sheet");
@@ -140,7 +154,7 @@ const BookingPage = () => {
         pathname: `/(protected)/(tabs)/messages`,
       });
     } catch (error: any) {
-      Alert.alert("Payment failed");
+      Alert.alert(t("form.payment-failed"));
     }
   };
 
@@ -173,60 +187,63 @@ const BookingPage = () => {
             flexDirection: "row",
             gap: 16,
             alignItems: "center",
+            justifyContent: "space-between",
             paddingBottom: 16,
             borderBottomWidth: 1,
             borderColor: Colors.light.faintGrey,
           }}
         >
           <View style={{ flex: 1 }}>
-            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
-              Dr. {doctor?.firstName} {doctor?.lastName}
-            </TextSemiBold>
-            <TextRegular
-              style={{
-                fontSize: 14,
-                color: "#666",
-                marginTop: 4,
-              }}
+            <TextSemiBold
+              style={{ fontSize: 20, color: "#000", textAlign: "left" }}
             >
-              {doctor?.specializations[0]}
-            </TextRegular>
+              {t("doctor.name", { lastName: doctor?.lastName })}
+            </TextSemiBold>
+            <Pills items={specializations || []} />
           </View>
           <View>
-            <TextSemiBold style={{ fontSize: 20 }}>
+            <TextSemiBold style={{ fontSize: 20, textAlign: "right" }}>
               ${doctor?.consultationPrice}
             </TextSemiBold>
-            <TextRegular style={{ fontSize: 12, color: "#666" }}>
-              per consultation
+            <TextRegular
+              style={{ fontSize: 12, color: "#666", textAlign: "right" }}
+            >
+              {t("doctor.per-consultation")}
             </TextRegular>
           </View>
         </View>
 
         <ControllerDatePicker
-          label="Select date"
+          label={t("form.select-date")}
           name="selectedDate"
           control={control}
           minimumDate={new Date()}
           maximumDate={undefined}
           rules={{
-            required: "Please select a date",
+            required: t("form.please-select-a-date"),
           }}
         />
 
         {/* Time Slots */}
         <ControllerCheckBoxOptions
-          label="Select a time slot"
+          label={t("form.select-a-time-slot")}
           name="timeSlot"
           control={control}
           singleSelect
           options={timeSlotOptions}
           rules={{
-            required: "Please select a time slot",
+            required: t("form.please-select-a-time-slot"),
           }}
         />
         {timeSlotOptions.length === 0 && (
-          <TextSemiBold style={{ color: Colors.lightText, fontSize: 14 }}>
-            No available time slots for this date.
+          <TextSemiBold
+            style={{
+              color: Colors.lightText,
+              fontSize: 14,
+              textAlign: "center",
+            }}
+          >
+            {t("form.no-available-time-slots-for-this-date")}
           </TextSemiBold>
         )}
       </ScrollView>
@@ -241,7 +258,7 @@ const BookingPage = () => {
         }}
       >
         <SubmitButton
-          text="Book Consultation"
+          text={t("form.book-consultation")}
           onPress={handleSubmit(onSubmit)}
           disabled={!watch("timeSlot") || isSubmitting}
           loading={isSubmitting}

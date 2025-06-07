@@ -15,27 +15,18 @@ import {
   useFonts,
 } from "@expo-google-fonts/dm-sans";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-get-random-values"; // Required for nanoid
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
-import { I18nManager } from "react-native";
 import "../i18n/config";
 import i18next from "i18next";
-
-// Only runs on app load
-I18nManager.forceRTL(i18next.dir() === "rtl");
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

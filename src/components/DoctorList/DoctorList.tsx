@@ -1,5 +1,4 @@
 import Colors from "@/constants/Colors";
-import { SPECIALIZATIONS } from "@/constants/specializations";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
 import { Link } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";

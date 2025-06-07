@@ -32,7 +32,13 @@ const PageHeader = ({
       {back && (
         <View style={[header.backButton]}>
           <IconButton
-            name={i18next.dir() === "ltr" ? "arrow-back" : "arrow-forward"}
+            name={
+              isModal
+                ? "close"
+                : i18next.dir() === "ltr"
+                ? "arrow-back"
+                : "arrow-forward"
+            }
             onPress={navigation.goBack}
           />
         </View>

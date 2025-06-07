@@ -1,12 +1,14 @@
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
+import { format, Locale } from "date-fns";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
 import i18next from "i18next";
+import { ar } from "date-fns/locale/ar";
+import { enGB, enUS } from "date-fns/locale";
 
 const ControllerDatePicker = ({
   control,
@@ -30,6 +32,7 @@ const ControllerDatePicker = ({
   minimumDate?: Date;
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const locales: Record<string, Locale> = { en: enGB, "ar-US": ar };
 
   return (
     <Controller
@@ -58,7 +61,11 @@ const ControllerDatePicker = ({
                   color: value ? "#000" : Colors.lightText,
                 }}
               >
-                {value ? format(value, formatDate) : placeholder}
+                {value
+                  ? format(value, formatDate, {
+                      locale: locales[i18next.language] ?? enUS,
+                    })
+                  : placeholder}
               </TextRegular>
               <Ionicons name="calendar-outline" size={20} color={Colors.grey} />
             </Pressable>
@@ -75,6 +82,7 @@ const ControllerDatePicker = ({
                 onChange(date);
               }}
               onCancel={() => setShowDatePicker(false)}
+              locale={i18next.language}
             />
           </View>
         );

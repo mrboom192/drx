@@ -1,7 +1,10 @@
 import PageHeader from "@/components/PageHeader";
 import { Stack } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function ModalsLayout() {
+  const { t } = useTranslation();
+
   return (
     <Stack>
       <Stack.Screen
@@ -28,7 +31,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="create-second-opinion"
         options={{
-          title: "Create Second Opinion",
+          title: t("page.create-second-opinion"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -36,7 +39,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="second-opinion-info"
         options={{
-          title: "Create Second Opinion",
+          title: t("page.create-second-opinion"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -44,7 +47,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="update-public-profile"
         options={{
-          title: "Edit public profile",
+          title: t("page.edit-public-profile"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -52,7 +55,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="add-card"
         options={{
-          title: "Add Card",
+          title: t("page.add-card"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -61,7 +64,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="doctor-verification"
         options={{
-          title: "Verification",
+          title: t("page.verification"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -69,7 +72,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="filter"
         options={{
-          title: "Filters",
+          title: t("page.filters"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}

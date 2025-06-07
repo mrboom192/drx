@@ -10,22 +10,37 @@
   "button": {
     "log-out": "تسجيل الخروج"
   },
+  "call": {
+    "calling-message": "استدعاء {otherpersonfirstname} {otherpersonlastname} ...",
+    "waiting-for-camera": "في انتظار الكاميرا ..."
+  },
+  "chat": {
+    "type-a-message": "اكتب رسالة ..."
+  },
   "chats": {
     "book-a-consultation-to-start-chatting-with-a-doctor": "احجز استشارة لبدء الدردشة مع طبيب",
+    "header": "Dr. {{lastName}} غرفة التشاور",
     "no-chats-found": "لم يتم العثور على دردشات",
+    "offline": "{{firstName}} {{lastName}} غير متصل بالإنترنت",
+    "online": "{{firstName}} {{lastName}} متصل",
     "you-currently-have-no-chats": "ليس لديك دردشات حاليًا"
   },
   "common": {
     "all": "الجميع",
     "and": "و",
+    "consultation-price": "سعر الاستشارة",
     "consultations": "المشاورات",
     "doctor": "طبيب",
     "email": "البريد الإلكتروني",
     "email-invalid": "يرجى إدخال عنوان بريد إلكتروني صالح.",
     "email-placeholder": "مثال: john@email.com",
     "email-required": "البريد الإلكتروني مطلوب",
+    "experience": "خبرة",
     "finished": "انتهى",
+    "languages": "اللغات",
+    "medications": "الأدوية",
     "no-doctors-found": "لم يتم العثور على أطباء.",
+    "notifications": "إشعارات",
     "ongoing": "مستمر",
     "password": "كلمة المرور",
     "password-min-length": "6 أحرف على الأقل",
@@ -36,10 +51,35 @@
     "period": ".",
     "privacy-policy": "سياسة الخصوصية",
     "search": "يبحث",
+    "specializations": "التخصصات",
+    "success": "نجاح",
     "terms-of-service": "شروط الخدمة"
   },
+  "comon": {
+    "book": "كتاب"
+  },
+  "doctor": {
+    "doctor-speaks": "الدكتور {{firstName}} يتحدث {{languages}}.",
+    "experience-description": "الدكتور {{lastName}} لديه أكثر من {{count}}+ سنة من الخبرة.",
+    "name": "Dr. {{lastName}}",
+    "per-consultation": "لكل استشارة"
+  },
   "form": {
-    "select-date": "اختر التاريخ"
+    "book-consultation": "استشارة الكتاب",
+    "booking-was-successful": "كان الحجز ناجحًا!",
+    "no-available-time-slots-for-this-date": "لا توجد فتحات زمنية متاحة لهذا التاريخ.",
+    "no-chats-found": "لم يتم العثور على دردشات",
+    "no-doctors-found": "لم يتم العثور على أطباء",
+    "payment-failed": "فشل الدفع",
+    "please-select-a-date": "الرجاء تحديد موعد",
+    "please-select-a-time-slot": "الرجاء تحديد فتحة الوقت",
+    "provider-language": "لغة المزود",
+    "search-chats": "دردشات البحث ...",
+    "search-doctors": "أطباء البحث ...",
+    "select-a-time-slot": "حدد فتحة الوقت",
+    "select-date": "اختر التاريخ",
+    "start-typing-to-search-chats": "ابدأ في الكتابة للبحث في الدردشات",
+    "start-typing-to-search-doctors": "ابدأ في الكتابة للبحث عن الأطباء"
   },
   "header": {
     "welcome-back": "مرحبًا بعودتك،"
@@ -72,6 +112,32 @@
     "signup": "إنشاء حساب",
     "terms": "شروط الخدمة"
   },
+  "notifications": {
+    "you-have-no-notifications": "ليس لديك إشعارات."
+  },
+  "page": {
+    "account-info": "معلومات الحساب",
+    "add-allergy": "إضافة الحساسية",
+    "add-card": "أضف بطاقة",
+    "allergies": "الحساسية",
+    "book-consultation": "استشارة الكتاب",
+    "bookmarked-doctors": "مرجعية الأطباء",
+    "case-information": "معلومات الحالة",
+    "create-second-opinion": "إنشاء الرأي الثاني",
+    "diseases-and-conditions": "الأمراض",
+    "doctor-profile": "ملف تعريف الطبيب",
+    "edit-allergy": "تحرير الحساسية",
+    "edit-public-profile": "تحرير الملف الشخصي العام",
+    "filters": "المرشحات",
+    "medical-record": "السجل الطبي",
+    "medications": "الأدوية",
+    "patients": "مرضى",
+    "payment-methods": "طرق الدفع",
+    "personal-info": "معلومات شخصية",
+    "search-chats": "دردشات البحث",
+    "search-doctors": "أطباء البحث",
+    "verification": "تَحَقّق"
+  },
   "profile": {
     "how-can-we-help-you-userdata-firstname": "كيف يمكننا مساعدتك ، {{firstName}}؟",
     "manage-your-personal-information": "إدارة معلوماتك الشخصية",
@@ -79,6 +145,12 @@
     "view-our-apps-terms-of-service": "عرض شروط الخدمة الخاصة بتطبيقنا",
     "view-your-medical-record": "عرض السجل الطبي الخاص بك",
     "view-your-patients": "عرض مرضاك"
+  },
+  "record": {
+    "diseases-and-conditions": "الأمراض",
+    "manage-your-allergies-and-intolerances": "إدارة الحساسية والتعصب.",
+    "view-and-manage-your-current-medications": "عرض وإدارة الأدوية الحالية.",
+    "view-and-manage-your-diseases-and-conditions": "عرض وإدارة الأمراض والظروف الخاصة بك."
   },
   "services": {
     "find-a-doctor": "ابحث عن طبيب",

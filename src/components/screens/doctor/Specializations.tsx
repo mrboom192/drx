@@ -1,12 +1,27 @@
+import Pills from "@/components/Pills";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { getSpecializations } from "@/constants/specializations";
+import i18next from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 const Specializations = ({ doctor }: { doctor: any }) => {
+  const { t } = useTranslation();
+
+  const specializationMap = Object.fromEntries(
+    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+  );
+
+  // Map the specialization IDs to their names
+  const specializations = doctor?.specializations
+    .map((specId: string) => specializationMap[specId])
+    .filter(Boolean);
+
   return (
-    <View style={{ flexDirection: "column", gap: 8 }}>
-      <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-        Specializations
+    <View style={{ flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+      <TextSemiBold style={{ fontSize: 16, color: "#000", textAlign: "left" }}>
+        {t("common.specializations")}
       </TextSemiBold>
       <View
         style={{
@@ -15,27 +30,7 @@ const Specializations = ({ doctor }: { doctor: any }) => {
           gap: 8,
         }}
       >
-        {doctor.specializations?.map((specialty: string, idx: number) => (
-          <View
-            key={idx}
-            style={{
-              backgroundColor: idx === 0 ? "#8EFFC3" : "#E6E6FA",
-              paddingVertical: 4,
-              paddingHorizontal: 12,
-              borderRadius: 4,
-            }}
-          >
-            <TextRegular
-              style={{
-                fontSize: 14,
-                color: "#000",
-                textTransform: "capitalize",
-              }}
-            >
-              {specialty}
-            </TextRegular>
-          </View>
-        ))}
+        <Pills items={specializations} />
       </View>
     </View>
   );

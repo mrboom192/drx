@@ -2,8 +2,11 @@ import IconButton from "@/components/IconButton";
 import PageHeader from "@/components/PageHeader";
 import { router, Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const MedicalInformationLayout = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack
       screenOptions={{
@@ -13,13 +16,13 @@ const MedicalInformationLayout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "Medical Record",
+          title: t("page.medical-record"),
         }}
       />
       <Stack.Screen
         name="conditions"
         options={{
-          title: "Diseases & Conditions",
+          title: t("page.diseases-and-conditions"),
           headerRight: () => (
             <IconButton
               name="add"
@@ -36,7 +39,7 @@ const MedicalInformationLayout = () => {
       <Stack.Screen
         name="allergies"
         options={{
-          title: "Allergies",
+          title: t("page.allergies"),
           headerRight: () => (
             <IconButton
               name="add"
@@ -53,7 +56,7 @@ const MedicalInformationLayout = () => {
       <Stack.Screen
         name="medications"
         options={{
-          title: "Medications",
+          title: t("page.medications"),
           headerRight: () => (
             <IconButton
               name="add"

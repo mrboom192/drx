@@ -84,6 +84,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
                 {
                   textAlign: i18next.dir() === "rtl" ? "right" : "left",
                   writingDirection: i18next.dir() === "rtl" ? "rtl" : "ltr",
+                  maxHeight: multiline ? 120 : 40,
                 },
                 textInputStyle,
               ]}

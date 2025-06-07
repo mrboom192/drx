@@ -65,16 +65,16 @@ const UpdateAllergy = () => {
         <ControllerInput
           control={control}
           name="name"
-          label="Allergy name"
-          rules={{ required: "Allergy name is required" }}
-          placeholder="e.g. Pollen"
+          label={t("form.allergy-name")}
+          rules={{ required: t("form.allergy-name-is-required") }}
+          placeholder={t("form.e-g-pollen")}
         />
         <ControllerInput
           control={control}
           name="reaction"
-          label="Reaction Description"
-          rules={{ required: "Reaction description is required" }}
-          placeholder="e.g. Hives and swelling"
+          label={t("form.reaction-description")}
+          rules={{ required: t("form.reaction-description-is-required") }}
+          placeholder={t("form.e-g-hives-and-swelling")}
           multiline
           textInputStyle={styles.multilineInputStyle}
         />

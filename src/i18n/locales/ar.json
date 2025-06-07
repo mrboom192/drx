@@ -65,8 +65,12 @@
     "per-consultation": "لكل استشارة"
   },
   "form": {
+    "allergy-name": "اسم الحساسية",
+    "allergy-name-is-required": "اسم الحساسية مطلوب",
     "book-consultation": "استشارة الكتاب",
     "booking-was-successful": "كان الحجز ناجحًا!",
+    "e-g-hives-and-swelling": "على سبيل المثال \nخلايا وتورم",
+    "e-g-pollen": "على سبيل المثال \nحبوب اللقاح",
     "no-available-time-slots-for-this-date": "لا توجد فتحات زمنية متاحة لهذا التاريخ.",
     "no-chats-found": "لم يتم العثور على دردشات",
     "no-doctors-found": "لم يتم العثور على أطباء",
@@ -74,6 +78,9 @@
     "please-select-a-date": "الرجاء تحديد موعد",
     "please-select-a-time-slot": "الرجاء تحديد فتحة الوقت",
     "provider-language": "لغة المزود",
+    "reaction-description": "وصف رد الفعل",
+    "reaction-description-is-required": "وصف رد الفعل مطلوب",
+    "save": "يحفظ",
     "search-chats": "دردشات البحث ...",
     "search-doctors": "أطباء البحث ...",
     "select-a-time-slot": "حدد فتحة الوقت",

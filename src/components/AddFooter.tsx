@@ -7,6 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SubmitButton from "./SubmitButton";
+import { useTranslation } from "react-i18next";
 
 const Footer = ({
   keyboardHeightShared,
@@ -19,6 +20,7 @@ const Footer = ({
   submitting: boolean;
   handleSubmit?: () => void;
 }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -40,7 +42,7 @@ const Footer = ({
   return (
     <Animated.View style={[footer.container, animatedStyle]}>
       <SubmitButton
-        text="Save"
+        text={t("form.save")}
         disabled={!canSubmit || submitting}
         loading={submitting}
         onPress={() => {

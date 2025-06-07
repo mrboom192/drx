@@ -65,8 +65,12 @@
     "per-consultation": "per consultation"
   },
   "form": {
+    "allergy-name": "Allergy name",
+    "allergy-name-is-required": "Allergy name is required",
     "book-consultation": "Book Consultation",
     "booking-was-successful": "Booking was successful!",
+    "e-g-hives-and-swelling": "e.g. Hives and swelling",
+    "e-g-pollen": "e.g. Pollen",
     "no-available-time-slots-for-this-date": "No available time slots for this date.",
     "no-chats-found": "No chats found",
     "no-doctors-found": "No doctors found",
@@ -74,6 +78,9 @@
     "please-select-a-date": "Please select a date",
     "please-select-a-time-slot": "Please select a time slot",
     "provider-language": "Provider language",
+    "reaction-description": "Reaction Description",
+    "reaction-description-is-required": "Reaction description is required",
+    "save": "Save",
     "search-chats": "Search chats...",
     "search-doctors": "Search doctors...",
     "select-a-time-slot": "Select a time slot",

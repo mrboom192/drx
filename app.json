@@ -9,12 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.doctorx.drx",
       "bitcode": false,
       "appleTeamId": "46LZA2WXBP",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": ["en", "ar"]
       },
       "entitlements": {
         "com.apple.developer.in-app-payments": ["merchant.com.doctorx.drx"]

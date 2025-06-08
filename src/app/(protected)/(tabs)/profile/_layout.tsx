@@ -43,6 +43,13 @@ const ProfileLayout = () => {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="settings"
+        options={{
+          title: t("page.settings"),
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 };

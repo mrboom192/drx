@@ -34,12 +34,13 @@ const DoctorCalendar = () => {
 
   // Set the locale for the calendar
   useEffect(() => {
+    if (!locales[i18next.language]) return;
     LocaleConfig.locales[i18next.language] = getLocaleData(
       locales[i18next.language],
       t
     );
     LocaleConfig.defaultLocale = i18next.language;
-  }, []);
+  }, [i18next.language, t]);
 
   const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
     const { height } = event.nativeEvent.layout;

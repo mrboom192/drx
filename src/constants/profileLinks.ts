@@ -26,6 +26,11 @@ export const getPatientLinks = (t: TFunction) => [
     label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
   },
+  {
+    icon: "settings-outline",
+    label: t("profile.change-the-app-settings"),
+    url: "/(tabs)/profile/settings",
+  },
 ];
 
 export const getDoctorLinks = (t: TFunction) => [
@@ -53,5 +58,10 @@ export const getDoctorLinks = (t: TFunction) => [
     icon: "information-circle-outline",
     label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
+  },
+  {
+    icon: "settings-outline",
+    label: t("profile.change-the-app-settings"),
+    url: "/(tabs)/profile/settings",
   },
 ];

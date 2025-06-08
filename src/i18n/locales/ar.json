@@ -270,11 +270,13 @@
     "public-profile": "ملف تعريف عام",
     "search-chats": "دردشات البحث",
     "search-doctors": "أطباء البحث",
+    "settings": "إعدادات",
     "verification": "تَحَقّق",
     "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "تحقق من حساب طبيبك حتى تكون مرئيًا للمرضى",
     "view-medical-record": "عرض السجل الطبي"
   },
   "profile": {
+    "change-the-app-settings": "تغيير إعدادات التطبيق",
     "how-can-we-help-you-userdata-firstname": "كيف يمكننا مساعدتك ، {{firstName}}؟",
     "manage-your-personal-information": "إدارة معلوماتك الشخصية",
     "view-our-apps-privacy-policy": "عرض سياسة الخصوصية الخاصة بتطبيقنا",
@@ -309,6 +311,10 @@
     "start-a-request": "ابدأ طلبًا",
     "start-your-weight-loss-journey-with-drx": "ابدأ رحلة فقدان الوزن مع DRX",
     "submit-a-review": "إرسال مراجعة"
+  },
+  "settings": {
+    "change-your-drx-telehealth-app-language": "قم بتغيير لغة تطبيق DRX الخاصة بك عن بُعد",
+    "set-language": "تعيين اللغة"
   },
   "signup": {
     "agree-and-continue": "أوافق وأتابع",

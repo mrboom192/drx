@@ -6,18 +6,30 @@ import { TextRegular, TextSemiBold } from "./StyledText";
 import CustomIcon from "./CustomIcon";
 import i18next from "i18next";
 
+type PageListLinkProps = {
+  title: string;
+  description: string;
+  href?: LinkProps["href"];
+  onPress?: () => void;
+};
+
 const PageListLink = ({
   title,
   description,
   href,
-}: {
-  title: string;
-  description: string;
-  href: LinkProps["href"];
-}) => {
+  onPress,
+}: PageListLinkProps) => {
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+    } else if (href) {
+      router.navigate(href);
+    }
+  };
+
   return (
     <TouchableOpacity
-      onPress={() => router.navigate(href)}
+      onPress={handlePress}
       accessibilityRole="button"
       style={styles.container}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}

@@ -4,9 +4,11 @@ import { TextRegular } from "@/components/StyledText";
 import { MedicalRecord as Rec } from "@/types/medicalRecord";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 
 const MedicalRecord = () => {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams();
   const [record, setRecord] = useState<Rec | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ const MedicalRecord = () => {
       ) : record ? (
         <View style={{ gap: 12 }}>
           <TextRegular style={{ fontSize: 18, fontWeight: "bold" }}>
-            Medical Record
+            {t("record.medical-record")}
           </TextRegular>
           <TextRegular>
             Medications: {record.medications[0]?.name || "None"}
@@ -51,7 +53,9 @@ const MedicalRecord = () => {
           </TextRegular>
         </View>
       ) : (
-        <TextRegular style={{ padding: 24 }}>No record found.</TextRegular>
+        <TextRegular style={{ padding: 24 }}>
+          {t("error.no-record-found")}
+        </TextRegular>
       )}
     </PageScrollView>
   );

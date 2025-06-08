@@ -13,8 +13,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { getSpecializations } from "@/constants/specializations";
-import i18next from "i18next";
+import { getLanguageOptions } from "@/constants/languages";
 
 interface PublicProfile {
   uid: string;
@@ -144,7 +143,13 @@ const Page = () => {
               >
                 {t("doctor.doctor-speaks", {
                   firstName: doctor.firstName,
-                  languages: doctor.languages?.join(", "),
+                  languages: doctor.languages
+                    ?.map(
+                      (code) =>
+                        getLanguageOptions(t).find((opt) => opt.value === code)
+                          ?.label || code
+                    )
+                    .join(t("common.list-separator")),
                 })}
               </TextRegular>
             </View>

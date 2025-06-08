@@ -61,7 +61,7 @@ const BookingPage = () => {
   const insets = useSafeAreaInsets();
 
   const specializationMap = Object.fromEntries(
-    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+    getSpecializations(i18next.t).map((item) => [item.value, item.label])
   );
 
   // Map the specialization IDs to their names

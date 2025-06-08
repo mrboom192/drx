@@ -5,8 +5,10 @@ import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { TextSemiBold } from "../StyledText";
 import NotificationCard from "./NotificationCard";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
+  const { t } = useTranslation();
   const userData = useUserData();
   const hasNoNotifications =
     userData?.verification !== "unverified" || userData?.hasPublicProfile; // Replace with actual logic to check for notifications
@@ -16,7 +18,7 @@ const Notifications = () => {
       {hasNoNotifications ? (
         <View style={styles.noNotificationsContainer}>
           <TextSemiBold style={styles.noNotifications}>
-            No new notifications
+            {t("notifications.no-new-notifications")}
           </TextSemiBold>
         </View>
       ) : (
@@ -33,8 +35,8 @@ const Notifications = () => {
           {(userData?.verification === "unverified" ||
             !userData?.verification) && (
             <NotificationCard
-              title="Verification Required"
-              message="Please verify your medical license."
+              title={t("notifications.verification-required")}
+              message={t("notifications.please-verify-your-medical-license")}
               color={Colors.pink}
               url="/(protected)/(modals)/doctor-verification"
             />
@@ -42,15 +44,19 @@ const Notifications = () => {
           {(userData?.verification === "pending" ||
             !userData?.verification) && (
             <NotificationCard
-              title="Awaiting Verification"
-              message="We are currently working to review your license."
+              title={t("notifications.awaiting-verification")}
+              message={t(
+                "notifications.we-are-currently-working-to-review-your-license"
+              )}
               color={Colors.yellow}
             />
           )}
           {!userData?.hasPublicProfile && (
             <NotificationCard
-              title="No Public Profile"
-              message="Set up a public profile so patients can find you."
+              title={t("notifications.no-public-profile")}
+              message={t(
+                "notifications.set-up-a-public-profile-so-patients-can-find-you"
+              )}
               color={Colors.pink}
             />
           )}

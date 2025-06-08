@@ -11,12 +11,14 @@ import { Condition } from "@/types/medicalRecord";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
 type ConditionForm = Pick<Condition, "name" | "comments">;
 
 const UpdateCondition = () => {
+  const { t } = useTranslation();
   const { mode, id } = useLocalSearchParams();
   const { height } = useGradualAnimation();
   const isEditMode = mode === "edit";
@@ -57,21 +59,27 @@ const UpdateCondition = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: `${isEditMode ? "Edit" : "Add"} Condition` }}
+        options={{
+          title: `${isEditMode ? t("common.edit") : t("common.add")} ${t(
+            "common.condition"
+          )}`,
+        }}
       />
       <PageScrollView contentContainerStyle={styles.pageScrollViewContent}>
         <ControllerInput
           control={control}
           name="name"
-          rules={{ required: "Condition name is required" }}
-          label="Condition Name"
-          placeholder="e.g. Diabetes"
+          rules={{ required: t("form.condition-name-is-required") }}
+          label={t("form.condition-name")}
+          placeholder={t("form.e-g-diabetes")}
         />
         <ControllerInput
           control={control}
           name="comments"
-          label="Condition Comments"
-          placeholder="e.g. Additional details"
+          label={t("form.comment-on-your-condition")}
+          placeholder={t(
+            "form.e-g-i-have-to-monitor-my-blood-sugar-levels-daily"
+          )}
           multiline
           textInputStyle={styles.multilineInputStyle}
         />

@@ -5,7 +5,6 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
-import { SPECIALIZATIONS } from "@/constants/specializations";
 import {
   useFetchPublicProfile,
   useIsFetchingPublicProfile,
@@ -23,19 +22,12 @@ import IconButton from "@/components/IconButton";
 import LoadingScreen from "@/components/LoadingScreen";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
-
-const countryCodeMap = {
-  "United States": "us",
-  Egypt: "eg",
-  Jordan: "jo",
-  India: "in",
-};
-
-const countryNameMap = Object.fromEntries(
-  Object.entries(countryCodeMap).map(([name, code]) => [code, name])
-);
+import { getSpecializations } from "@/constants/specializations";
+import { useTranslation } from "react-i18next";
+import { getCountryOptions } from "@/constants/countryCodes";
 
 const UpdatePublicProfile = () => {
+  const { t } = useTranslation();
   const userData = useUserData();
   const publicProfile = usePublicProfile();
   const fetchPublicProfile = useFetchPublicProfile();
@@ -57,10 +49,10 @@ const UpdatePublicProfile = () => {
     [day: string]: number;
   }>({});
 
-  const addTimeSlot = (day: string) => {
+  const addTimeSlot = (day: any) => {
     setTimeSlotCounts((prev) => ({
       ...prev,
-      [day]: (prev[day] || 1) + 1,
+      [day.value]: (prev[day.value] || 1) + 1,
     }));
   };
 
@@ -72,12 +64,10 @@ const UpdatePublicProfile = () => {
     if (publicProfile) {
       const defaultValues: FieldValues = {
         specializations: publicProfile.specializations || [],
-        languages: publicProfile.languages || [],
+        languages: publicProfile.languages,
         experience: publicProfile.experience?.toString() || "",
         biography: publicProfile.biography || "",
-        countries: (publicProfile.countries || []).map(
-          (code: string) => countryNameMap[code] || code
-        ),
+        countries: publicProfile.countries,
         consultationPrice: publicProfile.consultationPrice?.toString() || "",
         secondOpinionPrice: publicProfile.secondOpinionPrice?.toString() || "",
         weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
@@ -118,12 +108,6 @@ const UpdatePublicProfile = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
-
-    const selectedCountryCodes = (formData.countries || []).map(
-      (countryName: string) =>
-        countryCodeMap[countryName as keyof typeof countryCodeMap] ||
-        countryName
-    );
 
     const buildPrice = (service: string, field: string) =>
       watchedServices.includes(service)
@@ -228,10 +212,10 @@ const UpdatePublicProfile = () => {
         image: userData.image || null,
         updatedAt: Timestamp.now(),
         specializations: formData.specializations || [],
-        languages: formData.languages || [],
+        languages: formData.languages,
         experience: parseInt(formData.experience, 10) || 0,
         biography: formData.biography || "",
-        countries: selectedCountryCodes,
+        countries: formData.countries,
         services: formData.services || [],
         consultationPrice: buildPrice("consultation", "consultationPrice"),
         secondOpinionPrice: buildPrice("second opinion", "secondOpinionPrice"),
@@ -267,34 +251,43 @@ const UpdatePublicProfile = () => {
             <TextSemiBold style={styles.nameText}>
               Dr. {userData?.firstName} {userData?.lastName}
             </TextSemiBold>
-            <TextSemiBold style={styles.roleText}>doctor</TextSemiBold>
+            <TextSemiBold style={styles.roleText}>
+              {t("common.doctor")}
+            </TextSemiBold>
           </View>
         </View>
 
         <ControllerCheckBoxOptions
-          label="Languages"
+          label={t("common.languages")}
           name="languages"
           control={control}
-          rules={{ required: "At least one language is required" }}
-          options={["english", "arabic", "hindu"]}
+          rules={{ required: t("form.at-least-one-language-is-required") }}
+          options={[
+            { label: t("languages.english"), value: "en" },
+            { label: t("languages.arabic"), value: "ar" },
+            { label: t("languages.hindi"), value: "hi" },
+          ]}
         />
 
         <ControllerCheckBoxOptions
-          label="Countries you are licensed in"
+          label={t("form.countries-you-are-licensed-in")}
           name="countries"
           control={control}
-          rules={{ required: "At least one country is required" }}
-          options={Object.keys(countryCodeMap)}
+          rules={{ required: t("form.at-least-one-country-is-required") }}
+          options={getCountryOptions(t)}
         />
 
         <ControllerInput
-          label="Experience (in years)"
-          placeholder="e.g. 5"
+          label={t("form.experience-in-years")}
+          placeholder={t("form.e-g-5")}
           name="experience"
           control={control}
           rules={{
-            required: "Experience is required",
-            pattern: { value: /^\d+$/, message: "Must be a valid number" },
+            required: t("form.experience-is-required"),
+            pattern: {
+              value: /^\d+$/,
+              message: t("form.must-be-a-valid-number"),
+            },
           }}
           keyboardType="numeric"
         />
@@ -302,11 +295,11 @@ const UpdatePublicProfile = () => {
         <Divider />
 
         <ControllerInput
-          label="Biography"
-          placeholder="Tell us about yourself"
+          label={t("form.biography")}
+          placeholder={t("form.tell-us-about-yourself")}
           name="biography"
           control={control}
-          rules={{ required: "Biography is required" }}
+          rules={{ required: t("form.biography-is-required") }}
           multiline
           textInputStyle={{ height: 128 }}
         />
@@ -314,90 +307,119 @@ const UpdatePublicProfile = () => {
         <Divider />
 
         <ControllerCheckBoxOptions
-          label="Select services you provide"
+          label={t("form.select-services-you-provide")}
           name="services"
           control={control}
-          rules={{ required: "At least one service is required" }}
+          rules={{ required: t("form.at-least-one-service-is-required") }}
           options={[
-            "consultation",
-            "second opinion",
-            "radiology",
-            "weight loss",
+            {
+              label: t("appointment-types.consultation"),
+              value: "consultation",
+            },
+            {
+              label: t("appointment-types.second-opinion"),
+              value: "second opinion",
+            },
+            { label: t("appointment-types.radiology"), value: "radiology" },
+            { label: t("appointment-types.weight-loss"), value: "weight loss" },
           ]}
         />
 
-        {["consultation", "second opinion", "radiology", "weight loss"].map(
-          (service) =>
-            watchedServices.includes(service) ? (
-              <ControllerInput
-                key={service}
-                label={`${
-                  service.charAt(0).toUpperCase() + service.slice(1)
-                } Price (in USD)`}
-                placeholder="e.g. 50"
-                name={`${toCamelCase(service)}Price`}
-                control={control}
-                rules={{ required: `Price for ${service} is required` }}
-                keyboardType="numeric"
-                textInputStyle={{ width: "100%" }}
-              />
-            ) : null
+        {[
+          {
+            label: t("appointment-types.consultation"),
+            value: "consultation",
+          },
+          {
+            label: t("appointment-types.second-opinion"),
+            value: "second opinion",
+          },
+          { label: t("appointment-types.radiology"), value: "radiology" },
+          { label: t("appointment-types.weight-loss"), value: "weight loss" },
+        ].map((service) =>
+          watchedServices.includes(service.value) ? (
+            <ControllerInput
+              key={service.value}
+              label={t("form.service-price", {
+                service: service.label,
+              })}
+              placeholder={t("form.e-g-50")}
+              name={`${toCamelCase(service.value)}Price`}
+              control={control}
+              rules={{ required: t("form.please-enter-a-price") }}
+              keyboardType="numeric"
+              textInputStyle={{ width: "100%" }}
+            />
+          ) : null
         )}
 
         <Divider />
 
         <ControllerCheckBoxOptions
-          label="Specializations"
+          label={t("common.specializations")}
           name="specializations"
           control={control}
-          rules={{ required: "At least one specialization is required" }}
-          options={SPECIALIZATIONS.map((spec) => spec.name)}
+          rules={{
+            required: t("form.at-least-one-specialization-is-required"),
+          }}
+          options={getSpecializations(t)}
         />
 
         <Divider />
 
         <ControllerInput
-          label="How long are your calls? (in minutes)"
+          label={t("form.how-long-are-your-calls-in-minutes")}
           control={control}
-          placeholder="e.g. 15"
+          placeholder={t("form.e-g-15")}
           name="consultationDuration"
           rules={{
-            required: "Duration is required",
-            pattern: { value: /^\d+$/, message: "Must be a valid number" },
+            required: t("form.duration-is-required"),
+            pattern: {
+              value: /^\d+$/,
+              message: t("form.must-be-a-valid-number"),
+            },
           }}
           keyboardType="numeric"
         />
 
         <ControllerCheckBoxOptions
-          label="What days are you available?"
+          label={t("form.what-days-are-you-available")}
           name="availableDays"
           control={control}
-          rules={{ required: "At least one day is required" }}
+          rules={{ required: t("form.at-least-one-day-is-required") }}
           options={[
-            "sunday",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
+            { label: t("days.sunday"), value: "sunday" },
+            { label: t("days.monday"), value: "monday" },
+            { label: t("days.tuesday"), value: "tuesday" },
+            { label: t("days.wednesday"), value: "wednesday" },
+            { label: t("days.thursday"), value: "thursday" },
+            { label: t("days.friday"), value: "friday" },
+            { label: t("days.saturday"), value: "saturday" },
           ]}
         />
 
-        {currentWatchedDays.map((day: string) => (
-          <View key={day}>
+        {[
+          { label: t("days.sunday"), value: "sunday" },
+          { label: t("days.monday"), value: "monday" },
+          { label: t("days.tuesday"), value: "tuesday" },
+          { label: t("days.wednesday"), value: "wednesday" },
+          { label: t("days.thursday"), value: "thursday" },
+          { label: t("days.friday"), value: "friday" },
+          { label: t("days.saturday"), value: "saturday" },
+        ].map((day) => (
+          <View key={day.value}>
             <View style={styles.actionRow}>
-              <TextRegular
-                style={styles.timeslotHeader}
-              >{`${day} time slots`}</TextRegular>
+              <TextRegular style={styles.timeslotHeader}>
+                {t("form.day-label-time-slots", { day: day.label })}
+              </TextRegular>
               <IconButton
                 size={24}
                 name="add"
-                onPress={() => addTimeSlot(day)}
+                onPress={() => addTimeSlot(day.value)}
               />
             </View>
 
-            {Array.from({ length: timeSlotCounts[day] || 1 }).map(
+            {Array.from({ length: timeSlotCounts[day.value] || 1 }).map(
               (_, index) => (
                 <View key={`${day}_${index}`} style={styles.timeSlot}>
                   <TextSemiBold style={styles.timeslotCount}>
@@ -406,20 +428,20 @@ const UpdatePublicProfile = () => {
                   <View style={{ flex: 1 }}>
                     <ControllerTimePicker
                       name={`${day}_start_${index}`}
-                      placeholder="Start time"
+                      placeholder={t("form.start-time")}
                       control={control}
                       rules={{
-                        required: `Start time for ${day} is required`,
+                        required: t("form.start-time-is-required"),
                       }}
                     />
                   </View>
                   <View style={{ flex: 1 }}>
                     <ControllerTimePicker
                       name={`${day}_end_${index}`}
-                      placeholder="End time"
+                      placeholder={t("form.end-time")}
                       control={control}
                       rules={{
-                        required: `End time for ${day} is required`,
+                        required: t("form.end-time-is-required"),
                       }}
                     />
                   </View>

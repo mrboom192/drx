@@ -7,15 +7,14 @@ import {
   StyleSheet,
 } from "react-native";
 import Avatar from "../Avatar";
-import { TextRegular, TextSemiBold } from "../StyledText";
+import { TextSemiBold } from "../StyledText";
 import { getSpecializations } from "@/constants/specializations";
 import i18next from "i18next";
-import { useMemo } from "react";
 import Pills from "../Pills";
 
 export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
   const specializationMap = Object.fromEntries(
-    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+    getSpecializations(i18next.t).map((item) => [item.value, item.label])
   );
 
   // Map the specialization IDs to their names

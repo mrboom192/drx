@@ -11,8 +11,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { db } from "../../../../../firebaseConfig";
+import { useTranslation } from "react-i18next";
+import SubmitButton from "@/components/SubmitButton";
 
 const AccountInfo = () => {
+  const { t } = useTranslation();
   const userData = useUserData();
 
   const { control, handleSubmit, formState, reset } = useForm<any>({
@@ -51,7 +54,7 @@ const AccountInfo = () => {
       });
     } catch (error) {
       console.error("Failed to update user:", error);
-      alert("Something went wrong saving your info.");
+      alert(t("error.something-went-wrong-saving-your-info"));
     }
   };
 
@@ -62,64 +65,62 @@ const AccountInfo = () => {
       contentContainerStyle={styles.content}
     >
       <ControllerInput
-        label={"First Name"}
+        label={t("form.first-name")}
         control={control}
         name={"firstName"}
-        rules={{ required: "First name is required" }}
-        placeholder={"e.g. John"}
+        rules={{ required: t("form.first-name-is-required") }}
+        placeholder={t("form.e-g-john")}
       />
       <ControllerInput
-        label={"Last Name"}
+        label={t("form.last-name")}
         control={control}
         name={"lastName"}
-        rules={{ required: "Last name is required" }}
-        placeholder={"e.g. Doe"}
+        rules={{ required: t("form.last-name-is-required") }}
+        placeholder={t("form.e-g-doe")}
       />
 
       <Divider />
 
       <ControllerInput
-        label={"Phone Number"}
+        label={t("form.phone-number")}
         control={control}
         name={"phoneNumber"}
-        placeholder={"e.g. 1234567890"}
+        placeholder={t("form.e-g-1234567890")}
         keyboardType={"phone-pad"}
       />
       <ControllerDatePicker
-        label={"Date of Birth"}
+        label={t("form.date-of-birth")}
         maximumDate={new Date()}
         minimumDate={new Date(1900, 0, 1)}
         control={control}
         name={"dateOfBirth"}
-        rules={{ required: "Date of birth is required" }}
-        placeholder={"Select your date of birth"}
+        rules={{ required: t("form.date-of-birth-is-required") }}
+        placeholder={t("form.select-your-date-of-birth")}
       />
 
       <Divider />
 
       <ControllerCheckBoxOptions
-        label={"Gender"}
+        label={t("form.gender")}
         control={control}
-        name={"gender"}
-        options={["male", "female", "other"]}
+        name="gender"
+        options={[
+          { value: "male", label: t("gender.male") },
+          { value: "female", label: t("gender.female") },
+          { value: "other", label: t("gender.other") },
+        ]}
         singleSelect
       />
 
       <Divider />
 
       {/* Save Button */}
-      <TouchableOpacity
+      <SubmitButton
+        text={t("form.save")}
+        disabled={!isDirty}
         onPress={handleSubmit(onSubmit)}
-        disabled={!isDirty || isSubmitting}
-        style={[
-          styles.saveButton,
-          { opacity: isDirty && !isSubmitting ? 1 : 0.5 },
-        ]}
-      >
-        <TextSemiBold style={styles.saveButtonText}>
-          {isSubmitting ? "Saving..." : "Save"}
-        </TextSemiBold>
-      </TouchableOpacity>
+        loading={isSubmitting}
+      />
     </KeyboardAwareScrollView>
   );
 };

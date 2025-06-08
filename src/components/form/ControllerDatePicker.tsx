@@ -8,7 +8,8 @@ import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
 import i18next from "i18next";
 import { ar } from "date-fns/locale/ar";
-import { enGB, enUS } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
+import { locales } from "@/constants/locales";
 
 const ControllerDatePicker = ({
   control,
@@ -32,7 +33,6 @@ const ControllerDatePicker = ({
   minimumDate?: Date;
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const locales: Record<string, Locale> = { en: enGB, "ar-US": ar };
 
   return (
     <Controller

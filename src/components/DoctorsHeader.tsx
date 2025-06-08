@@ -38,7 +38,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(searchFilters[index].id);
+    onSpecialtyChange(searchFilters[index].value);
   };
 
   return (
@@ -95,7 +95,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
                   : { color: Colors.lightText }
               }
             >
-              {item.name}
+              {item.label}
             </TextSemiBold>
           </TouchableOpacity>
         ))}

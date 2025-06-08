@@ -10,8 +10,10 @@ import { auth, db } from "../../../../firebaseConfig";
 import { uploadFile } from "@/api/files";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { useUserData } from "@/stores/useUserStore";
+import { useTranslation } from "react-i18next";
 
 const DoctorVerification = () => {
+  const { t } = useTranslation();
   const { pickImage, isUploading } = useImagePicker();
   const userData = useUserData();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,10 +48,16 @@ const DoctorVerification = () => {
         licenseImage: url,
       });
 
-      Alert.alert("Submitted", "Verification successfully submitted!");
+      Alert.alert(
+        t("verification.submitted"),
+        t("verification.verification-successfully-submitted")
+      );
     } catch (err) {
       console.error("Error submitting verification:", err);
-      Alert.alert("Error", "Something went wrong. Please try again.");
+      Alert.alert(
+        t("verification.error"),
+        t("verification.something-went-wrong-please-try-again")
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -67,7 +75,7 @@ const DoctorVerification = () => {
               marginBottom: 10,
             }}
           >
-            You're verified!
+            {t("verification.youre-verified")}
           </TextSemiBold>
           <TextRegular
             style={{
@@ -77,7 +85,9 @@ const DoctorVerification = () => {
               maxWidth: 280,
             }}
           >
-            You’ve already been approved and are visible to patients.
+            {t(
+              "verification.youve-already-been-approved-and-are-visible-to-patients"
+            )}
           </TextRegular>
         </View>
       ) : isPending ? (
@@ -90,7 +100,7 @@ const DoctorVerification = () => {
               marginBottom: 10,
             }}
           >
-            Your verification is currently pending.
+            {t("verification.your-verification-is-currently-pending")}
           </TextSemiBold>
           <TextRegular
             style={{
@@ -100,7 +110,9 @@ const DoctorVerification = () => {
               maxWidth: 280,
             }}
           >
-            We'll notify you once your license has been reviewed and approved.
+            {t(
+              "verification.well-notify-you-once-your-license-has-been-reviewed-and-approved"
+            )}
           </TextRegular>
         </View>
       ) : (
@@ -112,7 +124,7 @@ const DoctorVerification = () => {
               color: "#000",
             }}
           >
-            Upload your medical license
+            {t("verification.upload-your-medical-license")}
           </TextSemiBold>
 
           <Pressable
@@ -137,7 +149,9 @@ const DoctorVerification = () => {
             ) : isUploading ? (
               <ActivityIndicator />
             ) : (
-              <TextRegular style={{ color: "#888" }}>Tap to upload</TextRegular>
+              <TextRegular style={{ color: "#888" }}>
+                {t("verification.tap-to-upload")}
+              </TextRegular>
             )}
           </Pressable>
 
@@ -161,7 +175,7 @@ const DoctorVerification = () => {
                   textAlign: "center",
                 }}
               >
-                Submit for Verification
+                {t("verification.submit-for-verification")}
               </TextSemiBold>
             )}
           </Pressable>

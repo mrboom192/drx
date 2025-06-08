@@ -10,7 +10,7 @@ const Specializations = ({ doctor }: { doctor: any }) => {
   const { t } = useTranslation();
 
   const specializationMap = Object.fromEntries(
-    getSpecializations(i18next.t).map((item) => [item.id, item.name])
+    getSpecializations(i18next.t).map((item) => [item.value, item.label])
   );
 
   // Map the specialization IDs to their names

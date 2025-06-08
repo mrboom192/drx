@@ -5,14 +5,29 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular } from "../StyledText";
 import CustomIcon from "../CustomIcon";
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 interface Props {
   label: string;
   control: Control<any>;
   rules?: RegisterOptions;
   name: string;
-  options?: string[];
-  singleSelect?: boolean; // 🔥 New prop
+  options?: (string | Option)[];
+  singleSelect?: boolean;
 }
+
+const normalizeOptions = (options: (string | Option)[]): Option[] =>
+  options.map((option) =>
+    typeof option === "string"
+      ? {
+          value: option,
+          label: option.charAt(0).toUpperCase() + option.slice(1),
+        }
+      : option
+  );
 
 const ControllerCheckBoxOptions: React.FC<Props> = ({
   label,
@@ -22,6 +37,8 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
   options = [],
   singleSelect = false,
 }) => {
+  const normalizedOptions = normalizeOptions(options);
+
   return (
     <Controller
       control={control}
@@ -29,24 +46,24 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
       name={name}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const selectedValues: string[] = singleSelect
-          ? [value ?? ""] // For single select
+          ? [value ?? ""]
           : value ?? [];
 
-        const toggleOption = (option: string) => {
+        const toggleOption = (optionValue: string) => {
           if (singleSelect) {
-            onChange(option); // 🔥 Set single value
+            onChange(optionValue);
           } else {
-            const updatedValues = selectedValues.includes(option)
-              ? selectedValues.filter((v) => v !== option)
-              : [...selectedValues, option];
+            const updatedValues = selectedValues.includes(optionValue)
+              ? selectedValues.filter((v) => v !== optionValue)
+              : [...selectedValues, optionValue];
             onChange(updatedValues);
           }
         };
 
-        const isSelected = (option: string) =>
+        const isSelected = (optionValue: string) =>
           singleSelect
-            ? selectedValues[0] === option
-            : selectedValues.includes(option);
+            ? selectedValues[0] === optionValue
+            : selectedValues.includes(optionValue);
 
         return (
           <View>
@@ -56,15 +73,15 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
             </View>
 
             <View style={styles.optionsContainer}>
-              {options.map((option, index) => (
+              {normalizedOptions.map((option, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.option}
-                  onPress={() => toggleOption(option)}
+                  onPress={() => toggleOption(option.value)}
                 >
                   <CustomIcon
                     name={
-                      isSelected(option)
+                      isSelected(option.value)
                         ? singleSelect
                           ? "radio-button-checked"
                           : "check-box"
@@ -76,7 +93,7 @@ const ControllerCheckBoxOptions: React.FC<Props> = ({
                     color={Colors.black}
                   />
                   <TextRegular style={styles.optionValue}>
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                    {option.label}
                   </TextRegular>
                 </TouchableOpacity>
               ))}

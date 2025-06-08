@@ -31,7 +31,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db, functions } from "../../../../firebaseConfig";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-import { BlurView } from "expo-blur";
+// Import ar and en locales from dayjs
+import "dayjs/locale/ar";
+import "dayjs/locale/en";
 
 interface Message {
   _id: number;
@@ -156,6 +158,7 @@ const ChatRoom = () => {
         }}
       />
       <GiftedChat
+        locale={i18next.language}
         placeholder={t("chat.type-a-message")}
         renderInputToolbar={(props) => {
           return (

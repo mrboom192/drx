@@ -7,8 +7,17 @@
     "update-your-medical-record": "Update your medical record",
     "view-your-cases": "View your cases"
   },
+  "appointment-types": {
+    "consultation": "consultation",
+    "radiology": "radiology",
+    "second-opinion": "second opinion",
+    "weight-loss": "weight loss"
+  },
   "button": {
     "log-out": "Log out"
+  },
+  "calendar": {
+    "today": "today"
   },
   "call": {
     "calling-message": "Calling {otherPersonFirstName} {otherPersonLastName}...",
@@ -26,11 +35,15 @@
     "you-currently-have-no-chats": "You currently have no chats"
   },
   "common": {
+    "add": "Add",
     "all": "all",
     "and": "and",
+    "condition": "Condition",
+    "consultation": "Consultation",
     "consultation-price": "Consultation Price",
     "consultations": "Consultations",
     "doctor": "Doctor",
+    "edit": "Edit",
     "email": "Email",
     "email-invalid": "Please enter a valid email address.",
     "email-placeholder": "e.g. john@email.com",
@@ -38,6 +51,8 @@
     "experience": "Experience",
     "finished": "finished",
     "languages": "Languages",
+    "list-separator": ", ",
+    "medication": "Medication",
     "medications": "Medications",
     "no-doctors-found": "No doctors found.",
     "notifications": "Notifications",
@@ -58,25 +73,100 @@
   "comon": {
     "book": "Book"
   },
+  "countries": {
+    "egypt": "Egypt 🇪🇬",
+    "india": "India 🇮🇳",
+    "jordan": "Jordan 🇯🇴",
+    "united-states": "United States 🇺🇸"
+  },
+  "day": {
+    "appointment-count_one": "{{count}} Appointment",
+    "appointment-count_other": "{{count}} Appointments",
+    "no-appointments-for-this-date": "No appointments for this date.",
+    "total-time": "About {{length}} minutes total"
+  },
+  "days": {
+    "friday": "friday",
+    "monday": "monday",
+    "saturday": "saturday",
+    "sunday": "sunday",
+    "thursday": "thursday",
+    "tuesday": "tuesday",
+    "wednesday": "wednesday"
+  },
   "doctor": {
     "doctor-speaks": "Dr. {{firstName}} speaks {{languages}}.",
     "experience-description": "Dr. {{lastName}} has over {{count}}+ years of experience.",
     "name": "Dr. {{lastName}}",
     "per-consultation": "per consultation"
   },
+  "error": {
+    "no-patients-found": "No patients found.",
+    "no-record-found": "No record found.",
+    "something-went-wrong-saving-your-info": "Something went wrong saving your info."
+  },
   "form": {
     "allergy-name": "Allergy name",
     "allergy-name-is-required": "Allergy name is required",
+    "at-least-one-country-is-required": "At least one country is required",
+    "at-least-one-day-is-required": "At least one day is required",
+    "at-least-one-language-is-required": "At least one language is required",
+    "at-least-one-service-is-required": "At least one service is required",
+    "at-least-one-specialization-is-required": "At least one specialization is required",
+    "biography": "Biography",
+    "biography-is-required": "Biography is required",
     "book-consultation": "Book Consultation",
     "booking-was-successful": "Booking was successful!",
+    "comment-on-your-condition": "Comment on your condition",
+    "condition-name": "Condition Name",
+    "condition-name-is-required": "Condition name is required",
+    "countries-you-are-licensed-in": "Countries you are licensed in",
+    "date-of-birth": "Date of Birth",
+    "date-of-birth-is-required": "Date of birth is required",
+    "day-label-time-slots": "{{day}} time slots",
+    "dosage": "Dosage",
+    "dosage-amount-is-required": "Dosage amount is required",
+    "duration-is-required": "Duration is required",
+    "e-g-10mg": "e.g. 10mg",
+    "e-g-1234567890": "e.g. 1234567890",
+    "e-g-15": "e.g. 15",
+    "e-g-2": "e.g. 2",
+    "e-g-5": "e.g. 5",
+    "e-g-50": "e.g. 50",
+    "e-g-atorvastatin": "e.g. Atorvastatin",
+    "e-g-diabetes": "e.g. Diabetes",
+    "e-g-doe": "e.g. Doe",
     "e-g-hives-and-swelling": "e.g. Hives and swelling",
+    "e-g-i-have-to-monitor-my-blood-sugar-levels-daily": "e.g. I have to monitor my blood sugar levels daily.",
+    "e-g-john": "e.g. John",
     "e-g-pollen": "e.g. Pollen",
+    "end-time": "End time",
+    "end-time-is-required": "End time is required",
+    "experience-in-years": "Experience (in years)",
+    "experience-is-required": "Experience is required",
+    "first-name": "First Name",
+    "first-name-is-required": "First name is required",
+    "gender": "Gender",
+    "how-long-are-your-calls-in-minutes": "How long are your calls? (in minutes)",
+    "how-often-do-you-take-this": "How often do you take this?",
+    "languages": "languages",
+    "last-name": "Last Name",
+    "last-name-is-required": "Last name is required",
+    "medication-name": "Medication Name",
+    "medication-name-is-required": "Medication name is required",
+    "medication-route": "Medication Route",
+    "must-be-a-valid-number": "Must be a valid number",
     "no-available-time-slots-for-this-date": "No available time slots for this date.",
     "no-chats-found": "No chats found",
     "no-doctors-found": "No doctors found",
     "payment-failed": "Payment failed",
+    "phone-number": "Phone Number",
+    "please-enter-a-frequency": "Please enter a frequency",
+    "please-enter-a-price": "Please enter a price",
     "please-select-a-date": "Please select a date",
+    "please-select-a-dosage-route": "Please select a dosage route",
     "please-select-a-time-slot": "Please select a time slot",
+    "please-select-an-interval": "Please select an interval",
     "provider-language": "Provider language",
     "reaction-description": "Reaction Description",
     "reaction-description-is-required": "Reaction description is required",
@@ -85,8 +175,21 @@
     "search-doctors": "Search doctors...",
     "select-a-time-slot": "Select a time slot",
     "select-date": "Select Date",
+    "select-services-you-provide": "Select services you provide",
+    "select-your-date-of-birth": "Select your date of birth",
+    "service-price": "{{service}} Price (in USD)",
+    "start-time": "Start time",
+    "start-time-is-required": "Start time is required",
     "start-typing-to-search-chats": "Start typing to search chats",
-    "start-typing-to-search-doctors": "Start typing to search doctors"
+    "start-typing-to-search-doctors": "Start typing to search doctors",
+    "tell-us-about-yourself": "Tell us about yourself",
+    "what-days-are-you-available": "What days are you available?",
+    "what-is-the-interval": "What is the interval?"
+  },
+  "gender": {
+    "female": "female",
+    "male": "male",
+    "other": "other"
   },
   "header": {
     "welcome-back": "Welcome back,"
@@ -104,6 +207,16 @@
     "patient-actions": "Patient actions",
     "what-can-we-help-with": "What can we help with?"
   },
+  "interval": {
+    "daily": "daily",
+    "monthly": "monthly",
+    "weekly": "weekly"
+  },
+  "languages": {
+    "arabic": "Arabic",
+    "english": "English",
+    "hindi": "Hindi"
+  },
   "login": {
     "and": "and",
     "disclaimer-start": "By using our app, you agree to our",
@@ -120,7 +233,17 @@
     "terms": "Terms of Service"
   },
   "notifications": {
+    "awaiting-verification": "Awaiting Verification",
+    "no-new-notifications": "No new notifications",
+    "no-public-profile": "No Public Profile",
+    "please-verify-your-medical-license": "Please verify your medical license.",
+    "set-up-a-public-profile-so-patients-can-find-you": "Set up a public profile so patients can find you.",
+    "verification-required": "Verification Required",
+    "we-are-currently-working-to-review-your-license": "We are currently working to review your license.",
     "you-have-no-notifications": "You have no notifications."
+  },
+  "other": {
+    "status": "Status: {{status}}"
   },
   "page": {
     "account-info": "Account Info",
@@ -133,17 +256,23 @@
     "create-second-opinion": "Create Second Opinion",
     "diseases-and-conditions": "Diseases & Conditions",
     "doctor-profile": "Doctor Profile",
+    "doctor-verification": "Doctor verification",
     "edit-allergy": "Edit Allergy",
     "edit-public-profile": "Edit public profile",
     "filters": "Filters",
+    "manage-your-personal-account-information": "Manage your personal account information",
+    "manage-your-public-facing-profile-which-will-be-visible-to-patients": "Manage your public-facing profile which will be visible to patients",
     "medical-record": "Medical Record",
     "medications": "Medications",
     "patients": "Patients",
     "payment-methods": "Payment Methods",
     "personal-info": "Personal Info",
+    "public-profile": "Public profile",
     "search-chats": "Search Chats",
     "search-doctors": "Search Doctors",
-    "verification": "Verification"
+    "verification": "Verification",
+    "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "Verify your doctor account in order for you to be visible to patients",
+    "view-medical-record": "View medical record"
   },
   "profile": {
     "how-can-we-help-you-userdata-firstname": "How can we help you, {{firstName}}?",
@@ -156,8 +285,22 @@
   "record": {
     "diseases-and-conditions": "Diseases & Conditions",
     "manage-your-allergies-and-intolerances": "Manage your allergies and intolerances.",
+    "medical-record": "Medical Record",
     "view-and-manage-your-current-medications": "View and manage your current medications.",
     "view-and-manage-your-diseases-and-conditions": "View and manage your diseases and conditions."
+  },
+  "route": {
+    "inhalation": "inhalation",
+    "intramuscular": "intramuscular",
+    "intravenous": "intravenous",
+    "nasal": "nasal",
+    "ocular": "ocular",
+    "oral": "oral",
+    "otic": "otic",
+    "rectal": "rectal",
+    "subcutaneous": "subcutaneous",
+    "topical": "topical",
+    "vaginal": "vaginal"
   },
   "services": {
     "find-a-doctor": "Find a doctor",
@@ -236,5 +379,18 @@
     "home": "Home",
     "messages": "Messages",
     "profile": "Profile"
+  },
+  "verification": {
+    "error": "Error",
+    "something-went-wrong-please-try-again": "Something went wrong. Please try again.",
+    "submit-for-verification": "Submit for Verification",
+    "submitted": "Submitted",
+    "tap-to-upload": "Tap to upload",
+    "upload-your-medical-license": "Upload your medical license",
+    "verification-successfully-submitted": "Verification successfully submitted!",
+    "well-notify-you-once-your-license-has-been-reviewed-and-approved": "We'll notify you once your license has been reviewed and approved.",
+    "your-verification-is-currently-pending": "Your verification is currently pending.",
+    "youre-verified": "You're verified!",
+    "youve-already-been-approved-and-are-visible-to-patients": "You’ve already been approved and are visible to patients."
   }
 }

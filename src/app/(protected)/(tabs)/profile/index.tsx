@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity, View } from "react-native";
 
 import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
@@ -14,6 +14,9 @@ import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
 
+const TOTAL_PADDING = 32;
+const GAP = 8;
+
 const Profile = () => {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -21,14 +24,17 @@ const Profile = () => {
   const userData = useUserData();
   const isPatient = userData?.role === "patient";
 
+  const screenWidth = Math.round(Dimensions.get("window").width);
+  const cardWidth = (screenWidth - TOTAL_PADDING) / 2 - GAP / 2;
+
   const color = "#000";
   const links = isPatient ? getPatientLinks(t) : getDoctorLinks(t);
 
   return (
     <PageScrollView
-      style={{ paddingTop: insets.top }}
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
       contentContainerStyle={{
-        paddingHorizontal: 16,
+        paddingHorizontal: TOTAL_PADDING / 2,
         justifyContent: "flex-start",
         alignItems: "flex-start",
       }}
@@ -86,7 +92,7 @@ const Profile = () => {
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          gap: 8,
+          gap: GAP,
           justifyContent: "space-between",
         }}
       >
@@ -95,7 +101,9 @@ const Profile = () => {
           <Link key={idx} href={item.url as RelativePathString} asChild>
             <TouchableOpacity
               style={{
-                width: "49%",
+                width: cardWidth,
+                flexGrow: 1,
+                height: 115,
                 padding: 16,
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -110,7 +118,6 @@ const Profile = () => {
                 name={item.icon as keyof typeof Ionicons.glyphMap}
                 size={24}
                 color={color}
-                style={{ marginBottom: 12 }}
               />
               <TextRegular
                 style={{

@@ -14,8 +14,10 @@ import React from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, Text, View } from "react-native";
 import { auth, db } from "../../../../firebaseConfig";
+import { useTranslation } from "react-i18next";
 
 const CreateSecondOpinion = () => {
+  const { t } = useTranslation();
   const { pickFile } = useFilePicker();
   const { pickImage } = useImagePicker();
   const userData = useUserData();
@@ -102,21 +104,21 @@ const CreateSecondOpinion = () => {
         <ControllerInput
           control={control}
           name="name"
-          rules={{ required: "Please give your case a name" }}
-          label="Case Name"
-          placeholder="e.g. Cancer Diagnosis"
+          rules={{ required: t("form.please-give-your-case-a-name") }}
+          label={t("form.case-name")}
+          placeholder={t("form.e-g-cancer-diagnosis")}
         />
         <ControllerInput
           control={control}
           name="description"
-          rules={{ required: "Please provide a description" }}
-          label="Description"
-          placeholder="Describe your case in detail"
+          rules={{ required: t("form.please-provide-a-description") }}
+          label={t("form.description")}
+          placeholder={t("form.describe-your-case-in-detail")}
           multiline
           textInputStyle={{ height: 100 }}
         />
         <View style={styles.actionRow}>
-          <TextSemiBold>Add attachments</TextSemiBold>
+          <TextSemiBold>{t("form.add-attachments")}</TextSemiBold>
           <View style={styles.buttons}>
             <IconButton name="attach-file-add" onPress={handlePickFile} />
             <IconButton name="add-photo-alternate" onPress={handlePickImage} />
@@ -137,7 +139,9 @@ const CreateSecondOpinion = () => {
               />
             ))
           ) : (
-            <Text style={styles.emptyText}>No attachments added.</Text>
+            <Text style={styles.emptyText}>
+              {t("form.no-attachments-added")}
+            </Text>
           )}
         </View>
       </FormPage>

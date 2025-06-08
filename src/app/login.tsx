@@ -8,10 +8,11 @@ import { Link, router } from "expo-router";
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import CustomIcon from "@/components/CustomIcon";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -104,21 +105,21 @@ const SignIn = () => {
         onPress={() => router.navigate("/signup")}
       />
 
-      <TextRegular style={styles.disclaimerText}>
-        {t("login.disclaimer-start")}{" "}
-        <Link href="/terms-of-service">
-          <TextSemiBold style={styles.linkText}>
-            {t("login.terms")}
+      <View style={styles.forgotContainer}>
+        <TouchableOpacity
+          style={styles.forgotButton}
+          onPress={() => router.navigate("/forgot-password")}
+        >
+          <CustomIcon
+            name="data-loss-prevention"
+            size={24}
+            color={Colors.black}
+          />
+          <TextSemiBold style={styles.forgotButtonText}>
+            {t("recover.recover-my-account")}
           </TextSemiBold>
-        </Link>{" "}
-        {t("login.and")}{" "}
-        <Link href="/privacy-policy">
-          <TextSemiBold style={styles.linkText}>
-            {t("login.privacy")}
-          </TextSemiBold>
-        </Link>
-        {t("login.period")}
-      </TextRegular>
+        </TouchableOpacity>
+      </View>
     </KeyboardAwareScrollView>
   );
 };
@@ -153,13 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#444",
   },
-  disclaimerText: {
-    fontSize: 14,
-    color: "#666",
-    textAlign: "center",
-    marginHorizontal: 16,
-    marginTop: 24,
-  },
   linkText: {
     color: Colors.primary,
     textDecorationLine: "underline",
@@ -174,6 +168,12 @@ const styles = StyleSheet.create({
     left: 0,
     color: Colors.pink,
     fontSize: 12,
+  },
+  forgotContainer: { flex: 1, alignItems: "center", marginTop: 16 },
+  forgotButton: { flexDirection: "row", alignItems: "center", gap: 8 },
+  forgotButtonText: {
+    fontSize: 14,
+    color: Colors.black,
   },
 });
 

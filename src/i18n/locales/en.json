@@ -267,10 +267,13 @@
     "patients": "Patients",
     "payment-methods": "Payment Methods",
     "personal-info": "Personal Info",
+    "privacy-policy": "Privacy Policy",
     "public-profile": "Public profile",
+    "recover-your-password": "Recover your password",
     "search-chats": "Search Chats",
     "search-doctors": "Search Doctors",
     "settings": "Settings",
+    "terms-of-service": "Terms of Service",
     "verification": "Verification",
     "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "Verify your doctor account in order for you to be visible to patients",
     "view-medical-record": "View medical record"
@@ -290,6 +293,11 @@
     "medical-record": "Medical Record",
     "view-and-manage-your-current-medications": "View and manage your current medications.",
     "view-and-manage-your-diseases-and-conditions": "View and manage your diseases and conditions."
+  },
+  "recover": {
+    "recover-my-account": "Recover my account",
+    "send-email": "Send email",
+    "success": "If the email is associated with an account, you will receive a password reset email shortly."
   },
   "route": {
     "inhalation": "inhalation",

@@ -19,6 +19,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
 import Notifications from "../Notifications/Notifications";
 import { TextRegular, TextSemiBold } from "../StyledText";
+import LoadingScreen from "../LoadingScreen";
 
 const DoctorHomeScreen = () => {
   const userData = useUserData();
@@ -41,17 +42,7 @@ const DoctorHomeScreen = () => {
     };
   }, []);
 
-  if (isFetchingAppointments) {
-    return (
-      <View
-        style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
-      >
-        <TextRegular style={{ textAlign: "center", marginTop: 20 }}>
-          Loading...
-        </TextRegular>
-      </View>
-    );
-  }
+  if (isFetchingAppointments) return <LoadingScreen />;
 
   if (error) {
     return (

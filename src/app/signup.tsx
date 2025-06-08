@@ -19,7 +19,7 @@ const SignUp = () => {
   const { t } = useTranslation();
   const { signUp } = useSession();
   const { control, handleSubmit, formState } = useForm<any>({
-    defaultValues: { role: t("common.patient") },
+    defaultValues: { role: t("common.patient").toLowerCase() },
   });
 
   const { isSubmitting, isValid } = formState;

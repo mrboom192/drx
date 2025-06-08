@@ -148,16 +148,24 @@ function RootLayoutNav() {
                     }}
                   />
                   <Stack.Screen
+                    name="forgot-password"
+                    options={{
+                      presentation: "modal",
+                      title: i18next.t("page.recover-your-password"),
+                      header: (props) => <PageHeader {...props} />,
+                    }}
+                  />
+                  <Stack.Screen
                     name="terms-of-service"
                     options={{
-                      title: "Terms of Service",
+                      title: i18next.t("page.terms-of-service"),
                       header: (props) => <PageHeader {...props} />,
                     }}
                   />
                   <Stack.Screen
                     name="privacy-policy"
                     options={{
-                      title: "Privacy Policy",
+                      title: i18next.t("page.privacy-policy"),
                       header: (props) => <PageHeader {...props} />,
                     }}
                   />

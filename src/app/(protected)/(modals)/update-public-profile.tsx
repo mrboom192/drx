@@ -391,8 +391,8 @@ const UpdatePublicProfile = () => {
           options={getDayOptions(t)}
         />
 
-        {getDayOptions(t).map((day) => (
-          <View key={day.value}>
+        {currentWatchedDays.map((day: any) => (
+          <View key={day}>
             <View style={styles.actionRow}>
               <TextRegular style={styles.timeslotHeader}>
                 {t("form.day-label-time-slots", { day: day.label })}
@@ -400,11 +400,11 @@ const UpdatePublicProfile = () => {
               <IconButton
                 size={24}
                 name="add"
-                onPress={() => addTimeSlot(day.value)}
+                onPress={() => addTimeSlot(day)}
               />
             </View>
 
-            {Array.from({ length: timeSlotCounts[day.value] || 1 }).map(
+            {Array.from({ length: timeSlotCounts[day] || 1 }).map(
               (_, index) => (
                 <View key={`${day}_${index}`} style={styles.timeSlot}>
                   <TextSemiBold style={styles.timeslotCount}>

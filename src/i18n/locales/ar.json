@@ -267,10 +267,13 @@
     "patients": "مرضى",
     "payment-methods": "طرق الدفع",
     "personal-info": "معلومات شخصية",
+    "privacy-policy": "سياسة الخصوصية",
     "public-profile": "ملف تعريف عام",
+    "recover-your-password": "استعادة كلمة المرور الخاصة بك",
     "search-chats": "دردشات البحث",
     "search-doctors": "أطباء البحث",
     "settings": "إعدادات",
+    "terms-of-service": "شروط الخدمة",
     "verification": "تَحَقّق",
     "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "تحقق من حساب طبيبك حتى تكون مرئيًا للمرضى",
     "view-medical-record": "عرض السجل الطبي"
@@ -290,6 +293,11 @@
     "medical-record": "السجل الطبي",
     "view-and-manage-your-current-medications": "عرض وإدارة الأدوية الحالية.",
     "view-and-manage-your-diseases-and-conditions": "عرض وإدارة الأمراض والظروف الخاصة بك."
+  },
+  "recover": {
+    "recover-my-account": "استرداد حسابي",
+    "send-email": "إرسال البريد الإلكتروني",
+    "success": "إذا كان البريد الإلكتروني مرتبطًا بحساب ، فستتلقى بريدًا إلكترونيًا لإعادة تعيين كلمة المرور قريبًا."
   },
   "route": {
     "inhalation": "استنشاق",

@@ -6,6 +6,7 @@ import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
+import i18next from "i18next";
 
 const ControllerTimePicker = ({
   control,
@@ -57,6 +58,7 @@ const ControllerTimePicker = ({
             </Pressable>
 
             <DatePicker
+              locale={i18next.language}
               modal
               mode="time"
               open={showTimePicker}

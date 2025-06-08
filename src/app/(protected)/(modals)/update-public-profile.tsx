@@ -25,6 +25,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { getSpecializations } from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
+import { getDayOptions } from "@/constants/days";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
@@ -387,26 +388,10 @@ const UpdatePublicProfile = () => {
           name="availableDays"
           control={control}
           rules={{ required: t("form.at-least-one-day-is-required") }}
-          options={[
-            { label: t("days.sunday"), value: "sunday" },
-            { label: t("days.monday"), value: "monday" },
-            { label: t("days.tuesday"), value: "tuesday" },
-            { label: t("days.wednesday"), value: "wednesday" },
-            { label: t("days.thursday"), value: "thursday" },
-            { label: t("days.friday"), value: "friday" },
-            { label: t("days.saturday"), value: "saturday" },
-          ]}
+          options={getDayOptions(t)}
         />
 
-        {[
-          { label: t("days.sunday"), value: "sunday" },
-          { label: t("days.monday"), value: "monday" },
-          { label: t("days.tuesday"), value: "tuesday" },
-          { label: t("days.wednesday"), value: "wednesday" },
-          { label: t("days.thursday"), value: "thursday" },
-          { label: t("days.friday"), value: "friday" },
-          { label: t("days.saturday"), value: "saturday" },
-        ].map((day) => (
+        {getDayOptions(t).map((day) => (
           <View key={day.value}>
             <View style={styles.actionRow}>
               <TextRegular style={styles.timeslotHeader}>

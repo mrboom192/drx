@@ -86,13 +86,13 @@
     "total-time": "About {{length}} minutes total"
   },
   "days": {
-    "friday": "friday",
-    "monday": "monday",
-    "saturday": "saturday",
-    "sunday": "sunday",
-    "thursday": "thursday",
-    "tuesday": "tuesday",
-    "wednesday": "wednesday"
+    "friday": "Friday",
+    "monday": "Monday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "thursday": "Thursday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday"
   },
   "doctor": {
     "doctor-speaks": "Dr. {{firstName}} speaks {{languages}}.",

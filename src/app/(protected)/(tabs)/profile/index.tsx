@@ -86,7 +86,8 @@ const Profile = () => {
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          gap: 16,
+          gap: 8,
+          justifyContent: "space-between",
         }}
       >
         {links.map((item, idx) => (
@@ -94,7 +95,7 @@ const Profile = () => {
           <Link key={idx} href={item.url as RelativePathString} asChild>
             <TouchableOpacity
               style={{
-                width: "47%",
+                width: "49%",
                 padding: 16,
                 flexDirection: "column",
                 justifyContent: "space-between",

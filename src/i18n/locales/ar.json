@@ -7,6 +7,12 @@
     "update-your-medical-record": "قم بتحديث سجلك الطبي",
     "view-your-cases": "عرض حالاتك"
   },
+  "alert": {
+    "language-android-instructions": "سيتم نقلك إلى شاشة الإعدادات حيث يمكنك ضبط تفضيلات اللغة الخاصة بك.",
+    "language-android-title": "تغيير لغة التطبيق",
+    "language-ios-instructions": "بسبب تحديثات هاتفك ، هناك خطوات مختلفة لتغيير لغة التطبيق. \n \n n1. \nتابع إلى الشاشة التالية. \n n2. \nاضغط على خيار \"اللغة المفضلة\" وحدد لغتك المفضلة من القائمة. \n \n لا تتوفر لغات ، انتقل إلى إعدادات لغة iPhone العامة لتعيين لغتك الأساسية.",
+    "language-ios-title": "كيفية تغيير لغة التطبيق \\ n"
+  },
   "appointment-types": {
     "consultation": "التشاور",
     "radiology": "الأشعة",
@@ -38,10 +44,12 @@
     "add": "يضيف",
     "all": "الجميع",
     "and": "و",
+    "cancel": "يلغي",
     "condition": "حالة",
     "consultation": "التشاور",
     "consultation-price": "سعر الاستشارة",
     "consultations": "المشاورات",
+    "continue": "يكمل",
     "doctor": "طبيب",
     "edit": "يحرر",
     "email": "البريد الإلكتروني",

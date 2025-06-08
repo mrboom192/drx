@@ -3,7 +3,7 @@ import PageScrollView from "@/components/PageScrollView";
 import { RelativePathString } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import * as Linking from "expo-linking";
 
 const Settings = () => {
@@ -11,9 +11,35 @@ const Settings = () => {
 
   const openAppSettings = () => {
     if (Platform.OS === "ios") {
-      Linking.openURL("app-settings:");
+      Alert.alert(
+        t("alert.language-ios-title"),
+        t("alert.language-ios-instructions"),
+        [
+          {
+            text: t("common.cancel"),
+            style: "cancel",
+          },
+          {
+            text: t("common.continue"),
+            onPress: () => Linking.openURL("app-settings:"),
+          },
+        ]
+      );
     } else if (Platform.OS === "android") {
-      Linking.openSettings();
+      Alert.alert(
+        t("alert.language-android-title"),
+        t("alert.language-android-instructions"),
+        [
+          {
+            text: t("common.cancel"),
+            style: "cancel",
+          },
+          {
+            text: t("common.continue"),
+            onPress: () => Linking.openSettings(),
+          },
+        ]
+      );
     }
   };
 

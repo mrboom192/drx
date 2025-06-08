@@ -7,6 +7,12 @@
     "update-your-medical-record": "Update your medical record",
     "view-your-cases": "View your cases"
   },
+  "alert": {
+    "language-android-instructions": "You’ll be taken to the settings screen where you can adjust your language preferences.",
+    "language-android-title": "Change App Language",
+    "language-ios-instructions": "Due to updates to your phone, there are different steps to change the app language.\\n\\n1. Continue to the next screen.\\n2. Tap on the 'Preferred Language' option and select your preferred language from the list.\\n\\nIf no languages are available, go to your general iPhone language settings to set your primary language.",
+    "language-ios-title": "How to change the app language \\n"
+  },
   "appointment-types": {
     "consultation": "consultation",
     "radiology": "radiology",
@@ -38,10 +44,12 @@
     "add": "Add",
     "all": "all",
     "and": "and",
+    "cancel": "Cancel",
     "condition": "Condition",
     "consultation": "Consultation",
     "consultation-price": "Consultation Price",
     "consultations": "Consultations",
+    "continue": "Continue",
     "doctor": "Doctor",
     "edit": "Edit",
     "email": "Email",

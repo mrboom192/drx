@@ -18,7 +18,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, writeBatch } from "firebase/firestore";
 import { createContext, useContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../hooks/useStorageState";
 
@@ -62,6 +62,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         password
       );
       const user = userCredential.user;
+
       const userData = {
         email: user.email,
         uid: user.uid,
@@ -71,16 +72,23 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
       await sendEmailVerification(user);
 
-      // Store user information in Firestore, merging user-specific data
-      await setDoc(doc(db, "users", user.uid), userData);
+      // Start Firestore batch
+      const batch = writeBatch(db);
 
-      setSession(user.uid); // Save the new user ID or token to the session
+      // Add user doc to batch
+      const userRef = doc(db, "users", user.uid);
+      batch.set(userRef, userData);
 
+      // Conditionally add medical record to batch
       if (userData.role === "patient") {
-        await createMedicalRecord(userData); // Create a medical record for the new user if they are a patient
+        await createMedicalRecord(batch, userData); // Pass batch and userData
       }
 
-      router.replace("/" as RelativePathString); // Navigate to home page
+      // Commit batched operations
+      await batch.commit();
+
+      setSession(user.uid); // Store user session
+      router.replace("/" as RelativePathString); // Navigate to homepage
     } catch (e: any) {
       const err = e as FirebaseError;
       alert("Registration failed: " + err.message);

@@ -7,6 +7,7 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  WriteBatch,
 } from "@firebase/firestore";
 import { nanoid } from "nanoid";
 import { auth, db } from "../../firebaseConfig";
@@ -14,6 +15,7 @@ import { auth, db } from "../../firebaseConfig";
 export type FieldCategory = "medications" | "allergies" | "conditions";
 
 export async function createMedicalRecord(
+  batch: WriteBatch,
   user: SignupUser & Pick<User, "uid" | "email" | "createdAt">
 ) {
   const initialMedicalRecord = {
@@ -22,7 +24,7 @@ export async function createMedicalRecord(
 
     firstName: user.firstName,
     lastName: user.lastName,
-    dateOfBirth: user.dateOfBirth,
+    dateOfBirth: null,
     gender: "",
 
     medications: [],
@@ -40,7 +42,8 @@ export async function createMedicalRecord(
     updatedAt: serverTimestamp(),
   };
 
-  await setDoc(doc(db, "records", user.uid), initialMedicalRecord);
+  const recordRef = doc(db, "records", user.uid);
+  batch.set(recordRef, initialMedicalRecord);
 }
 
 export async function addItemToMedicalRecord<T extends Record<string, any>>(

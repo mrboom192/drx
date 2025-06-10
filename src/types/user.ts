@@ -21,7 +21,4 @@ export interface User {
   expoPushTokens?: string[];
 }
 
-export type SignupUser = Pick<
-  User,
-  "firstName" | "lastName" | "dateOfBirth" | "role"
->;
+export type SignupUser = Pick<User, "firstName" | "lastName" | "role">;

@@ -129,48 +129,46 @@ function RootLayoutNav() {
         <BottomSheetModalProvider>
           <ExpoStripeProvider>
             <SessionProvider>
-              <SignUpProvider>
-                <Stack
-                  screenOptions={{
-                    navigationBarColor: "#FFF",
+              <Stack
+                screenOptions={{
+                  navigationBarColor: "#FFF",
+                }}
+              >
+                <Stack.Screen
+                  name="(protected)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="signup"
+                  options={{
+                    title: i18next.t("signup.sign-up-with-drx"),
+                    header: (props) => <PageHeader {...props} />,
                   }}
-                >
-                  <Stack.Screen
-                    name="(protected)"
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen name="login" options={{ headerShown: false }} />
-                  <Stack.Screen
-                    name="signup"
-                    options={{
-                      title: i18next.t("signup.sign-up-with-drx"),
-                      header: (props) => <PageHeader {...props} />,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="forgot-password"
-                    options={{
-                      presentation: "modal",
-                      title: i18next.t("page.recover-your-password"),
-                      header: (props) => <PageHeader {...props} />,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="terms-of-service"
-                    options={{
-                      title: i18next.t("page.terms-of-service"),
-                      header: (props) => <PageHeader {...props} />,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="privacy-policy"
-                    options={{
-                      title: i18next.t("page.privacy-policy"),
-                      header: (props) => <PageHeader {...props} />,
-                    }}
-                  />
-                </Stack>
-              </SignUpProvider>
+                />
+                <Stack.Screen
+                  name="forgot-password"
+                  options={{
+                    presentation: "modal",
+                    title: i18next.t("page.recover-your-password"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+                <Stack.Screen
+                  name="terms-of-service"
+                  options={{
+                    title: i18next.t("page.terms-of-service"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+                <Stack.Screen
+                  name="privacy-policy"
+                  options={{
+                    title: i18next.t("page.privacy-policy"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+              </Stack>
             </SessionProvider>
           </ExpoStripeProvider>
         </BottomSheetModalProvider>

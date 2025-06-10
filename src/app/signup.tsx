@@ -1,11 +1,10 @@
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import { useSession } from "@/contexts/AuthContext";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 
 import Divider from "@/components/Divider";
-import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import ControllerInput from "@/components/form/ControllerInput";
 import ControllerRoleSelector from "@/components/screens/signup/ControllerRoleSelector";
 import { SignupUser } from "@/types/user";
@@ -67,16 +66,6 @@ const SignUp = () => {
         name="lastName"
         label={t("signup.last-name")}
         placeholder={t("signup.e-g-doe")}
-      />
-
-      {/* Date of Birth */}
-      <ControllerDatePicker
-        control={control}
-        maximumDate={new Date()}
-        minimumDate={new Date(1900, 0, 1)}
-        name="dateOfBirth"
-        label={t("signup.date-of-birth")}
-        rules={{ required: t("signup.date-of-birth-is-required") }}
       />
 
       <Divider />

@@ -10,14 +10,14 @@
   "alert": {
     "language-android-instructions": "You’ll be taken to the settings screen where you can adjust your language preferences.",
     "language-android-title": "Change App Language",
-    "language-ios-instructions": "Due to updates to your phone, there are different steps to change the app language.\\n\\n1. Continue to the next screen.\\n2. Tap on the 'Preferred Language' option and select your preferred language from the list.\\n\\nIf no languages are available, go to your general iPhone language settings to set your primary language.",
-    "language-ios-title": "How to change the app language \\n"
+    "language-ios-instructions": "1. Continue to the next screen.\n \n 2. Tap on the 'Preferred Language' option and select your preferred language from the list.\n \n If no languages are available, go to your general iPhone language settings to set your primary language.",
+    "language-ios-title": "Changing the app language \n"
   },
   "appointment-types": {
-    "consultation": "consultation",
-    "radiology": "radiology",
-    "second-opinion": "second opinion",
-    "weight-loss": "weight loss"
+    "consultation": "Consultation",
+    "radiology": "Radiology",
+    "second-opinion": "Second Opinion",
+    "weight-loss": "Weight Loss"
   },
   "button": {
     "log-out": "Log out"
@@ -203,9 +203,9 @@
     "what-is-the-interval": "What is the interval?"
   },
   "gender": {
-    "female": "female",
-    "male": "male",
-    "other": "other"
+    "female": "Female",
+    "male": "Male",
+    "other": "Other"
   },
   "header": {
     "welcome-back": "Welcome back,"

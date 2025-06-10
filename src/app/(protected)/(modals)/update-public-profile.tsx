@@ -26,6 +26,7 @@ import { getSpecializations } from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
 import { getDayOptions } from "@/constants/days";
+import { PublicProfile } from "@/types/publicProfile";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();

@@ -1,3 +1,18 @@
+export type TimeSlot = {
+  start: string;
+  end: string;
+};
+
+type Availability = {
+  Sun: TimeSlot[];
+  Mon: TimeSlot[];
+  Tue: TimeSlot[];
+  Wed: TimeSlot[];
+  Thu: TimeSlot[];
+  Fri: TimeSlot[];
+  Sat: TimeSlot[];
+};
+
 export type PublicProfile = {
   specializations: string[];
   languages: string[];
@@ -9,12 +24,6 @@ export type PublicProfile = {
   weightLossPrice: string;
   radiologyPrice: string;
   services: string[];
-  availableDays: string[];
   consultationDuration: string;
-};
-
-type TimeSlot = {
-  startTime: string;
-  endTime: string;
-  day: string;
+  availability: Availability;
 };

@@ -26,7 +26,8 @@ import { getSpecializations } from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
 import { getDayOptions } from "@/constants/days";
-import { PublicProfile } from "@/types/publicProfile";
+import ConotrollerContextMenu from "@/components/form/ControllerContextMenu";
+import { set } from "date-fns";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const UpdatePublicProfile = () => {
   const fetchPublicProfile = useFetchPublicProfile();
   const isFetchingPublicProfile = useIsFetchingPublicProfile();
   const [currentWatchedDays, setCurrentWatchedDays] = useState<string[]>([]);
+  const [isLayoutReady, setIsLayoutReady] = useState(false);
 
   const { control, handleSubmit, formState, watch, reset } =
     useForm<FieldValues>({
@@ -238,10 +240,10 @@ const UpdatePublicProfile = () => {
     }
   };
 
-  if (isFetchingPublicProfile) return <LoadingScreen />;
+  if (isFetchingPublicProfile && !isLayoutReady) return <LoadingScreen />;
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={() => setIsLayoutReady(true)}>
       <FormPage
         canSubmit={isValid && isDirty}
         isSubmitting={isSubmitting}
@@ -369,19 +371,17 @@ const UpdatePublicProfile = () => {
 
         <Divider />
 
-        <ControllerInput
+        <ConotrollerContextMenu
           label={t("form.how-long-are-your-calls-in-minutes")}
           control={control}
-          placeholder={t("form.e-g-15")}
+          rules={{ required: t("form.duration-is-required") }}
+          options={[
+            { label: "15 minutes", value: "15" },
+            { label: "30 minutes", value: "30" },
+            { label: "45 minutes", value: "45" },
+            { label: "1 hour", value: "60" },
+          ]}
           name="consultationDuration"
-          rules={{
-            required: t("form.duration-is-required"),
-            pattern: {
-              value: /^\d+$/,
-              message: t("form.must-be-a-valid-number"),
-            },
-          }}
-          keyboardType="numeric"
         />
 
         <ControllerCheckBoxOptions

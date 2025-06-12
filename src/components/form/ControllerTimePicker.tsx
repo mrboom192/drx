@@ -39,7 +39,7 @@ const ControllerTimePicker = ({
           : "";
 
         return (
-          <View>
+          <View style={{ flex: 1 }}>
             <View style={styles.labelContainer}>
               {label && <TextRegular style={styles.label}>{label}</TextRegular>}
               {error && (

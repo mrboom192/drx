@@ -28,6 +28,7 @@ import { getCountryOptions } from "@/constants/countryCodes";
 import { getDayOptions } from "@/constants/days";
 import ConotrollerContextMenu from "@/components/form/ControllerContextMenu";
 import { set } from "date-fns";
+import ControllerAvailability from "@/components/form/ControllerAvailability";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
@@ -80,6 +81,18 @@ const UpdatePublicProfile = () => {
         availableDays: publicProfile.availableDays || [],
         consultationDuration:
           publicProfile.consultationDuration?.toString() || "",
+        availability: {
+          Sun: [
+            { start: "09:00", end: "19:00" },
+            { start: "20:00", end: "22:00" },
+          ],
+          Mon: [{ start: "09:00", end: "19:00" }],
+          Tue: [],
+          Wed: [{ start: "09:00", end: "19:00" }],
+          Thu: [{ start: "09:00", end: "19:00" }],
+          Fri: [],
+          Sat: [],
+        },
       };
 
       const slotCounts: { [day: string]: number } = {};
@@ -382,6 +395,12 @@ const UpdatePublicProfile = () => {
             { label: "1 hour", value: "60" },
           ]}
           name="consultationDuration"
+        />
+
+        <ControllerAvailability
+          label={"Availability"}
+          control={control}
+          name="availability"
         />
 
         <ControllerCheckBoxOptions

@@ -56,14 +56,17 @@ const ControllerContextMenu = <TFieldValues extends FieldValues>({
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         // Find the current index based on the field value
         const selectedIndex = useMemo(
-          () => normalizedOptions.findIndex((opt) => opt.value === value),
+          () =>
+            normalizedOptions.findIndex(
+              (opt) => opt.value === value.toString()
+            ),
           [normalizedOptions, value]
         );
 
         // Default to the first option
         useEffect(() => {
           if (!value && normalizedOptions.length > 0) {
-            onChange(normalizedOptions[0].value);
+            onChange(normalizedOptions[0].value.toString());
           }
         }, [value, normalizedOptions, onChange]);
 
@@ -107,8 +110,9 @@ const ControllerContextMenu = <TFieldValues extends FieldValues>({
                     ]}
                   >
                     {
-                      normalizedOptions.find((opt) => opt.value === value)
-                        ?.label
+                      normalizedOptions.find(
+                        (opt) => opt.value === value.toString()
+                      )?.label
                     }
                   </TextRegular>
                   <Ionicons name="chevron-down" size={20} color={Colors.grey} />

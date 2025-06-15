@@ -13,7 +13,6 @@ import Colors from "@/constants/Colors";
 import ControllerTimePicker from "./ControllerTimePicker";
 import { useTranslation } from "react-i18next";
 import IconButton from "../IconButton";
-import { PublicProfile } from "@/types/publicProfile";
 
 const BUTTON_SIZE = 28;
 

@@ -23,9 +23,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { getSpecializations } from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
-import { getDayOptions } from "@/constants/days";
 import ConotrollerContextMenu from "@/components/form/ControllerContextMenu";
-import { set } from "date-fns";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
 
@@ -34,37 +32,43 @@ const UpdatePublicProfile = () => {
   const userData = useUserData();
   const publicProfile = usePublicProfile();
   const fetchPublicProfile = useFetchPublicProfile();
-  const isFetchingPublicProfile = useIsFetchingPublicProfile();
-  const [isLayoutReady, setIsLayoutReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { control, handleSubmit, formState, watch, reset } =
     useForm<PublicProfile>({
-      mode: "onChange",
-      defaultValues: {},
+      defaultValues: {
+        specializations: [],
+        languages: [],
+        experience: "",
+        biography: "",
+        countries: [],
+        services: [],
+        consultationPrice: "",
+        secondOpinionPrice: "",
+        radiologyPrice: "",
+        weightLossPrice: "",
+        consultationDuration: "15",
+        availability: {
+          Sun: [],
+          Mon: [],
+          Tue: [],
+          Wed: [],
+          Thu: [],
+          Fri: [],
+          Sat: [],
+        },
+      },
     });
+
+  useForm({ defaultValues: async () => fetchPublicProfile() });
 
   const { isDirty, isValid, isSubmitting } = formState;
   const watchedServices = watch("services", []);
 
   useEffect(() => {
-    fetchPublicProfile();
-  }, []);
-
-  useEffect(() => {
     if (publicProfile) {
-      const defaultValues: FieldValues = {
-        specializations: publicProfile.specializations || [],
-        languages: publicProfile.languages,
-        experience: publicProfile.experience?.toString() || "",
-        biography: publicProfile.biography || "",
-        countries: publicProfile.countries,
-        consultationPrice: publicProfile.consultationPrice?.toString() || "",
-        secondOpinionPrice: publicProfile.secondOpinionPrice?.toString() || "",
-        weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
-        radiologyPrice: publicProfile.radiologyPrice?.toString() || "",
-        services: publicProfile.services || [],
-        consultationDuration:
-          publicProfile.consultationDuration?.toString() || "",
+      const defaultValues: PublicProfile = {
+        ...publicProfile,
         availability: {
           Sun: [
             { start: "09:00", end: "19:00" },
@@ -80,6 +84,7 @@ const UpdatePublicProfile = () => {
       };
 
       reset(defaultValues);
+      setIsLoading(false);
     }
   }, [publicProfile, reset]);
 
@@ -123,10 +128,10 @@ const UpdatePublicProfile = () => {
     }
   };
 
-  if (isFetchingPublicProfile && !isLayoutReady) return <LoadingScreen />;
+  if (isLoading) return <LoadingScreen />;
 
   return (
-    <View style={styles.container} onLayout={() => setIsLayoutReady(true)}>
+    <View style={styles.container} onLayout={() => fetchPublicProfile()}>
       <FormPage
         canSubmit={isValid && isDirty}
         isSubmitting={isSubmitting}

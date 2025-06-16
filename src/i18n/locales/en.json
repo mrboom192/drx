@@ -122,6 +122,7 @@
     "at-least-one-language-is-required": "At least one language is required",
     "at-least-one-service-is-required": "At least one service is required",
     "at-least-one-specialization-is-required": "At least one specialization is required",
+    "availability": "Availability",
     "biography": "Biography",
     "biography-is-required": "Biography is required",
     "book-consultation": "Book Consultation",
@@ -168,6 +169,7 @@
     "medication-name": "Medication Name",
     "medication-name-is-required": "Medication name is required",
     "medication-route": "Medication Route",
+    "minimum-15-minutes": "Must be atleast 15 minutes",
     "must-be-a-valid-number": "Must be a valid number",
     "no-attachments-added": "No attachments added.",
     "no-available-time-slots-for-this-date": "No available time slots for this date.",
@@ -199,6 +201,7 @@
     "start-typing-to-search-chats": "Start typing to search chats",
     "start-typing-to-search-doctors": "Start typing to search doctors",
     "tell-us-about-yourself": "Tell us about yourself",
+    "unavailable": "Unavailable",
     "what-days-are-you-available": "What days are you available?",
     "what-is-the-interval": "What is the interval?"
   },
@@ -422,5 +425,14 @@
     "your-verification-is-currently-pending": "Your verification is currently pending.",
     "youre-verified": "You're verified!",
     "youve-already-been-approved-and-are-visible-to-patients": "You’ve already been approved and are visible to patients."
+  },
+  "weekdays": {
+    "Sun": "Sun",
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat"
   }
 }

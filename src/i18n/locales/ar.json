@@ -122,6 +122,7 @@
     "at-least-one-language-is-required": "يلزم لغة واحدة على الأقل",
     "at-least-one-service-is-required": "مطلوب خدمة واحدة على الأقل",
     "at-least-one-specialization-is-required": "مطلوب تخصص واحد على الأقل",
+    "availability": "توافر",
     "biography": "سيرة",
     "biography-is-required": "السيرة الذاتية مطلوبة",
     "book-consultation": "استشارة الكتاب",
@@ -168,6 +169,7 @@
     "medication-name": "اسم الدواء",
     "medication-name-is-required": "اسم الدواء مطلوب",
     "medication-route": "طريق الدواء",
+    "minimum-15-minutes": "يجب أن تكون على الأقل 15 دقيقة",
     "must-be-a-valid-number": "يجب أن يكون رقمًا صالحًا",
     "no-attachments-added": "لم تتم إضافة أي مرفقات.",
     "no-available-time-slots-for-this-date": "لا توجد فتحات زمنية متاحة لهذا التاريخ.",
@@ -199,6 +201,7 @@
     "start-typing-to-search-chats": "ابدأ في الكتابة للبحث في الدردشات",
     "start-typing-to-search-doctors": "ابدأ في الكتابة للبحث عن الأطباء",
     "tell-us-about-yourself": "أخبرنا عن نفسك",
+    "unavailable": "غير متاح",
     "what-days-are-you-available": "ما هي الأيام المتوفرة؟",
     "what-is-the-interval": "ما هو الفاصل الزمني؟"
   },
@@ -422,5 +425,14 @@
     "your-verification-is-currently-pending": "التحقق الخاص بك معلق حاليا.",
     "youre-verified": "لقد تم التحقق من ذلك!",
     "youve-already-been-approved-and-are-visible-to-patients": "لقد تمت الموافقة عليه بالفعل ومرئية للمرضى."
+  },
+  "weekdays": {
+    "Fri": "الجمعة",
+    "Mon": "الاثنين",
+    "Sat": "السبت",
+    "Sun": "الأحد",
+    "Thu": "الخميس",
+    "Tue": "الثلاثاء",
+    "Wed": "الأربعاء"
   }
 }

@@ -8,7 +8,6 @@ import Colors from "@/constants/Colors";
 import { getSpecializations } from "@/constants/specializations";
 import { useDoctorById } from "@/stores/useDoctorSearch";
 import { useUserData } from "@/stores/useUserStore";
-import { TimeSlot } from "@/types/timeSlot";
 import { useStripe } from "@stripe/stripe-react-native";
 import * as Linking from "expo-linking";
 import { router, useLocalSearchParams } from "expo-router";
@@ -19,27 +18,22 @@ import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+/* ------------------------------------------------------------------ */
+/* ⚙️  Firebase cloud-function types                                  */
+/* ------------------------------------------------------------------ */
 type GetPaymentIntentRequest = {
   amount: number;
   currency: string;
   metadata?: any;
 };
-
 type GetPaymentIntentResponse = {
   paymentIntentId: string;
   paymentIntent: string;
   ephemeralKey: string;
   customer: string;
 };
-
-type CancelPaymentIntentRequest = {
-  id: string;
-};
-
-type CancelPaymentIntentResponse = {
-  success: boolean;
-  canceledIntent?: any;
-};
+type CancelPaymentIntentRequest = { id: string };
+type CancelPaymentIntentResponse = { success: boolean; canceledIntent?: any };
 
 const getPaymentIntent = httpsCallable<
   GetPaymentIntentRequest,
@@ -51,137 +45,148 @@ const cancelPaymentIntent = httpsCallable<
   CancelPaymentIntentResponse
 >(functions, "cancelPaymentIntent");
 
+/* ------------------------------------------------------------------ */
+/* 🛠️  Local helpers                                                  */
+/* ------------------------------------------------------------------ */
+const WEEKDAY_KEYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
+
+function weekdayKeyFromDate(date: Date) {
+  return WEEKDAY_KEYS[date.getDay()];
+}
+
+/** Convert "hh:mm" to minutes since midnight. */
+function toMinutes(time: string) {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+/** Convert minutes to "hh:mm". */
+function toTimeStr(mins: number) {
+  const h = Math.floor(mins / 60)
+    .toString()
+    .padStart(2, "0");
+  const m = (mins % 60).toString().padStart(2, "0");
+  return `${h}:${m}`;
+}
+
+/** Split each availability range into sub-slots of `duration` minutes. */
+function buildTimeSlotOptions(
+  avail: { start: string; end: string }[],
+  duration: number
+): string[] {
+  const res: string[] = [];
+  avail.forEach(({ start, end }) => {
+    let from = toMinutes(start);
+    const until = toMinutes(end);
+    while (from + duration <= until) {
+      const slotStart = toTimeStr(from);
+      const slotEnd = toTimeStr(from + duration);
+      res.push(`${slotStart}-${slotEnd}`);
+      from += duration;
+    }
+  });
+  return res;
+}
+
+/* ------------------------------------------------------------------ */
+/* 📄  BookingPage component                                          */
+/* ------------------------------------------------------------------ */
 const BookingPage = () => {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const doctor = useDoctorById(id); // Doctor should already be fetched, so filter by id
-  console.log("Doctor data:", doctor);
+  const doctor = useDoctorById(id);
   const userData = useUserData();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const insets = useSafeAreaInsets();
 
+  /* ---------- Translated specializations ---------- */
   const specializationMap = Object.fromEntries(
-    getSpecializations(i18next.t).map((item) => [item.value, item.label])
+    getSpecializations(i18next.t).map((i) => [i.value, i.label])
   );
+  const specializations =
+    doctor?.specializations
+      ?.map((spec: string) => specializationMap[spec])
+      .filter(Boolean) || [];
 
-  // Map the specialization IDs to their names
-  const specializations = doctor.specializations
-    .map((specId: string) => specializationMap[specId])
-    .filter(Boolean);
-
-  const { control, handleSubmit, watch, setValue, formState } =
-    useForm<FieldValues>({
-      defaultValues: {
-        selectedDate: new Date(),
-        timeSlot: null, // Initialize with null
-      },
-    });
-
+  /* ---------- Form ---------- */
+  const { control, handleSubmit, watch, formState } = useForm<FieldValues>({
+    defaultValues: { selectedDate: new Date(), timeSlot: null },
+  });
   const { isSubmitting } = formState;
 
+  /* ---------- Build bookable time-slot list ---------- */
+  const selectedDate: Date = watch("selectedDate");
+  const weekdayKey = weekdayKeyFromDate(selectedDate);
+  const rawRanges = doctor?.availability?.[weekdayKey] || [];
+  const slotDuration = doctor?.consultationDuration || 15; // minutes
+  const timeSlotOptions = buildTimeSlotOptions(rawRanges, slotDuration);
+
+  /* ---------- Payment sheet ---------- */
   const initializePaymentSheet = async ({
     amount,
     timeSlot,
     selectedDate,
   }: {
     amount: number;
-    timeSlot: TimeSlot;
+    timeSlot: string;
     selectedDate: Date;
   }) => {
-    if (!userData) {
-      throw new Error("Patient not logged in!");
+    if (!userData) throw new Error("Patient not logged in");
+    if (!amount) throw new Error("Missing amount");
+
+    const result = await getPaymentIntent({
+      amount,
+      currency: "usd",
+      metadata: {
+        patientId: userData.uid,
+        doctorId: doctor.uid,
+        date: selectedDate.toISOString(),
+        timeSlot: JSON.stringify(timeSlot),
+      },
+    });
+
+    const { paymentIntentId, paymentIntent, ephemeralKey, customer } =
+      result.data;
+
+    const { error: initErr } = await initPaymentSheet({
+      merchantDisplayName: "DRX Genius LLC",
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      allowsDelayedPaymentMethods: true,
+      returnURL: Linking.createURL("stripe-redirect"),
+      applePay: { merchantCountryCode: "US" },
+    });
+    if (initErr) throw new Error(initErr.message);
+
+    const { error: payErr } = await presentPaymentSheet();
+    if (payErr) {
+      await cancelPaymentIntent({ id: paymentIntentId });
+      throw new Error(payErr.message);
     }
-
-    if (!amount || typeof amount !== "number") {
-      throw new Error("Invalid or missing amount.");
-    }
-
-    try {
-      const result = await getPaymentIntent({
-        amount,
-        currency: "usd",
-        metadata: {
-          patientId: userData.uid,
-          doctorId: doctor.uid,
-          date: selectedDate.toISOString(),
-          timeSlot: JSON.stringify(timeSlot), // pass as string
-        },
-      });
-
-      const { paymentIntentId, paymentIntent, ephemeralKey, customer } =
-        result.data;
-
-      const { error: initError } = await initPaymentSheet({
-        merchantDisplayName: "DRX Genius LLC",
-        customerId: customer,
-        customerEphemeralKeySecret: ephemeralKey,
-        paymentIntentClientSecret: paymentIntent,
-        allowsDelayedPaymentMethods: true,
-        returnURL: Linking.createURL("stripe-redirect"),
-        applePay: {
-          merchantCountryCode: "US",
-        },
-      });
-
-      if (initError) {
-        throw new Error(initError.message);
-      }
-
-      const { error: paymentError } = await presentPaymentSheet();
-
-      if (paymentError) {
-        await cancelPaymentIntent({ id: paymentIntentId });
-        throw new Error(paymentError.message);
-      }
-
-      Alert.alert(t("common.success"), t("form.booking-was-successful"));
-      return "success";
-    } catch (err) {
-      throw new Error("Failed to initialize payment sheet");
-    }
+    Alert.alert(t("common.success"), t("form.booking-was-successful"));
   };
 
-  // Move this to firebase functions in the future
-  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+  /* ---------- Submit ---------- */
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
-        timeSlot: parseTimeSlot(formData.timeSlot),
-        selectedDate: formData.selectedDate,
+        timeSlot: data.timeSlot,
+        selectedDate: data.selectedDate,
       });
-
-      router.replace({
-        pathname: `/(protected)/(tabs)/messages`,
-      });
-    } catch (error: any) {
+      router.replace({ pathname: "/(protected)/(tabs)/messages" });
+    } catch {
       Alert.alert(t("form.payment-failed"));
     }
   };
 
-  // Extract day of the week from selectedDate
-  const dayOfWeek = watch("selectedDate")
-    .toLocaleDateString("en-US", { weekday: "long" })
-    .toLowerCase();
-
-  // Get available slots for the selected date
-  const rawSlots = doctor?.subTimeSlotsPerDuration?.[dayOfWeek] || [];
-
-  // Map to "start-end" string format
-  const timeSlotOptions: string[] = rawSlots.map(
-    (slot: { start: string; end: string }) => `${slot.start}-${slot.end}`
-  );
-
+  /* ---------- UI ---------- */
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#FFF", paddingBottom: insets.bottom }}
+      style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
     >
-      <ScrollView
-        contentContainerStyle={{
-          padding: 16,
-          gap: 24,
-        }}
-      >
-        {/* Doctor Info */}
+      <ScrollView contentContainerStyle={{ padding: 16, gap: 24 }}>
+        {/* ─── Doctor header ──────────────────────────────────────────── */}
         <View
           style={{
             flexDirection: "row",
@@ -194,46 +199,38 @@ const BookingPage = () => {
           }}
         >
           <View style={{ flex: 1 }}>
-            <TextSemiBold
-              style={{ fontSize: 20, color: "#000", textAlign: "left" }}
-            >
+            <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
               {t("doctor.name", { lastName: doctor?.lastName })}
             </TextSemiBold>
-            <Pills items={specializations || []} />
+            <Pills items={specializations} />
           </View>
           <View>
             <TextSemiBold style={{ fontSize: 20, textAlign: "right" }}>
               ${doctor?.consultationPrice}
             </TextSemiBold>
-            <TextRegular
-              style={{ fontSize: 12, color: "#666", textAlign: "right" }}
-            >
+            <TextRegular style={{ fontSize: 12, color: "#666" }}>
               {t("doctor.per-consultation")}
             </TextRegular>
           </View>
         </View>
 
+        {/* ─── Date picker ───────────────────────────────────────────── */}
         <ControllerDatePicker
           label={t("form.select-date")}
           name="selectedDate"
           control={control}
           minimumDate={new Date()}
-          maximumDate={undefined}
-          rules={{
-            required: t("form.please-select-a-date"),
-          }}
+          rules={{ required: t("form.please-select-a-date") }}
         />
 
-        {/* Time Slots */}
+        {/* ─── Time-slot picker ──────────────────────────────────────── */}
         <ControllerCheckBoxOptions
           label={t("form.select-a-time-slot")}
           name="timeSlot"
           control={control}
           singleSelect
           options={timeSlotOptions}
-          rules={{
-            required: t("form.please-select-a-time-slot"),
-          }}
+          rules={{ required: t("form.please-select-a-time-slot") }}
         />
         {timeSlotOptions.length === 0 && (
           <TextSemiBold
@@ -248,13 +245,12 @@ const BookingPage = () => {
         )}
       </ScrollView>
 
-      {/* Bottom CTA */}
+      {/* ─── Bottom CTA ───────────────────────────────────────────────*/}
       <View
         style={{
           padding: 16,
           borderTopWidth: 1,
           borderColor: Colors.light.faintGrey,
-          backgroundColor: "#fff",
         }}
       >
         <SubmitButton
@@ -270,7 +266,10 @@ const BookingPage = () => {
 
 export default BookingPage;
 
-function parseTimeSlot(timeSlotStr: string) {
-  const [startTime, endTime] = timeSlotStr.split("-");
+/* ------------------------------------------------------------------ */
+/* 🔎  Helpers                                                         */
+/* ------------------------------------------------------------------ */
+export function parseTimeSlot(str: string) {
+  const [startTime, endTime] = str.split("-");
   return { startTime, endTime };
 }

@@ -1,6 +1,5 @@
 import PageHeader from "@/components/PageHeader";
 import ExpoStripeProvider from "@/components/stripe-provider";
-import { SignUpProvider } from "@/contexts/SignupContext";
 import { useIsAuthReady, useSetIsAuthReady } from "@/stores/useAuthInitStore";
 import { useStartNotifications } from "@/stores/useNotificationStore";
 import {

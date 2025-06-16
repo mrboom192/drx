@@ -1,15 +1,10 @@
 import { router } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
-import {
-  useFetchPublicProfile,
-  useIsFetchingPublicProfile,
-  usePublicProfile,
-} from "@/stores/usePublicProfileStore";
 import { useUserData } from "@/stores/useUserStore";
 import { db } from "../../../../firebaseConfig";
 
@@ -23,70 +18,57 @@ import UserAvatar from "@/components/UserAvatar";
 import { getSpecializations } from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
-import ConotrollerContextMenu from "@/components/form/ControllerContextMenu";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
+import { fetchPublicProfile } from "@/api/publicProfile";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
   const userData = useUserData();
-  const publicProfile = usePublicProfile();
-  const fetchPublicProfile = useFetchPublicProfile();
-  const [isLoading, setIsLoading] = useState(true);
+  const { control, handleSubmit, formState, watch } = useForm<PublicProfile>({
+    mode: "onChange",
+    defaultValues: async () => {
+      const res = (await fetchPublicProfile()) as PublicProfile;
 
-  const { control, handleSubmit, formState, watch, reset } =
-    useForm<PublicProfile>({
-      defaultValues: {
-        specializations: [],
-        languages: [],
-        experience: "",
-        biography: "",
-        countries: [],
-        services: [],
-        consultationPrice: "",
-        secondOpinionPrice: "",
-        radiologyPrice: "",
-        weightLossPrice: "",
-        consultationDuration: "15",
-        availability: {
-          Sun: [],
-          Mon: [],
-          Tue: [],
-          Wed: [],
-          Thu: [],
-          Fri: [],
-          Sat: [],
-        },
-      },
-    });
-
-  useForm({ defaultValues: async () => fetchPublicProfile() });
-
-  const { isDirty, isValid, isSubmitting } = formState;
-  const watchedServices = watch("services", []);
-
-  useEffect(() => {
-    if (publicProfile) {
-      const defaultValues: PublicProfile = {
-        ...publicProfile,
-        availability: {
-          Sun: [
-            { start: "09:00", end: "19:00" },
-            { start: "20:00", end: "22:00" },
-          ],
-          Mon: [{ start: "09:00", end: "19:00" }],
-          Tue: [],
-          Wed: [{ start: "09:00", end: "19:00" }],
-          Thu: [{ start: "09:00", end: "19:00" }],
-          Fri: [],
-          Sat: [],
-        },
+      const converted = {
+        ...res,
+        experience: res.experience?.toString() || "",
+        consultationPrice: res.consultationPrice?.toString() || "",
+        secondOpinionPrice: res.secondOpinionPrice?.toString() || "",
+        radiologyPrice: res.radiologyPrice?.toString() || "",
+        weightLossPrice: res.weightLossPrice?.toString() || "",
+        consultationDuration: res.consultationDuration?.toString() || "15",
       };
 
-      reset(defaultValues);
-      setIsLoading(false);
-    }
-  }, [publicProfile, reset]);
+      return (
+        converted || {
+          specializations: [],
+          languages: [],
+          experience: "",
+          biography: "",
+          countries: [],
+          services: [],
+          consultationPrice: "",
+          secondOpinionPrice: "",
+          radiologyPrice: "",
+          weightLossPrice: "",
+          consultationDuration: "15",
+          availability: {
+            Sun: [],
+            Mon: [],
+            Tue: [],
+            Wed: [],
+            Thu: [],
+            Fri: [],
+            Sat: [],
+          },
+        }
+      );
+    },
+  });
+
+  const { isDirty, isValid, isSubmitting, isLoading } = formState;
+  const watchedServices = watch("services", []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
@@ -96,32 +78,44 @@ const UpdatePublicProfile = () => {
         ? parseInt(formData[field], 10) || 0
         : null;
 
-    const consultationDuration =
-      parseInt(formData.consultationDuration, 10) || 15;
-
     try {
-      const dataToSave = {
-        uid: userData.uid,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        image: userData.image || null,
-        updatedAt: Timestamp.now(),
-        specializations: formData.specializations || [],
-        languages: formData.languages,
-        experience: parseInt(formData.experience, 10) || 0,
-        biography: formData.biography || "",
-        countries: formData.countries,
-        services: formData.services || [],
-        consultationPrice: buildPrice("consultation", "consultationPrice"),
-        secondOpinionPrice: buildPrice("second opinion", "secondOpinionPrice"),
-        radiologyPrice: buildPrice("radiology", "radiologyPrice"),
-        weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
-        consultationDuration: formData.consultationDuration,
-      };
-
-      await setDoc(doc(db, "publicProfiles", userData.uid), dataToSave, {
-        merge: true,
-      });
+      await setDoc(
+        doc(db, "publicProfiles", userData.uid),
+        {
+          uid: userData.uid,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          image: userData.image || null,
+          updatedAt: Timestamp.now(),
+          specializations: formData.specializations || [],
+          languages: formData.languages,
+          experience: parseInt(formData.experience, 10) || 0,
+          biography: formData.biography || "",
+          countries: formData.countries,
+          services: formData.services || [],
+          consultationPrice: buildPrice("consultation", "consultationPrice"),
+          secondOpinionPrice: buildPrice(
+            "second opinion",
+            "secondOpinionPrice"
+          ),
+          radiologyPrice: buildPrice("radiology", "radiologyPrice"),
+          weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
+          consultationDuration:
+            parseInt(formData.consultationDuration, 10) || 15,
+          availability: formData.availability || {
+            Sun: [],
+            Mon: [],
+            Tue: [],
+            Wed: [],
+            Thu: [],
+            Fri: [],
+            Sat: [],
+          },
+        },
+        {
+          merge: true,
+        }
+      );
       router.back();
     } catch (error) {
       console.error("Error updating public profile:", error);
@@ -131,7 +125,7 @@ const UpdatePublicProfile = () => {
   if (isLoading) return <LoadingScreen />;
 
   return (
-    <View style={styles.container} onLayout={() => fetchPublicProfile()}>
+    <View style={styles.container}>
       <FormPage
         canSubmit={isValid && isDirty}
         isSubmitting={isSubmitting}
@@ -288,21 +282,26 @@ const UpdatePublicProfile = () => {
 
         <Divider />
 
-        <ConotrollerContextMenu
+        <ControllerInput
           label={t("form.how-long-are-your-calls-in-minutes")}
-          control={control}
-          rules={{ required: t("form.duration-is-required") }}
-          options={[
-            { label: "15 minutes", value: "15" },
-            { label: "30 minutes", value: "30" },
-            { label: "45 minutes", value: "45" },
-            { label: "1 hour", value: "60" },
-          ]}
+          placeholder={t("form.e-g-15")}
           name="consultationDuration"
+          control={control}
+          rules={{
+            required: t("form.duration-is-required"),
+            pattern: {
+              value: /^\d+$/,
+              message: t("form.must-be-a-valid-number"),
+            },
+            validate: (value) =>
+              (typeof value === "string" && parseInt(value, 10) >= 15) ||
+              t("form.minimum-15-minutes"),
+          }}
+          keyboardType="numeric"
         />
 
         <ControllerAvailability
-          label={"Availability"}
+          label={t("form.availability")}
           control={control}
           name="availability"
         />
@@ -312,16 +311,6 @@ const UpdatePublicProfile = () => {
 };
 
 export default UpdatePublicProfile;
-
-const toCamelCase = (str: string) =>
-  str
-    .split(" ")
-    .map((word, index) =>
-      index === 0
-        ? word.toLowerCase()
-        : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    )
-    .join("");
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },

@@ -1,13 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import {
-  Control,
-  useFieldArray,
-  useFormContext,
-  Path,
-  FieldValues,
-  ArrayPath,
-} from "react-hook-form";
+import { Control, useFieldArray, Path, FieldValues } from "react-hook-form";
 import { TextRegular, TextSemiBold } from "../StyledText";
 import Colors from "@/constants/Colors";
 import ControllerTimePicker from "./ControllerTimePicker";
@@ -48,9 +41,11 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
           <View key={day} style={styles.dayContainer}>
             {fields.length === 0 ? (
               <View style={styles.timeSlotRow}>
-                <TextRegular style={styles.dayLabel}>{day}</TextRegular>
+                <TextRegular style={styles.dayLabel}>
+                  {t(`weekdays.${day}`)}
+                </TextRegular>
                 <TextRegular style={styles.noSlotsText}>
-                  {"Unavailable"}
+                  {t("form.unavailable")}
                 </TextRegular>
                 <View style={styles.buttonRow}>
                   <View style={styles.empty} />
@@ -65,7 +60,9 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
               fields.map((field, index) => (
                 <View key={field.id} style={[styles.timeSlotRow]}>
                   {index === 0 ? (
-                    <TextRegular style={styles.dayLabel}>{day}</TextRegular>
+                    <TextRegular style={styles.dayLabel}>
+                      {t(`weekdays.${day}`)}
+                    </TextRegular>
                   ) : (
                     <View style={styles.dayLabel} />
                   )}

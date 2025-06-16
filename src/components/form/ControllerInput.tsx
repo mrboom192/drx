@@ -90,7 +90,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
               ]}
               onBlur={onBlur}
               onChangeText={onChange}
-              value={value?.toString()}
+              value={value}
               placeholder={placeholder}
               placeholderTextColor={Colors.lightText}
               secureTextEntry={sensitive && !showSensitive}

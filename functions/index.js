@@ -432,11 +432,9 @@ exports.handleStripeWebhook = functions.https.onRequest(async (req, res) => {
             price: doctor.consultationPrice,
             status: "confirmed",
             createdAt: admin.firestore.Timestamp.now(),
-            scheduledFor: admin.firestore.Timestamp.fromDate(
-              new Date(
-                date.setHours(parseInt(timeSlot.startTime.split(":")[0]))
-              )
-            ),
+            // scheduledFor: admin.firestore.Timestamp.fromDate(
+            //   new Date(date.setHours(parseInt(timeSlot.start.split(":")[0])))
+            // ),
           };
 
           batch.set(appointmentRef, appointmentData);

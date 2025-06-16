@@ -175,7 +175,8 @@ const BookingPage = () => {
         selectedDate: data.selectedDate,
       });
       router.replace({ pathname: "/(protected)/(tabs)/messages" });
-    } catch {
+    } catch (error) {
+      console.error("Booking error:", error);
       Alert.alert(t("form.payment-failed"));
     }
   };

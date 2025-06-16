@@ -26,7 +26,7 @@
     "today": "اليوم"
   },
   "call": {
-    "calling-message": "استدعاء {otherpersonfirstname} {otherpersonlastname} ...",
+    "calling-message": "استدعاء {{firstName}} {{lastName}} ...",
     "waiting-for-camera": "في انتظار الكاميرا ..."
   },
   "chat": {
@@ -185,6 +185,7 @@
     "please-select-a-dosage-route": "الرجاء تحديد طريق الجرعة",
     "please-select-a-time-slot": "الرجاء تحديد فتحة الوقت",
     "please-select-an-interval": "الرجاء تحديد فاصل زمني",
+    "price-must-be-greater-than-zero": "يجب أن يكون أكبر من 0",
     "provider-language": "لغة المزود",
     "reaction-description": "وصف رد الفعل",
     "reaction-description-is-required": "وصف رد الفعل مطلوب",

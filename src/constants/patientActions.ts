@@ -14,10 +14,10 @@ export const getPatientActions = (t: TFunction) => [
     icon: "ecg-heart",
     href: "/(tabs)/profile/medical-record" as Href,
   },
-  {
-    name: t("actions.view-your-cases"),
-    description: t("actions.browse-your-pending-cases"),
-    icon: "library-books",
-    href: "/search" as Href,
-  },
+  // {
+  //   name: t("actions.view-your-cases"),
+  //   description: t("actions.browse-your-pending-cases"),
+  //   icon: "library-books",
+  //   href: "/search" as Href,
+  // },
 ];

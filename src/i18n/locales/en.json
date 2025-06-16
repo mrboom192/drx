@@ -26,7 +26,7 @@
     "today": "today"
   },
   "call": {
-    "calling-message": "Calling {otherPersonFirstName} {otherPersonLastName}...",
+    "calling-message": "Calling {{firstName}} {{lastName}}...",
     "waiting-for-camera": "Waiting for camera..."
   },
   "chat": {
@@ -185,6 +185,7 @@
     "please-select-a-dosage-route": "Please select a dosage route",
     "please-select-a-time-slot": "Please select a time slot",
     "please-select-an-interval": "Please select an interval",
+    "price-must-be-greater-than-zero": "Must be greater than 0",
     "provider-language": "Provider language",
     "reaction-description": "Reaction Description",
     "reaction-description-is-required": "Reaction description is required",
@@ -427,12 +428,12 @@
     "youve-already-been-approved-and-are-visible-to-patients": "You’ve already been approved and are visible to patients."
   },
   "weekdays": {
-    "Sun": "Sun",
-    "Mon": "Mon",
-    "Tue": "Tue",
-    "Wed": "Wed",
-    "Thu": "Thu",
     "Fri": "Fri",
-    "Sat": "Sat"
+    "Mon": "Mon",
+    "Sat": "Sat",
+    "Sun": "Sun",
+    "Thu": "Thu",
+    "Tue": "Tue",
+    "Wed": "Wed"
   }
 }

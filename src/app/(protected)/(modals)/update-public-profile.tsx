@@ -28,9 +28,35 @@ const UpdatePublicProfile = () => {
   const { control, handleSubmit, formState, watch } = useForm<PublicProfile>({
     mode: "onChange",
     defaultValues: async () => {
-      const res = (await fetchPublicProfile()) as PublicProfile;
+      const fallback: PublicProfile = {
+        specializations: [],
+        languages: [],
+        experience: "",
+        biography: "",
+        countries: [],
+        services: [],
+        consultationPrice: "",
+        secondOpinionPrice: "",
+        radiologyPrice: "",
+        weightLossPrice: "",
+        consultationDuration: "15",
+        availability: {
+          Sun: [],
+          Mon: [],
+          Tue: [],
+          Wed: [],
+          Thu: [],
+          Fri: [],
+          Sat: [],
+        },
+      };
 
-      const converted = {
+      const res = await fetchPublicProfile();
+
+      if (!res) return fallback;
+
+      return {
+        ...fallback,
         ...res,
         experience: res.experience?.toString() || "",
         consultationPrice: res.consultationPrice?.toString() || "",
@@ -39,31 +65,6 @@ const UpdatePublicProfile = () => {
         weightLossPrice: res.weightLossPrice?.toString() || "",
         consultationDuration: res.consultationDuration?.toString() || "15",
       };
-
-      return (
-        converted || {
-          specializations: [],
-          languages: [],
-          experience: "",
-          biography: "",
-          countries: [],
-          services: [],
-          consultationPrice: "",
-          secondOpinionPrice: "",
-          radiologyPrice: "",
-          weightLossPrice: "",
-          consultationDuration: "15",
-          availability: {
-            Sun: [],
-            Mon: [],
-            Tue: [],
-            Wed: [],
-            Thu: [],
-            Fri: [],
-            Sat: [],
-          },
-        }
-      );
     },
   });
 
@@ -220,7 +221,13 @@ const UpdatePublicProfile = () => {
             placeholder={t("form.e-g-50")}
             name="consultationPrice"
             control={control}
-            rules={{ required: t("form.please-enter-a-price") }}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              // Greater than 0 validation
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
             keyboardType="numeric"
             textInputStyle={{ width: "100%" }}
           />
@@ -234,7 +241,12 @@ const UpdatePublicProfile = () => {
             placeholder={t("form.e-g-50")}
             name="secondOpinionPrice"
             control={control}
-            rules={{ required: t("form.please-enter-a-price") }}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
             keyboardType="numeric"
             textInputStyle={{ width: "100%" }}
           />
@@ -248,7 +260,12 @@ const UpdatePublicProfile = () => {
             placeholder={t("form.e-g-50")}
             name="radiologyPrice"
             control={control}
-            rules={{ required: t("form.please-enter-a-price") }}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
             keyboardType="numeric"
             textInputStyle={{ width: "100%" }}
           />
@@ -262,7 +279,12 @@ const UpdatePublicProfile = () => {
             placeholder={t("form.e-g-50")}
             name="weightLossPrice"
             control={control}
-            rules={{ required: t("form.please-enter-a-price") }}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
             keyboardType="numeric"
             textInputStyle={{ width: "100%" }}
           />

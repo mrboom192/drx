@@ -60,7 +60,13 @@
       ],
       "expo-font",
       "expo-secure-store",
-      "@config-plugins/react-native-webrtc",
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": "$(PRODUCT_NAME) requires access to the camera to enable secure video calls between healthcare providers and patients.",
+          "microphonePermission": "$(PRODUCT_NAME) requires access to the microphone to allow clear audio communication during video consultations."
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {

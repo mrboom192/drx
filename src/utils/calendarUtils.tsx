@@ -1,6 +1,5 @@
 import { Day, Locale, Month } from "date-fns";
 import { TFunction } from "i18next";
-import { Dimensions } from "react-native";
 
 export const getMonthNames = (
   locale: Locale,
@@ -37,18 +36,19 @@ export const getLocaleData = (
   };
 };
 
-export const getDayWidth = () => {
-  const screenWidth = Dimensions.get("window").width;
+export const getDayWidth = (componentWidth: number) => {
   const horizontalPadding = 32;
-  const totalGapBetweenDays = 6 * 4; // 6 gaps between 7 days
-  const availableWidth = screenWidth - horizontalPadding - totalGapBetweenDays;
+  const totalGapBetweenDays = 6 * 4;
+  const availableWidth =
+    componentWidth - horizontalPadding - totalGapBetweenDays;
   return availableWidth / 7;
 };
 
-export const getDayHeight = (calendarHeight: number) => {
-  const verticalPadding = 32; // e.g., 16 top + 16 bottom
-  const totalGapBetweenRows = 4 * 4; // 4 gaps between 5 rows
+export const getDayHeight = (componentHeight: number) => {
+  const verticalPadding = 32;
+  const totalGapBetweenRows = 4 * 4;
+  const reservedHeight = 120;
   const availableHeight =
-    calendarHeight - verticalPadding - totalGapBetweenRows - 120;
+    componentHeight - verticalPadding - totalGapBetweenRows - reservedHeight;
   return availableHeight / 5;
 };

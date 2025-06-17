@@ -10,7 +10,6 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "orientation": "portrait",
       "bundleIdentifier": "com.doctorx.drx",
       "bitcode": false,
       "appleTeamId": "46LZA2WXBP",
@@ -74,6 +73,12 @@
           "merchantIdentifier": "merchant.com.doctorx.drx",
           "publishableKey": "pk_live_51Q6gpGJIvTh9EQNO1CZxko18GxTEMe5FrMqyFBAxN5E3DnruXRBMMBv3vJaJIXxgn7BxkOm79h7aKHZbwtlQafQW00xIvxrDKP",
           "enableGooglePay": true
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
         }
       ],
       "expo-localization"

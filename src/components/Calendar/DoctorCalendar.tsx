@@ -22,11 +22,15 @@ import { locales } from "@/constants/locales";
 import i18next, { TFunction } from "i18next";
 import { enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
+import { useOrientationWithRenderKey } from "@/hooks/useOrientationWithRenderKey";
 
 const DoctorCalendar = () => {
   const { t } = useTranslation();
   const appointments = useAppointments();
-  const [calendarHeight, setCalendarHeight] = useState(0);
+  const [calendarDimensions, setCalendarDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd") // Default to today's date
@@ -42,9 +46,11 @@ const DoctorCalendar = () => {
     LocaleConfig.defaultLocale = i18next.language;
   }, [i18next.language, t]);
 
-  const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
-    const { height } = event.nativeEvent.layout;
-    setCalendarHeight(height);
+  const onLayout = (event: {
+    nativeEvent: { layout: { width: number; height: number } };
+  }) => {
+    const { width, height } = event.nativeEvent.layout;
+    setCalendarDimensions({ width, height });
   };
 
   // Handle day press
@@ -114,8 +120,8 @@ const DoctorCalendar = () => {
           style={[
             styles.calendarDay,
             {
-              width: getDayWidth(),
-              height: getDayHeight(calendarHeight),
+              width: getDayWidth(calendarDimensions?.width || 0),
+              height: getDayHeight(calendarDimensions?.height || 0),
               backgroundColor: isToday ? "black" : Colors.lightGrey,
             },
           ]}
@@ -144,7 +150,7 @@ const DoctorCalendar = () => {
         </TouchableOpacity>
       );
     },
-    [selectedDate, calendarHeight]
+    [selectedDate, calendarDimensions]
   );
 
   return (

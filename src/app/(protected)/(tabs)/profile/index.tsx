@@ -1,4 +1,4 @@
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
@@ -13,6 +13,7 @@ import SubmitButton from "@/components/SubmitButton";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
+import { useLayoutEffect, useState } from "react";
 
 const TOTAL_PADDING = 32;
 const GAP = 8;
@@ -22,10 +23,17 @@ const Profile = () => {
   const insets = useSafeAreaInsets();
   const { signOut } = useSession();
   const userData = useUserData();
+  const [componentWidth, setComponentWidth] = useState(0);
   const isPatient = userData?.role === "patient";
 
-  const screenWidth = Math.round(Dimensions.get("window").width);
-  const cardWidth = (screenWidth - TOTAL_PADDING) / 2 - GAP / 2;
+  const onLayout = (event: {
+    nativeEvent: { layout: { width: number; height: number } };
+  }) => {
+    const { width } = event.nativeEvent.layout;
+    setComponentWidth(width);
+  };
+
+  const cardWidth = (componentWidth - TOTAL_PADDING) / 2 - GAP / 2;
 
   const color = "#000";
   const links = isPatient ? getPatientLinks(t) : getDoctorLinks(t);
@@ -38,6 +46,7 @@ const Profile = () => {
         justifyContent: "flex-start",
         alignItems: "flex-start",
       }}
+      onLayout={onLayout}
     >
       {/* User Card */}
       <View

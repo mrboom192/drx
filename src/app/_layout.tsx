@@ -26,6 +26,7 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import "../i18n/config";
 import i18next from "i18next";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

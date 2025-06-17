@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": false,
+      "supportsTablet": true,
+      "orientation": "portrait",
       "bundleIdentifier": "com.doctorx.drx",
       "bitcode": false,
       "appleTeamId": "46LZA2WXBP",
@@ -63,8 +64,8 @@
       [
         "@config-plugins/react-native-webrtc",
         {
-          "cameraPermission": "$(PRODUCT_NAME) requires access to the camera to enable secure video calls between healthcare providers and patients.",
-          "microphonePermission": "$(PRODUCT_NAME) requires access to the microphone to allow clear audio communication during video consultations."
+          "cameraPermission": "DrX Telehealth requires access to the camera so that the other person may see you during consultations.",
+          "microphonePermission": "DrX Telehealth requires access to the microphone so that the other person can hear you during consultations."
         }
       ],
       [

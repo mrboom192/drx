@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   scrollViewContentContainer: {
+    minWidth: "100%",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 12,

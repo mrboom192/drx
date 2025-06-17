@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center", // Center everything horizontally
     justifyContent: "center", // Center vertically if needed
+    borderTopWidth: 1,
+    borderTopColor: Colors.faintGrey,
   },
   footerText: {
     fontSize: 16,

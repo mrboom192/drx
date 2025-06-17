@@ -7,6 +7,7 @@ import PatientActions from "./patient/PatientActions";
 import Services from "./patient/Services";
 import Symptoms from "./patient/Symptoms";
 import UserRow from "../UserRow";
+import { View } from "react-native";
 
 const PatientHomeScreen = () => {
   return (

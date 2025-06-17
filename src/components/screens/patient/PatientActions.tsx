@@ -65,8 +65,6 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.faintGrey,
   },
   header: {
     fontSize: 16,

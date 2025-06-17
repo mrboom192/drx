@@ -75,12 +75,6 @@
           "enableGooglePay": true
         }
       ],
-      [
-        "expo-screen-orientation",
-        {
-          "initialOrientation": "DEFAULT"
-        }
-      ],
       "expo-localization"
     ],
     "experiments": {

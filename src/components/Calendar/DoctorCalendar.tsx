@@ -22,7 +22,6 @@ import { locales } from "@/constants/locales";
 import i18next, { TFunction } from "i18next";
 import { enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
-import { useOrientationWithRenderKey } from "@/hooks/useOrientationWithRenderKey";
 
 const DoctorCalendar = () => {
   const { t } = useTranslation();

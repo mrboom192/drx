@@ -2,6 +2,7 @@ import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 const ControllerRoleSelector = ({
@@ -15,6 +16,8 @@ const ControllerRoleSelector = ({
   rules?: any;
   disabled?: boolean;
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Controller
       control={control}
@@ -31,10 +34,8 @@ const ControllerRoleSelector = ({
                 { borderColor: error ? Colors.pink : Colors.light.faintGrey },
               ]}
             >
-              {["Patient", "Doctor"].map((option) => {
-                const lowerCaseOption = option.toLowerCase() as
-                  | "patient"
-                  | "doctor";
+              {[t("common.patient"), t("common.doctor")].map((option) => {
+                const lowerCaseOption = option.toLowerCase();
                 const isSelected = value === lowerCaseOption;
                 return (
                   <TouchableOpacity

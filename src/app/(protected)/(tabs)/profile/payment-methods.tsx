@@ -13,7 +13,7 @@ const PaymentMethods = () => {
             <IconButton
               name="add"
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/(modals)/add-card",
                   params: { mode: "add", allergyId: "" },
                 })

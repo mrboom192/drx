@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, query } from "firebase/firestore";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { create } from "zustand";
 import { db } from "../../firebaseConfig";
 
@@ -6,7 +6,9 @@ interface DoctorStoreState {
   doctors: any[];
   isFetchingDoctors: boolean;
   error: string | null;
+  cache: Record<string, any[]>;
 
+  fetchDoctorsByField: (field: string, values: string[]) => Promise<any[]>;
   fetchSomeDoctors: () => Promise<void>;
 }
 
@@ -14,8 +16,50 @@ const useDoctorStore = create<DoctorStoreState>((set, get) => ({
   doctors: [],
   isFetchingDoctors: false,
   error: null,
+  cache: {},
 
   // Actions
+  fetchDoctorsByField: async (field: string, values: string[]) => {
+    if (!field || values.length === 0) return [];
+
+    const cacheKey = `${field}:${values.sort().join(",")}`;
+    const { cache, doctors } = get();
+
+    if (cache[cacheKey]) {
+      console.log(`Returning cached doctors for ${cacheKey}`);
+      // Optionally, merge cached doctors into the state
+      set((state) => ({
+        doctors: mergeUniqueDoctors(state.doctors, cache[cacheKey]),
+      }));
+      return cache[cacheKey];
+    }
+
+    try {
+      const doctorsRef = collection(db, "publicProfiles");
+      const q =
+        values.length === 1
+          ? query(doctorsRef, where(field, "array-contains", values[0]))
+          : query(doctorsRef, where(field, "array-contains-any", values));
+
+      const querySnapshot = await getDocs(q);
+      const fetchedDoctors = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Update cache and doctors state
+      set((state) => ({
+        cache: { ...state.cache, [cacheKey]: fetchedDoctors },
+        doctors: mergeUniqueDoctors(state.doctors, fetchedDoctors),
+      }));
+
+      return fetchedDoctors;
+    } catch (error) {
+      console.error(`Error fetching doctors by ${field}:`, error);
+      return [];
+    }
+  },
+
   fetchSomeDoctors: async () => {
     set({ isFetchingDoctors: true, error: null });
 
@@ -39,6 +83,13 @@ const useDoctorStore = create<DoctorStoreState>((set, get) => ({
   },
 }));
 
+// Helper to merge doctors and avoid duplicates
+const mergeUniqueDoctors = (existing: any[], incoming: any[]) => {
+  const existingIds = new Set(existing.map((doc) => doc.id));
+  const newDoctors = incoming.filter((doc) => !existingIds.has(doc.id));
+  return [...existing, ...newDoctors];
+};
+
 // Selectors
 export const useDoctors = () => useDoctorStore((state) => state.doctors);
 
@@ -46,6 +97,9 @@ export const useIsFetchingDoctors = () =>
   useDoctorStore((state) => state.isFetchingDoctors);
 
 export const useDoctorsError = () => useDoctorStore((state) => state.error);
+
+export const useFetchDoctorsByField = () =>
+  useDoctorStore((state) => state.fetchDoctorsByField);
 
 export const useFetchSomeDoctors = () =>
   useDoctorStore((state) => state.fetchSomeDoctors);

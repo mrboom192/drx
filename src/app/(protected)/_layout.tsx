@@ -16,8 +16,10 @@ import { useIsFetchingUser, useIsUserLoggedIn } from "@/stores/useUserStore";
 import { Redirect, Stack } from "expo-router";
 import { useEffect } from "react";
 import { auth } from "../../../firebaseConfig";
+import { useTranslation } from "react-i18next";
 
 export default function ProtectedLayout() {
+  const { t } = useTranslation();
   const { session, isLoading } = useSession();
   const isUserLoggedIn = useIsUserLoggedIn();
   const isFetchingUser = useIsFetchingUser();
@@ -74,7 +76,7 @@ export default function ProtectedLayout() {
       <Stack.Screen
         name="notifications"
         options={{
-          title: "Notifications",
+          title: t("common.notifications"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -82,7 +84,7 @@ export default function ProtectedLayout() {
       <Stack.Screen
         name="bookmarked"
         options={{
-          title: "Bookmarked Doctors",
+          title: t("page.bookmarked-doctors"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -90,7 +92,7 @@ export default function ProtectedLayout() {
       <Stack.Screen
         name="case"
         options={{
-          title: "Case information",
+          title: t("page.case-information"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -98,15 +100,22 @@ export default function ProtectedLayout() {
       <Stack.Screen
         name="medical-records"
         options={{
-          title: "Medical Record",
+          title: t("page.medical-record"),
           presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="filtered"
+        options={{
+          title: "",
           header: (props) => <PageHeader {...props} />,
         }}
       />
       <Stack.Screen
         name="search-modal"
         options={{
-          title: "Search Doctors",
+          title: t("page.search-doctors"),
           animation: "fade",
           animationDuration: 125,
           headerShadowVisible: false,

@@ -1,258 +1,129 @@
 import { router } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
-import { SPECIALIZATIONS } from "@/constants/specializations";
-import {
-  useFetchPublicProfile,
-  useIsFetchingPublicProfile,
-  usePublicProfile,
-} from "@/stores/usePublicProfileStore";
 import { useUserData } from "@/stores/useUserStore";
 import { db } from "../../../../firebaseConfig";
 
 import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerInput from "@/components/form/ControllerInput";
-import ControllerTimePicker from "@/components/form/ControllerTimePicker";
 import FormPage from "@/components/FormPage";
-import IconButton from "@/components/IconButton";
 import LoadingScreen from "@/components/LoadingScreen";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
-
-const countryCodeMap = {
-  "United States": "us",
-  Egypt: "eg",
-  Jordan: "jo",
-  India: "in",
-};
-
-const countryNameMap = Object.fromEntries(
-  Object.entries(countryCodeMap).map(([name, code]) => [code, name])
-);
+import { getSpecializations } from "@/constants/specializations";
+import { useTranslation } from "react-i18next";
+import { getCountryOptions } from "@/constants/countryCodes";
+import ControllerAvailability from "@/components/form/ControllerAvailability";
+import { PublicProfile } from "@/types/publicProfile";
+import { fetchPublicProfile } from "@/api/publicProfile";
 
 const UpdatePublicProfile = () => {
+  const { t } = useTranslation();
   const userData = useUserData();
-  const publicProfile = usePublicProfile();
-  const fetchPublicProfile = useFetchPublicProfile();
-  const isFetchingPublicProfile = useIsFetchingPublicProfile();
-  const [currentWatchedDays, setCurrentWatchedDays] = useState<string[]>([]);
-
-  const { control, handleSubmit, formState, watch, reset } =
-    useForm<FieldValues>({
-      mode: "onChange",
-      defaultValues: {},
-    });
-
-  const { isDirty, isValid, isSubmitting } = formState;
-  const watchedServices = watch("services", []);
-  const watchedDays = watch("availableDays", []);
-
-  // Dynamic time slots per day
-  const [timeSlotCounts, setTimeSlotCounts] = useState<{
-    [day: string]: number;
-  }>({});
-
-  const addTimeSlot = (day: string) => {
-    setTimeSlotCounts((prev) => ({
-      ...prev,
-      [day]: (prev[day] || 1) + 1,
-    }));
-  };
-
-  useEffect(() => {
-    fetchPublicProfile();
-  }, []);
-
-  useEffect(() => {
-    if (publicProfile) {
-      const defaultValues: FieldValues = {
-        specializations: publicProfile.specializations || [],
-        languages: publicProfile.languages || [],
-        experience: publicProfile.experience?.toString() || "",
-        biography: publicProfile.biography || "",
-        countries: (publicProfile.countries || []).map(
-          (code: string) => countryNameMap[code] || code
-        ),
-        consultationPrice: publicProfile.consultationPrice?.toString() || "",
-        secondOpinionPrice: publicProfile.secondOpinionPrice?.toString() || "",
-        weightLossPrice: publicProfile.weightLossPrice?.toString() || "",
-        radiologyPrice: publicProfile.radiologyPrice?.toString() || "",
-        services: publicProfile.services || [],
-        availableDays: publicProfile.availableDays || [],
-        consultationDuration:
-          publicProfile.consultationDuration?.toString() || "",
+  const { control, handleSubmit, formState, watch } = useForm<PublicProfile>({
+    mode: "onChange",
+    defaultValues: async () => {
+      const fallback: PublicProfile = {
+        specializations: [],
+        languages: [],
+        experience: "",
+        biography: "",
+        countries: [],
+        services: [],
+        consultationPrice: "",
+        secondOpinionPrice: "",
+        radiologyPrice: "",
+        weightLossPrice: "",
+        consultationDuration: "15",
+        availability: {
+          Sun: [],
+          Mon: [],
+          Tue: [],
+          Wed: [],
+          Thu: [],
+          Fri: [],
+          Sat: [],
+        },
       };
 
-      const slotCounts: { [day: string]: number } = {};
-      const availableTimeSlots = publicProfile.availableTimeSlots || {};
+      const res = await fetchPublicProfile();
 
-      Object.entries(availableTimeSlots).forEach(([day, slots]) => {
-        if (Array.isArray(slots)) {
-          slotCounts[day] = slots.length;
-          slots.forEach((slot, index) => {
-            // Ensure start and end times are "HH:mm"
-            defaultValues[`${day}_start_${index}`] = slot.start; // e.g., "09:00"
-            defaultValues[`${day}_end_${index}`] = slot.end; // e.g., "12:00"
-          });
-        }
-      });
+      if (!res) return fallback;
 
-      reset(defaultValues);
-      setTimeSlotCounts(slotCounts);
-    }
-  }, [publicProfile, reset]);
+      return {
+        ...fallback,
+        ...res,
+        experience: res.experience?.toString() || "",
+        consultationPrice: res.consultationPrice?.toString() || "",
+        secondOpinionPrice: res.secondOpinionPrice?.toString() || "",
+        radiologyPrice: res.radiologyPrice?.toString() || "",
+        weightLossPrice: res.weightLossPrice?.toString() || "",
+        consultationDuration: res.consultationDuration?.toString() || "15",
+      };
+    },
+  });
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      if (value.availableDays) {
-        setCurrentWatchedDays(value.availableDays);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const { isDirty, isValid, isSubmitting, isLoading } = formState;
+  const watchedServices = watch("services", []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
-
-    const selectedCountryCodes = (formData.countries || []).map(
-      (countryName: string) =>
-        countryCodeMap[countryName as keyof typeof countryCodeMap] ||
-        countryName
-    );
 
     const buildPrice = (service: string, field: string) =>
       watchedServices.includes(service)
         ? parseInt(formData[field], 10) || 0
         : null;
 
-    const consultationDuration =
-      parseInt(formData.consultationDuration, 10) || 15;
-
-    const timeSlots: { [day: string]: { start: string; end: string }[] } = {};
-    const subTimeSlots: { [day: string]: { start: string; end: string }[] } =
-      {};
-
-    for (const day of watchedDays) {
-      const slots: { start: string; end: string }[] = [];
-      const subSlots: { start: string; end: string }[] = [];
-
-      for (let i = 0; i < (timeSlotCounts[day] || 1); i++) {
-        const startStr = formData[`${day}_start_${i}`];
-        const endStr = formData[`${day}_end_${i}`];
-
-        if (startStr && endStr) {
-          const [startHour, startMin] = startStr.split(":").map(Number);
-          const [endHour, endMin] = endStr.split(":").map(Number);
-
-          const startDate = new Date();
-          startDate.setHours(startHour, startMin, 0, 0);
-          const endDate = new Date();
-          endDate.setHours(endHour, endMin, 0, 0);
-
-          if (startDate >= endDate) {
-            alert(
-              `Error on ${day}, slot ${
-                i + 1
-              }: start time must be before end time.`
-            );
-            return;
-          }
-
-          slots.push({ start: startStr, end: endStr });
-        }
-      }
-
-      // Check for overlaps
-      slots.sort((a, b) => a.start.localeCompare(b.start));
-      for (let j = 0; j < slots.length - 1; j++) {
-        const currEnd = new Date();
-        const nextStart = new Date();
-
-        const [currEndHour, currEndMin] = slots[j].end.split(":").map(Number);
-        const [nextStartHour, nextStartMin] = slots[j + 1].start
-          .split(":")
-          .map(Number);
-
-        currEnd.setHours(currEndHour, currEndMin, 0, 0);
-        nextStart.setHours(nextStartHour, nextStartMin, 0, 0);
-
-        if (currEnd > nextStart) {
-          alert(
-            `Error on ${day}: time slots ${j + 1} and ${
-              j + 2
-            } overlap. Please merge them.`
-          );
-          return;
-        }
-      }
-
-      // Subdivide time slots
-      for (const slot of slots) {
-        const [startHour, startMin] = slot.start.split(":").map(Number);
-        const [endHour, endMin] = slot.end.split(":").map(Number);
-        let current = new Date();
-        current.setHours(startHour, startMin, 0, 0);
-        const endDate = new Date();
-        endDate.setHours(endHour, endMin, 0, 0);
-
-        while (current < endDate) {
-          const subStart = new Date(current);
-          const subEnd = new Date(current);
-          subEnd.setMinutes(subEnd.getMinutes() + consultationDuration);
-
-          if (subEnd > endDate) break;
-
-          subSlots.push({
-            start: subStart.toTimeString().slice(0, 5),
-            end: subEnd.toTimeString().slice(0, 5),
-          });
-
-          current = subEnd;
-        }
-      }
-
-      if (slots.length) timeSlots[day] = slots;
-      if (subSlots.length) subTimeSlots[day] = subSlots;
-    }
-
     try {
-      const dataToSave = {
-        uid: userData.uid,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        image: userData.image || null,
-        updatedAt: Timestamp.now(),
-        specializations: formData.specializations || [],
-        languages: formData.languages || [],
-        experience: parseInt(formData.experience, 10) || 0,
-        biography: formData.biography || "",
-        countries: selectedCountryCodes,
-        services: formData.services || [],
-        consultationPrice: buildPrice("consultation", "consultationPrice"),
-        secondOpinionPrice: buildPrice("second opinion", "secondOpinionPrice"),
-        radiologyPrice: buildPrice("radiology", "radiologyPrice"),
-        weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
-        consultationDuration: formData.consultationDuration,
-        availableDays: formData.availableDays || [],
-        availableTimeSlots: timeSlots,
-        subTimeSlotsPerDuration: subTimeSlots,
-      };
-
-      await setDoc(doc(db, "publicProfiles", userData.uid), dataToSave, {
-        merge: true,
-      });
+      await setDoc(
+        doc(db, "publicProfiles", userData.uid),
+        {
+          uid: userData.uid,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          image: userData.image || null,
+          updatedAt: Timestamp.now(),
+          specializations: formData.specializations || [],
+          languages: formData.languages,
+          experience: parseInt(formData.experience, 10) || 0,
+          biography: formData.biography || "",
+          countries: formData.countries,
+          services: formData.services || [],
+          consultationPrice: buildPrice("consultation", "consultationPrice"),
+          secondOpinionPrice: buildPrice(
+            "second opinion",
+            "secondOpinionPrice"
+          ),
+          radiologyPrice: buildPrice("radiology", "radiologyPrice"),
+          weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
+          consultationDuration:
+            parseInt(formData.consultationDuration, 10) || 15,
+          availability: formData.availability || {
+            Sun: [],
+            Mon: [],
+            Tue: [],
+            Wed: [],
+            Thu: [],
+            Fri: [],
+            Sat: [],
+          },
+        },
+        {
+          merge: true,
+        }
+      );
       router.back();
     } catch (error) {
       console.error("Error updating public profile:", error);
     }
   };
 
-  if (isFetchingPublicProfile) return <LoadingScreen />;
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <View style={styles.container}>
@@ -267,34 +138,43 @@ const UpdatePublicProfile = () => {
             <TextSemiBold style={styles.nameText}>
               Dr. {userData?.firstName} {userData?.lastName}
             </TextSemiBold>
-            <TextSemiBold style={styles.roleText}>doctor</TextSemiBold>
+            <TextSemiBold style={styles.roleText}>
+              {t("common.doctor")}
+            </TextSemiBold>
           </View>
         </View>
 
         <ControllerCheckBoxOptions
-          label="Languages"
+          label={t("common.languages")}
           name="languages"
           control={control}
-          rules={{ required: "At least one language is required" }}
-          options={["english", "arabic", "hindu"]}
+          rules={{ required: t("form.at-least-one-language-is-required") }}
+          options={[
+            { label: t("languages.english"), value: "en" },
+            { label: t("languages.arabic"), value: "ar" },
+            { label: t("languages.hindi"), value: "hi" },
+          ]}
         />
 
         <ControllerCheckBoxOptions
-          label="Countries you are licensed in"
+          label={t("form.countries-you-are-licensed-in")}
           name="countries"
           control={control}
-          rules={{ required: "At least one country is required" }}
-          options={Object.keys(countryCodeMap)}
+          rules={{ required: t("form.at-least-one-country-is-required") }}
+          options={getCountryOptions(t)}
         />
 
         <ControllerInput
-          label="Experience (in years)"
-          placeholder="e.g. 5"
+          label={t("form.experience-in-years")}
+          placeholder={t("form.e-g-5")}
           name="experience"
           control={control}
           rules={{
-            required: "Experience is required",
-            pattern: { value: /^\d+$/, message: "Must be a valid number" },
+            required: t("form.experience-is-required"),
+            pattern: {
+              value: /^\d+$/,
+              message: t("form.must-be-a-valid-number"),
+            },
           }}
           keyboardType="numeric"
         />
@@ -302,11 +182,11 @@ const UpdatePublicProfile = () => {
         <Divider />
 
         <ControllerInput
-          label="Biography"
-          placeholder="Tell us about yourself"
+          label={t("form.biography")}
+          placeholder={t("form.tell-us-about-yourself")}
           name="biography"
           control={control}
-          rules={{ required: "Biography is required" }}
+          rules={{ required: t("form.biography-is-required") }}
           multiline
           textInputStyle={{ height: 128 }}
         />
@@ -314,136 +194,145 @@ const UpdatePublicProfile = () => {
         <Divider />
 
         <ControllerCheckBoxOptions
-          label="Select services you provide"
+          label={t("form.select-services-you-provide")}
           name="services"
           control={control}
-          rules={{ required: "At least one service is required" }}
+          rules={{ required: t("form.at-least-one-service-is-required") }}
           options={[
-            "consultation",
-            "second opinion",
-            "radiology",
-            "weight loss",
+            {
+              label: t("appointment-types.consultation"),
+              value: "consultation",
+            },
+            {
+              label: t("appointment-types.second-opinion"),
+              value: "second opinion",
+            },
+            { label: t("appointment-types.radiology"), value: "radiology" },
+            { label: t("appointment-types.weight-loss"), value: "weight loss" },
           ]}
         />
 
-        {["consultation", "second opinion", "radiology", "weight loss"].map(
-          (service) =>
-            watchedServices.includes(service) ? (
-              <ControllerInput
-                key={service}
-                label={`${
-                  service.charAt(0).toUpperCase() + service.slice(1)
-                } Price (in USD)`}
-                placeholder="e.g. 50"
-                name={`${toCamelCase(service)}Price`}
-                control={control}
-                rules={{ required: `Price for ${service} is required` }}
-                keyboardType="numeric"
-                textInputStyle={{ width: "100%" }}
-              />
-            ) : null
+        {watchedServices.includes("consultation") && (
+          <ControllerInput
+            key="consultation"
+            label={t("form.service-price", {
+              service: t("appointment-types.consultation"),
+            })}
+            placeholder={t("form.e-g-50")}
+            name="consultationPrice"
+            control={control}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              // Greater than 0 validation
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
+            keyboardType="numeric"
+            textInputStyle={{ width: "100%" }}
+          />
+        )}
+        {watchedServices.includes("second opinion") && (
+          <ControllerInput
+            key="second-opinion"
+            label={t("form.service-price", {
+              service: t("appointment-types.second-opinion"),
+            })}
+            placeholder={t("form.e-g-50")}
+            name="secondOpinionPrice"
+            control={control}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
+            keyboardType="numeric"
+            textInputStyle={{ width: "100%" }}
+          />
+        )}
+        {watchedServices.includes("radiology") && (
+          <ControllerInput
+            key="radiology"
+            label={t("form.service-price", {
+              service: t("appointment-types.radiology"),
+            })}
+            placeholder={t("form.e-g-50")}
+            name="radiologyPrice"
+            control={control}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
+            keyboardType="numeric"
+            textInputStyle={{ width: "100%" }}
+          />
+        )}
+        {watchedServices.includes("weight loss") && (
+          <ControllerInput
+            key="weight-loss"
+            label={t("form.service-price", {
+              service: t("appointment-types.weight-loss"),
+            })}
+            placeholder={t("form.e-g-50")}
+            name="weightLossPrice"
+            control={control}
+            rules={{
+              required: t("form.please-enter-a-price"),
+              validate: (value) =>
+                (typeof value === "string" && parseInt(value, 10) > 0) ||
+                t("form.price-must-be-greater-than-zero"),
+            }}
+            keyboardType="numeric"
+            textInputStyle={{ width: "100%" }}
+          />
         )}
 
         <Divider />
 
         <ControllerCheckBoxOptions
-          label="Specializations"
+          label={t("common.specializations")}
           name="specializations"
           control={control}
-          rules={{ required: "At least one specialization is required" }}
-          options={SPECIALIZATIONS.map((spec) => spec.name)}
+          rules={{
+            required: t("form.at-least-one-specialization-is-required"),
+          }}
+          options={getSpecializations(t)}
         />
 
         <Divider />
 
         <ControllerInput
-          label="How long are your calls? (in minutes)"
-          control={control}
-          placeholder="e.g. 15"
+          label={t("form.how-long-are-your-calls-in-minutes")}
+          placeholder={t("form.e-g-15")}
           name="consultationDuration"
+          control={control}
           rules={{
-            required: "Duration is required",
-            pattern: { value: /^\d+$/, message: "Must be a valid number" },
+            required: t("form.duration-is-required"),
+            pattern: {
+              value: /^\d+$/,
+              message: t("form.must-be-a-valid-number"),
+            },
+            validate: (value) =>
+              (typeof value === "string" && parseInt(value, 10) >= 15) ||
+              t("form.minimum-15-minutes"),
           }}
           keyboardType="numeric"
         />
 
-        <ControllerCheckBoxOptions
-          label="What days are you available?"
-          name="availableDays"
+        <ControllerAvailability
+          label={t("form.availability")}
           control={control}
-          rules={{ required: "At least one day is required" }}
-          options={[
-            "sunday",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-          ]}
+          name="availability"
         />
-
-        {currentWatchedDays.map((day: string) => (
-          <View key={day}>
-            <View style={styles.actionRow}>
-              <TextRegular
-                style={styles.timeslotHeader}
-              >{`${day} time slots`}</TextRegular>
-              <IconButton
-                size={24}
-                name="add"
-                onPress={() => addTimeSlot(day)}
-              />
-            </View>
-
-            {Array.from({ length: timeSlotCounts[day] || 1 }).map(
-              (_, index) => (
-                <View key={`${day}_${index}`} style={styles.timeSlot}>
-                  <TextSemiBold style={styles.timeslotCount}>
-                    {index + 1}
-                  </TextSemiBold>
-                  <View style={{ flex: 1 }}>
-                    <ControllerTimePicker
-                      name={`${day}_start_${index}`}
-                      placeholder="Start time"
-                      control={control}
-                      rules={{
-                        required: `Start time for ${day} is required`,
-                      }}
-                    />
-                  </View>
-                  <View style={{ flex: 1 }}>
-                    <ControllerTimePicker
-                      name={`${day}_end_${index}`}
-                      placeholder="End time"
-                      control={control}
-                      rules={{
-                        required: `End time for ${day} is required`,
-                      }}
-                    />
-                  </View>
-                </View>
-              )
-            )}
-          </View>
-        ))}
       </FormPage>
     </View>
   );
 };
 
 export default UpdatePublicProfile;
-
-const toCamelCase = (str: string) =>
-  str
-    .split(" ")
-    .map((word, index) =>
-      index === 0
-        ? word.toLowerCase()
-        : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    )
-    .join("");
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },

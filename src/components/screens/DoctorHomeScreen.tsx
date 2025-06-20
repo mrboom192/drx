@@ -17,9 +17,9 @@ import React, { useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DoctorCalendar from "../Calendar/DoctorCalendar";
-import DoctorHomeHeader from "../DoctorHomeHeader";
 import Notifications from "../Notifications/Notifications";
 import { TextRegular, TextSemiBold } from "../StyledText";
+import LoadingScreen from "../LoadingScreen";
 
 const DoctorHomeScreen = () => {
   const userData = useUserData();
@@ -42,17 +42,7 @@ const DoctorHomeScreen = () => {
     };
   }, []);
 
-  if (isFetchingAppointments) {
-    return (
-      <View
-        style={{ flex: 1, backgroundColor: "#FFF", paddingTop: insets.top }}
-      >
-        <TextRegular style={{ textAlign: "center", marginTop: 20 }}>
-          Loading...
-        </TextRegular>
-      </View>
-    );
-  }
+  if (isFetchingAppointments) return <LoadingScreen />;
 
   if (error) {
     return (
@@ -68,13 +58,9 @@ const DoctorHomeScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <Stack.Screen
-        options={{ title: "Doctor", header: () => <DoctorHomeHeader /> }}
-      />
       <Notifications />
       <View
         style={{
-          marginTop: 16,
           marginHorizontal: 16,
           borderBottomWidth: 1,
           borderBottomColor: Colors.faintGrey,
@@ -89,7 +75,7 @@ export default DoctorHomeScreen;
 
 export const VerificationAlert = () => {
   const handleNavigate = () => {
-    router.push("/profile");
+    router.navigate("/profile");
   };
 
   return (

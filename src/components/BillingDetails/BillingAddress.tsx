@@ -1,7 +1,7 @@
 import Colors from "@/constants/Colors";
 import { BillingDetails } from "@stripe/stripe-react-native";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import CustomIcon from "../icons/CustomIcon";
+import CustomIcon from "../CustomIcon";
 import { TextSemiBold } from "../StyledText";
 
 const BillingAddress = ({

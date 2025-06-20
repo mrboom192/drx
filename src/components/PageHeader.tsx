@@ -4,6 +4,7 @@ import { Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
 import { TextSemiBold } from "./StyledText";
+import i18next from "i18next";
 
 const HEADER_HEIGHT = 56;
 
@@ -30,7 +31,16 @@ const PageHeader = ({
     >
       {back && (
         <View style={[header.backButton]}>
-          <IconButton name="arrow-back" onPress={navigation.goBack} />
+          <IconButton
+            name={
+              isModal
+                ? "close"
+                : i18next.dir() === "ltr"
+                ? "arrow-back"
+                : "arrow-forward"
+            }
+            onPress={navigation.goBack}
+          />
         </View>
       )}
       <TextSemiBold style={header.title}>{title}</TextSemiBold>

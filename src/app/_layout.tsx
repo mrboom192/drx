@@ -1,7 +1,5 @@
 import PageHeader from "@/components/PageHeader";
 import ExpoStripeProvider from "@/components/stripe-provider";
-import { SignUpProvider } from "@/contexts/SignupContext";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useIsAuthReady, useSetIsAuthReady } from "@/stores/useAuthInitStore";
 import { useStartNotifications } from "@/stores/useNotificationStore";
 import {
@@ -16,21 +14,18 @@ import {
   useFonts,
 } from "@expo-google-fonts/dm-sans";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-get-random-values"; // Required for nanoid
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
+import "../i18n/config";
+import i18next from "i18next";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -127,56 +122,53 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { colorScheme } = useThemedStyles();
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
         <BottomSheetModalProvider>
           <ExpoStripeProvider>
-            <ThemeProvider
-              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            >
-              <SessionProvider>
-                <SignUpProvider>
-                  <Stack
-                    screenOptions={{
-                      navigationBarColor: "#FFF",
-                    }}
-                  >
-                    <Stack.Screen
-                      name="(protected)"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="login"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      name="signup"
-                      options={{
-                        title: "Sign up with DrX",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="terms-of-service"
-                      options={{
-                        title: "Terms of Service",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                    <Stack.Screen
-                      name="privacy-policy"
-                      options={{
-                        title: "Privacy Policy",
-                        header: (props) => <PageHeader {...props} />,
-                      }}
-                    />
-                  </Stack>
-                </SignUpProvider>
-              </SessionProvider>
-            </ThemeProvider>
+            <SessionProvider>
+              <Stack
+                screenOptions={{
+                  navigationBarColor: "#FFF",
+                }}
+              >
+                <Stack.Screen
+                  name="(protected)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="signup"
+                  options={{
+                    title: i18next.t("signup.sign-up-with-drx"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+                <Stack.Screen
+                  name="forgot-password"
+                  options={{
+                    presentation: "modal",
+                    title: i18next.t("page.recover-your-password"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+                <Stack.Screen
+                  name="terms-of-service"
+                  options={{
+                    title: i18next.t("page.terms-of-service"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+                <Stack.Screen
+                  name="privacy-policy"
+                  options={{
+                    title: i18next.t("page.privacy-policy"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
+              </Stack>
+            </SessionProvider>
           </ExpoStripeProvider>
         </BottomSheetModalProvider>
       </KeyboardProvider>

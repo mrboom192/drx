@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Text, TextProps } from "react-native";
 
 export function TextRegular(props: TextProps) {
@@ -5,7 +6,12 @@ export function TextRegular(props: TextProps) {
     <Text
       {...props}
       allowFontScaling={false} // Even though this is bad for accessibility, scaling text breaks the layout
-      style={[props.style, { fontFamily: "DMSans_400Regular" }]}
+      style={[
+        props.style,
+        {
+          fontFamily: "DMSans_400Regular",
+        },
+      ]}
     />
   );
 }

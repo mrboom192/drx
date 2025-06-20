@@ -1,7 +1,7 @@
 import Colors from "@/constants/Colors";
 import { Route, router } from "expo-router";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import CustomIcon from "../icons/CustomIcon";
+import CustomIcon from "../CustomIcon";
 import { TextRegular, TextSemiBold } from "../StyledText";
 
 const NotificationCard = ({
@@ -18,7 +18,7 @@ const NotificationCard = ({
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => url && router.push(url)}
+      onPress={() => url && router.navigate(url)}
     >
       <View style={styles.titleRow}>
         <CustomIcon name="circle" size={8} color={color} />

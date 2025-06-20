@@ -1,10 +1,11 @@
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { formatTime } from "@/utils/callUtils";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const CallButtons = ({
@@ -27,7 +28,16 @@ const CallButtons = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[footer.container, { bottom: insets.bottom }]}>
+    <View
+      style={[
+        footer.container,
+        {
+          bottom: insets.bottom,
+          left: I18nManager.isRTL ? undefined : "50%",
+          right: I18nManager.isRTL ? "50%" : undefined,
+        },
+      ]}
+    >
       <BlurView intensity={50} tint="dark" style={footer.blurView}>
         <View style={footer.userRow}>
           <TextRegular style={footer.otherPersonName}>{name}</TextRegular>
@@ -72,7 +82,6 @@ export default CallButtons;
 const footer = StyleSheet.create({
   container: {
     position: "absolute",
-    left: "50%",
     transform: [{ translateX: "-50%" }],
     zIndex: 9999,
     borderRadius: 24,

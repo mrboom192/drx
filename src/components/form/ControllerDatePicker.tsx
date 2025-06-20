@@ -1,11 +1,15 @@
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { format } from "date-fns";
+import { format, Locale } from "date-fns";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
+import i18next from "i18next";
+import { ar } from "date-fns/locale/ar";
+import { enUS } from "date-fns/locale";
+import { locales } from "@/constants/locales";
 
 const ControllerDatePicker = ({
   control,
@@ -13,8 +17,10 @@ const ControllerDatePicker = ({
   rules = {},
   label,
   disabled = false,
-  placeholder = "Select Date",
+  placeholder = i18next.t("form.select-date"),
   formatDate = "MMMM d, yyyy",
+  maximumDate = undefined,
+  minimumDate = undefined,
 }: {
   control: Control;
   name: string;
@@ -23,6 +29,8 @@ const ControllerDatePicker = ({
   disabled?: boolean;
   placeholder?: string;
   formatDate?: string;
+  maximumDate?: Date;
+  minimumDate?: Date;
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -53,7 +61,11 @@ const ControllerDatePicker = ({
                   color: value ? "#000" : Colors.lightText,
                 }}
               >
-                {value ? format(value, formatDate) : placeholder}
+                {value
+                  ? format(value, formatDate, {
+                      locale: locales[i18next.language] ?? enUS,
+                    })
+                  : placeholder}
               </TextRegular>
               <Ionicons name="calendar-outline" size={20} color={Colors.grey} />
             </Pressable>
@@ -63,12 +75,14 @@ const ControllerDatePicker = ({
               mode="date"
               open={showDatePicker}
               date={value || new Date()}
-              maximumDate={new Date()}
+              maximumDate={maximumDate}
+              minimumDate={minimumDate}
               onConfirm={(date) => {
                 setShowDatePicker(false);
                 onChange(date);
               }}
               onCancel={() => setShowDatePicker(false)}
+              locale={i18next.language}
             />
           </View>
         );

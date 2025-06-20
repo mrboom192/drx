@@ -5,23 +5,28 @@ import { useChats, useIsFetchingChats } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { getSenderName } from "@/utils/chatUtils";
-import { format } from "date-fns";
+import { enUS, ar } from "date-fns/locale";
+import { format, Locale } from "date-fns";
 import { Link } from "expo-router";
 import React, { useRef } from "react";
 import {
   FlatList,
+  I18nManager,
   StyleSheet,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from "react-native";
 import Avatar from "./Avatar";
 import { TextRegular, TextSemiBold } from "./StyledText";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
-const ChatsList = () => {
+const locales = { enUS, ar };
+
+const ChatsList = ({ filter }: { filter: string }) => {
+  const { t } = useTranslation();
   const userData = useUserData();
   const listRef = useRef<FlatList>(null);
-  const colorScheme = useColorScheme();
   const chats = useChats();
   const isFetchingChats = useIsFetchingChats();
 
@@ -35,23 +40,17 @@ const ChatsList = () => {
     );
   }
 
-  const themeBorderStyle =
-    colorScheme === "light"
-      ? themedStyles.lightBorder
-      : themedStyles.darkBorder;
+  const filteredChats =
+    filter !== "all" ? chats.filter((chat) => chat.status === filter) : chats;
 
-  if (chats.length === 0) {
+  if (filteredChats.length === 0) {
     return (
       <View
-        style={[
-          themeBorderStyle,
-          {
-            flex: 1,
-            borderWidth: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        ]}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <TextSemiBold
           style={{
@@ -61,9 +60,11 @@ const ChatsList = () => {
             textAlign: "center",
           }}
         >
-          {userData?.role === "doctor"
-            ? "You currently have no chats"
-            : "Book a consultation to start chatting with a doctor"}
+          {filter !== "all"
+            ? t("chats.no-chats-found")
+            : userData?.role === "doctor"
+            ? t("chats.you-currently-have-no-chats")
+            : t("chats.book-a-consultation-to-start-chatting-with-a-doctor")}
         </TextSemiBold>
       </View>
     );
@@ -72,7 +73,7 @@ const ChatsList = () => {
   return (
     <FlatList
       renderItem={({ item }) => <ChatRow chat={item} />}
-      data={isFetchingChats ? [] : chats}
+      data={isFetchingChats ? [] : filteredChats}
       ref={listRef}
     />
   );
@@ -86,6 +87,8 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
       : chat.participants.patient;
 
   const presence = useUserPresence(otherUser.uid);
+
+  const locales: Record<string, Locale> = { enUS, "ar-US": ar };
 
   return (
     <Link
@@ -118,7 +121,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
             />
           </View>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
             <TextSemiBold style={{ fontSize: 16 }}>
               {userData?.role === "doctor"
                 ? chat.participants.patient.firstName +
@@ -128,11 +131,11 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
                   " " +
                   chat.participants.doctor.lastName}
             </TextSemiBold>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
               <TextRegular
                 numberOfLines={2}
-                ellipsizeMode="tail"
-                style={{ flex: 1, color: Colors.grey }}
+                ellipsizeMode={I18nManager.isRTL ? "head" : "tail"}
+                style={{ flex: 1, color: Colors.grey, textAlign: "left" }}
               >
                 <TextSemiBold>
                   {getSenderName(chat.lastMessage.senderId, chat)}:{" "}
@@ -143,7 +146,9 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
           </View>
 
           <TextRegular style={{ fontSize: 16, color: Colors.grey }}>
-            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a")}
+            {format(new Date(chat.lastMessage.timestamp * 1000), "h:mm a", {
+              locale: locales[i18next.language] ?? enUS, // Support more languages in the future
+            })}
           </TextRegular>
         </View>
       </TouchableOpacity>

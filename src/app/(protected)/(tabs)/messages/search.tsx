@@ -1,4 +1,4 @@
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useChats } from "@/stores/useChatStore";
@@ -6,7 +6,9 @@ import { useUserData } from "@/stores/useUserStore";
 import { Chat } from "@/types/chat";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import i18next from "i18next";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FlatList,
   StyleSheet,
@@ -16,6 +18,7 @@ import {
 } from "react-native";
 
 export default function SearchModal() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const userData = useUserData();
@@ -36,7 +39,7 @@ export default function SearchModal() {
 
   const handleResultPress = (chat: Chat) => {
     // Naviagate to the chat screen
-    router.push({
+    router.navigate({
       pathname: "/(protected)/(chat)/[chatId]",
       params: { chatId: chat.id },
     });
@@ -48,7 +51,7 @@ export default function SearchModal() {
         <CustomIcon name="search" size={20} color="#9b9a9e" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search chats..."
+          placeholder={t("form.search-chats")}
           placeholderTextColor={Colors.lightText}
           value={searchQuery}
           onChangeText={handleSearch}
@@ -75,7 +78,13 @@ export default function SearchModal() {
                 : `${item.participants.patient.firstName} ${item.participants.patient.lastName}`}
             </TextRegular>
             <TextRegular style={styles.resultDate}>
-              {item.createdAt.toDate().toLocaleString()}
+              {item.createdAt.toDate().toLocaleString(i18next.language, {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </TextRegular>
           </TouchableOpacity>
         )}
@@ -83,8 +92,8 @@ export default function SearchModal() {
           <View style={styles.emptyContainer}>
             <TextRegular style={styles.emptyText}>
               {searchQuery.length > 0
-                ? "No chats found"
-                : "Start typing to search chats"}
+                ? t("form.no-chats-found")
+                : t("form.start-typing-to-search-chats")}
             </TextRegular>
           </View>
         )}

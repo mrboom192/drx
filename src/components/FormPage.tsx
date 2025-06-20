@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
 import useGradualAnimation from "@/hooks/useGradualAnimation";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import Footer from "./AddFooter";
@@ -48,11 +48,13 @@ export default FormPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexGrow: 1,
     backgroundColor: "#fff",
   },
   pageScrollViewContent: {
     flexDirection: "column",
     gap: 16,
+    paddingHorizontal: 16,
     paddingBottom: 64,
   },
   frequencyRow: {

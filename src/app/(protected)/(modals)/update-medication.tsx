@@ -10,6 +10,7 @@ import {
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 type MedicationForm = {
@@ -21,6 +22,7 @@ type MedicationForm = {
 };
 
 const UpdateMedication = () => {
+  const { t } = useTranslation();
   const { mode, id } = useLocalSearchParams();
   const isEditMode = mode === "edit";
   const medication = useRecordStoreMedicationById(id as string);
@@ -69,7 +71,11 @@ const UpdateMedication = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen
-        options={{ title: `${isEditMode ? "Edit" : "Add"} Medication` }}
+        options={{
+          title: `${isEditMode ? t("common.edit") : t("common.add")} ${t(
+            "common.medication"
+          )}`,
+        }}
       />
 
       <FormPage
@@ -80,55 +86,59 @@ const UpdateMedication = () => {
         <ControllerInput
           control={control}
           name="name"
-          rules={{ required: "Medication name is required" }}
-          label="Medication Name"
-          placeholder="e.g. Atorvastatin"
+          rules={{ required: t("form.medication-name-is-required") }}
+          label={t("form.medication-name")}
+          placeholder={t("form.e-g-atorvastatin")}
         />
         <ControllerInput
           control={control}
           name="dosage"
-          rules={{ required: "Dosage amount is required" }}
-          label="Dosage"
-          placeholder="e.g. 10mg"
+          rules={{ required: t("form.dosage-amount-is-required") }}
+          label={t("form.dosage")}
+          placeholder={t("form.e-g-10mg")}
           keyboardType="default"
         />
         <ControllerCheckBoxOptions
           control={control}
           name="route"
-          label="Medication Route"
+          label={t("form.medication-route")}
           options={[
-            "oral",
-            "topical",
-            "inhalation",
-            "nasal",
-            "ocular",
-            "otic",
-            "rectal",
-            "vaginal",
-            "intravenous",
-            "intramuscular",
-            "subcutaneous",
+            { value: "oral", label: t("route.oral") },
+            { value: "topical", label: t("route.topical") },
+            { value: "inhalation", label: t("route.inhalation") },
+            { value: "nasal", label: t("route.nasal") },
+            { value: "ocular", label: t("route.ocular") },
+            { value: "otic", label: t("route.otic") },
+            { value: "rectal", label: t("route.rectal") },
+            { value: "vaginal", label: t("route.vaginal") },
+            { value: "intravenous", label: t("route.intravenous") },
+            { value: "intramuscular", label: t("route.intramuscular") },
+            { value: "subcutaneous", label: t("route.subcutaneous") },
           ]}
-          rules={{ required: "Please select a dosage route" }}
+          rules={{ required: t("form.please-select-a-dosage-route") }}
           singleSelect
         />
         <Divider />
         <ControllerInput
           control={control}
           rules={{
-            required: "Please enter a frequency",
+            required: t("form.please-enter-a-frequency"),
           }}
           name="frequency"
-          label={"How often do you take this?"}
-          placeholder={"e.g. 2"}
+          label={t("form.how-often-do-you-take-this")}
+          placeholder={t("form.e-g-2")}
           keyboardType="numeric"
         />
         <ControllerCheckBoxOptions
           control={control}
-          label={"What is the interval?"}
+          label={t("form.what-is-the-interval")}
           name="interval"
-          options={["daily", "monthly", "weekly"]}
-          rules={{ required: "Please select an interval" }}
+          options={[
+            { value: "daily", label: t("interval.daily") },
+            { value: "weekly", label: t("interval.weekly") },
+            { value: "monthly", label: t("interval.monthly") },
+          ]}
+          rules={{ required: t("form.please-select-an-interval") }}
           singleSelect
         />
       </FormPage>

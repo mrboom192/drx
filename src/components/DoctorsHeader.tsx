@@ -3,133 +3,25 @@ import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useMemo, useRef, useState } from "react";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextSemiBold } from "./StyledText";
-import { ScrollView, TouchableOpacity, View } from "./Themed";
-
-const categories = [
-  {
-    name: "All",
-    icon: "user",
-  },
-  {
-    name: "General Practice",
-    icon: "stethoscope",
-  },
-  {
-    name: "Pediatrics",
-    icon: "child_care",
-  },
-  {
-    name: "Cardiology",
-    icon: "favorite",
-  },
-  {
-    name: "Dermatology",
-    icon: "healing",
-  },
-  {
-    name: "Oncology",
-    icon: "coronavirus",
-  },
-  {
-    name: "Neurology",
-    icon: "psychology",
-  },
-  {
-    name: "Ophthalmology",
-    icon: "visibility",
-  },
-  {
-    name: "Orthopedics",
-    icon: "accessibility_new",
-  },
-  {
-    name: "Psychiatry",
-    icon: "psychology_alt",
-  },
-  {
-    name: "Neurosurgery",
-    icon: "medical_services",
-  },
-  {
-    name: "Allergy and Immunology",
-    icon: "sick",
-  },
-  {
-    name: "Anesthesiology",
-    icon: "mask",
-  },
-  {
-    name: "Diagnostic Radiology",
-    icon: "biotech",
-  },
-  {
-    name: "Emergency Medicine",
-    icon: "local_hospital",
-  },
-  {
-    name: "Family Medicine",
-    icon: "group",
-  },
-  {
-    name: "Internal Medicine",
-    icon: "medication",
-  },
-  {
-    name: "Medical Genetics",
-    icon: "science",
-  },
-  {
-    name: "Nuclear Medicine",
-    icon: "radiology",
-  },
-  {
-    name: "Obstetrics and Gynecology",
-    icon: "pregnant_woman",
-  },
-  {
-    name: "Pathology",
-    icon: "microscope",
-  },
-  {
-    name: "Rehab",
-    icon: "elderly",
-  },
-  {
-    name: "Preventive Medicine",
-    icon: "health_and_safety",
-  },
-  {
-    name: "Radiation Oncology",
-    icon: "radiology",
-  },
-  {
-    name: "Surgery",
-    icon: "surgical",
-  },
-  {
-    name: "Urology",
-    icon: "water_drop",
-  },
-  {
-    name: "Gastroenterology",
-    icon: "stomach",
-  },
-];
-
+import IconButton from "./IconButton";
+import CustomIcon from "./CustomIcon";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import { getSpecializations } from "@/constants/specializations";
 interface Props {
   onSpecialtyChange: (specialty: string) => void;
 }
 
 const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
+  const { t } = useTranslation();
+  const searchFilters = useMemo(() => getSpecializations(t), [t]);
   const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
   const itemsRef = useRef<Array<typeof TouchableOpacity | null>>([]);
-  const { colorScheme, themeBorderStyle, themeTextStyleSecondary } =
-    useThemedStyles();
   const [activeIndex, setActiveIndex] = useState(0);
   const insets = useSafeAreaInsets();
 
@@ -146,114 +38,85 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(categories[index].name);
+    onSpecialtyChange(searchFilters[index].value);
   };
 
   return (
-    <View style={{ paddingTop: insets.top }}>
-      <View style={styles.container}>
-        <View style={styles.actionRow}>
-          {/* Search container */}
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={[themeBorderStyle, styles.filterBtn]}
-          >
-            <Ionicons
-              name="chevron-back"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.push({ pathname: "/search-modal" })}
-            style={[themeBorderStyle, styles.searchBtn]}
-          >
-            <Ionicons
-              name="search"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
-              }
-            />
-            <View>
-              <TextSemiBold style={themeTextStyleSecondary}>
-                Search
-              </TextSemiBold>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => router.push("/(protected)/(modals)/filter")}
-            style={[themeBorderStyle, styles.filterBtn]}
-          >
-            <Ionicons
-              name="options-outline"
-              size={24}
-              color={
-                colorScheme === "light" ? Colors.light.grey : Colors.light.grey
-              }
-            />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView
-          ref={scrollRef as any}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[
-            themeBorderStyle,
-            {
-              borderWidth: 0,
-              borderBottomWidth: 1,
-              alignItems: "center",
-              gap: 30,
-              paddingHorizontal: 16,
-              paddingBottom: 16,
-            },
-          ]}
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.actionRow}>
+        <IconButton
+          size={40}
+          name={i18next.dir() === "rtl" ? "arrow-forward" : "arrow-back"}
+          onPress={() => router.back()}
+        />
+        <TouchableOpacity
+          onPress={() => router.navigate({ pathname: "/search-modal" })}
+          style={styles.searchBtn}
         >
-          {categories.map((item, index) => (
-            <TouchableOpacity
-              onPress={() => selectCategory(index)}
-              key={index}
-              ref={(el: any) => (itemsRef.current[index] = el)}
-              style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 4,
-              }}
-            >
-              <TextSemiBold
-                style={
-                  activeIndex === index
-                    ? { color: Colors.black }
-                    : { color: Colors.lightText }
-                }
-              >
-                {item.name}
-              </TextSemiBold>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+          <CustomIcon name="search" size={20} color={Colors.black} />
+          <TextSemiBold style={{ color: Colors.lightText }}>
+            {t("common.search")}
+          </TextSemiBold>
+        </TouchableOpacity>
+
+        <IconButton
+          size={40}
+          name="sort"
+          onPress={() => router.navigate("/(protected)/(modals)/filter")}
+        />
       </View>
+
+      <ScrollView
+        ref={scrollRef as any}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          alignItems: "center",
+          gap: 30,
+          padding: 16,
+        }}
+      >
+        {searchFilters.map((item, index) => (
+          <TouchableOpacity
+            onPress={() => selectCategory(index)}
+            key={index}
+            ref={(el: any) => (itemsRef.current[index] = el)}
+            style={{
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <TextSemiBold
+              style={
+                activeIndex === index
+                  ? { color: Colors.black }
+                  : { color: Colors.lightText }
+              }
+            >
+              {item.label}
+            </TextSemiBold>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#FFF",
     flexDirection: "column",
     justifyContent: "flex-start",
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.faintGrey,
   },
   actionRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 24,
-    marginBottom: 16,
+    marginHorizontal: 16,
     gap: 16,
   },
   filterBtn: {
@@ -266,11 +129,13 @@ const styles = StyleSheet.create({
   searchBtn: {
     flexDirection: "row",
     alignItems: "center",
-    height: 56,
+    height: 40,
     gap: 10,
     flex: 1,
-    padding: 14,
+    paddingHorizontal: 14,
     borderRadius: 30,
+    borderColor: Colors.faintGrey,
+    borderWidth: 1,
   },
 });
 

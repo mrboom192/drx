@@ -7,6 +7,7 @@ const useGradualAnimation = () => {
 
   useKeyboardHandler(
     {
+      // Waiting for fix...
       onMove: (event) => {
         "worklet";
         height.value = Math.max(event.height, 0);

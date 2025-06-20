@@ -2,7 +2,7 @@ import { db } from "@/../firebaseConfig";
 import Avatar from "@/components/Avatar";
 import LoadingScreen from "@/components/LoadingScreen";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import Biography from "@/components/screens/doctor/Biography";
 import Specializations from "@/components/screens/doctor/Specializations";
 import Colors from "@/constants/Colors";
@@ -12,6 +12,8 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+import { getLanguageOptions } from "@/constants/languages";
 
 interface PublicProfile {
   uid: string;
@@ -27,6 +29,7 @@ interface PublicProfile {
 }
 
 const Page = () => {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const [doctor, setDoctor] = useState<PublicProfile | null>(null);
@@ -58,7 +61,7 @@ const Page = () => {
   }, [id]);
 
   const handleBooking = () => {
-    router.push(`/doctor/booking?id=${id}`);
+    router.navigate(`/doctor/booking?id=${id}`);
   };
 
   if (isLoading) return <LoadingScreen />;
@@ -108,7 +111,9 @@ const Page = () => {
               initials={doctor.firstName[0] + doctor.lastName[0]}
             />
             <View style={{ flex: 1 }}>
-              <TextSemiBold style={{ fontSize: 20, color: "#000" }}>
+              <TextSemiBold
+                style={{ fontSize: 20, color: "#000", textAlign: "left" }}
+              >
                 Dr. {doctor.firstName} {doctor.lastName}
               </TextSemiBold>
             </View>
@@ -124,17 +129,28 @@ const Page = () => {
           >
             <Ionicons name="language" size={20} color="#000" />
             <View style={{ flexDirection: "column", gap: 8 }}>
-              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-                Languages
+              <TextSemiBold
+                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+              >
+                {t("common.languages")}
               </TextSemiBold>
               <TextRegular
                 style={{
                   fontSize: 16,
                   color: Colors.light.grey,
-                  lineHeight: 20,
+                  textAlign: "left",
                 }}
               >
-                Dr. {doctor.firstName} speaks {doctor.languages?.join(", ")}.
+                {t("doctor.doctor-speaks", {
+                  firstName: doctor.firstName,
+                  languages: doctor.languages
+                    ?.map(
+                      (code) =>
+                        getLanguageOptions(t).find((opt) => opt.value === code)
+                          ?.label || code
+                    )
+                    .join(t("common.list-separator")),
+                })}
               </TextRegular>
             </View>
           </View>
@@ -146,18 +162,22 @@ const Page = () => {
           >
             <CustomIcon name="briefcase" size={20} color="#000" />
             <View style={{ flexDirection: "column", gap: 8 }}>
-              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-                Experience
+              <TextSemiBold
+                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+              >
+                {t("common.experience")}
               </TextSemiBold>
               <TextRegular
                 style={{
                   fontSize: 16,
                   color: Colors.light.grey,
-                  lineHeight: 20,
+                  textAlign: "left",
                 }}
               >
-                Dr. {doctor.firstName} has over {doctor.experience}+ years of
-                experience.
+                {t("doctor.experience-description", {
+                  lastName: doctor.lastName,
+                  count: doctor.experience,
+                })}
               </TextRegular>
             </View>
           </View>
@@ -179,10 +199,14 @@ const Page = () => {
         }}
       >
         <View>
-          <TextRegular style={{ fontSize: 14, color: "#666" }}>
-            Consultation Price
+          <TextRegular
+            style={{ fontSize: 14, color: Colors.lightText, textAlign: "left" }}
+          >
+            {t("common.consultation-price")}
           </TextRegular>
-          <TextSemiBold style={{ fontSize: 20 }}>
+          <TextSemiBold
+            style={{ fontSize: 20, color: Colors.black, textAlign: "left" }}
+          >
             ${doctor.consultationPrice}
           </TextSemiBold>
         </View>
@@ -196,7 +220,7 @@ const Page = () => {
           onPress={handleBooking}
         >
           <TextSemiBold style={{ color: "#fff", fontSize: 16 }}>
-            Book
+            {t("comon.book")}
           </TextSemiBold>
         </TouchableOpacity>
       </View>

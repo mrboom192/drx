@@ -1,9 +1,11 @@
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { getPatientSymptoms } from "@/constants/symptoms";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageSourcePropType,
   ScrollView,
@@ -12,85 +14,37 @@ import {
   View,
 } from "react-native";
 
-const symptoms = [
-  {
-    name: "Diarrhea",
-    image: require("@/../assets/images/symptoms/diarrhea.png"),
-    params: {
-      specializations: ["gastroenterology", "internal", "family"],
-    },
-  },
-  {
-    name: "Acne",
-    image: require("@/../assets/images/symptoms/acne.png"),
-    params: {
-      specializations: ["dermatology", "family", "internal"],
-    },
-  },
-  {
-    name: "Heart",
-    image: require("@/../assets/images/symptoms/heart.png"),
-    params: {
-      specializations: ["cardiology", "emergency", "internal"],
-    },
-  },
-  {
-    name: "Allergies",
-    image: require("@/../assets/images/symptoms/allergies.png"),
-    params: {
-      specializations: ["allergy", "immunology", "pulmonology"],
-    },
-  },
-  {
-    name: "Depression",
-    image: require("@/../assets/images/symptoms/depression.png"),
-    params: {
-      specializations: ["psychiatry", "psychology", "family"],
-    },
-  },
-  {
-    name: "UTI",
-    image: require("@/../assets/images/symptoms/uti.png"),
-    params: {
-      specializations: ["urology", "family", "internal"],
-    },
-  },
-];
-
 type TabItem = {
   name: string;
   image: ImageSourcePropType;
-  params: {
-    specializations: string[];
-  };
+  filter: string | undefined;
 };
 
 const Symptoms = ({}: {}) => {
+  const { t } = useTranslation();
+  const patientSymptoms = useMemo(() => getPatientSymptoms(t), [t]);
   const onPress = (item: TabItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    const query = new URLSearchParams();
-    item.params.specializations.forEach((spec) =>
-      query.append("specializations", spec)
-    );
-
     // Navigate with query
     router.navigate({
-      pathname: "/search",
+      pathname: "/filtered",
       params: {
-        query: query.toString(),
+        filter: item.filter,
       },
     });
   };
   return (
     <View style={styles.container}>
-      <TextSemiBold style={styles.header}>What can we help with?</TextSemiBold>
+      <TextSemiBold style={styles.header}>
+        {t("home.what-can-we-help-with")}
+      </TextSemiBold>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContentContainer}
       >
-        {symptoms.map((item: TabItem, index: number) => (
+        {patientSymptoms.map((item: TabItem, index: number) => (
           <TouchableOpacity
             onPress={() => onPress(item)}
             key={index}
@@ -100,7 +54,7 @@ const Symptoms = ({}: {}) => {
               style={styles.image}
               source={item.image}
               contentFit="cover"
-              transition={1000}
+              transition={250}
             />
             <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
           </TouchableOpacity>
@@ -116,6 +70,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 8,
     paddingVertical: 12,
     borderBottomWidth: 1,
@@ -123,9 +79,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
   },
   scrollViewContentContainer: {
+    minWidth: "100%",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 12,
@@ -142,5 +99,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     color: "#000",
+    textAlign: "center",
   },
 });

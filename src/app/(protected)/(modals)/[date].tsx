@@ -1,6 +1,6 @@
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useAppointmentsByDate } from "@/stores/useAppointmentStore";
@@ -10,8 +10,13 @@ import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+import { count } from "firebase/firestore";
+import { locales } from "@/constants/locales";
+import i18next from "i18next";
 
 const DayInfo = () => {
+  const { t } = useTranslation();
   const { date } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const appointmentsByDate = useAppointmentsByDate(date as string);
@@ -51,7 +56,7 @@ const DayInfo = () => {
                 color: Colors.grey,
               }}
             >
-              No appointments for this date.
+              {t("day.no-appointments-for-this-date")}
             </TextSemiBold>
           </View>
         )}
@@ -97,16 +102,13 @@ const DayInfo = () => {
                 </TextSemiBold>
               </View>
 
-              <TextSemiBold style={{ fontSize: 16 }}>
-                Time:{" "}
-                <TextRegular>
-                  {appointment.timeSlot.startTime} -{" "}
-                  {appointment.timeSlot.endTime}
-                </TextRegular>
+              <TextSemiBold style={{ fontSize: 12, textAlign: "left" }}>
+                {appointment.timeSlot.startTime} -{" "}
+                {appointment.timeSlot.endTime}
               </TextSemiBold>
 
-              <TextSemiBold style={{ fontSize: 16 }}>
-                Type: <TextRegular>Consultation</TextRegular>
+              <TextSemiBold style={{ fontSize: 12, textAlign: "left" }}>
+                {t("common.consultation")}
               </TextSemiBold>
             </View>
 
@@ -136,6 +138,7 @@ const DayInfo = () => {
 export default DayInfo;
 
 const DayInfoHeader = ({ date }: { date: string }) => {
+  const { t } = useTranslation();
   const appointmentsByDate = useAppointmentsByDate(date as string);
   const insets = useSafeAreaInsets();
 
@@ -148,20 +151,21 @@ const DayInfoHeader = ({ date }: { date: string }) => {
     >
       <IconButton name="close" onPress={() => router.back()} />
       <TextSemiBold style={header.date}>
-        {format(parseISO(date), "MMMM d, yyyy")}
+        {format(parseISO(date), "MMMM d, yyyy", {
+          locale: locales[i18next.language],
+        })}
       </TextSemiBold>
       <View style={header.infoRow}>
         <View style={header.info}>
           <CustomIcon size={24} name="event-chair" />
           <TextSemiBold style={header.infoText}>
-            {appointmentsByDate.length} Appointment
-            {appointmentsByDate.length !== 1 ? "s" : ""}
+            {t("day.appointment-count", { count: appointmentsByDate.length })}
           </TextSemiBold>
         </View>
         <View style={header.info}>
           <CustomIcon size={24} name="schedule" />
           <TextSemiBold style={header.infoText}>
-            About {appointmentsByDate.length * 15} mins total
+            {t("day.total-time", { length: appointmentsByDate.length * 15 })}
           </TextSemiBold>
         </View>
       </View>
@@ -188,6 +192,7 @@ const header = StyleSheet.create({
   },
   date: {
     fontSize: 24,
+    textAlign: "left",
   },
   infoRow: {
     flexDirection: "row",

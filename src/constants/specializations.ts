@@ -1,28 +1,108 @@
-export const SPECIALIZATIONS = [
-  { id: "general", name: "general practice", color: "#E5E5E5" },
-  { id: "pediatrics", name: "pediatrics", color: "#FFE4B5" },
-  { id: "cardiology", name: "cardiology", color: "#FFB6C1" },
-  { id: "dermatology", name: "dermatology", color: "#F0FFF0" },
-  { id: "oncology", name: "oncology", color: "#E6E6FA" },
-  { id: "neurology", name: "neurology", color: "#ADD8E6" },
-  { id: "ophthalmology", name: "ophthalmology", color: "#FFB6C1" },
-  { id: "orthopedics", name: "orthopedics", color: "#FFE4C4" },
-  { id: "psychiatry", name: "psychiatry", color: "#98FB98" },
-  { id: "neurosurgery", name: "neurosurgery", color: "#90EE90" },
-  { id: "allergy", name: "allergy and immunology", color: "#FFB6C1" },
-  { id: "anesthesiology", name: "anesthesiology", color: "#ADD8E6" },
-  { id: "radiology", name: "diagnostic radiology", color: "#FFE4B5" },
-  { id: "emergency", name: "emergency medicine", color: "#FFB6C1" },
-  { id: "family", name: "family medicine", color: "#E6E6FA" },
-  { id: "internal", name: "internal medicine", color: "#FFB6C1" },
-  { id: "genetics", name: "medical genetics", color: "#98FB98" },
-  { id: "nuclear", name: "nuclear medicine", color: "#ADD8E6" },
-  { id: "obstetrics", name: "obstetrics and gynecology", color: "#90EE90" },
-  { id: "pathology", name: "pathology", color: "#98FB98" },
-  { id: "rehab", name: "rehab", color: "#FFE4C4" },
-  { id: "preventive", name: "preventive medicine", color: "#ADD8E6" },
-  { id: "radiation", name: "radiation oncology", color: "#FFE4B5" },
-  { id: "surgery", name: "surgery", color: "#FFB6C1" },
-  { id: "urology", name: "urology", color: "#E6E6FA" },
-  { id: "gastroenterology", name: "gastroenterology", color: "#FFE4B5" },
+import { TFunction } from "i18next";
+
+export const getSpecializations = (t: TFunction) => [
+  {
+    value: "general practice",
+    label: t("specializations.general-practice"),
+  },
+  {
+    value: "pediatrics",
+    label: t("specializations.pediatrics"),
+  },
+  {
+    value: "cardiology",
+    label: t("specializations.cardiology"),
+  },
+  {
+    value: "dermatology",
+    label: t("specializations.dermatology"),
+  },
+  {
+    value: "oncology",
+    label: t("specializations.oncology"),
+  },
+  {
+    value: "neurology",
+    label: t("specializations.neurology"),
+  },
+  {
+    value: "ophthalmology",
+    label: t("specializations.ophthalmology"),
+  },
+  {
+    value: "orthopedics",
+    label: t("specializations.orthopedics"),
+  },
+  {
+    value: "psychiatry",
+    label: t("specializations.psychiatry"),
+  },
+  {
+    value: "neurosurgery",
+    label: t("specializations.neurosurgery"),
+  },
+  {
+    value: "allergy and immunology",
+    label: t("specializations.allergy-and-immunology"),
+  },
+  {
+    value: "anesthesiology",
+    label: t("specializations.anesthesiology"),
+  },
+  {
+    value: "diagnostic radiology",
+    label: t("specializations.diagnostic-radiology"),
+  },
+  {
+    value: "emergency medicine",
+    label: t("specializations.emergency-medicine"),
+  },
+  {
+    value: "family medicine",
+    label: t("specializations.family-medicine"),
+  },
+  {
+    value: "internal medicine",
+    label: t("specializations.internal-medicine"),
+  },
+  {
+    value: "medical genetics",
+    label: t("specializations.medical-genetics"),
+  },
+  {
+    value: "nuclear medicine",
+    label: t("specializations.nuclear-medicine"),
+  },
+  {
+    value: "obstetrics and gynecology",
+    label: t("specializations.obstetrics-and-gynecology"),
+  },
+  {
+    value: "pathology",
+    label: t("specializations.pathology"),
+  },
+  {
+    value: "rehab",
+    label: t("specializations.rehab"),
+  },
+  {
+    value: "preventive medicine",
+    label: t("specializations.preventive-medicine"),
+  },
+  {
+    value: "radiation oncology",
+    label: t("specializations.radiation-oncology"),
+  },
+  {
+    value: "surgery",
+    label: t("specializations.surgery"),
+  },
+  {
+    value: "urology",
+    label: t("specializations.urology"),
+  },
+  {
+    value: "gastroenterology",
+    label: t("specializations.gastroenterology"),
+  },
 ];

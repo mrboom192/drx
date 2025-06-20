@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors";
 import { useWebRTCCall } from "@/hooks/useWebRTCCall";
 import { useLocalSearchParams } from "expo-router";
 import React, { use, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RTCView } from "react-native-webrtc";
@@ -18,6 +19,7 @@ type CallProps = {
 };
 
 const Call = () => {
+  const { t } = useTranslation();
   // Get callId and callerType (either "caller" or "callee") from URL params
   const {
     chatId,
@@ -68,7 +70,7 @@ const Call = () => {
       ) : (
         <View style={[styles.localVideo, { top: insets.top }]}>
           <TextSemiBold style={styles.status}>
-            Waiting for camera...
+            {t("call.waiting-for-camera")}
           </TextSemiBold>
         </View>
       )}
@@ -82,7 +84,10 @@ const Call = () => {
       ) : (
         <View style={styles.remoteVideo}>
           <TextSemiBold style={styles.status}>
-            Calling {otherPersonFirstName} {otherPersonLastName}...
+            {t("call.calling-message", {
+              firstName: otherPersonFirstName,
+              lastName: otherPersonLastName,
+            })}
           </TextSemiBold>
         </View>
       )}

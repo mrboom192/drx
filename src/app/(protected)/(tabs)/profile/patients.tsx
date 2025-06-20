@@ -7,14 +7,16 @@ import { useChats } from "@/stores/useChatStore";
 import { Chat } from "@/types/chat";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 
 const Patients = () => {
+  const { t } = useTranslation();
   // Fetch the list of chats from the chat store, which is also used to manage the list of patients
   const chats = useChats();
 
   return (
-    <PageScrollView>
+    <PageScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
       {chats.map((chat) => (
         <PatientRow key={chat.id} chat={chat} />
       ))}
@@ -28,7 +30,7 @@ const Patients = () => {
           }}
         >
           <TextSemiBold style={{ color: Colors.grey }}>
-            No patients found.
+            {t("error.no-patients-found")}
           </TextSemiBold>
         </View>
       )}
@@ -37,6 +39,7 @@ const Patients = () => {
 };
 
 const PatientRow = ({ chat }: { chat: Chat }) => {
+  const { t } = useTranslation();
   const patient = chat.participants.patient;
   const presence = useUserPresence(patient.uid);
 
@@ -60,10 +63,12 @@ const PatientRow = ({ chat }: { chat: Chat }) => {
           initials={patient.firstName[0] + patient.lastName[0]}
         />
         <View style={{ flexDirection: "column", gap: 4 }}>
-          <TextSemiBold>
+          <TextSemiBold style={{ textAlign: "left" }}>
             {patient.firstName} {patient.lastName}
           </TextSemiBold>
-          <TextRegular>Status: {chat.status}</TextRegular>
+          <TextRegular style={{ textAlign: "left" }}>
+            {t("other.status", { status: chat.status })}
+          </TextRegular>
         </View>
       </View>
       <Link
@@ -74,7 +79,7 @@ const PatientRow = ({ chat }: { chat: Chat }) => {
         asChild
       >
         <TouchableOpacity>
-          <TextSemiBold>View medical record</TextSemiBold>
+          <TextSemiBold>{t("page.view-medical-record")}</TextSemiBold>
         </TouchableOpacity>
       </Link>
     </View>

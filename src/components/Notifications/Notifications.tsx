@@ -1,37 +1,42 @@
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { TextSemiBold } from "../StyledText";
 import NotificationCard from "./NotificationCard";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
-  const hasNoNotifications = false; // Replace with actual logic to check for notifications
+  const { t } = useTranslation();
   const userData = useUserData();
+  const hasNoNotifications =
+    userData?.verification !== "unverified" || userData?.hasPublicProfile; // Replace with actual logic to check for notifications
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
+    <>
       {hasNoNotifications ? (
-        <TextSemiBold style={styles.noNotifications}>
-          No new notifications
-        </TextSemiBold>
+        <View style={styles.noNotificationsContainer}>
+          <TextSemiBold style={styles.noNotifications}>
+            {t("notifications.no-new-notifications")}
+          </TextSemiBold>
+        </View>
       ) : (
-        <>
-          <NotificationCard
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {/* <NotificationCard
             title="New Appointment"
             message="You have a new appointment scheduled."
-          />
+          /> */}
           {(userData?.verification === "unverified" ||
             !userData?.verification) && (
             <NotificationCard
-              title="Verification Required"
-              message="Please verify your medical license."
+              title={t("notifications.verification-required")}
+              message={t("notifications.please-verify-your-medical-license")}
               color={Colors.pink}
               url="/(protected)/(modals)/doctor-verification"
             />
@@ -39,21 +44,25 @@ const Notifications = () => {
           {(userData?.verification === "pending" ||
             !userData?.verification) && (
             <NotificationCard
-              title="Awaiting Verification"
-              message="We are currently working to review your license."
+              title={t("notifications.awaiting-verification")}
+              message={t(
+                "notifications.we-are-currently-working-to-review-your-license"
+              )}
               color={Colors.yellow}
             />
           )}
           {!userData?.hasPublicProfile && (
             <NotificationCard
-              title="No Public Profile"
-              message="Set up a public profile so patients can find you."
+              title={t("notifications.no-public-profile")}
+              message={t(
+                "notifications.set-up-a-public-profile-so-patients-can-find-you"
+              )}
               color={Colors.pink}
             />
           )}
-        </>
+        </ScrollView>
       )}
-    </ScrollView>
+    </>
   );
 };
 
@@ -61,7 +70,7 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
+    marginVertical: 16,
     flexGrow: 0,
   },
   contentContainer: {
@@ -69,9 +78,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 8,
   },
-  noNotifications: {
-    textAlign: "center",
+  noNotificationsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
     height: 70,
-    color: Colors.grey,
+  },
+  noNotifications: {
+    color: Colors.lightText,
   },
 });

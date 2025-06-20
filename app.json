@@ -14,7 +14,8 @@
       "bitcode": false,
       "appleTeamId": "46LZA2WXBP",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleLocalizations": ["en", "ar"]
       },
       "entitlements": {
         "com.apple.developer.in-app-payments": ["merchant.com.doctorx.drx"]
@@ -59,15 +60,22 @@
       ],
       "expo-font",
       "expo-secure-store",
-      "@config-plugins/react-native-webrtc",
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": "DrX Telehealth requires access to the camera so that the other person may see you during consultations.",
+          "microphonePermission": "DrX Telehealth requires access to the microphone so that the other person can hear you during consultations."
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {
           "merchantIdentifier": "merchant.com.doctorx.drx",
-          "publishableKey": "pk_test_51Q6gpGJIvTh9EQNO1y7Pw01eTx65Rd2euqkfunq2bS8pao2EEYxDv6j4B2qtsj8AD9OE7kzXFVEvFxttFWEc75XY0087lWVVFy",
+          "publishableKey": "pk_live_51Q6gpGJIvTh9EQNO1CZxko18GxTEMe5FrMqyFBAxN5E3DnruXRBMMBv3vJaJIXxgn7BxkOm79h7aKHZbwtlQafQW00xIvxrDKP",
           "enableGooglePay": true
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
@@ -76,7 +84,8 @@
       "router": {},
       "eas": {
         "projectId": "81b03d8c-3eed-4659-a28f-7ebbf6d4d6d5"
-      }
+      },
+      "supportsRTL": true
     },
     "owner": "mrboom192"
   }

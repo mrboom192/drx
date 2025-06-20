@@ -4,9 +4,11 @@ import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { I18nManager, TouchableOpacity, View } from "react-native";
 
 const Personal = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const userData = useUserData();
 
@@ -21,7 +23,7 @@ const Personal = () => {
         {/* Account Info */}
         <TouchableOpacity
           onPress={() => {
-            router.push("/(protected)/(tabs)/profile/account-info");
+            router.navigate("/(protected)/(tabs)/profile/account-info");
           }}
           style={{
             paddingVertical: 16,
@@ -37,20 +39,27 @@ const Personal = () => {
             }}
           >
             <View>
-              <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-                Account info
+              <TextSemiBold
+                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+              >
+                {t("page.account-info")}
               </TextSemiBold>
               <TextRegular
                 style={{
                   fontSize: 14,
                   color: "#555",
                   marginTop: 2,
+                  textAlign: "left",
                 }}
               >
-                Manage your personal account information
+                {t("page.manage-your-personal-account-information")}
               </TextRegular>
             </View>
-            <Ionicons name="chevron-forward" size={16} color="#000" />
+            <Ionicons
+              name={I18nManager.isRTL ? "chevron-back" : "chevron-forward"}
+              size={16}
+              color="#000"
+            />
           </View>
         </TouchableOpacity>
 
@@ -75,7 +84,7 @@ const Personal = () => {
                   alignItems: "center",
                 }}
               >
-                <View>
+                <View style={{ flexShrink: 1 }}>
                   <View
                     style={{
                       flexDirection: "row",
@@ -84,7 +93,7 @@ const Personal = () => {
                     }}
                   >
                     <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-                      Public profile
+                      {t("page.public-profile")}
                     </TextSemiBold>
                     {!userData.hasPublicProfile && (
                       <Ionicons
@@ -101,16 +110,21 @@ const Personal = () => {
                       marginTop: 2,
                     }}
                   >
-                    Manage your public-facing profile which will be visible to
-                    patients
+                    {t(
+                      "page.manage-your-public-facing-profile-which-will-be-visible-to-patients"
+                    )}
                   </TextRegular>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color="#000" />
+                <Ionicons
+                  name={I18nManager.isRTL ? "chevron-back" : "chevron-forward"}
+                  size={16}
+                  color="#000"
+                />
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                router.push({
+                router.navigate({
                   pathname: "/(protected)/(modals)/doctor-verification",
                 });
               }}
@@ -127,7 +141,7 @@ const Personal = () => {
                   alignItems: "center",
                 }}
               >
-                <View>
+                <View style={{ flexShrink: 1 }}>
                   <View
                     style={{
                       flexDirection: "row",
@@ -136,7 +150,7 @@ const Personal = () => {
                     }}
                   >
                     <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
-                      Doctor verification
+                      {t("page.doctor-verification")}
                     </TextSemiBold>
 
                     {(userData.verification === "unverified" ||
@@ -169,11 +183,16 @@ const Personal = () => {
                       marginTop: 2,
                     }}
                   >
-                    Verify your doctor account in order for you to be visible to
-                    patients
+                    {t(
+                      "page.verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients"
+                    )}
                   </TextRegular>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color="#000" />
+                <Ionicons
+                  name={I18nManager.isRTL ? "chevron-back" : "chevron-forward"}
+                  size={16}
+                  color="#000"
+                />
               </View>
             </TouchableOpacity>
           </>

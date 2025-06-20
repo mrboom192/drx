@@ -1,5 +1,5 @@
 import { Path, Svg } from "react-native-svg";
-import { IconName, icons } from "./iconsMap";
+import { IconName, icons } from "../constants/iconsMap";
 
 const DEFAULT_SIZE = 24;
 const DEFAULT_COLOR = "#000";

@@ -1,9 +1,9 @@
-import DoctorList from "@/components/DoctorList";
+import DoctorList from "@/components/DoctorList/DoctorList";
 import DoctorsHeader from "@/components/DoctorsHeader";
-import { View } from "@/components/Themed";
 import { useFetchSomeDoctors } from "@/stores/useDoctorSearch";
 import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 
 const Page = () => {
   const [specialty, setSpecialty] = useState("all");
@@ -18,7 +18,7 @@ const Page = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <Stack.Screen
         options={{
           header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,

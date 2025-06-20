@@ -1,10 +1,11 @@
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useDoctors } from "@/stores/useDoctorSearch";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FlatList,
   StyleSheet,
@@ -14,6 +15,7 @@ import {
 } from "react-native";
 
 export default function SearchModal() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const doctors = useDoctors();
@@ -33,7 +35,7 @@ export default function SearchModal() {
 
   const handleResultPress = (doctor: any) => {
     // Naviagate to the chat screen
-    router.push({
+    router.navigate({
       pathname: "/(protected)/doctor/[id]",
       params: { id: doctor.uid },
     });
@@ -45,7 +47,7 @@ export default function SearchModal() {
         <CustomIcon name="search" size={20} color="#9b9a9e" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search doctors..."
+          placeholder={t("form.search-doctors")}
           placeholderTextColor={Colors.lightText}
           value={searchQuery}
           onChangeText={handleSearch}
@@ -75,8 +77,8 @@ export default function SearchModal() {
           <View style={styles.emptyContainer}>
             <TextRegular style={styles.emptyText}>
               {searchQuery.length > 0
-                ? "No doctors found"
-                : "Start typing to search doctors"}
+                ? t("form.no-doctors-found")
+                : t("form.start-typing-to-search-doctors")}
             </TextRegular>
           </View>
         )}

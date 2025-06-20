@@ -6,6 +6,8 @@ import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
+import i18next from "i18next";
+import { locales } from "@/constants/locales";
 
 const ControllerTimePicker = ({
   control,
@@ -32,10 +34,12 @@ const ControllerTimePicker = ({
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         // Convert internal "HH:mm" value to Date for display and picker
         const dateValue = value ? timeStringToDate(value) : new Date();
-        const displayValue = value ? format(dateValue, "h:mm a") : "";
+        const displayValue = value
+          ? format(dateValue, "h:mm a", { locale: locales[i18next.language] })
+          : "";
 
         return (
-          <View>
+          <View style={{ flex: 1 }}>
             <View style={styles.labelContainer}>
               {label && <TextRegular style={styles.label}>{label}</TextRegular>}
               {error && (
@@ -57,6 +61,7 @@ const ControllerTimePicker = ({
             </Pressable>
 
             <DatePicker
+              locale={i18next.language}
               modal
               mode="time"
               open={showTimePicker}

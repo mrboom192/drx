@@ -3,33 +3,39 @@ import Colors from "@/constants/Colors";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <TextRegular style={styles.footerText}>
-        DrX Telehealth is committed to providing you with excellent care and
-        support. Learn more by reviewing our{" "}
+        {t("home.footer.commitment-message")}
         <Link href="/terms-of-service">
-          <TextRegular style={styles.textLink}>Terms of Service</TextRegular>
+          <TextRegular style={styles.textLink}>
+            {t("common.terms-of-service")}
+          </TextRegular>
         </Link>{" "}
-        and{" "}
+        {t("common.and")}
         <Link href="/privacy-policy">
           {" "}
-          <TextRegular style={styles.textLink}>Privacy Policy</TextRegular>
+          <TextRegular style={styles.textLink}>
+            {t("common.privacy-policy")}
+          </TextRegular>
         </Link>
-        .
+        {t("common.period")}
       </TextRegular>
       <View style={styles.trademark}>
         <Image
           style={styles.logo}
           source={require("@/../assets/images/icon.png")}
           contentFit="contain"
-          transition={1000}
+          transition={250}
         />
         <TextSemiBold style={styles.logoDescription}>
-          By DRX GENIUS LLC
+          {t("home.by-drx-genius-llc")}
         </TextSemiBold>
       </View>
     </View>
@@ -43,6 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center", // Center everything horizontally
     justifyContent: "center", // Center vertically if needed
+    borderTopWidth: 1,
+    borderTopColor: Colors.faintGrey,
   },
   footerText: {
     fontSize: 16,

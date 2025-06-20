@@ -53,7 +53,7 @@ const RecordListItem = ({
         <IconButton
           name="stylus"
           onPress={() =>
-            router.push({
+            router.navigate({
               pathname: editPath,
               params: { mode: "edit", id },
             } as Href & NavigationOptions)
@@ -88,6 +88,8 @@ const itemStyles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
     flex: 1,
   },
   name: {

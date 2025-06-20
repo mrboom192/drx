@@ -1,8 +1,11 @@
 import PageHeader from "@/components/PageHeader";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ProfileLayout = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack>
       <Stack.Screen
@@ -14,14 +17,14 @@ const ProfileLayout = () => {
       <Stack.Screen
         name="personal"
         options={{
-          title: "Personal Info",
+          title: t("page.personal-info"),
           header: (props) => <PageHeader {...props} />,
         }}
       />
       <Stack.Screen
         name="account-info"
         options={{
-          title: "Account Info",
+          title: t("page.account-info"),
           header: (props) => <PageHeader {...props} />,
         }}
       />
@@ -29,14 +32,21 @@ const ProfileLayout = () => {
       <Stack.Screen
         name="payment-methods"
         options={{
-          title: "Payment Methods",
+          title: t("page.payment-methods"),
           header: (props) => <PageHeader {...props} />,
         }}
       />
       <Stack.Screen
         name="patients"
         options={{
-          title: "Patients",
+          title: t("page.patients"),
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="settings"
+        options={{
+          title: t("page.settings"),
           header: (props) => <PageHeader {...props} />,
         }}
       />

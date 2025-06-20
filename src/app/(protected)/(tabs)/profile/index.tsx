@@ -4,24 +4,50 @@ import PageScrollView from "@/components/PageScrollView";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
 import Colors from "@/constants/Colors";
-import { doctorLinks, patientLinks } from "@/constants/profileLinks";
 import { useSession } from "@/contexts/AuthContext";
 import { useUserData } from "@/stores/useUserStore";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, RelativePathString } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SubmitButton from "@/components/SubmitButton";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
+import { useLayoutEffect, useState } from "react";
+
+const TOTAL_PADDING = 32;
+const GAP = 8;
 
 const Profile = () => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { signOut } = useSession();
   const userData = useUserData();
+  const [componentWidth, setComponentWidth] = useState(0);
   const isPatient = userData?.role === "patient";
 
+  const onLayout = (event: {
+    nativeEvent: { layout: { width: number; height: number } };
+  }) => {
+    const { width } = event.nativeEvent.layout;
+    setComponentWidth(width);
+  };
+
+  const cardWidth = (componentWidth - TOTAL_PADDING) / 2 - GAP / 2;
+
   const color = "#000";
-  const links = isPatient ? patientLinks : doctorLinks;
+  const links = isPatient ? getPatientLinks(t) : getDoctorLinks(t);
 
   return (
-    <PageScrollView style={{ paddingTop: insets.top }}>
+    <PageScrollView
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+      contentContainerStyle={{
+        paddingHorizontal: TOTAL_PADDING / 2,
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+      }}
+      onLayout={onLayout}
+    >
       {/* User Card */}
       <View
         style={{
@@ -55,16 +81,19 @@ const Profile = () => {
             style={{
               fontSize: 16,
               color: isPatient ? Colors.primary : Colors.gold,
+              textAlign: "left",
             }}
           >
-            {userData?.role ? userData?.role : "Role not found"}
+            {t(`common.${userData?.role}`)}
           </TextRegular>
         </View>
       </View>
 
       {/* Main Message */}
       <TextSemiBold style={{ fontSize: 20, marginBottom: 16 }}>
-        How can we help you, {userData?.firstName}?
+        {t("profile.how-can-we-help-you-userdata-firstname", {
+          firstName: userData?.firstName,
+        })}
       </TextSemiBold>
 
       {/* Links */}
@@ -72,7 +101,8 @@ const Profile = () => {
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          gap: 16,
+          gap: GAP,
+          justifyContent: "space-between",
         }}
       >
         {links.map((item, idx) => (
@@ -80,10 +110,13 @@ const Profile = () => {
           <Link key={idx} href={item.url as RelativePathString} asChild>
             <TouchableOpacity
               style={{
-                width: "47%",
+                width: cardWidth,
+                flexGrow: 1,
+                height: 115,
                 padding: 16,
                 flexDirection: "column",
                 justifyContent: "space-between",
+                alignItems: "flex-start",
                 gap: 16,
                 borderRadius: 12,
                 borderWidth: 1,
@@ -94,9 +127,14 @@ const Profile = () => {
                 name={item.icon as keyof typeof Ionicons.glyphMap}
                 size={24}
                 color={color}
-                style={{ marginBottom: 12 }}
               />
-              <TextRegular style={{ fontSize: 12, color: Colors.light.grey }}>
+              <TextRegular
+                style={{
+                  fontSize: 12,
+                  color: Colors.light.grey,
+                  textAlign: "left",
+                }}
+              >
                 {item.label}
               </TextRegular>
             </TouchableOpacity>
@@ -105,26 +143,11 @@ const Profile = () => {
       </View>
 
       {/* Logout button */}
-      <TouchableOpacity
+      <SubmitButton
+        style={{ marginTop: 16, width: "100%" }}
+        text={i18next.t("button.log-out")}
         onPress={signOut}
-        style={{
-          marginTop: 24,
-          paddingVertical: 12,
-          paddingHorizontal: 32,
-          backgroundColor: color,
-          borderRadius: 8,
-        }}
-      >
-        <TextSemiBold
-          style={{
-            color: "#FFF",
-            fontSize: 16,
-            textAlign: "center",
-          }}
-        >
-          Log out
-        </TextSemiBold>
-      </TouchableOpacity>
+      />
     </PageScrollView>
   );
 };

@@ -1,11 +1,13 @@
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { countries } from "@/constants/countries";
+import { getDoctorCountries } from "@/constants/countries";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import React from "react";
+import i18next from "i18next";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ImageSourcePropType,
   ScrollView,
@@ -17,28 +19,29 @@ import {
 type Item = {
   name: string;
   image: ImageSourcePropType;
-  params: { countries: string[] };
+  filter: string;
   backgroundColor: string;
 };
 
 const InternationalDoctors = ({}: {}) => {
-  const onPress = (params: { countries: string[] }) => {
+  const { t } = useTranslation();
+  const countries = useMemo(() => getDoctorCountries(t), [t]);
+  const onPress = (filter: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    const query = new URLSearchParams();
-    if (params.countries) {
-      query.append("countries", params.countries.join(","));
-    }
-
     router.push({
-      pathname: `/search`,
-      params: Object.fromEntries(query.entries()),
+      pathname: `/filtered`,
+      params: {
+        filter: filter,
+      },
     });
   };
 
   return (
     <View style={styles.container}>
-      <TextSemiBold style={styles.header}>Go international</TextSemiBold>
+      <TextSemiBold style={styles.header}>
+        {t("home.go-international")}
+      </TextSemiBold>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -46,7 +49,7 @@ const InternationalDoctors = ({}: {}) => {
       >
         {countries.map((item: Item, index: number) => (
           <TouchableOpacity
-            onPress={() => onPress(item.params)}
+            onPress={() => onPress(item.filter)}
             key={index}
             style={styles.item}
           >
@@ -65,7 +68,11 @@ const InternationalDoctors = ({}: {}) => {
             </View>
             <View style={styles.bottomText}>
               <TextSemiBold style={styles.text}>{item.name}</TextSemiBold>
-              <CustomIcon name="arrow-forward" size={20} color="#000" />
+              <CustomIcon
+                name={i18next.dir() === "ltr" ? "arrow-forward" : "arrow-back"}
+                size={20}
+                color="#000"
+              />
             </View>
           </TouchableOpacity>
         ))}
@@ -79,6 +86,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 8,
     paddingBottom: 12,
     borderBottomColor: Colors.faintGrey,
@@ -86,9 +95,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
   },
   scrollViewContentContainer: {
+    minWidth: "100%",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 12,

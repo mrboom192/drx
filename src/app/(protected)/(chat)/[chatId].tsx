@@ -1,6 +1,6 @@
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
-import CustomIcon from "@/components/icons/CustomIcon";
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserPresence } from "@/hooks/useUserPresence";
@@ -20,10 +20,20 @@ import {
 import { httpsCallable } from "firebase/functions";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Bubble,
+  Composer,
+  GiftedChat,
+  InputToolbar,
+} from "react-native-gifted-chat";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { db, functions } from "../../../../firebaseConfig";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+// Import ar and en locales from dayjs
+import "dayjs/locale/ar";
+import "dayjs/locale/en";
 
 interface Message {
   _id: number;
@@ -39,6 +49,7 @@ interface User {
 }
 
 const ChatRoom = () => {
+  const { t } = useTranslation();
   const { chatId } = useLocalSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
   const userData = useUserData();
@@ -98,6 +109,8 @@ const ChatRoom = () => {
 
     const message = newMessages[0]; // GiftedChat sends 1 at a time by default
 
+    if (!message.text || message.text.trim() === "") return;
+
     const messagePayload = {
       id: nanoid(), // optional, Firestore doc ID also works
       text: message.text,
@@ -145,6 +158,67 @@ const ChatRoom = () => {
         }}
       />
       <GiftedChat
+        locale={i18next.language}
+        placeholder={t("chat.type-a-message")}
+        renderInputToolbar={(props) => {
+          return (
+            <View
+              style={{
+                padding: 8,
+                borderTopWidth: 1,
+                borderTopColor: Colors.faintGrey,
+              }}
+            >
+              <InputToolbar
+                {...props}
+                primaryStyle={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  borderColor: Colors.faintGrey,
+                  gap: 8,
+                }}
+                containerStyle={{
+                  borderTopWidth: 0,
+                }}
+              />
+            </View>
+          );
+        }}
+        renderComposer={(props) => {
+          return (
+            <Composer
+              {...props}
+              textInputStyle={{
+                textAlign: I18nManager.isRTL ? "right" : "left",
+                writingDirection: I18nManager.isRTL ? "rtl" : "ltr",
+                flex: 1,
+              }}
+              multiline
+            />
+          );
+        }}
+        renderSend={(props) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                if (props.onSend) {
+                  props.onSend({ text: props.text }, true);
+                }
+              }}
+              style={{
+                padding: 8,
+                backgroundColor: Colors.black,
+                borderRadius: 9999,
+                marginHorizontal: 8,
+              }}
+            >
+              <CustomIcon name="send" size={16} color="#FFF" />
+            </TouchableOpacity>
+          );
+        }}
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
@@ -179,7 +253,7 @@ const ChatRoom = () => {
               }}
             >
               <TextRegular style={{ color: Colors.lightText, fontSize: 12 }}>
-                {date.toLocaleDateString("en-US", {
+                {date.toLocaleDateString(i18next.language, {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
@@ -190,11 +264,14 @@ const ChatRoom = () => {
         }}
         renderTime={(props) => {
           const time = props.currentMessage.createdAt
-            ? new Date(props.currentMessage.createdAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true, // Change to false if you prefer 24-hour format
-              })
+            ? new Date(props.currentMessage.createdAt).toLocaleTimeString(
+                i18next.language,
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true, // Change to false if you prefer 24-hour format
+                }
+              )
             : "";
 
           return (
@@ -268,6 +345,7 @@ const ChatRoom = () => {
 export default ChatRoom;
 
 const ChatHeader = ({ chatId }: { chatId: string }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const userData = useUserData();
   const chatData = useChatsById(chatId as string);
@@ -321,10 +399,15 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
   return (
     <View style={[header.container, { paddingTop: insets.top }]}>
       <View style={header.left}>
-        <IconButton name="arrow-back" onPress={() => router.back()} />
+        <IconButton
+          name={i18next.dir() === "ltr" ? "arrow-back" : "arrow-forward"}
+          onPress={() => router.back()}
+        />
         <View style={header.chatInfo}>
           <TextSemiBold style={header.chatTitle}>
-            Dr. {chatData.participants.doctor.lastName}'s Consultation Room
+            {t("chats.header", {
+              lastName: chatData.participants.doctor.lastName,
+            })}
           </TextSemiBold>
           <TextSemiBold
             style={[
@@ -332,7 +415,10 @@ const ChatHeader = ({ chatId }: { chatId: string }) => {
               { color: presence === "online" ? Colors.green : Colors.grey },
             ]}
           >
-            {otherUser.firstName} {otherUser.lastName} is {presence}
+            {t(presence === "online" ? "chats.online" : "chats.offline", {
+              firstName: otherUser.firstName,
+              lastName: otherUser.lastName,
+            })}
           </TextSemiBold>
         </View>
       </View>
@@ -373,10 +459,12 @@ const header = StyleSheet.create({
   chatTitle: {
     flex: 1,
     fontSize: 16,
+    textAlign: "left",
   },
   onlineStatus: {
     fontSize: 16,
     color: Colors.grey,
+    textAlign: "left",
   },
   callButton: {
     borderRadius: 9999,

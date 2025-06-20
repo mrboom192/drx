@@ -98,6 +98,7 @@ export function useWebRTCCall(
     remoteStreamRef.current = remoteStreamRef.current || new MediaStream();
     if (event.track) {
       remoteStreamRef.current.addTrack(event.track);
+      remoteStreamRef.current.getAudioTracks()[0]._setVolume(10); // 0 - 10, 1 is default
       setRemoteStream(remoteStreamRef.current);
     }
   };

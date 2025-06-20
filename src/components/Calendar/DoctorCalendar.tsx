@@ -1,31 +1,55 @@
-import React, { useCallback, useState } from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 
 import Colors from "@/constants/Colors";
 import { useAppointments } from "@/stores/useAppointmentStore";
-import { getDayHeight, getDayWidth } from "@/utils/calendarUtils";
-import { format } from "date-fns";
+import {
+  getDayHeight,
+  getDayWidth,
+  getLocaleData,
+} from "@/utils/calendarUtils";
+import { Day, format, Locale, Month } from "date-fns";
 import { router } from "expo-router";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Calendar, DateData } from "react-native-calendars";
+import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { Direction } from "react-native-calendars/src/types";
 import DatePicker from "react-native-date-picker";
 import Avatar from "../Avatar";
 import IconButton from "../IconButton";
 import { TextSemiBold } from "../StyledText";
-import CustomIcon from "../icons/CustomIcon";
+import CustomIcon from "../CustomIcon";
+import { locales } from "@/constants/locales";
+import i18next, { TFunction } from "i18next";
+import { enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
 const DoctorCalendar = () => {
+  const { t } = useTranslation();
   const appointments = useAppointments();
-  const [calendarHeight, setCalendarHeight] = useState(0);
+  const [calendarDimensions, setCalendarDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd") // Default to today's date
   );
 
-  const onLayout = (event: { nativeEvent: { layout: { height: any } } }) => {
-    const { height } = event.nativeEvent.layout;
-    setCalendarHeight(height);
+  // Set the locale for the calendar
+  useEffect(() => {
+    if (!locales[i18next.language]) return;
+    LocaleConfig.locales[i18next.language] = getLocaleData(
+      locales[i18next.language],
+      t
+    );
+    LocaleConfig.defaultLocale = i18next.language;
+  }, [i18next.language, t]);
+
+  const onLayout = (event: {
+    nativeEvent: { layout: { width: number; height: number } };
+  }) => {
+    const { width, height } = event.nativeEvent.layout;
+    setCalendarDimensions({ width, height });
   };
 
   // Handle day press
@@ -33,7 +57,7 @@ const DoctorCalendar = () => {
     if (!date) return;
 
     setSelectedDate(date.dateString);
-    router.push({
+    router.navigate({
       pathname: "/(protected)/(modals)/[date]",
       params: { date: date.dateString },
     });
@@ -41,12 +65,16 @@ const DoctorCalendar = () => {
 
   // Custom arrow for the calendar
   const renderArrow = (direction: Direction) => {
-    return (
-      <IconButton
-        name={direction === "right" ? "chevron-right" : "chevron-left"}
-        pointerEvents="none"
-      />
-    );
+    const isRTL = I18nManager.isRTL;
+    const resolvedDirection = isRTL
+      ? direction === "right"
+        ? "chevron-left"
+        : "chevron-right"
+      : direction === "right"
+      ? "chevron-right"
+      : "chevron-left";
+
+    return <IconButton name={resolvedDirection} pointerEvents="none" />;
   };
 
   // Custom header for the calendar
@@ -64,7 +92,9 @@ const DoctorCalendar = () => {
             textAlign: "center",
           }}
         >
-          {format(date, "LLLL, yyyy")}
+          {format(date, "LLLL, yyyy", {
+            locale: locales[i18next.language] ?? enUS,
+          })}
         </TextSemiBold>
       </TouchableOpacity>
     );
@@ -89,8 +119,8 @@ const DoctorCalendar = () => {
           style={[
             styles.calendarDay,
             {
-              width: getDayWidth(),
-              height: getDayHeight(calendarHeight),
+              width: getDayWidth(calendarDimensions?.width || 0),
+              height: getDayHeight(calendarDimensions?.height || 0),
               backgroundColor: isToday ? "black" : Colors.lightGrey,
             },
           ]}
@@ -119,7 +149,7 @@ const DoctorCalendar = () => {
         </TouchableOpacity>
       );
     },
-    [selectedDate, calendarHeight]
+    [selectedDate, calendarDimensions]
   );
 
   return (
@@ -139,6 +169,7 @@ const DoctorCalendar = () => {
       />
 
       <DatePicker
+        locale={i18next.language}
         modal
         mode="date"
         open={showDatePicker}

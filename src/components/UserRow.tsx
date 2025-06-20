@@ -1,5 +1,4 @@
 import Colors from "@/constants/Colors";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
 import { useUserData } from "@/stores/useUserStore";
 import { router } from "expo-router";
 import React from "react";
@@ -41,7 +40,11 @@ const UserRow = () => {
             router.navigate("/(protected)/notifications");
           }}
         />
-        <UserAvatar size={40} canUpload={false} />
+        <UserAvatar
+          size={40}
+          canUpload={false}
+          onPressFallback={() => router.navigate("/(protected)/(tabs)/profile")}
+        />
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
-import * as admin from "firebase-admin";
+import { admin } from "../lib/admin";
 import axios from "axios";
 
 export const sendMessageNotification = onDocumentCreated(

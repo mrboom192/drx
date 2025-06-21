@@ -5,22 +5,25 @@ import {
   HttpsError,
   CallableRequest,
 } from "firebase-functions/v2/https";
+const { defineSecret } = require("firebase-functions/params");
 import axios from "axios";
 
-const TURN_KEY_ID = process.env.TURN_KEY_ID;
-const TURN_API_TOKEN = process.env.TURN_API_TOKEN;
-
-if (!TURN_KEY_ID || !TURN_API_TOKEN) {
-  throw new Error(
-    "TURN_KEY_ID and TURN_API_TOKEN must be defined in environment variables."
-  );
-}
+const turnKeyId = defineSecret("TURN_KEY_ID");
+const turnApiToken = defineSecret("TURN_API_TOKEN");
 
 /**
  * Generate TURN credentials for the WebRTC connection.
  */
 export const getTurnCredentials = onCall(
+  { secrets: [turnKeyId, turnApiToken] },
+
   async (request: CallableRequest<{}>) => {
+    if (!turnKeyId || !turnApiToken) {
+      throw new Error(
+        "TURN_KEY_ID and TURN_API_TOKEN must be defined in environment variables."
+      );
+    }
+
     if (!request.auth) {
       throw new HttpsError(
         "unauthenticated",
@@ -30,11 +33,11 @@ export const getTurnCredentials = onCall(
 
     try {
       const response = await axios.post(
-        `https://rtc.live.cloudflare.com/v1/turn/keys/${TURN_KEY_ID}/credentials/generate-ice-servers`,
+        `https://rtc.live.cloudflare.com/v1/turn/keys/${turnKeyId.value()}/credentials/generate-ice-servers`,
         { ttl: 3600 }, // 1 hour
         {
           headers: {
-            Authorization: `Bearer ${TURN_API_TOKEN}`,
+            Authorization: `Bearer ${turnApiToken.value()}`,
             "Content-Type": "application/json",
           },
         }

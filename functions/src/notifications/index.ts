@@ -1,2 +1,2 @@
-export { sendCallNotification } from "./sendCallNotification";
-export { sendMessageNotification } from "./sendMessageNotification";
+export { sendCallNotification } from "./sendCallNotification.js";
+export { sendMessageNotification } from "./sendMessageNotification.js";

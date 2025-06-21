@@ -1,12 +1,11 @@
-export { sendCallNotification, sendMessageNotification } from "./notifications";
-export { getTurnCredentials } from "./turn";
 export {
-  addPaymentMethodDetails,
+  sendCallNotification,
+  sendMessageNotification,
+} from "./notifications/index.js";
+export { getTurnCredentials } from "./turn/index.js";
+export {
   cancelPaymentIntent,
-  cleanupUser,
-  confirmStripePayment,
   createStripeCustomer,
-  createStripePayment,
   getPaymentIntent,
   handleStripeWebhook,
 } from "./stripe";

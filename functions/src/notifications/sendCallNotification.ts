@@ -1,5 +1,5 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+import { admin } from "../lib/admin";
 import axios from "axios";
 
 export const sendCallNotification = onCall(async (request) => {

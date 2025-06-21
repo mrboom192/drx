@@ -9,3 +9,5 @@ export {
   getPaymentIntent,
   handleStripeWebhook,
 } from "./stripe";
+export { sendMessage } from "./chat/index.js";
+export { cleanupUserData } from "./users/index.js";

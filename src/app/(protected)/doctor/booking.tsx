@@ -1,4 +1,5 @@
 import { functions } from "@/../firebaseConfig";
+import { createTestAppointment } from "@/api/test";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import Pills from "@/components/Pills";
@@ -80,7 +81,18 @@ function buildTimeSlotOptions(
     while (from + duration <= until) {
       const slotStart = toTimeStr(from);
       const slotEnd = toTimeStr(from + duration);
-      res.push(`${slotStart}-${slotEnd}`);
+      // res.push(`${slotStart}-${slotEnd}`);
+      // Use a more readable format using datefns for am pm
+      res.push(
+        `${new Date(`1970-01-01T${slotStart}:00`).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })} - ${new Date(`1970-01-01T${slotEnd}:00`).toLocaleTimeString(
+          "en-US",
+          { hour: "2-digit", minute: "2-digit", hour12: true }
+        )}`
+      );
       from += duration;
     }
   });
@@ -174,6 +186,11 @@ const BookingPage = () => {
         timeSlot: data.timeSlot,
         selectedDate: data.selectedDate,
       });
+
+      // await createTestAppointment({
+      //   doctorId: doctor.uid,
+      //   timeSlotStr: JSON.stringify(watch("timeSlot")),
+      // });
       router.replace({ pathname: "/(protected)/(tabs)/messages" });
     } catch (error) {
       console.error("Booking error:", error);

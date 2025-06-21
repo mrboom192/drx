@@ -9,16 +9,13 @@ import { useUserData } from "@/stores/useUserStore";
 import { getChatId, getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
-  addDoc,
   collection,
   doc,
   onSnapshot,
-  serverTimestamp,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
-import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
@@ -111,26 +108,13 @@ const ChatRoom = () => {
 
     if (!message.text || message.text.trim() === "") return;
 
-    const messagePayload = {
-      id: nanoid(), // optional, Firestore doc ID also works
-      text: message.text,
-      senderId: userData.uid,
-      receiverId: otherUser?.uid,
-      avatar: userData.image || "",
-      createdAt: serverTimestamp(),
-    };
-
     try {
-      await addDoc(messagesRef, messagePayload);
-
-      await updateDoc(chatDocRef, {
-        lastMessage: {
-          text: message.text,
-          senderId: userData.uid,
-          receiverId: otherUser?.uid,
-          timestamp: serverTimestamp(),
-        },
-        updatedAt: serverTimestamp(),
+      httpsCallable(
+        functions,
+        "sendMessage"
+      )({
+        chatId: chatId,
+        text: message.text.trim(),
       });
     } catch (err) {
       console.error("Error sending message:", err);

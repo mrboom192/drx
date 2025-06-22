@@ -122,7 +122,7 @@ const Page = () => {
               <TextSemiBold
                 style={{ fontSize: 16, color: "#000", textAlign: "left" }}
               >
-                Time Zone
+                {t("common.time-zone")}
               </TextSemiBold>
               <TextRegular
                 style={{
@@ -131,8 +131,10 @@ const Page = () => {
                   textAlign: "left",
                 }}
               >
-                Dr. {doctor.lastName} operates in the {doctor.timeZone || "UTC"}{" "}
-                time zone.
+                {t("doctor.time-zone-description", {
+                  lastName: doctor.lastName,
+                  timeZone: doctor.timeZone,
+                })}
               </TextRegular>
             </View>
           </View>

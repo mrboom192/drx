@@ -76,7 +76,8 @@
     "search": "يبحث",
     "specializations": "التخصصات",
     "success": "نجاح",
-    "terms-of-service": "شروط الخدمة"
+    "terms-of-service": "شروط الخدمة",
+    "time-zone": "المنطقة الزمنية"
   },
   "comon": {
     "book": "كتاب"
@@ -106,7 +107,8 @@
     "doctor-speaks": "الدكتور {{firstName}} يتحدث {{languages}}.",
     "experience-description": "الدكتور {{lastName}} لديه أكثر من {{count}}+ سنة من الخبرة.",
     "name": "Dr. {{lastName}}",
-    "per-consultation": "لكل استشارة"
+    "per-consultation": "لكل استشارة",
+    "time-zone-description": "يعمل Dr. {{lastName}} في المنطقة الزمنية {{timezone}}."
   },
   "error": {
     "no-patients-found": "لم يتم العثور على مرضى.",

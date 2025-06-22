@@ -81,6 +81,17 @@ export const cleanupUserData = onDocumentDeleted(
         logger.info(`🗑️ Deleted public profile`);
       }
 
+      // Delete records
+      const recordsSnap = await admin
+        .firestore()
+        .collection("records")
+        .doc(userId)
+        .get();
+
+      if (recordsSnap.exists) {
+        batch.delete(recordsSnap.ref);
+      }
+
       // Pending verification
       const verifySnap = await admin
         .firestore()

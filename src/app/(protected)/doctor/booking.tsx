@@ -20,6 +20,7 @@ import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getCalendars } from "expo-localization";
 import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
+import { parseISO, setHours, setMinutes } from "date-fns";
 
 /* ------------------------------------------------------------------ */
 /* ⚙️  Firebase cloud-function types                                  */
@@ -159,12 +160,10 @@ const BookingPage = () => {
   /* ---------- Payment sheet ---------- */
   const initializePaymentSheet = async ({
     amount,
-    timeSlot,
-    selectedDate,
+    date,
   }: {
     amount: number;
-    timeSlot: string;
-    selectedDate: Date;
+    date: string;
   }) => {
     if (!userData) throw new Error("Patient not logged in");
     if (!amount) throw new Error("Missing amount");
@@ -175,8 +174,7 @@ const BookingPage = () => {
       metadata: {
         patientId: userData.uid,
         doctorId: doctor.uid,
-        date: selectedDate.toISOString(),
-        timeSlot: JSON.stringify(timeSlot),
+        date,
       },
     });
 
@@ -205,12 +203,20 @@ const BookingPage = () => {
   /* ---------- Submit ---------- */
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      console.log(data.timeSlot, data.selectedDate, doctor.timeZone);
-      // await initializePaymentSheet({
-      //   amount: doctor?.consultationPrice,
-      //   timeSlot: data.timeSlot,
-      //   selectedDate: data.selectedDate,
-      // });
+      const [hours, minutes] = data.timeSlot.split(":").map(Number);
+      const date = setHours(
+        setMinutes(parseISO(data.selectedDate.toISOString()), minutes),
+        hours
+      );
+      const utcDate = format(
+        zonedTimeToUtc(date, doctor.timeZone),
+        "yyyy-MM-dd'T'HH:mmXXX"
+      );
+
+      await initializePaymentSheet({
+        amount: doctor?.consultationPrice,
+        date: utcDate,
+      });
 
       // Currently handle booking on backend
 

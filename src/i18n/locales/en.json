@@ -76,7 +76,8 @@
     "search": "Search",
     "specializations": "Specializations",
     "success": "Success",
-    "terms-of-service": "Terms of Service"
+    "terms-of-service": "Terms of Service",
+    "time-zone": "Time Zone"
   },
   "comon": {
     "book": "Book"
@@ -106,7 +107,8 @@
     "doctor-speaks": "Dr. {{firstName}} speaks {{languages}}.",
     "experience-description": "Dr. {{lastName}} has over {{count}}+ years of experience.",
     "name": "Dr. {{lastName}}",
-    "per-consultation": "per consultation"
+    "per-consultation": "per consultation",
+    "time-zone-description": "Dr. {{lastName}} operates in the {{timeZone}} time zone."
   },
   "error": {
     "no-patients-found": "No patients found.",

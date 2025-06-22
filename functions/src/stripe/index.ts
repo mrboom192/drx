@@ -9,9 +9,10 @@ import { nanoid } from "nanoid";
 import { admin } from "../lib/admin";
 
 import Stripe from "stripe";
+import { firestore } from "firebase-admin";
 
-const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
-const stripeSigningSecret = defineSecret("STRIPE_SIGNING_SECRET");
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY_TEST");
+const stripeSigningSecret = defineSecret("STRIPE_SIGNING_SECRET_TEST");
 
 /**
  * When a user is created, create a Stripe customer object for them.
@@ -188,10 +189,9 @@ export const handleStripeWebhook = onRequest(
 
           const patientId = metadata?.patientId;
           const doctorId = metadata?.doctorId;
-          const dateStr = metadata?.date;
-          const timeSlotStr = metadata?.timeSlot;
+          const date = metadata?.date;
 
-          if (!patientId || !doctorId || !dateStr || !timeSlotStr) {
+          if (!patientId || !doctorId || !date) {
             console.warn("Missing metadata fields for appointment creation");
             res.status(400).send("Missing required metadata");
             return;
@@ -222,9 +222,6 @@ export const handleStripeWebhook = onRequest(
               return;
             }
 
-            const timeSlot = JSON.parse(timeSlotStr);
-            const date = new Date(dateStr);
-
             const batch = admin.firestore().batch();
 
             const appointmentRef = admin
@@ -244,14 +241,10 @@ export const handleStripeWebhook = onRequest(
                 lastName: patient.lastName,
                 image: patient.image || null,
               },
-              timeSlot,
-              date: admin.firestore.Timestamp.fromDate(date),
+              date: firestore.Timestamp.fromDate(new Date(date)),
               price: doctor.consultationPrice,
               status: "confirmed",
               createdAt: admin.firestore.Timestamp.now(),
-              // scheduledFor: admin.firestore.Timestamp.fromDate(
-              //   new Date(date.setHours(parseInt(timeSlot.start.split(":")[0])))
-              // ),
             };
 
             batch.set(appointmentRef, appointmentData);

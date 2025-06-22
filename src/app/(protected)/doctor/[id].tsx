@@ -14,19 +14,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { getLanguageOptions } from "@/constants/languages";
-
-interface PublicProfile {
-  uid: string;
-  firstName: string;
-  lastName: string;
-  image: string | null;
-  specializations: string[];
-  languages: string[];
-  experience: number;
-  biography: string;
-  consultationPrice: number;
-  updatedAt: any;
-}
+import { PublicProfile } from "@/types/publicProfile";
 
 const Page = () => {
   const { t } = useTranslation();
@@ -108,7 +96,9 @@ const Page = () => {
             <Avatar
               size={48}
               uri={doctor.image || undefined}
-              initials={doctor.firstName[0] + doctor.lastName[0]}
+              initials={
+                (doctor.firstName?.[0] || "") + (doctor.lastName?.[0] || "")
+              }
             />
             <View style={{ flex: 1 }}>
               <TextSemiBold
@@ -120,6 +110,32 @@ const Page = () => {
           </View>
 
           <Specializations doctor={doctor} />
+        </View>
+
+        {/* Time zone */}
+        <View style={{ flexDirection: "column", gap: 8 }}>
+          <View
+            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
+          >
+            <CustomIcon name="directions-boat" size={20} color="#000" />
+            <View style={{ flexDirection: "column", gap: 8 }}>
+              <TextSemiBold
+                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+              >
+                Time Zone
+              </TextSemiBold>
+              <TextRegular
+                style={{
+                  fontSize: 16,
+                  color: Colors.light.grey,
+                  textAlign: "left",
+                }}
+              >
+                Dr. {doctor.lastName} operates in the {doctor.timeZone || "UTC"}{" "}
+                time zone.
+              </TextRegular>
+            </View>
+          </View>
         </View>
 
         {/* Languages */}
@@ -176,7 +192,7 @@ const Page = () => {
               >
                 {t("doctor.experience-description", {
                   lastName: doctor.lastName,
-                  count: doctor.experience,
+                  count: Number(doctor.experience),
                 })}
               </TextRegular>
             </View>

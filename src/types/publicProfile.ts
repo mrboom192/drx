@@ -14,6 +14,11 @@ type Availability = {
 };
 
 export type PublicProfile = {
+  image?: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+
   specializations: string[];
   languages: string[];
   experience: string;

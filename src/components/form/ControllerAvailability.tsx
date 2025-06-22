@@ -1,8 +1,16 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Control, useFieldArray, Path, FieldValues } from "react-hook-form";
+import {
+  Control,
+  useFieldArray,
+  Path,
+  FieldValues,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { TextRegular, TextSemiBold } from "../StyledText";
 import Colors from "@/constants/Colors";
+import { getCalendars } from "expo-localization";
 import ControllerTimePicker from "./ControllerTimePicker";
 import { useTranslation } from "react-i18next";
 import IconButton from "../IconButton";
@@ -12,7 +20,9 @@ const BUTTON_SIZE = 28;
 interface ControllerAvailabilityProps<TFieldValues extends FieldValues> {
   label: string;
   control: Control<any>;
-  name: Path<TFieldValues>; // e.g., "availability"
+  name: Path<TFieldValues>;
+  setValue: UseFormSetValue<TFieldValues>;
+  watch: UseFormWatch<TFieldValues>;
 }
 
 const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -21,6 +31,8 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
   label,
   control,
   name,
+  setValue,
+  watch,
 }: ControllerAvailabilityProps<TFieldValues>) => {
   const { t } = useTranslation();
 
@@ -28,6 +40,22 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
     <View>
       <View style={styles.labelContainer}>
         <TextRegular style={styles.label}>{label}</TextRegular>
+        <View style={styles.timeZoneContainer}>
+          <TextRegular style={styles.timeZone}>
+            {watch("timeZone" as Path<TFieldValues>)}
+          </TextRegular>
+          <IconButton
+            name="sync"
+            size={BUTTON_SIZE}
+            onPress={() => {
+              const timeZone = getCalendars()[0].timeZone;
+              if (!timeZone) return;
+              setValue("timeZone" as Path<TFieldValues>, timeZone as any, {
+                shouldDirty: true,
+              });
+            }}
+          />
+        </View>
       </View>
 
       {WEEK_DAYS.map((day) => {
@@ -121,11 +149,21 @@ const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 6,
   },
   label: {
     fontSize: 14,
     color: Colors.black,
+  },
+  timeZoneContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  timeZone: {
+    fontSize: 14,
+    color: Colors.lightText,
   },
   dayContainer: {
     flexDirection: "column",

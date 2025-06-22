@@ -26,4 +26,5 @@ export type PublicProfile = {
   services: string[];
   consultationDuration: string;
   availability: Availability;
+  timeZone: string | null;
 };

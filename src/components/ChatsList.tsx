@@ -43,6 +43,10 @@ const ChatsList = ({ filter }: { filter: string }) => {
   const filteredChats =
     filter !== "all" ? chats.filter((chat) => chat.status === filter) : chats;
 
+  const sortedChats = [...filteredChats].sort((a, b) => {
+    return (b.lastMessage.timestamp ?? 0) - (a.lastMessage.timestamp ?? 0);
+  });
+
   if (filteredChats.length === 0) {
     return (
       <View
@@ -73,7 +77,7 @@ const ChatsList = ({ filter }: { filter: string }) => {
   return (
     <FlatList
       renderItem={({ item }) => <ChatRow chat={item} />}
-      data={isFetchingChats ? [] : filteredChats}
+      data={isFetchingChats ? [] : sortedChats}
       ref={listRef}
     />
   );

@@ -161,7 +161,7 @@ const ChatRoom = () => {
                 borderTopColor: Colors.faintGrey,
               }}
             >
-              {status.ongoing ? (
+              {status.ongoing || userData.role === "doctor" ? (
                 <InputToolbar
                   {...props}
                   primaryStyle={{

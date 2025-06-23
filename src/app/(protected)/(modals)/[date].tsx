@@ -103,8 +103,11 @@ const DayInfo = () => {
               </View>
 
               <TextSemiBold style={{ fontSize: 12, textAlign: "left" }}>
-                {appointment.timeSlot.startTime} -{" "}
-                {appointment.timeSlot.endTime}
+                {appointment.date.toDate().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                , {appointment.durationMinutes} {t("common.minutes")}
               </TextSemiBold>
 
               <TextSemiBold style={{ fontSize: 12, textAlign: "left" }}>

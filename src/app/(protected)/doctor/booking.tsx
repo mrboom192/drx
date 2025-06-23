@@ -161,9 +161,11 @@ const BookingPage = () => {
   const initializePaymentSheet = async ({
     amount,
     date,
+    timeZone,
   }: {
     amount: number;
     date: string;
+    timeZone: string;
   }) => {
     if (!userData) throw new Error("Patient not logged in");
     if (!amount) throw new Error("Missing amount");
@@ -175,6 +177,7 @@ const BookingPage = () => {
         patientId: userData.uid,
         doctorId: doctor.uid,
         date,
+        timeZone,
       },
     });
 
@@ -216,6 +219,7 @@ const BookingPage = () => {
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
         date: utcDate,
+        timeZone: getCalendars()[0].timeZone || "UTC",
       });
 
       // Currently handle booking on backend

@@ -178,7 +178,9 @@ const ChatRoom = () => {
                   }}
                 />
               ) : (
-                <TextSemiBold style={{ color: Colors.lightText }}>
+                <TextSemiBold
+                  style={{ color: Colors.lightText, textAlign: "center" }}
+                >
                   {status.message}
                 </TextSemiBold>
               )}

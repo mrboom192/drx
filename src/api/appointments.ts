@@ -74,12 +74,12 @@ export async function fetchAppointmentStatus(
   const start = (appt.date as Timestamp).toDate();
   const now = new Date();
 
-  const windowOpensAt = new Date(start.getTime() - 20 * 60 * 1000); // 20 min before
+  const windowOpensAt = new Date(start.getTime() - 10 * 60 * 1000);
   const windowClosesAt = new Date(start.getTime() + 24 * 60 * 60 * 1000); // 24h after
 
   if (isBefore(now, windowOpensAt)) {
     return {
-      message: `Your appointment window opens on ${format(
+      message: `Chat will be available 10 minutes before your appointment on ${format(
         windowOpensAt,
         "MMMM d 'at' h:mm a"
       )}.`,

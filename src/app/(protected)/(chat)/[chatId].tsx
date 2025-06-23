@@ -31,6 +31,8 @@ import i18next from "i18next";
 // Import ar and en locales from dayjs
 import "dayjs/locale/ar";
 import "dayjs/locale/en";
+import { fetchAppointmentStatus } from "@/api/appointments";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface Message {
   _id: number;
@@ -49,19 +51,33 @@ const ChatRoom = () => {
   const { t } = useTranslation();
   const { chatId } = useLocalSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [status, setStatus] = useState<{
+    message: string;
+    ongoing: boolean;
+  } | null>(null);
   const userData = useUserData();
   const [loading, setLoading] = useState(true);
   const chat = useChatsById(chatId as string);
   const insets = useSafeAreaInsets();
 
   // Firestore references
-  const chatDocRef = doc(db, "chats", chatId as string);
   const messagesRef = collection(db, "chats", chatId as string, "messages");
 
   const otherUser =
     userData?.role === "doctor"
       ? chat?.participants.patient
       : chat?.participants.doctor;
+
+  useEffect(() => {
+    if (!userData?.uid || !otherUser?.uid) return;
+
+    const loadStatus = async () => {
+      const result = await fetchAppointmentStatus(userData.uid, otherUser.uid);
+      setStatus(result);
+    };
+
+    loadStatus();
+  }, [userData?.uid, otherUser?.uid]);
 
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
@@ -122,15 +138,7 @@ const ChatRoom = () => {
   };
 
   // Loading logic
-  if (loading || !userData) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <TextSemiBold style={{ fontSize: 16, color: "#666" }}>
-          Loading chat...
-        </TextSemiBold>
-      </View>
-    );
-  }
+  if (loading || !userData || !status) return <LoadingScreen />;
 
   return (
     <View
@@ -153,21 +161,27 @@ const ChatRoom = () => {
                 borderTopColor: Colors.faintGrey,
               }}
             >
-              <InputToolbar
-                {...props}
-                primaryStyle={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  borderRadius: 20,
-                  borderWidth: 1,
-                  borderColor: Colors.faintGrey,
-                  gap: 8,
-                }}
-                containerStyle={{
-                  borderTopWidth: 0,
-                }}
-              />
+              {status.ongoing ? (
+                <InputToolbar
+                  {...props}
+                  primaryStyle={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor: Colors.faintGrey,
+                    gap: 8,
+                  }}
+                  containerStyle={{
+                    borderTopWidth: 0,
+                  }}
+                />
+              ) : (
+                <TextSemiBold style={{ color: Colors.lightText }}>
+                  {status.message}
+                </TextSemiBold>
+              )}
             </View>
           );
         }}

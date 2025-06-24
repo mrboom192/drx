@@ -1,6 +1,5 @@
 import PageListLink from "@/components/PageListLink";
 import PageScrollView from "@/components/PageScrollView";
-import { RelativePathString } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Platform } from "react-native";

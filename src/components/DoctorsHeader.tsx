@@ -1,6 +1,4 @@
 import Colors from "@/constants/Colors";
-import { useThemedStyles } from "@/hooks/useThemeStyles";
-import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";

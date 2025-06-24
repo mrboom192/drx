@@ -121,6 +121,17 @@ const UpdatePublicProfile = () => {
           merge: true,
         }
       );
+
+      if (!userData.hasPublicProfile) {
+        await setDoc(
+          doc(db, "users", userData.uid),
+          {
+            hasPublicProfile: true,
+          },
+          { merge: true }
+        );
+      }
+
       router.back();
     } catch (error) {
       console.error("Error updating public profile:", error);

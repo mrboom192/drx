@@ -1,3 +1,4 @@
+import CustomIcon from "@/components/CustomIcon";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
@@ -95,11 +96,17 @@ const Personal = () => {
                     <TextSemiBold style={{ fontSize: 16, color: "#000" }}>
                       {t("page.public-profile")}
                     </TextSemiBold>
-                    {!userData.hasPublicProfile && (
-                      <Ionicons
-                        name="alert-circle-outline"
+                    {userData.hasPublicProfile ? (
+                      <CustomIcon
+                        name="check-circle"
+                        color={Colors.green}
                         size={20}
+                      />
+                    ) : (
+                      <CustomIcon
+                        name="schedule"
                         color={Colors.onlineConsultation}
+                        size={20}
                       />
                     )}
                   </View>
@@ -155,24 +162,20 @@ const Personal = () => {
 
                     {(userData.verification === "unverified" ||
                       !userData.verification) && (
-                      <Ionicons
-                        name="alert-circle-outline"
-                        size={20}
-                        color={Colors.pink}
-                      />
+                      <CustomIcon name="error" color={Colors.pink} size={20} />
                     )}
                     {userData.verification === "pending" && (
-                      <Ionicons
-                        name="time-outline"
-                        size={20}
+                      <CustomIcon
+                        name="schedule"
                         color={Colors.onlineConsultation}
+                        size={20}
                       />
                     )}
                     {userData.verification === "verified" && (
-                      <Ionicons
-                        name="checkmark-circle-outline"
-                        size={20}
+                      <CustomIcon
+                        name="check-circle"
                         color={Colors.green}
+                        size={20}
                       />
                     )}
                   </View>

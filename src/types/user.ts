@@ -1,5 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
+export type VerificationStatus =
+  | "unverified"
+  | "pending"
+  | "verified"
+  | "rejected";
+
 export interface User {
   uid: string;
   dateOfBirth: Timestamp;
@@ -15,7 +21,7 @@ export interface User {
   createdAt: Timestamp;
   hasPublicProfile?: boolean;
   licenseImage?: string;
-  verification?: string;
+  verification?: VerificationStatus;
 
   // For notifications
   expoPushTokens?: string[];

@@ -13,7 +13,7 @@ import SubmitButton from "@/components/SubmitButton";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 
 const TOTAL_PADDING = 32;
 const GAP = 8;

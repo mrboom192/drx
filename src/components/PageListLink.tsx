@@ -1,16 +1,23 @@
 import Colors from "@/constants/Colors";
-import { LinkProps, router } from "expo-router";
-import React from "react";
+import { LinkProps, RelativePathString, router } from "expo-router";
+import React, { ReactNode } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import CustomIcon from "./CustomIcon";
 import i18next from "i18next";
+import { IconName } from "@/constants/iconsMap";
 
-type PageListLinkProps = {
+export type IconProperties = {
+  name: IconName;
+  color: string;
+};
+
+export type PageListLinkProps = {
   title: string;
   description: string;
-  href?: LinkProps["href"];
+  href?: RelativePathString | LinkProps["href"];
   onPress?: () => void;
+  icon?: IconProperties;
 };
 
 const PageListLink = ({
@@ -18,6 +25,7 @@ const PageListLink = ({
   description,
   href,
   onPress,
+  icon,
 }: PageListLinkProps) => {
   const handlePress = () => {
     if (onPress) {
@@ -36,7 +44,12 @@ const PageListLink = ({
     >
       <View style={styles.row}>
         <View style={styles.textContainer}>
-          <TextSemiBold style={styles.title}>{title}</TextSemiBold>
+          <View style={styles.titleContainer}>
+            <TextSemiBold style={styles.title}>{title}</TextSemiBold>
+            {!!icon && (
+              <CustomIcon name={icon.name} size={20} color={icon.color} />
+            )}
+          </View>
           <TextRegular style={styles.description}>{description}</TextRegular>
         </View>
         <CustomIcon
@@ -66,6 +79,11 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   title: {
     fontSize: 16,

@@ -131,6 +131,7 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
       durationMinutes: doctor.consultationDuration,
       price: doctor.consultationPrice,
       status: "confirmed",
+      hasSentReminder: false,
       createdAt: admin.firestore.Timestamp.now(),
     };
 

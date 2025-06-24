@@ -1,5 +1,4 @@
 import Colors from "@/constants/Colors";
-import { themedStyles } from "@/constants/Styles";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChats, useIsFetchingChats } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";

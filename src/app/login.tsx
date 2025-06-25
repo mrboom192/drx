@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import CustomIcon from "@/components/CustomIcon";
+import OrDivider from "@/components/OrDivider";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -92,11 +93,7 @@ const SignIn = () => {
         />
       </View>
 
-      <View style={styles.orContainer}>
-        <Divider />
-        <TextSemiBold style={styles.orText}>{t("login.or")}</TextSemiBold>
-        <Divider />
-      </View>
+      <OrDivider />
 
       <SubmitButton
         text={t("login.signup")}
@@ -144,15 +141,6 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
     marginBottom: 24,
-  },
-  orContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  orText: {
-    marginHorizontal: 12,
-    fontSize: 16,
-    color: "#444",
   },
   linkText: {
     color: Colors.primary,

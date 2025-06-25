@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import React from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -22,6 +22,7 @@ import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
 import { fetchPublicProfile } from "@/api/publicProfile";
 import { getCalendars } from "expo-localization";
+import ControllerLocator from "@/components/form/ControllerLocator";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ const UpdatePublicProfile = () => {
       mode: "onChange",
       defaultValues: async () => {
         const fallback: PublicProfile = {
+          coordinates: null,
           specializations: [],
           languages: [],
           experience: "",
@@ -72,7 +74,11 @@ const UpdatePublicProfile = () => {
     });
 
   const { isDirty, isValid, isSubmitting, isLoading } = formState;
-  const watchedServices = watch("services", []);
+  const watchedServices = useWatch({
+    control,
+    name: "services",
+    defaultValue: [],
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
@@ -116,6 +122,7 @@ const UpdatePublicProfile = () => {
             Sat: [],
           },
           timeZone: formData.timeZone,
+          coordinates: formData.coordinates || null,
         },
         {
           merge: true,
@@ -304,6 +311,10 @@ const UpdatePublicProfile = () => {
             textInputStyle={{ width: "100%" }}
           />
         )}
+
+        <Divider />
+
+        <ControllerLocator name="coordinates" control={control} />
 
         <Divider />
 

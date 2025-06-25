@@ -1,13 +1,31 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { TextSemiBold } from "../StyledText";
+import { TextRegular, TextSemiBold } from "../StyledText";
 import Colors from "@/constants/Colors";
+import Avatar from "../Avatar";
 
-const DoctorMarker = ({ count }: { count: number }) => {
+type DoctorMarkerProps = {
+  firstName?: string;
+  lastName?: string;
+  image?: string;
+  price?: number;
+};
+
+const DoctorMarker = ({
+  firstName,
+  lastName,
+  image,
+  price,
+}: DoctorMarkerProps) => {
   return (
     <TouchableOpacity style={style.container}>
       <View style={style.bubble}>
-        <TextSemiBold style={style.count}>{count}</TextSemiBold>
+        <Avatar
+          initials={`${firstName?.charAt(0)}${lastName?.charAt(0)}`}
+          uri={image}
+          size={28}
+        />
+        <TextRegular style={style.name}>Dr. {lastName}</TextRegular>
       </View>
     </TouchableOpacity>
   );
@@ -19,22 +37,21 @@ const style = StyleSheet.create({
     alignSelf: "flex-start",
   },
   bubble: {
-    width: 40,
-    height: 40,
     flex: 0,
     flexDirection: "row",
     alignSelf: "flex-start",
+    gap: 8,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFF",
-    padding: 4,
+    padding: 12,
     borderRadius: 8,
     borderColor: Colors.faintGrey,
     borderWidth: 1,
   },
-  count: {
+  name: {
     color: Colors.black,
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

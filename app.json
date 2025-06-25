@@ -75,7 +75,12 @@
           "enableGooglePay": true
         }
       ],
-      "expo-localization"
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "DrX Telehealth requires access to your location to help you find nearby healthcare providers when using the map."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

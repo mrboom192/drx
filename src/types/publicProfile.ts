@@ -19,6 +19,10 @@ export type PublicProfile = {
   firstName?: string;
   lastName?: string;
 
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  } | null;
   specializations: string[];
   languages: string[];
   experience: string;

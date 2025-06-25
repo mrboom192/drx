@@ -37,8 +37,8 @@ export const getDoctorPersonalInfoPages = (
   verification: VerificationStatus | undefined
 ): PageListLinkProps[] => {
   const publicProfileIcon: IconProperties = {
-    name: hasPublicProfile ? "schedule" : "check-circle",
-    color: hasPublicProfile ? Colors.onlineConsultation : Colors.green,
+    name: hasPublicProfile ? "check-circle" : "schedule",
+    color: hasPublicProfile ? Colors.green : Colors.onlineConsultation,
   };
 
   const verificationIcon: IconProperties = {

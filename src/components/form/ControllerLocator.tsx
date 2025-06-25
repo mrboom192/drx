@@ -22,10 +22,7 @@ import i18next from "i18next";
 import DoctorMarker from "../map/DoctorMarker";
 import { useUserData } from "@/stores/useUserStore";
 import OrDivider from "../OrDivider";
-
-const TITLE = "Place of practice (optional)";
-const SUBTITLE =
-  "Enter the location of your practice. We'll use this to display your profile on the map, helping patients find you more easily.";
+import { useTranslation } from "react-i18next";
 
 interface ControllerLocatorProps<T extends FieldValues> {
   control: Control<T>;
@@ -40,6 +37,10 @@ const ControllerLocator = <T extends FieldValues>({
   name,
   rules = {},
 }: ControllerLocatorProps<T>) => {
+  const { t } = useTranslation();
+  const TITLE = t("form.place-of-practice-optional");
+  const SUBTITLE = t("form.locator-subtitle");
+
   const userDate = useUserData();
   const [mapDimensions, setMapDimensions] = useState<
     | {
@@ -79,7 +80,7 @@ const ControllerLocator = <T extends FieldValues>({
           if (!permission || !permission.granted) {
             const newPermission = await requestPermission();
             if (newPermission.status !== "granted") {
-              setMyLocationError("Please enable location services.");
+              setMyLocationError(t("form.please-enable-location-services"));
               return;
             }
             permission = newPermission;
@@ -129,7 +130,7 @@ const ControllerLocator = <T extends FieldValues>({
                   onBlur={onBlur}
                   onChangeText={(input) => setAddress(input)}
                   value={address}
-                  placeholder={"Enter an address"}
+                  placeholder={t("form.enter-an-address")}
                   placeholderTextColor={Colors.lightText}
                 />
               </View>
@@ -138,7 +139,7 @@ const ControllerLocator = <T extends FieldValues>({
                 onPress={onGeocodePress}
               >
                 <CustomIcon name="search" size={24} color={Colors.black} />
-                <TextSemiBold>Find</TextSemiBold>
+                <TextSemiBold>{t("form.find")}</TextSemiBold>
               </TouchableOpacity>
             </View>
 
@@ -149,7 +150,7 @@ const ControllerLocator = <T extends FieldValues>({
             )}
             <TouchableOpacity style={styles.button} onPress={onLocateMePress}>
               <CustomIcon name="locate-me" size={24} color={Colors.black} />
-              <TextSemiBold>Locate me</TextSemiBold>
+              <TextSemiBold>{t("form.locate-me")}</TextSemiBold>
             </TouchableOpacity>
 
             {value && (
@@ -161,7 +162,7 @@ const ControllerLocator = <T extends FieldValues>({
                 }}
               >
                 <View style={styles.previewLabel}>
-                  <TextRegular>What patients will see</TextRegular>
+                  <TextRegular>{t("form.what-patients-will-see")}</TextRegular>
                 </View>
                 <MapView
                   provider={PROVIDER_DEFAULT}
@@ -196,7 +197,7 @@ const ControllerLocator = <T extends FieldValues>({
                 >
                   <CustomIcon name="close" size={24} color={Colors.pink} />
                   <TextSemiBold style={styles.removeLocationText}>
-                    Delete location
+                    {t("form.delete-location")}
                   </TextSemiBold>
                 </TouchableOpacity>
               </View>

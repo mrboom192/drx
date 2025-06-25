@@ -5,6 +5,7 @@ import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import DoctorList from "./DoctorList/DoctorList";
 import { TextSemiBold } from "./StyledText";
+import { useTranslation } from "react-i18next";
 
 const DoctorsBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -35,10 +36,11 @@ const DoctorsBottomSheet = () => {
 };
 
 const MapButton = ({ onPress }: { onPress: () => void }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.absoluteView}>
       <TouchableOpacity onPress={onPress} style={styles.btn}>
-        <TextSemiBold style={{ color: "#FFF" }}>Map</TextSemiBold>
+        <TextSemiBold style={{ color: "#FFF" }}>{t("common.map")}</TextSemiBold>
         <Ionicons name="map" size={20} color={"#FFF"} />
       </TouchableOpacity>
     </View>

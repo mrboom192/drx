@@ -168,9 +168,11 @@ const ControllerLocator = <T extends FieldValues>({
                 >
                   <Marker coordinate={value}>
                     <DoctorMarker
-                      firstName={userDate?.firstName}
-                      lastName={userDate?.lastName}
-                      image={userDate?.image}
+                      firstName={userDate?.firstName || "First"}
+                      lastName={userDate?.lastName || "Last"}
+                      image={userDate?.image || ""}
+                      uid={userDate?.uid || ""}
+                      shouldNavigate={false}
                     />
                   </Marker>
                 </MapView>

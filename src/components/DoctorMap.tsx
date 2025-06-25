@@ -14,20 +14,11 @@ import DoctorMarker from "./map/DoctorMarker";
 const INITIAL_REGION = {
   latitude: 41.924447,
   longitude: -87.687339,
-  latitudeDelta: 1,
-  longitudeDelta: 1,
+  latitudeDelta: 100,
+  longitudeDelta: 100,
 };
 
-export const PLACES = [
-  { id: 1, latitude: 42.0, longitude: -87.0 },
-  { id: 2, latitude: 42.1, longitude: -87.0 },
-  { id: 3, latitude: 42.2, longitude: -87.0 },
-  { id: 4, latitude: 42.3, longitude: -87.0 },
-  { id: 5, latitude: 42.4, longitude: -87.0 },
-];
-
 const DoctorMap = ({ specialty }: { specialty: string }) => {
-  const router = useRouter();
   const doctors = useFilteredDoctors(specialty);
 
   const [region, setRegion] = useState(INITIAL_REGION);
@@ -36,12 +27,20 @@ const DoctorMap = ({ specialty }: { specialty: string }) => {
     height: number;
   } | null>(null);
 
-  const places = useMemo(() => PLACES.map(toPointFeature), []);
+  const doctorPlaces = useMemo(() => {
+    return doctors
+      .filter((doctor) => doctor.coordinates) // skip doctors without coordinates
+      .map((doctor) => {
+        const { longitude, latitude } = doctor.coordinates!;
+        return toPointFeature(doctor, [longitude, latitude]);
+      });
+  }, [doctors]);
 
   const handleLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
     setMapDimensions({ width, height });
   };
+
   const renderMarker = (feature: ClusterFeature<any>) => {
     const [lng, lat] = feature.geometry.coordinates;
 
@@ -56,7 +55,12 @@ const DoctorMap = ({ specialty }: { specialty: string }) => {
         {isCluster ? (
           <ClusterMarker count={feature.properties.point_count} />
         ) : (
-          <DoctorMarker count={1} />
+          <DoctorMarker
+            firstName={feature.properties.firstName}
+            lastName={feature.properties.lastName}
+            image={feature.properties.image}
+            uid={feature.properties.uid}
+          />
         )}
       </Marker>
     );
@@ -72,7 +76,7 @@ const DoctorMap = ({ specialty }: { specialty: string }) => {
           onRegionChangeComplete={setRegion}
         >
           <Clusterer
-            data={places}
+            data={doctorPlaces}
             region={region}
             mapDimensions={mapDimensions}
             renderItem={renderMarker}

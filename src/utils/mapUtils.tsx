@@ -9,13 +9,16 @@ export interface Place {
 }
 
 // GeoJSON point feature that supercluster expects
-export function toPointFeature(place: Place): Supercluster.PointFeature<Place> {
+export function toPointFeature(
+  item: Place,
+  coordinates: [longitude: number, latitude: number]
+): Supercluster.PointFeature<Place> {
   return {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [place.longitude, place.latitude],
+      coordinates,
     },
-    properties: place,
+    properties: item,
   };
 }

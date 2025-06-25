@@ -1,16 +1,10 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useMemo, useRef, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import DoctorList from "./DoctorList/DoctorList";
-import { TextRegular, TextSemiBold } from "./StyledText";
+import { TextSemiBold } from "./StyledText";
 
 interface Props {
   specialty: string;
@@ -29,8 +23,9 @@ const DoctorsBottomSheet = ({ specialty }: Props) => {
   return (
     <BottomSheet
       style={styles.sheetContainer}
+      backgroundStyle={styles.bottomSheetBackground}
       snapPoints={snapPoints}
-      index={1}
+      index={2}
       ref={bottomSheetRef}
       handleIndicatorStyle={{ backgroundColor: Colors.light.grey }}
       enablePanDownToClose={false}
@@ -57,6 +52,9 @@ const MapButton = ({ onPress }: { onPress: () => void }) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+  },
+  bottomSheetBackground: {
+    borderRadius: 0,
   },
   absoluteView: {
     position: "absolute",

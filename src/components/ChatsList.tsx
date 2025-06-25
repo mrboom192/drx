@@ -20,8 +20,6 @@ import { TextRegular, TextSemiBold } from "./StyledText";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
-const locales = { enUS, ar };
-
 const ChatsList = ({ filter }: { filter: string }) => {
   const { t } = useTranslation();
   const userData = useUserData();

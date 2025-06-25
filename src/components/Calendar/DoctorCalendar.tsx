@@ -94,7 +94,9 @@ const DoctorCalendar = () => {
             textAlign: "center",
           }}
         >
-          {format(dateObj, "LLLL, yyyy")}
+          {format(dateObj, "LLLL, yyyy", {
+            locale: locales[i18next.language] ?? enUS,
+          })}
         </TextSemiBold>
       </TouchableOpacity>
     );

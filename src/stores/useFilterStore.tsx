@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export interface FilterState {
-  providerLanguage: string;
+  providerLanguages: string[];
   priceRange: [number, number];
   specialty: string;
 }
@@ -14,7 +14,7 @@ interface FilterStoreState {
 
 export const useFilterStore = create<FilterStoreState>((set) => ({
   filters: {
-    providerLanguage: "en",
+    providerLanguages: [],
     priceRange: [0, 100],
     specialty: "all",
   },
@@ -28,7 +28,7 @@ export const useFilterStore = create<FilterStoreState>((set) => ({
   resetFilters: () =>
     set({
       filters: {
-        providerLanguage: "en",
+        providerLanguages: [],
         priceRange: [0, 100],
         specialty: "all",
       },

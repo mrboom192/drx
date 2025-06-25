@@ -19,6 +19,7 @@ import {
 } from "react-native-webrtc";
 import { database, db, functions } from "../../firebaseConfig";
 import RTCTrackEvent from "react-native-webrtc/lib/typescript/RTCTrackEvent";
+import InCallManager from "react-native-incall-manager";
 
 export function useWebRTCCall(
   chatId: string,
@@ -134,6 +135,9 @@ export function useWebRTCCall(
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
 
+    InCallManager.start({ media: "audio" });
+    InCallManager.setForceSpeakerphoneOn(true);
+
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current?.addTrack(track, mediaStream);
     });
@@ -197,6 +201,9 @@ export function useWebRTCCall(
   async function joinCall() {
     const mediaStream = await getMediaStream();
     if (!mediaStream) return;
+
+    InCallManager.start({ media: "audio" });
+    InCallManager.setForceSpeakerphoneOn(true);
 
     peerConnection.current?.addEventListener(
       "icecandidate",
@@ -263,6 +270,8 @@ export function useWebRTCCall(
   }
 
   async function endCall() {
+    InCallManager.stop();
+
     localStream?.getTracks().forEach((t) => t.stop());
     localStream?.release();
     setLocalStream(null);

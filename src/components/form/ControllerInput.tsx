@@ -99,6 +99,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
             />
             {sensitive && (
               <TouchableOpacity
+                style={styles.iconRightContainer}
                 onPress={() => setShowSensitive(!showSensitive)}
               >
                 <Ionicons
@@ -134,21 +135,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   iconLeftContainer: {
-    marginRight: 8,
+    marginLeft: 16,
   },
   inputContainer: {
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
-    minHeight: 48,
   },
   input: {
     flex: 1,
     fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    minHeight: 48,
     fontFamily: "DMSans_400Regular",
-    textAlignVertical: "top",
     textAlign: "left",
+  },
+  iconRightContainer: {
+    marginRight: 16,
   },
 });

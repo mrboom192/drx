@@ -94,7 +94,6 @@ const AccountInfo = () => {
         minimumDate={new Date(1900, 0, 1)}
         control={control}
         name={"dateOfBirth"}
-        rules={{ required: t("form.date-of-birth-is-required") }}
         placeholder={t("form.select-your-date-of-birth")}
       />
 

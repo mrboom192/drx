@@ -11,8 +11,8 @@ import sgMail from "@sendgrid/mail";
 import Stripe from "stripe";
 import { firestore } from "firebase-admin";
 
-const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY_TEST");
-const stripeSigningSecret = defineSecret("STRIPE_SIGNING_SECRET_TEST");
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
+const stripeSigningSecret = defineSecret("STRIPE_SIGNING_SECRET");
 const sgApiKey = defineSecret("SENDGRID_API_KEY");
 
 export const handleStripeWebhook = onRequest(

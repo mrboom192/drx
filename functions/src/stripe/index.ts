@@ -8,7 +8,7 @@ import { admin } from "../lib/admin";
 
 import Stripe from "stripe";
 
-const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY_TEST");
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
 
 /**
  * When a user is created, create a Stripe customer object for them.

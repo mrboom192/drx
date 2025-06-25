@@ -1,7 +1,13 @@
 import Colors from "@/constants/Colors";
 import * as Location from "expo-location";
 import React, { useState } from "react";
-import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldPath,
+  FieldValues,
+  useWatch,
+} from "react-hook-form";
 import {
   Pressable,
   StyleSheet,
@@ -45,6 +51,10 @@ const ControllerLocator = <T extends FieldValues>({
   const [myLocationError, setMyLocationError] = useState<string | null>(null);
   const [locationPermission, requestPermission] =
     Location.useForegroundPermissions();
+  const consultationPrice = useWatch({
+    control,
+    name: "consultationPrice" as FieldPath<T>,
+  });
 
   return (
     <Controller
@@ -150,6 +160,9 @@ const ControllerLocator = <T extends FieldValues>({
                   setMapDimensions({ width });
                 }}
               >
+                <View style={styles.previewLabel}>
+                  <TextRegular>What patients will see</TextRegular>
+                </View>
                 <MapView
                   provider={PROVIDER_DEFAULT}
                   style={[
@@ -172,6 +185,7 @@ const ControllerLocator = <T extends FieldValues>({
                       lastName={userDate?.lastName || "Last"}
                       image={userDate?.image || ""}
                       uid={userDate?.uid || ""}
+                      price={consultationPrice}
                       shouldNavigate={false}
                     />
                   </Marker>
@@ -230,6 +244,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     color: Colors.black,
+  },
+  previewLabel: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    backgroundColor: "#FFF",
+    borderWidth: 1,
+    borderColor: Colors.faintGrey,
+    borderRadius: 8,
+    padding: 12,
+    zIndex: 10,
   },
   labelInfo: {
     flexDirection: "column",

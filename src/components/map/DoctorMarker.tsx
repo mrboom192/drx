@@ -10,6 +10,7 @@ type DoctorMarkerProps = {
   lastName: string;
   image: string;
   uid: string;
+  price: string;
   shouldNavigate?: boolean;
 };
 
@@ -18,11 +19,12 @@ const DoctorMarker = ({
   lastName,
   image,
   uid,
+  price,
   shouldNavigate = true,
 }: DoctorMarkerProps) => {
   return (
     <TouchableOpacity
-      style={style.container}
+      style={styles.container}
       onPress={() =>
         shouldNavigate &&
         router.navigate({
@@ -31,39 +33,52 @@ const DoctorMarker = ({
         })
       }
     >
-      <View style={style.bubble}>
+      <View style={styles.bubble}>
         <Avatar
           initials={`${firstName?.charAt(0)}${lastName?.charAt(0)}`}
           uri={image}
           size={28}
         />
-        <TextRegular style={style.name}>Dr. {lastName}</TextRegular>
+        <View style={styles.textContainer}>
+          <TextRegular style={styles.name}>Dr. {lastName}</TextRegular>
+          <TextSemiBold style={styles.price}>${price}</TextSemiBold>
+        </View>
       </View>
     </TouchableOpacity>
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignSelf: "flex-start",
+  },
+  textContainer: {
+    flexDirection: "column",
+    marginLeft: 8,
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   bubble: {
     flex: 0,
     flexDirection: "row",
     alignSelf: "flex-start",
-    gap: 8,
+    gap: 4,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFF",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 12,
     borderColor: Colors.faintGrey,
     borderWidth: 1,
   },
   name: {
     color: Colors.black,
-    fontSize: 14,
+    fontSize: 12,
+  },
+  price: {
+    color: Colors.black,
+    fontSize: 10,
   },
 });
 

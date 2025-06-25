@@ -60,6 +60,7 @@ const DoctorMap = ({ specialty }: { specialty: string }) => {
             lastName={feature.properties.lastName}
             image={feature.properties.image}
             uid={feature.properties.uid}
+            price={feature.properties.consultationPrice}
           />
         )}
       </Marker>

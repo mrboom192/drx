@@ -9,12 +9,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 
 const Page = () => {
-  const [specialty, setSpecialty] = useState("all");
   const fetchSomeDoctors = useFetchSomeDoctors();
-
-  const onDataChanged = (specialty: string) => {
-    setSpecialty(specialty);
-  };
 
   useEffect(() => {
     fetchSomeDoctors();
@@ -24,13 +19,11 @@ const Page = () => {
     <View style={{ flex: 1 }}>
       <Stack.Screen
         options={{
-          header: () => <DoctorsHeader onSpecialtyChange={onDataChanged} />,
+          header: () => <DoctorsHeader />,
         }}
       />
-      {/* <DoctorList specialty={specialty} />
-       */}
-      <DoctorMap specialty={specialty} />
-      <DoctorsBottomSheet specialty={specialty} />
+      <DoctorMap />
+      <DoctorsBottomSheet />
     </View>
   );
 };

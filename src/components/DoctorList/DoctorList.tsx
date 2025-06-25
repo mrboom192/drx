@@ -1,14 +1,8 @@
 import Colors from "@/constants/Colors";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
 import { Link } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
-import {
-  ListRenderItem,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import React, { useEffect, useRef } from "react";
+import { View } from "react-native";
 import { TextSemiBold } from "../StyledText";
 import { renderDoctorRow } from "./DoctorListItem";
 import { useTranslation } from "react-i18next";
@@ -16,15 +10,16 @@ import {
   BottomSheetFlatList,
   BottomSheetFlatListMethods,
 } from "@gorhom/bottom-sheet";
+import { useFilters } from "@/stores/useFilterStore";
 
 interface Props {
-  specialty: string;
   refresh?: number;
 }
 
-const DoctorList = ({ specialty, refresh }: Props) => {
+const DoctorList = ({ refresh }: Props) => {
   const { t } = useTranslation();
-  const doctors = useFilteredDoctors(specialty);
+  const filters = useFilters();
+  const doctors = useFilteredDoctors(filters);
   const listRef = useRef<BottomSheetFlatListMethods>(null);
 
   useEffect(() => {

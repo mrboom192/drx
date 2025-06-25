@@ -10,12 +10,11 @@ import CustomIcon from "./CustomIcon";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { getSpecializations } from "@/constants/specializations";
-interface Props {
-  onSpecialtyChange: (specialty: string) => void;
-}
+import { useSetFilters } from "@/stores/useFilterStore";
 
-const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
+const DoctorsHeader = () => {
   const { t } = useTranslation();
+  const setFilters = useSetFilters();
   const searchFilters = useMemo(() => getSpecializations(t), [t]);
   const scrollRef = useRef<typeof ScrollView | null>(null);
   const router = useRouter();
@@ -36,7 +35,7 @@ const DoctorsHeader = ({ onSpecialtyChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSpecialtyChange(searchFilters[index].value);
+    setFilters({ specialty: searchFilters[index].value });
   };
 
   return (

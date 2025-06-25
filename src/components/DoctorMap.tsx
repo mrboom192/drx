@@ -10,6 +10,7 @@ import { ClusterFeature } from "supercluster";
 import { toPointFeature } from "@/utils/mapUtils";
 import { TextSemiBold } from "./StyledText";
 import DoctorMarker from "./map/DoctorMarker";
+import { useFilters } from "@/stores/useFilterStore";
 
 const INITIAL_REGION = {
   latitude: 41.924447,
@@ -18,8 +19,9 @@ const INITIAL_REGION = {
   longitudeDelta: 100,
 };
 
-const DoctorMap = ({ specialty }: { specialty: string }) => {
-  const doctors = useFilteredDoctors(specialty);
+const DoctorMap = () => {
+  const filters = useFilters();
+  const doctors = useFilteredDoctors(filters);
 
   const [region, setRegion] = useState(INITIAL_REGION);
   const [mapDimensions, setMapDimensions] = useState<{

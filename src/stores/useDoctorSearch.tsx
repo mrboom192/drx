@@ -1,6 +1,7 @@
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { create } from "zustand";
 import { db } from "../../firebaseConfig";
+import { FilterState } from "./useFilterStore";
 
 interface DoctorStoreState {
   doctors: any[];
@@ -105,8 +106,9 @@ export const useFetchSomeDoctors = () =>
   useDoctorStore((state) => state.fetchSomeDoctors);
 
 // Filtered doctors list
-export const useFilteredDoctors = (specialty: string) => {
+export const useFilteredDoctors = (filters: FilterState) => {
   const doctors = useDoctors();
+  const { specialty } = filters;
   const normalizedSpecialty = specialty.toLowerCase();
 
   if (!specialty || normalizedSpecialty === "all") {

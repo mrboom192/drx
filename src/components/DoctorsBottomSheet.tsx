@@ -6,11 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DoctorList from "./DoctorList/DoctorList";
 import { TextSemiBold } from "./StyledText";
 
-interface Props {
-  specialty: string;
-}
-
-const DoctorsBottomSheet = ({ specialty }: Props) => {
+const DoctorsBottomSheet = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [refresh, setRefresh] = useState(0);
   const snapPoints = useMemo(() => ["4%", "100%"], []);
@@ -31,7 +27,7 @@ const DoctorsBottomSheet = ({ specialty }: Props) => {
       enablePanDownToClose={false}
     >
       <View style={{ flex: 1 }}>
-        <DoctorList specialty={specialty} refresh={refresh} />
+        <DoctorList refresh={refresh} />
         <MapButton onPress={showMap} />
       </View>
     </BottomSheet>

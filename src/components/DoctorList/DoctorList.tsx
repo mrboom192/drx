@@ -12,6 +12,10 @@ import { FlatList } from "react-native-gesture-handler";
 import { TextSemiBold } from "../StyledText";
 import { renderDoctorRow } from "./DoctorListItem";
 import { useTranslation } from "react-i18next";
+import {
+  BottomSheetFlatList,
+  BottomSheetFlatListMethods,
+} from "@gorhom/bottom-sheet";
 
 interface Props {
   specialty: string;
@@ -21,7 +25,7 @@ interface Props {
 const DoctorList = ({ specialty, refresh }: Props) => {
   const { t } = useTranslation();
   const doctors = useFilteredDoctors(specialty);
-  const listRef = useRef<FlatList>(null);
+  const listRef = useRef<BottomSheetFlatListMethods>(null);
 
   useEffect(() => {
     if (refresh) {
@@ -43,7 +47,12 @@ const DoctorList = ({ specialty, refresh }: Props) => {
       </TextSemiBold>
     </View>
   ) : (
-    <FlatList renderItem={renderDoctorRow} data={doctors} ref={listRef} />
+    <BottomSheetFlatList
+      renderItem={renderDoctorRow}
+      data={doctors}
+      ref={listRef}
+    />
+    // <FlatList renderItem={renderDoctorRow} data={doctors} ref={listRef} />
   );
 };
 

@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { db } from "../../../../../firebaseConfig";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "@/components/SubmitButton";
+import { router } from "expo-router";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ const AccountInfo = () => {
       // Reset the form with processed data to clear dirty state
       reset({
         ...processedData,
-        dateOfBirth: processedData.dateOfBirth.toDate() || null,
+        dateOfBirth: processedData.dateOfBirth?.toDate() || null,
       });
     } catch (error) {
       console.error("Failed to update user:", error);

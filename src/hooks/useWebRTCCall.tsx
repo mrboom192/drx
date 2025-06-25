@@ -137,6 +137,7 @@ export function useWebRTCCall(
 
     InCallManager.start({ media: "audio" });
     InCallManager.setForceSpeakerphoneOn(true);
+    InCallManager.setKeepScreenOn(true);
 
     mediaStream.getTracks().forEach((track) => {
       peerConnection.current?.addTrack(track, mediaStream);
@@ -204,6 +205,7 @@ export function useWebRTCCall(
 
     InCallManager.start({ media: "audio" });
     InCallManager.setForceSpeakerphoneOn(true);
+    InCallManager.setKeepScreenOn(true);
 
     peerConnection.current?.addEventListener(
       "icecandidate",

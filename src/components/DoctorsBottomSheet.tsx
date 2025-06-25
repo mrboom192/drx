@@ -1,21 +1,17 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useMemo, useRef, useState } from "react";
+import { View, StyleSheet } from "react-native";
+import React, { Ref, useMemo } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 import DoctorList from "./DoctorList/DoctorList";
-import { TextSemiBold } from "./StyledText";
-import { useTranslation } from "react-i18next";
 
-const DoctorsBottomSheet = () => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const [refresh, setRefresh] = useState(0);
+const DoctorsBottomSheet = ({
+  bottomSheetRef,
+  refresh,
+}: {
+  bottomSheetRef: Ref<BottomSheet>;
+  refresh: number;
+}) => {
   const snapPoints = useMemo(() => ["4%", "100%"], []);
-
-  const showMap = () => {
-    bottomSheetRef.current?.collapse(); // Collapses bottom sheet, showing map
-    setRefresh((curr) => curr + 1);
-  };
 
   return (
     <BottomSheet
@@ -29,21 +25,8 @@ const DoctorsBottomSheet = () => {
     >
       <View style={{ flex: 1 }}>
         <DoctorList refresh={refresh} />
-        <MapButton onPress={showMap} />
       </View>
     </BottomSheet>
-  );
-};
-
-const MapButton = ({ onPress }: { onPress: () => void }) => {
-  const { t } = useTranslation();
-  return (
-    <View style={styles.absoluteView}>
-      <TouchableOpacity onPress={onPress} style={styles.btn}>
-        <TextSemiBold style={{ color: "#FFF" }}>{t("common.map")}</TextSemiBold>
-        <Ionicons name="map" size={20} color={"#FFF"} />
-      </TouchableOpacity>
-    </View>
   );
 };
 
@@ -53,21 +36,6 @@ const styles = StyleSheet.create({
   },
   bottomSheetBackground: {
     borderRadius: 0,
-  },
-  absoluteView: {
-    position: "absolute",
-    bottom: 30,
-    width: "100%",
-    alignItems: "center",
-  },
-  btn: {
-    backgroundColor: "#1A1A1A",
-    padding: 14,
-    height: 50,
-    borderRadius: 30,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
   },
   sheetContainer: {
     borderRadius: 0,

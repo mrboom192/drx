@@ -1,4 +1,5 @@
 import { functions } from "@/../firebaseConfig";
+import { createTestAppointment } from "@/api/test";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import Pills from "@/components/Pills";
@@ -17,6 +18,9 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { getCalendars } from "expo-localization";
+import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
+import { parseISO, setHours, setMinutes } from "date-fns";
 
 /* ------------------------------------------------------------------ */
 /* ⚙️  Firebase cloud-function types                                  */
@@ -71,19 +75,48 @@ function toTimeStr(mins: number) {
 /** Split each availability range into sub-slots of `duration` minutes. */
 function buildTimeSlotOptions(
   avail: { start: string; end: string }[],
-  duration: number
-): string[] {
-  const res: string[] = [];
+  duration: number,
+  doctorTZ: string // e.g. "Africa/Cairo"
+): { value: string; label: string }[] {
+  const patientTZ = getCalendars()[0].timeZone; // e.g. "America/New_York"
+  if (!patientTZ) {
+    throw new Error("Patient's time zone not found");
+  }
+
+  const res: { value: string; label: string }[] = [];
+  const baseDate = "1970-01-01"; // arbitrary, same for all slots
+
   avail.forEach(({ start, end }) => {
     let from = toMinutes(start);
     const until = toMinutes(end);
+
     while (from + duration <= until) {
-      const slotStart = toTimeStr(from);
-      const slotEnd = toTimeStr(from + duration);
-      res.push(`${slotStart}-${slotEnd}`);
+      const slotStart = toTimeStr(from); // "09:00"
+      const slotEnd = toTimeStr(from + duration); // "09:30"
+
+      // interpret start/end in the doctor’s TZ
+      const doctorStartISO = `${baseDate}T${slotStart}:00`;
+      const doctorEndISO = `${baseDate}T${slotEnd}:00`;
+
+      // convert to UTC
+      const utcStart = zonedTimeToUtc(doctorStartISO, doctorTZ);
+      const utcEnd = zonedTimeToUtc(doctorEndISO, doctorTZ);
+
+      // convert UTC → patient TZ
+      const patientStart = utcToZonedTime(utcStart, patientTZ);
+      const patientEnd = utcToZonedTime(utcEnd, patientTZ);
+
+      // format label in patient TZ (12-hour AM/PM)
+      const label = `${format(patientStart, "h:mm a")} - ${format(
+        patientEnd,
+        "h:mm a"
+      )}`;
+
+      res.push({ value: slotStart, label });
       from += duration;
     }
   });
+
   return res;
 }
 
@@ -118,17 +151,21 @@ const BookingPage = () => {
   const weekdayKey = weekdayKeyFromDate(selectedDate);
   const rawRanges = doctor?.availability?.[weekdayKey] || [];
   const slotDuration = doctor?.consultationDuration || 15; // minutes
-  const timeSlotOptions = buildTimeSlotOptions(rawRanges, slotDuration);
+  const timeSlotOptions = buildTimeSlotOptions(
+    rawRanges,
+    slotDuration,
+    doctor.timeZone
+  );
 
   /* ---------- Payment sheet ---------- */
   const initializePaymentSheet = async ({
     amount,
-    timeSlot,
-    selectedDate,
+    date,
+    timeZone,
   }: {
     amount: number;
-    timeSlot: string;
-    selectedDate: Date;
+    date: string;
+    timeZone: string;
   }) => {
     if (!userData) throw new Error("Patient not logged in");
     if (!amount) throw new Error("Missing amount");
@@ -139,8 +176,8 @@ const BookingPage = () => {
       metadata: {
         patientId: userData.uid,
         doctorId: doctor.uid,
-        date: selectedDate.toISOString(),
-        timeSlot: JSON.stringify(timeSlot),
+        date,
+        timeZone,
       },
     });
 
@@ -169,11 +206,24 @@ const BookingPage = () => {
   /* ---------- Submit ---------- */
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
+      const [hours, minutes] = data.timeSlot.split(":").map(Number);
+      const date = setHours(
+        setMinutes(parseISO(data.selectedDate.toISOString()), minutes),
+        hours
+      );
+      const utcDate = format(
+        zonedTimeToUtc(date, doctor.timeZone),
+        "yyyy-MM-dd'T'HH:mmXXX"
+      );
+
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
-        timeSlot: data.timeSlot,
-        selectedDate: data.selectedDate,
+        date: utcDate,
+        timeZone: getCalendars()[0].timeZone || "UTC",
       });
+
+      // Currently handle booking on backend
+
       router.replace({ pathname: "/(protected)/(tabs)/messages" });
     } catch (error) {
       console.error("Booking error:", error);

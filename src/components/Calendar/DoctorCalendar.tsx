@@ -7,7 +7,7 @@ import {
   getDayWidth,
   getLocaleData,
 } from "@/utils/calendarUtils";
-import { Day, format, Locale, Month } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { router } from "expo-router";
 import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
@@ -79,6 +79,8 @@ const DoctorCalendar = () => {
 
   // Custom header for the calendar
   const renderHeader = (date: string) => {
+    const dateObj = new Date(date);
+
     return (
       <TouchableOpacity
         onPress={() => setShowDatePicker(true)}
@@ -92,7 +94,7 @@ const DoctorCalendar = () => {
             textAlign: "center",
           }}
         >
-          {format(date, "LLLL, yyyy", {
+          {format(dateObj, "LLLL, yyyy", {
             locale: locales[i18next.language] ?? enUS,
           })}
         </TextSemiBold>

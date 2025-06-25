@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import React from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -21,55 +21,64 @@ import { getCountryOptions } from "@/constants/countryCodes";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
 import { fetchPublicProfile } from "@/api/publicProfile";
+import { getCalendars } from "expo-localization";
+import ControllerLocator from "@/components/form/ControllerLocator";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
   const userData = useUserData();
-  const { control, handleSubmit, formState, watch } = useForm<PublicProfile>({
-    mode: "onChange",
-    defaultValues: async () => {
-      const fallback: PublicProfile = {
-        specializations: [],
-        languages: [],
-        experience: "",
-        biography: "",
-        countries: [],
-        services: [],
-        consultationPrice: "",
-        secondOpinionPrice: "",
-        radiologyPrice: "",
-        weightLossPrice: "",
-        consultationDuration: "15",
-        availability: {
-          Sun: [],
-          Mon: [],
-          Tue: [],
-          Wed: [],
-          Thu: [],
-          Fri: [],
-          Sat: [],
-        },
-      };
+  const { control, handleSubmit, formState, watch, setValue } =
+    useForm<PublicProfile>({
+      mode: "onChange",
+      defaultValues: async () => {
+        const fallback: PublicProfile = {
+          coordinates: null,
+          specializations: [],
+          languages: [],
+          experience: "",
+          biography: "",
+          countries: [],
+          services: [],
+          consultationPrice: "",
+          secondOpinionPrice: "",
+          radiologyPrice: "",
+          weightLossPrice: "",
+          consultationDuration: "15",
+          timeZone: getCalendars()[0].timeZone,
+          availability: {
+            Sun: [],
+            Mon: [],
+            Tue: [],
+            Wed: [],
+            Thu: [],
+            Fri: [],
+            Sat: [],
+          },
+        };
 
-      const res = await fetchPublicProfile();
+        const res = await fetchPublicProfile();
 
-      if (!res) return fallback;
+        if (!res) return fallback;
 
-      return {
-        ...fallback,
-        ...res,
-        experience: res.experience?.toString() || "",
-        consultationPrice: res.consultationPrice?.toString() || "",
-        secondOpinionPrice: res.secondOpinionPrice?.toString() || "",
-        radiologyPrice: res.radiologyPrice?.toString() || "",
-        weightLossPrice: res.weightLossPrice?.toString() || "",
-        consultationDuration: res.consultationDuration?.toString() || "15",
-      };
-    },
-  });
+        return {
+          ...fallback,
+          ...res,
+          experience: res.experience?.toString() || "",
+          consultationPrice: res.consultationPrice?.toString() || "",
+          secondOpinionPrice: res.secondOpinionPrice?.toString() || "",
+          radiologyPrice: res.radiologyPrice?.toString() || "",
+          weightLossPrice: res.weightLossPrice?.toString() || "",
+          consultationDuration: res.consultationDuration?.toString() || "15",
+        };
+      },
+    });
 
   const { isDirty, isValid, isSubmitting, isLoading } = formState;
-  const watchedServices = watch("services", []);
+  const watchedServices = useWatch({
+    control,
+    name: "services",
+    defaultValue: [],
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
@@ -112,11 +121,24 @@ const UpdatePublicProfile = () => {
             Fri: [],
             Sat: [],
           },
+          timeZone: formData.timeZone,
+          coordinates: formData.coordinates || null,
         },
         {
           merge: true,
         }
       );
+
+      if (!userData.hasPublicProfile) {
+        await setDoc(
+          doc(db, "users", userData.uid),
+          {
+            hasPublicProfile: true,
+          },
+          { merge: true }
+        );
+      }
+
       router.back();
     } catch (error) {
       console.error("Error updating public profile:", error);
@@ -292,6 +314,10 @@ const UpdatePublicProfile = () => {
 
         <Divider />
 
+        <ControllerLocator name="coordinates" control={control} />
+
+        <Divider />
+
         <ControllerCheckBoxOptions
           label={t("common.specializations")}
           name="specializations"
@@ -326,6 +352,8 @@ const UpdatePublicProfile = () => {
           label={t("form.availability")}
           control={control}
           name="availability"
+          setValue={setValue}
+          watch={watch}
         />
       </FormPage>
     </View>

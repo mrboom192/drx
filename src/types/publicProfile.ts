@@ -14,6 +14,15 @@ type Availability = {
 };
 
 export type PublicProfile = {
+  image?: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  } | null;
   specializations: string[];
   languages: string[];
   experience: string;
@@ -26,4 +35,5 @@ export type PublicProfile = {
   services: string[];
   consultationDuration: string;
   availability: Availability;
+  timeZone: string | null;
 };

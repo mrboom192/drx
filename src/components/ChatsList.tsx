@@ -1,5 +1,4 @@
 import Colors from "@/constants/Colors";
-import { themedStyles } from "@/constants/Styles";
 import { useUserPresence } from "@/hooks/useUserPresence";
 import { useChats, useIsFetchingChats } from "@/stores/useChatStore";
 import { useUserData } from "@/stores/useUserStore";
@@ -21,8 +20,6 @@ import { TextRegular, TextSemiBold } from "./StyledText";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
-const locales = { enUS, ar };
-
 const ChatsList = ({ filter }: { filter: string }) => {
   const { t } = useTranslation();
   const userData = useUserData();
@@ -42,6 +39,10 @@ const ChatsList = ({ filter }: { filter: string }) => {
 
   const filteredChats =
     filter !== "all" ? chats.filter((chat) => chat.status === filter) : chats;
+
+  const sortedChats = [...filteredChats].sort((a, b) => {
+    return (b.lastMessage.timestamp ?? 0) - (a.lastMessage.timestamp ?? 0);
+  });
 
   if (filteredChats.length === 0) {
     return (
@@ -73,7 +74,7 @@ const ChatsList = ({ filter }: { filter: string }) => {
   return (
     <FlatList
       renderItem={({ item }) => <ChatRow chat={item} />}
-      data={isFetchingChats ? [] : filteredChats}
+      data={isFetchingChats ? [] : sortedChats}
       ref={listRef}
     />
   );

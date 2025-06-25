@@ -60,8 +60,10 @@
     "finished": "انتهى",
     "languages": "اللغات",
     "list-separator": "و",
+    "map": "رسم خريطة",
     "medication": "دواء",
     "medications": "الأدوية",
+    "minutes": "دقائق",
     "no-doctors-found": "لم يتم العثور على أطباء.",
     "notifications": "إشعارات",
     "ongoing": "مستمر",
@@ -76,7 +78,8 @@
     "search": "يبحث",
     "specializations": "التخصصات",
     "success": "نجاح",
-    "terms-of-service": "شروط الخدمة"
+    "terms-of-service": "شروط الخدمة",
+    "time-zone": "المنطقة الزمنية"
   },
   "comon": {
     "book": "كتاب"
@@ -106,7 +109,8 @@
     "doctor-speaks": "الدكتور {{firstName}} يتحدث {{languages}}.",
     "experience-description": "الدكتور {{lastName}} لديه أكثر من {{count}}+ سنة من الخبرة.",
     "name": "Dr. {{lastName}}",
-    "per-consultation": "لكل استشارة"
+    "per-consultation": "لكل استشارة",
+    "time-zone-description": "يعمل Dr. {{lastName}} في المنطقة الزمنية {{timezone}}."
   },
   "error": {
     "no-patients-found": "لم يتم العثور على مرضى.",
@@ -135,6 +139,7 @@
     "date-of-birth": "تاريخ الميلاد",
     "date-of-birth-is-required": "مطلوب تاريخ الميلاد",
     "day-label-time-slots": "{{day}} فتحات الوقت",
+    "delete-location": "حذف الموقع",
     "describe-your-case-in-detail": "صف قضيتك بالتفصيل",
     "description": "وصف",
     "dosage": "جرعة",
@@ -156,8 +161,10 @@
     "e-g-pollen": "على سبيل المثال \nحبوب اللقاح",
     "end-time": "وقت الانتهاء",
     "end-time-is-required": "مطلوب وقت الانتهاء",
+    "enter-an-address": "أدخل عنوانًا",
     "experience-in-years": "الخبرة (في سنوات)",
     "experience-is-required": "التجربة مطلوبة",
+    "find": "يجد",
     "first-name": "الاسم الأول",
     "first-name-is-required": "الاسم الأول مطلوب",
     "gender": "جنس",
@@ -166,6 +173,8 @@
     "languages": "اللغات",
     "last-name": "اسم العائلة",
     "last-name-is-required": "اسم العائلة مطلوب",
+    "locate-me": "حدد موقعني",
+    "locator-subtitle": "أدخل موقع ممارستك. \nسنستخدم هذا لعرض ملف التعريف الخاص بك على الخريطة ، مما يساعد المرضى في العثور عليك بسهولة أكبر.",
     "medication-name": "اسم الدواء",
     "medication-name-is-required": "اسم الدواء مطلوب",
     "medication-route": "طريق الدواء",
@@ -177,6 +186,8 @@
     "no-doctors-found": "لم يتم العثور على أطباء",
     "payment-failed": "فشل الدفع",
     "phone-number": "رقم التليفون",
+    "place-of-practice-optional": "مكان الممارسة (اختياري)",
+    "please-enable-location-services": "يرجى تمكين خدمات الموقع.",
     "please-enter-a-frequency": "الرجاء إدخال تردد",
     "please-enter-a-price": "الرجاء إدخال السعر",
     "please-give-your-case-a-name": "يرجى إعطاء قضيتك اسمًا",
@@ -204,7 +215,8 @@
     "tell-us-about-yourself": "أخبرنا عن نفسك",
     "unavailable": "غير متاح",
     "what-days-are-you-available": "ما هي الأيام المتوفرة؟",
-    "what-is-the-interval": "ما هو الفاصل الزمني؟"
+    "what-is-the-interval": "ما هو الفاصل الزمني؟",
+    "what-patients-will-see": "ماذا سيراه المرضى"
   },
   "gender": {
     "female": "أنثى",

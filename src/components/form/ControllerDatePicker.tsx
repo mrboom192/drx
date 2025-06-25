@@ -7,7 +7,6 @@ import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { TextRegular } from "../StyledText";
 import i18next from "i18next";
-import { ar } from "date-fns/locale/ar";
 import { enUS } from "date-fns/locale";
 import { locales } from "@/constants/locales";
 

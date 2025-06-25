@@ -1,99 +1,55 @@
-import PageHeader from "@/components/PageHeader";
+import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
+import FormPage from "@/components/FormPage";
 import PageScrollView from "@/components/PageScrollView";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { Stack, useRouter } from "expo-router";
-import React, { useState } from "react";
+import { getLanguageOptions } from "@/constants/languages";
+import { useFilters, useSetFilters } from "@/stores/useFilterStore";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+import { useForm } from "react-hook-form";
+import { router } from "expo-router";
 
-// 1:11:09
-
-const languages = [
-  {
-    abbr: "en",
-    name: "English",
-    direction: "ltr",
-    icon: require("@/../assets/images/flag/GB.jpg"),
-  },
-  {
-    abbr: "ar",
-    name: "العربية",
-    direction: "rtl",
-    icon: require("@/../assets/images/flag/PS.jpg"),
-  },
-];
+interface LanguageFormValues {
+  providerLanguages: string[];
+}
 
 const Page = () => {
   const { t } = useTranslation();
-  const [languageFilter, setLanguageFilter] = useState<string[]>(["eng"]);
+  const filters = useFilters();
+  const setFilters = useSetFilters();
 
-  const handleLanguageSelect = (abbr: string) => {
-    setLanguageFilter(
-      (prevFilters) =>
-        prevFilters.includes(abbr)
-          ? prevFilters.filter((lang) => lang !== abbr) // Remove if already selected
-          : [...prevFilters, abbr] // Add if not selected
-    );
+  const { control, formState, handleSubmit } = useForm<LanguageFormValues>({
+    defaultValues: {
+      providerLanguages: filters.providerLanguages,
+    },
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
+  const onSubmit = (data: LanguageFormValues) => {
+    setFilters({ providerLanguages: data.providerLanguages });
+    router.back();
   };
 
   return (
-    <PageScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
-      <TextSemiBold style={{ fontSize: 16, color: "#000", marginBottom: 16 }}>
-        {t("form.provider-language")}
-      </TextSemiBold>
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
-        {languages.map((language: any) => (
-          <TouchableOpacity
-            key={language.abbr}
-            style={{
-              padding: 16,
-              flexDirection: "row",
-              gap: 16,
-              borderWidth: 1,
-              borderColor: languageFilter.includes(language.abbr)
-                ? Colors.primary
-                : Colors.dark.faintGrey,
-              borderRadius: 16,
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
-            }}
-            onPress={() => handleLanguageSelect(language.abbr)}
-          >
-            <Image source={language.icon} style={styles.image} />
-            <TextSemiBold
-              style={{
-                color: languageFilter.includes(language.abbr)
-                  ? Colors.primary
-                  : "#000",
-              }}
-            >
-              {language.name}
-            </TextSemiBold>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </PageScrollView>
+    <FormPage
+      canSubmit={isDirty}
+      isSubmitting={isSubmitting}
+      handleSubmit={handleSubmit(onSubmit)}
+    >
+      <ControllerCheckBoxOptions
+        label={t("form.provider-language")}
+        control={control}
+        name="providerLanguages"
+        options={getLanguageOptions(t)}
+      />
+    </FormPage>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    gap: 16,
-    padding: 26,
-  },
   image: {
     width: 64,
     height: 43,

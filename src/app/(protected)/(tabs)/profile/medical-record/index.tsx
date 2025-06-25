@@ -1,7 +1,7 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import PageListLink from "@/components/PageListLink";
 import PageScrollView from "@/components/PageScrollView";
-import { getPages } from "@/constants/medicalRecordPages";
+import { getMedicalRecordPages } from "@/constants/pageLinks";
 import {
   useIsFetchingMedicalRecords,
   useStartRecordsListener,
@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 const MedicalInfo = () => {
   const { t } = useTranslation();
-  const pages = useMemo(() => getPages(t), [t]);
+  const pages = useMemo(() => getMedicalRecordPages(t), [t]);
   const startRecordsListener = useStartRecordsListener();
   const isFetchingRecords = useIsFetchingMedicalRecords();
 
@@ -20,7 +20,7 @@ const MedicalInfo = () => {
     startRecordsListener();
   }, []);
 
-  if (isFetchingRecords) <LoadingScreen />;
+  if (isFetchingRecords) return <LoadingScreen />;
 
   return (
     <PageScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>

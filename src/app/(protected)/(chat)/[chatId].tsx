@@ -9,16 +9,13 @@ import { useUserData } from "@/stores/useUserStore";
 import { getChatId, getSenderAvatar, getSenderName } from "@/utils/chatUtils";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import {
-  addDoc,
   collection,
   doc,
   onSnapshot,
-  serverTimestamp,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
-import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { I18nManager, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
@@ -34,6 +31,8 @@ import i18next from "i18next";
 // Import ar and en locales from dayjs
 import "dayjs/locale/ar";
 import "dayjs/locale/en";
+import { fetchAppointmentStatus } from "@/api/appointments";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface Message {
   _id: number;
@@ -52,19 +51,33 @@ const ChatRoom = () => {
   const { t } = useTranslation();
   const { chatId } = useLocalSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [status, setStatus] = useState<{
+    message: string;
+    ongoing: boolean;
+  } | null>(null);
   const userData = useUserData();
   const [loading, setLoading] = useState(true);
   const chat = useChatsById(chatId as string);
   const insets = useSafeAreaInsets();
 
   // Firestore references
-  const chatDocRef = doc(db, "chats", chatId as string);
   const messagesRef = collection(db, "chats", chatId as string, "messages");
 
   const otherUser =
     userData?.role === "doctor"
       ? chat?.participants.patient
       : chat?.participants.doctor;
+
+  useEffect(() => {
+    if (!userData?.uid || !otherUser?.uid) return;
+
+    const loadStatus = async () => {
+      const result = await fetchAppointmentStatus(userData.uid, otherUser.uid);
+      setStatus(result);
+    };
+
+    loadStatus();
+  }, [userData?.uid, otherUser?.uid]);
 
   // Mainly used to fetch the chat data and messages
   useEffect(() => {
@@ -111,26 +124,13 @@ const ChatRoom = () => {
 
     if (!message.text || message.text.trim() === "") return;
 
-    const messagePayload = {
-      id: nanoid(), // optional, Firestore doc ID also works
-      text: message.text,
-      senderId: userData.uid,
-      receiverId: otherUser?.uid,
-      avatar: userData.image || "",
-      createdAt: serverTimestamp(),
-    };
-
     try {
-      await addDoc(messagesRef, messagePayload);
-
-      await updateDoc(chatDocRef, {
-        lastMessage: {
-          text: message.text,
-          senderId: userData.uid,
-          receiverId: otherUser?.uid,
-          timestamp: serverTimestamp(),
-        },
-        updatedAt: serverTimestamp(),
+      httpsCallable(
+        functions,
+        "sendMessage"
+      )({
+        chatId: chatId,
+        text: message.text.trim(),
       });
     } catch (err) {
       console.error("Error sending message:", err);
@@ -138,15 +138,7 @@ const ChatRoom = () => {
   };
 
   // Loading logic
-  if (loading || !userData) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <TextSemiBold style={{ fontSize: 16, color: "#666" }}>
-          Loading chat...
-        </TextSemiBold>
-      </View>
-    );
-  }
+  if (loading || !userData || !status) return <LoadingScreen />;
 
   return (
     <View
@@ -169,21 +161,29 @@ const ChatRoom = () => {
                 borderTopColor: Colors.faintGrey,
               }}
             >
-              <InputToolbar
-                {...props}
-                primaryStyle={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  borderRadius: 20,
-                  borderWidth: 1,
-                  borderColor: Colors.faintGrey,
-                  gap: 8,
-                }}
-                containerStyle={{
-                  borderTopWidth: 0,
-                }}
-              />
+              {status.ongoing || userData.role === "doctor" ? (
+                <InputToolbar
+                  {...props}
+                  primaryStyle={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor: Colors.faintGrey,
+                    gap: 8,
+                  }}
+                  containerStyle={{
+                    borderTopWidth: 0,
+                  }}
+                />
+              ) : (
+                <TextSemiBold
+                  style={{ color: Colors.lightText, textAlign: "center" }}
+                >
+                  {status.message}
+                </TextSemiBold>
+              )}
             </View>
           );
         }}

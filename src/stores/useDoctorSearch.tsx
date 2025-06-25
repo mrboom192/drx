@@ -1,6 +1,7 @@
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { create } from "zustand";
 import { db } from "../../firebaseConfig";
+import { FilterState } from "./useFilterStore";
 
 interface DoctorStoreState {
   doctors: any[];
@@ -105,21 +106,34 @@ export const useFetchSomeDoctors = () =>
   useDoctorStore((state) => state.fetchSomeDoctors);
 
 // Filtered doctors list
-export const useFilteredDoctors = (specialty: string) => {
+export const useFilteredDoctors = (filters: FilterState) => {
   const doctors = useDoctors();
-  const normalizedSpecialty = specialty.toLowerCase();
+  const { specialty, providerLanguages } = filters;
 
-  if (!specialty || normalizedSpecialty === "all") {
-    return doctors;
+  const normalizedSpecialty = specialty?.toLowerCase();
+  const normalizedLanguages = Array.isArray(providerLanguages)
+    ? providerLanguages.map((lang) => lang.toLowerCase())
+    : [];
+
+  let filteredDoctors = doctors;
+
+  // Filter by specialty
+  if (normalizedSpecialty && normalizedSpecialty !== "all") {
+    filteredDoctors = filteredDoctors.filter((doctor) =>
+      doctor.specializations?.some(
+        (spec: string) => spec.toLowerCase() === normalizedSpecialty
+      )
+    );
   }
 
-  const filteredDoctors = normalizedSpecialty
-    ? doctors.filter((doctor) =>
-        doctor.specializations.some(
-          (spec: string) => spec.toLowerCase() === normalizedSpecialty
-        )
+  // Filter by languages
+  if (normalizedLanguages.length > 0) {
+    filteredDoctors = filteredDoctors.filter((doctor) =>
+      doctor.languages?.some((lang: string) =>
+        normalizedLanguages.includes(lang.toLowerCase())
       )
-    : doctors;
+    );
+  }
 
   return filteredDoctors;
 };

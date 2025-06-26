@@ -15,10 +15,15 @@
       "appleTeamId": "46LZA2WXBP",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleLocalizations": ["en", "ar"]
+        "CFBundleLocalizations": [
+          "en",
+          "ar"
+        ]
       },
       "entitlements": {
-        "com.apple.developer.in-app-payments": ["merchant.com.doctorx.drx"]
+        "com.apple.developer.in-app-payments": [
+          "merchant.com.doctorx.drx"
+        ]
       }
     },
     "android": {
@@ -80,7 +85,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "DrX Telehealth requires access to your location to help you find nearby healthcare providers when using the map."
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

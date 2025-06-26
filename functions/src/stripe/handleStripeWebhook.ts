@@ -206,11 +206,30 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
 
     // Send email
     sgMail.setApiKey(sgApiKey.value());
-    const msg = {
+
+    const patientEmail = {
       to: patient.email,
       from: "wassim.radwan@drxonline.com",
-      templateId: "d-5852114f367e4ed3a78c95e6fcab9746", // Replace with real SendGrid template ID
+      templateId: "d-5852114f367e4ed3a78c95e6fcab9746",
       dynamicTemplateData: {
+        recipientFirst: patient.firstName,
+        isPatient: true,
+        patientFirst: patient.firstName,
+        doctorFirst: doctor.firstName,
+        doctorLast: doctor.lastName,
+        date: formattedDate,
+        time: timeString,
+        duration: doctor.consultationDuration,
+      },
+    };
+
+    const doctorEmail = {
+      to: doctor.email,
+      from: "wassim.radwan@drxonline.com",
+      templateId: "d-5852114f367e4ed3a78c95e6fcab9746",
+      dynamicTemplateData: {
+        recipientFirst: doctor.firstName,
+        isPatient: false,
         patientFirst: patient.firstName,
         doctorFirst: doctor.firstName,
         doctorLast: doctor.lastName,
@@ -221,7 +240,7 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
     };
 
     await batch.commit();
-    await sgMail.send(msg);
+    await Promise.all([sgMail.send(patientEmail), sgMail.send(doctorEmail)]);
 
     log("Appointment and chat successfully created");
     res.status(200).send("Appointment created");

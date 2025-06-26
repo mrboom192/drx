@@ -29,24 +29,28 @@ export const sendOneHourAppointmentReminder = onSchedule(
         const data = doc.data();
         const appointmentDate = data.date?.toDate?.();
         const patientId = data.patientId;
+        const doctorId = data.doctorId;
 
-        if (!appointmentDate || !patientId) {
-          logger.warn(`Missing date or patientId in ${doc.id}`);
+        if (!appointmentDate || !patientId || !doctorId) {
+          logger.warn(`Missing data in appointment ${doc.id}`);
           continue;
         }
 
-        // Get patient's Expo tokens
-        const patientSnap = await admin
-          .firestore()
-          .collection("users")
-          .doc(patientId)
-          .get();
-        const patientData = patientSnap.data();
-        const tokens: string[] = patientData?.expoPushTokens || [];
+        const [patientSnap, doctorSnap] = await Promise.all([
+          admin.firestore().collection("users").doc(patientId).get(),
+          admin.firestore().collection("users").doc(doctorId).get(),
+        ]);
 
-        if (tokens.length === 0) {
-          console.warn(`No Expo tokens for patient ${patientId}`);
-          continue; // Skip if the user has no devices we can send notifications to
+        const patientData = patientSnap.data();
+        const doctorData = doctorSnap.data();
+        const patientTokens: string[] = patientData?.expoPushTokens || [];
+        const doctorTokens: string[] = doctorData?.expoPushTokens || [];
+
+        if (patientTokens.length === 0 && doctorTokens.length === 0) {
+          logger.warn(
+            `No Expo tokens for patient ${patientId} or doctor ${doctorId}`
+          );
+          continue;
         }
 
         const diffInMinutes = Math.round(
@@ -58,7 +62,7 @@ export const sendOneHourAppointmentReminder = onSchedule(
             ? "in about an hour"
             : `in ${diffInMinutes} minute${diffInMinutes !== 1 ? "s" : ""}`;
 
-        const messages = tokens.map((token) => ({
+        const patientMessages = patientTokens.map((token) => ({
           to: token,
           sound: "default",
           title: "Appointment Reminder",
@@ -69,25 +73,41 @@ export const sendOneHourAppointmentReminder = onSchedule(
           },
         }));
 
+        const doctorMessages = doctorTokens.map((token) => ({
+          to: token,
+          sound: "default",
+          title: "Upcoming Appointment",
+          body: `You have an appointment ${timePhrase} with your patient ${patientData?.firstName} ${data.doctor.lastName}.`,
+          data: {
+            type: "appointment-reminder",
+            appointmentId: doc.id,
+          },
+        }));
+
+        const allMessages = [...patientMessages, ...doctorMessages];
+
         try {
           const response = await axios.post(
             "https://exp.host/--/api/v2/push/send",
-            messages,
+            allMessages,
             {
               headers: { "Content-Type": "application/json" },
             }
           );
 
-          // If any tickets have errors, remove the token from Firestore since that means the device is no longer registered
           for (const ticket of response.data.data) {
             if (
               ticket.status === "error" &&
               ticket.details?.error === "DeviceNotRegistered"
             ) {
+              const userIdToUpdate = patientTokens.includes(ticket.to)
+                ? patientId
+                : doctorId;
+
               await admin
                 .firestore()
                 .collection("users")
-                .doc(patientId)
+                .doc(userIdToUpdate)
                 .update({
                   expoPushTokens: admin.firestore.FieldValue.arrayRemove(
                     ticket.to

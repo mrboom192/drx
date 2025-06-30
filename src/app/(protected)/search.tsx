@@ -17,7 +17,7 @@ const Page = () => {
   const [mapVisible, setMapVisible] = useState(false);
 
   const showMap = () => {
-    if (!mapVisible) {
+    if (mapVisible) {
       bottomSheetRef.current?.expand();
     } else {
       bottomSheetRef.current?.collapse();

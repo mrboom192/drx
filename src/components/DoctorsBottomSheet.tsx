@@ -15,6 +15,7 @@ const DoctorsBottomSheet = ({
 
   return (
     <BottomSheet
+      animateOnMount={false}
       style={styles.sheetContainer}
       backgroundStyle={styles.bottomSheetBackground}
       snapPoints={snapPoints}

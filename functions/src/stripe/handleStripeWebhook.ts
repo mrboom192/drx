@@ -85,22 +85,28 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
   }
 
   try {
-    const [doctorSnap, patientSnap] = await Promise.all([
+    const [publicProfileSnap, patientSnap, doctorSnap] = await Promise.all([
       admin.firestore().collection("publicProfiles").doc(doctorId).get(),
       admin.firestore().collection("users").doc(patientId).get(),
+      admin.firestore().collection("users").doc(doctorId).get(),
     ]);
 
-    if (!doctorSnap.exists || !patientSnap.exists) {
+    if (
+      !publicProfileSnap.exists ||
+      !patientSnap.exists ||
+      !doctorSnap.exists
+    ) {
       console.error("Doctor or patient does not exist");
       res.status(404).send("Doctor or patient not found");
       return;
     }
 
-    const doctor = doctorSnap.data();
+    const doctorPublicProfile = publicProfileSnap.data();
     const patient = patientSnap.data();
+    const doctor = doctorSnap.data();
     const appointmentDate = new Date(date);
 
-    if (!doctor || !patient) {
+    if (!doctorPublicProfile || !patient || !doctor) {
       console.error("Doctor or patient data is missing");
       res.status(404).send("Doctor or patient data not found");
       return;
@@ -119,8 +125,8 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
       doctorId,
       patientId,
       doctor: {
-        firstName: doctor.firstName,
-        lastName: doctor.lastName,
+        firstName: doctorPublicProfile.firstName,
+        lastName: doctorPublicProfile.lastName,
       },
       patient: {
         firstName: patient.firstName,
@@ -128,8 +134,8 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
         image: patient.image || null,
       },
       date: firestore.Timestamp.fromDate(appointmentDate),
-      durationMinutes: doctor.consultationDuration,
-      price: doctor.consultationPrice,
+      durationMinutes: doctorPublicProfile.consultationDuration,
+      price: doctorPublicProfile.consultationPrice,
       status: "confirmed",
       hasSentReminder: false,
       createdAt: admin.firestore.Timestamp.now(),
@@ -148,9 +154,9 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
         participants: {
           doctor: {
             uid: doctorId,
-            firstName: doctor.firstName,
-            lastName: doctor.lastName,
-            image: doctor.image || null,
+            firstName: doctorPublicProfile.firstName,
+            lastName: doctorPublicProfile.lastName,
+            image: doctorPublicProfile.image || null,
           },
           patient: {
             uid: patientId,
@@ -215,11 +221,11 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
         recipientFirst: patient.firstName,
         isPatient: true,
         patientFirst: patient.firstName,
-        doctorFirst: doctor.firstName,
-        doctorLast: doctor.lastName,
+        doctorFirst: doctorPublicProfile.firstName,
+        doctorLast: doctorPublicProfile.lastName,
         date: formattedDate,
         time: timeString,
-        duration: doctor.consultationDuration,
+        duration: doctorPublicProfile.consultationDuration,
       },
     };
 
@@ -228,14 +234,14 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
       from: "wassim.radwan@drxonline.com",
       templateId: "d-5852114f367e4ed3a78c95e6fcab9746",
       dynamicTemplateData: {
-        recipientFirst: doctor.firstName,
+        recipientFirst: doctorPublicProfile.firstName,
         isPatient: false,
         patientFirst: patient.firstName,
-        doctorFirst: doctor.firstName,
-        doctorLast: doctor.lastName,
+        doctorFirst: doctorPublicProfile.firstName,
+        doctorLast: doctorPublicProfile.lastName,
         date: formattedDate,
         time: timeString,
-        duration: doctor.consultationDuration,
+        duration: doctorPublicProfile.consultationDuration,
       },
     };
 

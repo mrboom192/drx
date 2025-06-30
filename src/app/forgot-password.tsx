@@ -5,24 +5,33 @@ import SubmitButton from "@/components/SubmitButton";
 import ControllerInput from "@/components/form/ControllerInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { auth } from "../../firebaseConfig";
+import { auth, functions } from "../../firebaseConfig";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
+import { httpsCallable } from "@firebase/functions";
 
 const Page = () => {
   const { t } = useTranslation();
-  const { control, handleSubmit, formState } = useForm();
+  const { control, handleSubmit, formState, reset } = useForm();
   const { isSubmitting } = formState;
 
   const [messageSent, setMessageSent] = useState(false);
 
   const onPress: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await sendPasswordResetEmail(auth, data.email);
+      httpsCallable(
+        functions,
+        "sendPasswordReset"
+      )({
+        userEmail: data.email,
+      });
     } catch (error) {
       // Log or handle specific error
+      console.error("Error sending password reset email:", error);
     } finally {
+      // Reset form state
+      reset();
       setMessageSent(true);
     }
   };

@@ -2,6 +2,7 @@ export {
   sendCallNotification,
   sendMessageNotification,
   sendOneHourAppointmentReminder,
+  sendPasswordReset,
 } from "./notifications/index.js";
 export { getTurnCredentials } from "./turn/index.js";
 export { sendMessage } from "./chat/index.js";

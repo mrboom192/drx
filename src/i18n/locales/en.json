@@ -86,8 +86,20 @@
   },
   "countries": {
     "egypt": "Egypt 🇪🇬",
+    "france": "France 🇫🇷",
+    "germany": "Germany 🇩🇪",
+    "greece": "Greece 🇬🇷",
+    "hungary": "Hungary 🇭🇺",
+    "iceland": "Iceland 🇮🇸",
     "india": "India 🇮🇳",
+    "ireland": "Ireland 🇮🇪",
+    "italy": "Italy 🇮🇹",
     "jordan": "Jordan 🇯🇴",
+    "kosovo": "Kosovo 🇽🇰",
+    "spain": "Spain 🇪🇸",
+    "sweden": "Sweden 🇸🇪",
+    "switzerland": "Switzerland 🇨🇭",
+    "united-kingdom": "United Kingdom 🇬🇧",
     "united-states": "United States 🇺🇸"
   },
   "day": {

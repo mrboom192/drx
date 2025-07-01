@@ -19,4 +19,10 @@ export const getDoctorCountries = (t: TFunction) => [
     backgroundColor: "#FFBCBD",
     filter: "in",
   },
+  {
+    name: t("home.european-doctors"),
+    image: require("@/../assets/images/countries/eu.png"),
+    backgroundColor: "#CDEAFB",
+    filter: "eu",
+  },
 ];

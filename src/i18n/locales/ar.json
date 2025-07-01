@@ -230,6 +230,7 @@
     "american-doctors": "الأطباء الأمريكيون",
     "arabic-doctors": "الأطباء العربي",
     "by-drx-genius-llc": "بواسطة DRX Genius LLC",
+    "european-doctors": "",
     "footer": {
       "commitment-message": "تلتزم DrX Telehealth بتزويدك بالرعاية والدعم الممتازين. \nتعرف على المزيد من خلال مراجعة"
     },
@@ -405,6 +406,7 @@
     "depression": "اكتئاب",
     "diarrhea": "إسهال",
     "doctors-licensed-in-arabic-countries": "الأطباء المرخصون في البلدان العربية 🇸🇦",
+    "doctors-licensed-in-european-countries": "",
     "doctors-licensed-in-india": "الأطباء المرخصون في الهند 🇮🇳",
     "doctors-licensed-in-the-us": "الأطباء المرخصين في الولايات المتحدة 🇺🇸",
     "doctors-specializing-in-heart-health": "الأطباء المتخصصون في صحة القلب.",

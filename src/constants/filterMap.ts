@@ -29,6 +29,62 @@ export const getFilterMap = (t: TFunction) => ({
     key: "countries",
     filters: ["in"],
   },
+  eu: {
+    title: t("home.european-doctors"),
+    description: t("symptoms.doctors-licensed-in-european-countries"),
+    image: undefined,
+    key: "countries",
+    filters: ["europe"],
+    countries: [
+      "al", // Albania
+      "ad", // Andorra
+      "at", // Austria
+      "by", // Belarus
+      "be", // Belgium
+      "ba", // Bosnia and Herzegovina
+      "bg", // Bulgaria
+      "hr", // Croatia
+      "cy", // Cyprus
+      "cz", // Czech Republic
+      "dk", // Denmark
+      "ee", // Estonia
+      "fi", // Finland
+      "fr", // France
+      "de", // Germany
+      "gr", // Greece
+      "hu", // Hungary
+      "is", // Iceland
+      "ie", // Ireland
+      "it", // Italy
+      "xk", // Kosovo
+      "lv", // Latvia
+      "li", // Liechtenstein
+      "lt", // Lithuania
+      "lu", // Luxembourg
+      "mt", // Malta
+      "md", // Moldova
+      "mc", // Monaco
+      "me", // Montenegro
+      "nl", // Netherlands
+      "mk", // North Macedonia
+      "no", // Norway
+      "pl", // Poland
+      "pt", // Portugal
+      "ro", // Romania
+      "ru", // Russia (western part)
+      "sm", // San Marino
+      "rs", // Serbia
+      "sk", // Slovakia
+      "si", // Slovenia
+      "es", // Spain
+      "se", // Sweden
+      "ch", // Switzerland
+      "tr", // Turkey (partially in Europe)
+      "ua", // Ukraine
+      "gb", // United Kingdom
+      "va", // Vatican City
+    ],
+  },
   diarrhea: {
     title: t("symptoms.diarrhea"),
     description: t("symptoms.doctors-who-treat-the-symptoms-of-diarrhea"),

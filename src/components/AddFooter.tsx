@@ -8,19 +8,21 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SubmitButton from "./SubmitButton";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 const Footer = ({
   keyboardHeightShared,
   canSubmit,
   handleSubmit,
   submitting,
+  submitButtonText = i18next.t("form.save"),
 }: {
   keyboardHeightShared: SharedValue<number>;
   canSubmit: boolean;
   submitting: boolean;
   handleSubmit?: () => void;
+  submitButtonText?: string;
 }) => {
-  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -42,7 +44,7 @@ const Footer = ({
   return (
     <Animated.View style={[footer.container, animatedStyle]}>
       <SubmitButton
-        text={t("form.save")}
+        text={submitButtonText}
         disabled={!canSubmit || submitting}
         loading={submitting}
         onPress={() => {
@@ -61,6 +63,7 @@ const footer = StyleSheet.create({
   container: {
     padding: 16,
     borderTopColor: Colors.faintGrey,
+    backgroundColor: "#FFF",
     borderTopWidth: 1,
   },
 });

@@ -5,11 +5,13 @@ import { StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import Footer from "./AddFooter";
 import PageScrollView from "./PageScrollView";
+import i18next from "i18next";
 
 interface FormPageProps {
   canSubmit: boolean;
   isSubmitting: boolean;
   handleSubmit: () => void;
+  submitButtonText?: string;
   children: React.ReactNode;
 }
 
@@ -17,6 +19,7 @@ const FormPage: React.FC<FormPageProps> = ({
   canSubmit,
   isSubmitting,
   handleSubmit,
+  submitButtonText = i18next.t("form.save"),
   children,
 }) => {
   const { height: animatedHeight } = useGradualAnimation();
@@ -36,6 +39,7 @@ const FormPage: React.FC<FormPageProps> = ({
         canSubmit={canSubmit}
         submitting={isSubmitting}
         handleSubmit={handleSubmit}
+        submitButtonText={submitButtonText}
       />
 
       <Animated.View style={fakeHeightStyle} />

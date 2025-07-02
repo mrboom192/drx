@@ -14,7 +14,7 @@ import { db } from "../../../../../firebaseConfig";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "@/components/SubmitButton";
 import { router } from "expo-router";
-import ControllerAddPhone from "@/components/form/ControllerAddPhone";
+import AddPhone from "@/components/form/AddPhone";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -83,7 +83,7 @@ const AccountInfo = () => {
 
       <Divider />
 
-      <ControllerAddPhone control={control} />
+      <AddPhone />
 
       <Divider />
 

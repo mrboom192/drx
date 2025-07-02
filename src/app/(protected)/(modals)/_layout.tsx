@@ -77,6 +77,22 @@ export default function ModalsLayout() {
           header: (props) => <PageHeader {...props} />,
         }}
       />
+      <Stack.Screen
+        name="add-phone"
+        options={{
+          title: "Add phone number",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="country-picker"
+        options={{
+          title: "Select a country",
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
     </Stack>
   );
 }

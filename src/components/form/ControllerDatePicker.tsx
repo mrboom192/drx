@@ -57,6 +57,7 @@ const ControllerDatePicker = ({
             >
               <TextRegular
                 style={{
+                  fontSize: 16,
                   color: value ? "#000" : Colors.lightText,
                 }}
               >

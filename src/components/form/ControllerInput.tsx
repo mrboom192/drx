@@ -32,6 +32,7 @@ interface ControllerInputProps<TFieldValues extends FieldValues> {
   textInputStyle?: StyleProp<TextStyle>;
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
   iconLeft?: IconName;
+  autoFocus?: boolean;
 }
 
 const ControllerInput = <TFieldValues extends FieldValues>({
@@ -45,6 +46,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
   textInputStyle = null,
   keyboardType = "default",
   iconLeft,
+  autoFocus = false,
 }: ControllerInputProps<TFieldValues>) => {
   const [showSensitive, setShowSensitive] = useState(false);
   const [displayValue, setDisplayValue] = useState("");
@@ -90,6 +92,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
                 textInputStyle,
               ]}
               onBlur={onBlur}
+              autoFocus={autoFocus}
               onChangeText={onChange}
               value={value}
               placeholder={placeholder}

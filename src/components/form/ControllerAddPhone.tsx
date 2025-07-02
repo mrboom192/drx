@@ -22,7 +22,7 @@ const ControllerAddPhone = ({ control }: { control: Control<FieldValues> }) => {
   }, []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    // Handle sheet changes
   }, []);
 
   return (
@@ -72,6 +72,7 @@ const ControllerAddPhone = ({ control }: { control: Control<FieldValues> }) => {
                   name={"phoneNumber"}
                   placeholder={t("form.e-g-1234567890")}
                   keyboardType={"phone-pad"}
+                  autoFocus
                 />
                 <SubmitButton
                   text={"Verify"}

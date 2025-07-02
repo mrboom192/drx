@@ -27,7 +27,6 @@ const useDoctorStore = create<DoctorStoreState>((set, get) => ({
     const { cache, doctors } = get();
 
     if (cache[cacheKey]) {
-      console.log(`Returning cached doctors for ${cacheKey}`);
       // Optionally, merge cached doctors into the state
       set((state) => ({
         doctors: mergeUniqueDoctors(state.doctors, cache[cacheKey]),

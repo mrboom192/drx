@@ -47,6 +47,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
   iconLeft,
 }: ControllerInputProps<TFieldValues>) => {
   const [showSensitive, setShowSensitive] = useState(false);
+  const [displayValue, setDisplayValue] = useState("");
 
   return (
     <Controller

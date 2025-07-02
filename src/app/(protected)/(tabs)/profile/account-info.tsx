@@ -2,18 +2,19 @@ import Divider from "@/components/Divider";
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import ControllerInput from "@/components/form/ControllerInput";
-import { TextSemiBold } from "@/components/StyledText";
+import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useUserData } from "@/stores/useUserStore";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { db } from "../../../../../firebaseConfig";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "@/components/SubmitButton";
 import { router } from "expo-router";
+import ControllerAddPhone from "@/components/form/ControllerAddPhone";
 
 const AccountInfo = () => {
   const { t } = useTranslation();
@@ -82,13 +83,10 @@ const AccountInfo = () => {
 
       <Divider />
 
-      <ControllerInput
-        label={t("form.phone-number")}
-        control={control}
-        name={"phoneNumber"}
-        placeholder={t("form.e-g-1234567890")}
-        keyboardType={"phone-pad"}
-      />
+      <ControllerAddPhone control={control} />
+
+      <Divider />
+
       <ControllerDatePicker
         label={t("form.date-of-birth")}
         maximumDate={new Date()}

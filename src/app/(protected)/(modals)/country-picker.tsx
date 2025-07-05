@@ -1,10 +1,21 @@
-import { View, Text } from "react-native";
 import React from "react";
-import { FlatList } from "react-native-gesture-handler";
 import CountryCodes from "@/components/CountryCodes";
+import { View, StyleSheet } from "react-native";
 
 const CountryPicker = () => {
-  return <CountryCodes />;
+  return (
+    <View style={styles.container}>
+      <CountryCodes />
+    </View>
+  );
 };
 
 export default CountryPicker;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    backgroundColor: "#FFF",
+  },
+});

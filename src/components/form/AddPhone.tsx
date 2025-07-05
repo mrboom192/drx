@@ -4,9 +4,14 @@ import { TextRegular, TextSemiBold } from "../StyledText";
 import { useTranslation } from "react-i18next";
 import Colors from "@/constants/Colors";
 import { router } from "expo-router";
+import { useUserData } from "@/stores/useUserStore";
+import parsePhoneNumberFromString from "libphonenumber-js";
 
 const AddPhone = () => {
   const { t } = useTranslation();
+  const userData = useUserData();
+
+  const phone = parsePhoneNumberFromString(userData?.phoneNumber ?? "");
 
   const handlePress = useCallback(() => {
     router.navigate("/(protected)/(modals)/add-phone");
@@ -15,9 +20,19 @@ const AddPhone = () => {
   return (
     <View style={styles.container}>
       <TextRegular style={styles.label}>{t("form.phone-number")}</TextRegular>
-      <TouchableOpacity onPress={handlePress}>
-        <TextSemiBold style={styles.addButton}>Add</TextSemiBold>
-      </TouchableOpacity>
+      <View style={styles.phoneInfo}>
+        {userData?.phoneNumber && (
+          <TextRegular style={styles.phoneNumber}>
+            {phone?.formatNational()}
+          </TextRegular>
+        )}
+
+        <TouchableOpacity onPress={handlePress}>
+          <TextSemiBold style={styles.addButton}>
+            {userData?.phoneNumber ? t("common.edit") : t("common.add")}
+          </TextSemiBold>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -33,6 +48,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     color: Colors.black,
+  },
+  phoneNumber: {
+    fontSize: 14,
+    color: Colors.black,
+  },
+  phoneInfo: {
+    flexDirection: "row",
+    gap: 8,
   },
   addButton: {
     fontSize: 14,

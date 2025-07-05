@@ -1,17 +1,17 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { TextRegular } from "../StyledText";
 import Colors from "@/constants/Colors";
 import CustomIcon from "../CustomIcon";
 import { router } from "expo-router";
 
-const CountryPicker = () => {
+const CountryPicker = ({ emoji }: { emoji: string }) => {
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => router.navigate("/(protected)/(modals)/country-picker")}
     >
-      <TextRegular>🇺🇸</TextRegular>
+      <TextRegular>{emoji}</TextRegular>
       <CustomIcon name="keyboard-arrow-down" size={16} color={Colors.black} />
     </TouchableOpacity>
   );

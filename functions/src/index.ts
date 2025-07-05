@@ -13,3 +13,4 @@ export {
   getPaymentIntent,
   handleStripeWebhook,
 } from "./stripe";
+export { createVerification, createVerificationCheck } from "./twilio/index.js";

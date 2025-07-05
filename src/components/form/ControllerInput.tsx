@@ -49,7 +49,6 @@ const ControllerInput = <TFieldValues extends FieldValues>({
   autoFocus = false,
 }: ControllerInputProps<TFieldValues>) => {
   const [showSensitive, setShowSensitive] = useState(false);
-  const [displayValue, setDisplayValue] = useState("");
 
   return (
     <Controller

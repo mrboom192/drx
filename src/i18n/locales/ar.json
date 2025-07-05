@@ -79,7 +79,8 @@
     "specializations": "التخصصات",
     "success": "نجاح",
     "terms-of-service": "شروط الخدمة",
-    "time-zone": "المنطقة الزمنية"
+    "time-zone": "المنطقة الزمنية",
+    "verify": "يؤكد"
   },
   "comon": {
     "book": "كتاب"
@@ -182,6 +183,7 @@
     "gender": "جنس",
     "how-long-are-your-calls-in-minutes": "ما هي مدة مكالماتك؟ \n(في دقائق)",
     "how-often-do-you-take-this": "كم مرة تأخذ هذا؟",
+    "invalid-phone-number": "رقم هاتف غير صالح",
     "languages": "اللغات",
     "last-name": "اسم العائلة",
     "last-name-is-required": "اسم العائلة مطلوب",
@@ -294,6 +296,7 @@
     "account-info": "معلومات الحساب",
     "add-allergy": "إضافة الحساسية",
     "add-card": "أضف بطاقة",
+    "add-phone-number": "أضف رقم الهاتف",
     "allergies": "الحساسية",
     "book-consultation": "استشارة الكتاب",
     "bookmarked-doctors": "مرجعية الأطباء",
@@ -317,11 +320,19 @@
     "recover-your-password": "استعادة كلمة المرور الخاصة بك",
     "search-chats": "دردشات البحث",
     "search-doctors": "أطباء البحث",
+    "select-a-country": "حدد بلد",
     "settings": "إعدادات",
     "terms-of-service": "شروط الخدمة",
     "verification": "تَحَقّق",
+    "verify-phone-number": "تحقق من رقم الهاتف",
     "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "تحقق من حساب طبيبك حتى تكون مرئيًا للمرضى",
     "view-medical-record": "عرض السجل الطبي"
+  },
+  "phone": {
+    "otp-is-required": "OTP مطلوب",
+    "otp-request": "أدخل رمز المكونة من 6 أرقام التي أرسلناها إلى {{internationalPhoneNumber}} للتحقق من رقم هاتفك.",
+    "verification-code": "رمز التحقق",
+    "verification-disclaimer": "سنرسل لك رمزًا للتحقق من رقم هاتفك. \nتنطبق معدلات الرسائل والبيانات القياسية."
   },
   "profile": {
     "change-the-app-settings": "تغيير إعدادات التطبيق",

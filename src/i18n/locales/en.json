@@ -79,7 +79,8 @@
     "specializations": "Specializations",
     "success": "Success",
     "terms-of-service": "Terms of Service",
-    "time-zone": "Time Zone"
+    "time-zone": "Time Zone",
+    "verify": "Verify"
   },
   "comon": {
     "book": "Book"
@@ -182,6 +183,7 @@
     "gender": "Gender",
     "how-long-are-your-calls-in-minutes": "How long are your calls? (in minutes)",
     "how-often-do-you-take-this": "How often do you take this?",
+    "invalid-phone-number": "Invalid phone number",
     "languages": "languages",
     "last-name": "Last Name",
     "last-name-is-required": "Last name is required",
@@ -294,6 +296,7 @@
     "account-info": "Account Info",
     "add-allergy": "Add Allergy",
     "add-card": "Add Card",
+    "add-phone-number": "Add phone number",
     "allergies": "Allergies",
     "book-consultation": "Book Consultation",
     "bookmarked-doctors": "Bookmarked Doctors",
@@ -317,11 +320,19 @@
     "recover-your-password": "Recover your password",
     "search-chats": "Search Chats",
     "search-doctors": "Search Doctors",
+    "select-a-country": "Select a country",
     "settings": "Settings",
     "terms-of-service": "Terms of Service",
     "verification": "Verification",
+    "verify-phone-number": "Verify Phone Number",
     "verify-your-doctor-account-in-order-for-you-to-be-visible-to-patients": "Verify your doctor account in order for you to be visible to patients",
     "view-medical-record": "View medical record"
+  },
+  "phone": {
+    "otp-is-required": "OTP is required",
+    "otp-request": "Enter the 6 digit code we sent to {{internationalPhoneNumber}} to verify your phone number.",
+    "verification-code": "Verification Code",
+    "verification-disclaimer": "We'll text you a code to verify your phone number. Standard message and data rates apply."
   },
   "profile": {
     "change-the-app-settings": "Change the app settings",

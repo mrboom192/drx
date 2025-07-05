@@ -24,7 +24,7 @@ const AccountInfo = () => {
     defaultValues: {
       firstName: userData?.firstName || "",
       lastName: userData?.lastName || "",
-      phoneNumber: userData?.phone || "",
+      phoneNumber: userData?.phoneNumber || "",
       dateOfBirth: userData?.dateOfBirth ? userData.dateOfBirth.toDate() : null,
       gender: userData?.gender || "",
     },

@@ -38,7 +38,6 @@ export async function getAndRegisterPushToken() {
 
     // Register token in Firestore
     await registerPushToken(expoPushToken);
-    console.log(`Push token ${expoPushToken} registered for user ${user.uid}`);
   } catch (error) {
     console.error("Error getting or registering push token:", error);
   }

@@ -80,7 +80,7 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="add-phone"
         options={{
-          title: "Add phone number",
+          title: t("page.add-phone-number"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}
@@ -88,7 +88,15 @@ export default function ModalsLayout() {
       <Stack.Screen
         name="country-picker"
         options={{
-          title: "Select a country",
+          title: t("page.select-a-country"),
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="verify-code"
+        options={{
+          title: t("page.verify-phone-number"),
           presentation: "modal",
           header: (props) => <PageHeader {...props} />,
         }}

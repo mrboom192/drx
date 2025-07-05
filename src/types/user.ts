@@ -12,7 +12,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   role: string;
   image: string;
   gender: string;

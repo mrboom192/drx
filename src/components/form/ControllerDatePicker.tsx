@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { format, Locale } from "date-fns";
+import { format } from "date-fns";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";

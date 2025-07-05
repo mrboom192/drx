@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { ContextMenu, Picker, Button } from "@expo/ui/swift-ui";
+import { ContextMenu, Picker } from "@expo/ui/swift-ui";
 import { View, StyleSheet } from "react-native";
 import {
   Control,

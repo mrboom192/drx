@@ -1,4 +1,4 @@
-import { auth, database, db } from "@/../firebaseConfig";
+import { auth, database, db, functions } from "@/../firebaseConfig";
 import { createMedicalRecord } from "@/api/medicalRecords";
 import {
   getAndRegisterPushToken,
@@ -18,9 +18,11 @@ import {
   signOut,
 } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { doc, serverTimestamp, setDoc, writeBatch } from "firebase/firestore";
+import { doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { createContext, useContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../hooks/useStorageState";
+import { httpsCallable } from "@firebase/functions";
+import { useSetDisclaimer } from "@/stores/useDisclaimerStore";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
@@ -50,45 +52,34 @@ export function useSession() {
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
-  const expoPushToken = useExpoPushToken();
+  const setDisclaimer = useSetDisclaimer();
   const stopUserListener = useStopUserListener();
   const stopRecordsListener = useStopRecordsListener();
 
   async function signUp(email: string, password: string, data: SignupUser) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
+      const createUser = httpsCallable<
+        { email: string; password: string; data: SignupUser },
+        | { uid: string } // success shape
+        | { success: false; code: string; message: string } // error shape
+      >(functions, "createUser");
+
+      const result = await createUser({
         email,
-        password
-      );
-      const user = userCredential.user;
+        password,
+        data,
+      });
 
-      const userData = {
-        email: user.email,
-        uid: user.uid,
-        createdAt: serverTimestamp(),
-        ...data,
-      } as SignupUser & Pick<User, "uid" | "email" | "createdAt">;
-
-      await sendEmailVerification(user);
-
-      // Start Firestore batch
-      const batch = writeBatch(db);
-
-      // Add user doc to batch
-      const userRef = doc(db, "users", user.uid);
-      batch.set(userRef, userData);
-
-      // Conditionally add medical record to batch
-      if (userData.role === "patient") {
-        await createMedicalRecord(batch, userData); // Pass batch and userData
+      if (!result.data || !("uid" in result.data)) {
+        throw new Error("User creation failed. Please try again later.", {
+          cause: "user-creation-failed",
+        });
       }
 
-      // Commit batched operations
-      await batch.commit();
-
-      setSession(user.uid); // Store user session
-      router.replace("/" as RelativePathString); // Navigate to homepage
+      setDisclaimer(
+        "A verification email has been sent to your email address. Please verify your email before logging in."
+      );
+      router.dismissTo("/login" as RelativePathString);
     } catch (e: any) {
       const err = e as FirebaseError;
       alert("Registration failed: " + err.message);
@@ -103,6 +94,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
         password
       );
       const user = userCredential.user;
+
+      // Prevent log in if the user is not verified
+      if (!user.emailVerified) {
+        throw new Error("Please verify your email before signing in.", {
+          cause: "email-not-verified",
+        });
+      }
 
       // Save the user UID or token to session state
       await getAndRegisterPushToken();

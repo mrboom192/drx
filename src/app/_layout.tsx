@@ -18,7 +18,7 @@ import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-get-random-values"; // Required for nanoid
 import { KeyboardProvider } from "react-native-keyboard-controller";

@@ -269,6 +269,7 @@
     "disclaimer-start": "By using our app, you agree to our",
     "error": {
       "invalid-credentials": "Wrong email or password. Please try again.",
+      "please-verify-your-email-before-signing-in": "Please verify your email before signing in.",
       "unknown": "An unexpected error occurred. Please try again later."
     },
     "header": "Welcome to DrX",

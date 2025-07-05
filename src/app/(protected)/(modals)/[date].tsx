@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import IconButton from "@/components/IconButton";
 import CustomIcon from "@/components/CustomIcon";
-import { TextRegular, TextSemiBold } from "@/components/StyledText";
+import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { useAppointmentsByDate } from "@/stores/useAppointmentStore";
 import { getChatId } from "@/utils/chatUtils";
@@ -11,7 +11,6 @@ import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { count } from "firebase/firestore";
 import { locales } from "@/constants/locales";
 import i18next from "i18next";
 
@@ -144,6 +143,8 @@ const DayInfoHeader = ({ date }: { date: string }) => {
   const { t } = useTranslation();
   const appointmentsByDate = useAppointmentsByDate(date as string);
   const insets = useSafeAreaInsets();
+
+  // Ignore i18n ally error for appointment count
 
   return (
     <View

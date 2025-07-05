@@ -1,8 +1,5 @@
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import FormPage from "@/components/FormPage";
-import PageScrollView from "@/components/PageScrollView";
-import { TextSemiBold } from "@/components/StyledText";
-import Colors from "@/constants/Colors";
 import { getLanguageOptions } from "@/constants/languages";
 import { useFilters, useSetFilters } from "@/stores/useFilterStore";
 import React from "react";

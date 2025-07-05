@@ -1,10 +1,9 @@
-import Divider from "@/components/Divider";
 import ControllerInput from "@/components/form/ControllerInput";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -14,12 +13,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import CustomIcon from "@/components/CustomIcon";
 import OrDivider from "@/components/OrDivider";
+import { useClearDisclaimer, useDisclaimer } from "@/stores/useDisclaimerStore";
 
 const SignIn = () => {
   const { t } = useTranslation();
   const { signIn } = useSession();
   const [loading, setLoading] = useState(false);
   const insets = useSafeAreaInsets();
+  const disclaimer = useDisclaimer();
+  const clearDisclaimer = useClearDisclaimer();
   const {
     control,
     handleSubmit,
@@ -30,6 +32,7 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
+    clearDisclaimer();
     try {
       await signIn(data.email, data.password);
     } catch (error: any) {
@@ -117,6 +120,10 @@ const SignIn = () => {
           </TextSemiBold>
         </TouchableOpacity>
       </View>
+
+      {disclaimer && (
+        <TextSemiBold style={styles.disclaimer}>{disclaimer}</TextSemiBold>
+      )}
     </KeyboardAwareScrollView>
   );
 };
@@ -129,7 +136,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   keyboardAwareScrollView: {
-    backgroundColor: "#fff",
     padding: 16,
     flexDirection: "column",
     gap: 16,
@@ -150,6 +156,13 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 20,
   },
+  disclaimer: {
+    width: "100%",
+    textAlign: "center",
+    marginTop: 16,
+    color: Colors.green,
+    fontSize: 14,
+  },
   error: {
     position: "absolute",
     top: -24,
@@ -169,6 +182,10 @@ function getErrorMessage(
   error: FirebaseError,
   t: (key: string) => string
 ): string {
+  if (error instanceof Error && error.cause === "email-not-verified") {
+    return t("login.error.please-verify-your-email-before-signing-in");
+  }
+
   if (!(error instanceof FirebaseError)) {
     return t("login.error.unknown");
   }

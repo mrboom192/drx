@@ -1,12 +1,10 @@
-import { View, Text } from "react-native";
 import React, { useState } from "react";
 import PageScrollView from "@/components/PageScrollView";
 import SubmitButton from "@/components/SubmitButton";
 import ControllerInput from "@/components/form/ControllerInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { auth, functions } from "../../firebaseConfig";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { functions } from "../../firebaseConfig";
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
 import { httpsCallable } from "@firebase/functions";

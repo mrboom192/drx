@@ -6,7 +6,7 @@ export {
 } from "./notifications/index.js";
 export { getTurnCredentials } from "./turn/index.js";
 export { sendMessage } from "./chat/index.js";
-export { cleanupUserData, syncUser } from "./users/index.js";
+export { cleanupUserData, syncUser, createUser } from "./users/index.js";
 export {
   cancelPaymentIntent,
   createStripeCustomer,

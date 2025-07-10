@@ -45,7 +45,7 @@ export const getDoctorLinks = (t: TFunction) => [
     url: "/(tabs)/profile/personal",
   },
   {
-    icon: "medical-outline",
+    icon: "clinical-notes",
     label: t("profile.view-your-patients"),
     url: "/(tabs)/profile/patients",
   },

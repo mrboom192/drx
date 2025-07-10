@@ -86,7 +86,8 @@
           "locationAlwaysAndWhenInUsePermission": "DrX Telehealth requires access to your location to help you find nearby healthcare providers when using the map."
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true

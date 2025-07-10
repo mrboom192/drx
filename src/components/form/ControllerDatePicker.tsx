@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: Colors.pink,
-    fontSize: 12,
+    fontSize: 14,
   },
   inputContainer: {
     borderWidth: 1,

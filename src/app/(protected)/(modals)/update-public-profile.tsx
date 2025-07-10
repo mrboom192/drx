@@ -23,6 +23,8 @@ import { PublicProfile } from "@/types/publicProfile";
 import { fetchPublicProfile } from "@/api/publicProfile";
 import { getCalendars } from "expo-localization";
 import ControllerLocator from "@/components/form/ControllerLocator";
+import { getTimezoneOffset } from "date-fns-tz";
+import offsetAvailabilityTimes from "@/utils/offsetAvailabilityTimes";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
@@ -46,13 +48,13 @@ const UpdatePublicProfile = () => {
           consultationDuration: "15",
           timeZone: getCalendars()[0].timeZone,
           availability: {
-            Sun: [],
-            Mon: [],
-            Tue: [],
-            Wed: [],
-            Thu: [],
-            Fri: [],
-            Sat: [],
+            sunday: [],
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [],
+            friday: [],
+            saturday: [],
           },
         };
 
@@ -88,6 +90,13 @@ const UpdatePublicProfile = () => {
         ? parseInt(formData[field], 10) || 0
         : null;
 
+    // Offset the availability times by the user's time zone
+    const timeZone = getCalendars()[0].timeZone!;
+    const offsetAvailability = offsetAvailabilityTimes(
+      timeZone,
+      formData.availability
+    );
+
     try {
       await setDoc(
         doc(db, "publicProfiles", userData.uid),
@@ -112,14 +121,14 @@ const UpdatePublicProfile = () => {
           weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
           consultationDuration:
             parseInt(formData.consultationDuration, 10) || 15,
-          availability: formData.availability || {
-            Sun: [],
-            Mon: [],
-            Tue: [],
-            Wed: [],
-            Thu: [],
-            Fri: [],
-            Sat: [],
+          availability: offsetAvailability || {
+            sunday: [],
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [],
+            friday: [],
+            saturday: [],
           },
           timeZone: formData.timeZone,
           coordinates: formData.coordinates || null,

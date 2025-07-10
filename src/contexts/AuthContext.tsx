@@ -1,24 +1,16 @@
-import { auth, database, db, functions } from "@/../firebaseConfig";
-import { createMedicalRecord } from "@/api/medicalRecords";
+import { auth, database, functions } from "@/../firebaseConfig";
 import {
   getAndRegisterPushToken,
   unregisterPushToken,
 } from "@/api/notifications";
 import { isOfflineForDatabase } from "@/constants/Presence";
-import { useExpoPushToken } from "@/stores/useNotificationStore";
 import { useStopRecordsListener } from "@/stores/useRecordStore";
 import { useStopUserListener } from "@/stores/useUserStore";
-import { SignupUser, User } from "@/types/user";
+import { SignupUser } from "@/types/user";
 import { RelativePathString, router } from "expo-router";
 import { FirebaseError } from "firebase/app";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { createContext, useContext, type PropsWithChildren } from "react";
 import { useStorageState } from "../hooks/useStorageState";
 import { httpsCallable } from "@firebase/functions";
@@ -97,6 +89,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
       // Prevent log in if the user is not verified
       if (!user.emailVerified) {
+        // Sign out the user immediately if they are not verified
+        await signOut(auth);
+
         throw new Error("Please verify your email before signing in.", {
           cause: "email-not-verified",
         });

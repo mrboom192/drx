@@ -302,6 +302,7 @@
     "book-consultation": "استشارة الكتاب",
     "bookmarked-doctors": "مرجعية الأطباء",
     "case-information": "معلومات الحالة",
+    "contact-us": "",
     "create-second-opinion": "إنشاء الرأي الثاني",
     "diseases-and-conditions": "الأمراض",
     "doctor-profile": "ملف تعريف الطبيب",
@@ -337,6 +338,7 @@
   },
   "profile": {
     "change-the-app-settings": "تغيير إعدادات التطبيق",
+    "contact-support": "",
     "how-can-we-help-you-userdata-firstname": "كيف يمكننا مساعدتك ، {{firstName}}؟",
     "manage-your-personal-information": "إدارة معلوماتك الشخصية",
     "view-our-apps-privacy-policy": "عرض سياسة الخصوصية الخاصة بتطبيقنا",
@@ -423,6 +425,9 @@
     "rehab": "إعادة التأهيل",
     "surgery": "جراحة",
     "urology": "المسالك البولية"
+  },
+  "support": {
+    "info": ""
   },
   "symptoms": {
     "acne": "حَبُّ الشّبَاب",

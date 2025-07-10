@@ -19,6 +19,11 @@ export interface Availability {
   };
 }
 
+export type TimeSlot = {
+  date: string;
+  duration: number;
+};
+
 // For patients, this is the time they can book
 // Get timeslots for a specific day string[]; get from Availability.weeklyAvailability.day
 // Then get booked appointments for that day Appointment[]; indexed by startTime

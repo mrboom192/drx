@@ -134,7 +134,7 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
         image: patient.image || null,
       },
       date: firestore.Timestamp.fromDate(appointmentDate),
-      durationMinutes: doctorPublicProfile.consultationDuration,
+      duration: doctorPublicProfile.consultationDuration,
       price: doctorPublicProfile.consultationPrice,
       status: "confirmed",
       hasSentReminder: false,

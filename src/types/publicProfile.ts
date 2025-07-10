@@ -1,16 +1,16 @@
-export type TimeSlot = {
-  start: string;
-  end: string;
+type TimeSlot = {
+  time: Date;
+  duration: number;
 };
 
 type Availability = {
-  Sun: TimeSlot[];
-  Mon: TimeSlot[];
-  Tue: TimeSlot[];
-  Wed: TimeSlot[];
-  Thu: TimeSlot[];
-  Fri: TimeSlot[];
-  Sat: TimeSlot[];
+  sunday: TimeSlot[];
+  monday: TimeSlot[];
+  tuesday: TimeSlot[];
+  wednesday: TimeSlot[];
+  thursday: TimeSlot[];
+  friday: TimeSlot[];
+  saturday: TimeSlot[];
 };
 
 export type PublicProfile = {

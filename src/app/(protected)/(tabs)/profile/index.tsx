@@ -14,6 +14,8 @@ import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
 import { useState } from "react";
+import CustomIcon from "@/components/CustomIcon";
+import { IconName } from "@/constants/iconsMap";
 
 const TOTAL_PADDING = 32;
 const GAP = 8;
@@ -123,8 +125,8 @@ const Profile = () => {
                 borderColor: Colors.light.faintGrey,
               }}
             >
-              <Ionicons
-                name={item.icon as keyof typeof Ionicons.glyphMap}
+              <CustomIcon
+                name={item.icon as IconName}
                 size={24}
                 color={color}
               />

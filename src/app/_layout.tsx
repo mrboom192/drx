@@ -167,6 +167,13 @@ function RootLayoutNav() {
                     header: (props) => <PageHeader {...props} />,
                   }}
                 />
+                <Stack.Screen
+                  name="support"
+                  options={{
+                    title: i18next.t("page.contact-us"),
+                    header: (props) => <PageHeader {...props} />,
+                  }}
+                />
               </Stack>
             </SessionProvider>
           </ExpoStripeProvider>

@@ -1,0 +1,1 @@
+export { getTimeSlots } from "./getTimeSlots";

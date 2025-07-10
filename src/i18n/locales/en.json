@@ -302,6 +302,7 @@
     "book-consultation": "Book Consultation",
     "bookmarked-doctors": "Bookmarked Doctors",
     "case-information": "Case information",
+    "contact-us": "Contact us",
     "create-second-opinion": "Create Second Opinion",
     "diseases-and-conditions": "Diseases & Conditions",
     "doctor-profile": "Doctor Profile",
@@ -337,6 +338,7 @@
   },
   "profile": {
     "change-the-app-settings": "Change the app settings",
+    "contact-support": "Contact support",
     "how-can-we-help-you-userdata-firstname": "How can we help you, {{firstName}}?",
     "manage-your-personal-information": "Manage your personal information",
     "view-our-apps-privacy-policy": "View our app's privacy policy",
@@ -423,6 +425,9 @@
     "rehab": "Rehab",
     "surgery": "Surgery",
     "urology": "Urology"
+  },
+  "support": {
+    "info": "If you have any questions, concerns, or bug reports, please email us at wassim.radwan@drxonline.com"
   },
   "symptoms": {
     "acne": "Acne",

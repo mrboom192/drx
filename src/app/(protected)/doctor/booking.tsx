@@ -1,6 +1,4 @@
 import { functions } from "@/../firebaseConfig";
-import { createTestAppointment } from "@/api/test";
-import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import ControllerDatePicker from "@/components/form/ControllerDatePicker";
 import Pills from "@/components/Pills";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
@@ -19,12 +17,11 @@ import { useTranslation } from "react-i18next";
 import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getCalendars } from "expo-localization";
-import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
-import { parseISO, setHours, setMinutes } from "date-fns";
+import { useEffect, useState } from "react";
+import { TimeSlot } from "@/types/timeSlot";
+import ControllerTimeSlotOptions from "@/components/form/ControllerTimeSlotOptions";
+import { format, utcToZonedTime } from "date-fns-tz";
 
-/* ------------------------------------------------------------------ */
-/* ⚙️  Firebase cloud-function types                                  */
-/* ------------------------------------------------------------------ */
 type GetPaymentIntentRequest = {
   amount: number;
   currency: string;
@@ -49,80 +46,6 @@ const cancelPaymentIntent = httpsCallable<
   CancelPaymentIntentResponse
 >(functions, "cancelPaymentIntent");
 
-/* ------------------------------------------------------------------ */
-/* 🛠️  Local helpers                                                  */
-/* ------------------------------------------------------------------ */
-const WEEKDAY_KEYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
-
-function weekdayKeyFromDate(date: Date) {
-  return WEEKDAY_KEYS[date.getDay()];
-}
-
-/** Convert "hh:mm" to minutes since midnight. */
-function toMinutes(time: string) {
-  const [h, m] = time.split(":").map(Number);
-  return h * 60 + m;
-}
-/** Convert minutes to "hh:mm". */
-function toTimeStr(mins: number) {
-  const h = Math.floor(mins / 60)
-    .toString()
-    .padStart(2, "0");
-  const m = (mins % 60).toString().padStart(2, "0");
-  return `${h}:${m}`;
-}
-
-/** Split each availability range into sub-slots of `duration` minutes. */
-function buildTimeSlotOptions(
-  avail: { start: string; end: string }[],
-  duration: number,
-  doctorTZ: string // e.g. "Africa/Cairo"
-): { value: string; label: string }[] {
-  const patientTZ = getCalendars()[0].timeZone; // e.g. "America/New_York"
-  if (!patientTZ) {
-    throw new Error("Patient's time zone not found");
-  }
-
-  const res: { value: string; label: string }[] = [];
-  const baseDate = "1970-01-01"; // arbitrary, same for all slots
-
-  avail.forEach(({ start, end }) => {
-    let from = toMinutes(start);
-    const until = toMinutes(end);
-
-    while (from + duration <= until) {
-      const slotStart = toTimeStr(from); // "09:00"
-      const slotEnd = toTimeStr(from + duration); // "09:30"
-
-      // interpret start/end in the doctor’s TZ
-      const doctorStartISO = `${baseDate}T${slotStart}:00`;
-      const doctorEndISO = `${baseDate}T${slotEnd}:00`;
-
-      // convert to UTC
-      const utcStart = zonedTimeToUtc(doctorStartISO, doctorTZ);
-      const utcEnd = zonedTimeToUtc(doctorEndISO, doctorTZ);
-
-      // convert UTC → patient TZ
-      const patientStart = utcToZonedTime(utcStart, patientTZ);
-      const patientEnd = utcToZonedTime(utcEnd, patientTZ);
-
-      // format label in patient TZ (12-hour AM/PM)
-      const label = `${format(patientStart, "h:mm a")} - ${format(
-        patientEnd,
-        "h:mm a"
-      )}`;
-
-      res.push({ value: slotStart, label });
-      from += duration;
-    }
-  });
-
-  return res;
-}
-
-/* ------------------------------------------------------------------ */
-/* 📄  BookingPage component                                          */
-/* ------------------------------------------------------------------ */
 const BookingPage = () => {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -130,8 +53,45 @@ const BookingPage = () => {
   const userData = useUserData();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const insets = useSafeAreaInsets();
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const { control, handleSubmit, watch, formState } = useForm<FieldValues>({
+    defaultValues: { selectedDate: new Date(), timeSlot: null },
+  });
+  const { isSubmitting } = formState;
+  const selectedDate = watch("selectedDate");
 
-  /* ---------- Translated specializations ---------- */
+  useEffect(() => {
+    const fetchTimeSlots = async () => {
+      if (!doctor?.uid) return;
+      try {
+        const getTimeSlots = httpsCallable<
+          { doctorId: string; date: string },
+          TimeSlot[]
+        >(functions, "getTimeSlots");
+
+        const timeZone = getCalendars()[0].timeZone!;
+        const zonedDate = utcToZonedTime(selectedDate, timeZone);
+        const formatted = format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", {
+          timeZone,
+        });
+
+        console.log(new Date(formatted).getDay());
+
+        const res = await getTimeSlots({
+          doctorId: doctor.uid,
+          // Convert date to local
+          date: formatted,
+        });
+
+        setTimeSlots(res.data);
+      } catch (error) {
+        console.error("Error fetching time slots:", error);
+      }
+    };
+
+    fetchTimeSlots();
+  }, [doctor?.uid, selectedDate]);
+
   const specializationMap = Object.fromEntries(
     getSpecializations(i18next.t).map((i) => [i.value, i.label])
   );
@@ -140,24 +100,6 @@ const BookingPage = () => {
       ?.map((spec: string) => specializationMap[spec])
       .filter(Boolean) || [];
 
-  /* ---------- Form ---------- */
-  const { control, handleSubmit, watch, formState } = useForm<FieldValues>({
-    defaultValues: { selectedDate: new Date(), timeSlot: null },
-  });
-  const { isSubmitting } = formState;
-
-  /* ---------- Build bookable time-slot list ---------- */
-  const selectedDate: Date = watch("selectedDate");
-  const weekdayKey = weekdayKeyFromDate(selectedDate);
-  const rawRanges = doctor?.availability?.[weekdayKey] || [];
-  const slotDuration = doctor?.consultationDuration || 15; // minutes
-  const timeSlotOptions = buildTimeSlotOptions(
-    rawRanges,
-    slotDuration,
-    doctor.timeZone
-  );
-
-  /* ---------- Payment sheet ---------- */
   const initializePaymentSheet = async ({
     amount,
     date,
@@ -203,27 +145,15 @@ const BookingPage = () => {
     Alert.alert(t("common.success"), t("form.booking-was-successful"));
   };
 
-  /* ---------- Submit ---------- */
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const [hours, minutes] = data.timeSlot.split(":").map(Number);
-      const date = setHours(
-        setMinutes(parseISO(data.selectedDate.toISOString()), minutes),
-        hours
-      );
-      const utcDate = format(
-        zonedTimeToUtc(date, doctor.timeZone),
-        "yyyy-MM-dd'T'HH:mmXXX"
-      );
-
       await initializePaymentSheet({
         amount: doctor?.consultationPrice,
-        date: utcDate,
+        date: data.date,
         timeZone: getCalendars()[0].timeZone || "UTC",
       });
 
       // Currently handle booking on backend
-
       router.replace({ pathname: "/(protected)/(tabs)/messages" });
     } catch (error) {
       console.error("Booking error:", error);
@@ -231,13 +161,11 @@ const BookingPage = () => {
     }
   };
 
-  /* ---------- UI ---------- */
   return (
     <View
       style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
     >
       <ScrollView contentContainerStyle={{ padding: 16, gap: 24 }}>
-        {/* ─── Doctor header ──────────────────────────────────────────── */}
         <View
           style={{
             flexDirection: "row",
@@ -265,7 +193,6 @@ const BookingPage = () => {
           </View>
         </View>
 
-        {/* ─── Date picker ───────────────────────────────────────────── */}
         <ControllerDatePicker
           label={t("form.select-date")}
           name="selectedDate"
@@ -274,16 +201,14 @@ const BookingPage = () => {
           rules={{ required: t("form.please-select-a-date") }}
         />
 
-        {/* ─── Time-slot picker ──────────────────────────────────────── */}
-        <ControllerCheckBoxOptions
+        <ControllerTimeSlotOptions
           label={t("form.select-a-time-slot")}
           name="timeSlot"
           control={control}
-          singleSelect
-          options={timeSlotOptions}
+          timeSlots={timeSlots}
           rules={{ required: t("form.please-select-a-time-slot") }}
         />
-        {timeSlotOptions.length === 0 && (
+        {timeSlots.length === 0 && (
           <TextSemiBold
             style={{
               color: Colors.lightText,
@@ -296,7 +221,6 @@ const BookingPage = () => {
         )}
       </ScrollView>
 
-      {/* ─── Bottom CTA ───────────────────────────────────────────────*/}
       <View
         style={{
           padding: 16,
@@ -317,9 +241,6 @@ const BookingPage = () => {
 
 export default BookingPage;
 
-/* ------------------------------------------------------------------ */
-/* 🔎  Helpers                                                         */
-/* ------------------------------------------------------------------ */
 export function parseTimeSlot(str: string) {
   const [startTime, endTime] = str.split("-");
   return { startTime, endTime };

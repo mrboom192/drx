@@ -2,12 +2,12 @@ import { TFunction } from "i18next";
 
 export const getPatientLinks = (t: TFunction) => [
   {
-    icon: "person-outline",
+    icon: "account-circle",
     label: t("profile.manage-your-personal-information"),
     url: "/(tabs)/profile/personal",
   },
   {
-    icon: "medkit-outline",
+    icon: "medical-information",
     label: t("profile.view-your-medical-record"),
     url: "/(tabs)/profile/medical-record",
   },
@@ -17,25 +17,30 @@ export const getPatientLinks = (t: TFunction) => [
   //   url: "/(tabs)/profile/payment-methods",
   // },
   {
-    icon: "shield-checkmark-outline",
+    icon: "privacy-tip",
     label: t("profile.view-our-apps-privacy-policy"),
     url: "/privacy-policy",
   },
   {
-    icon: "information-circle-outline",
+    icon: "contract",
     label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
   },
   {
-    icon: "settings-outline",
+    icon: "settings",
     label: t("profile.change-the-app-settings"),
     url: "/(tabs)/profile/settings",
+  },
+  {
+    icon: "support-agent",
+    label: t("profile.contact-support"),
+    url: "/support",
   },
 ];
 
 export const getDoctorLinks = (t: TFunction) => [
   {
-    icon: "person-outline",
+    icon: "account-circle",
     label: t("profile.manage-your-personal-information"),
     url: "/(tabs)/profile/personal",
   },
@@ -50,18 +55,23 @@ export const getDoctorLinks = (t: TFunction) => [
   //   url: "/(tabs)/profile/payment-methods",
   // },
   {
-    icon: "shield-checkmark-outline",
+    icon: "privacy-tip",
     label: t("profile.view-our-apps-privacy-policy"),
     url: "/privacy-policy",
   },
   {
-    icon: "information-circle-outline",
+    icon: "contract",
     label: t("profile.view-our-apps-terms-of-service"),
     url: "/terms-of-service",
   },
   {
-    icon: "settings-outline",
+    icon: "settings",
     label: t("profile.change-the-app-settings"),
     url: "/(tabs)/profile/settings",
+  },
+  {
+    icon: "support-agent",
+    label: t("profile.contact-support"),
+    url: "/support",
   },
 ];

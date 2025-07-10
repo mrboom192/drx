@@ -25,7 +25,24 @@ interface ControllerAvailabilityProps<TFieldValues extends FieldValues> {
   watch: UseFormWatch<TFieldValues>;
 }
 
-const WEEK_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const WEEK_DAYS = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+const WEEK_DAYS_MAP: Record<string, string> = {
+  sunday: "Sun",
+  monday: "Mon",
+  tuesday: "Tue",
+  wednesday: "Wed",
+  thursday: "Thu",
+  friday: "Fri",
+  saturday: "Sat",
+};
 
 const ControllerAvailability = <TFieldValues extends FieldValues>({
   label,
@@ -70,7 +87,7 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
             {fields.length === 0 ? (
               <View style={styles.timeSlotRow}>
                 <TextRegular style={styles.dayLabel}>
-                  {t(`weekdays.${day}`)}
+                  {t(`weekdays.${WEEK_DAYS_MAP[day]}`)}
                 </TextRegular>
                 <TextRegular style={styles.noSlotsText}>
                   {t("form.unavailable")}
@@ -89,7 +106,7 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
                 <View key={field.id} style={[styles.timeSlotRow]}>
                   {index === 0 ? (
                     <TextRegular style={styles.dayLabel}>
-                      {t(`weekdays.${day}`)}
+                      {t(`weekdays.${WEEK_DAYS_MAP[day]}`)}
                     </TextRegular>
                   ) : (
                     <View style={styles.dayLabel} />

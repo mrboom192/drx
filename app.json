@@ -38,12 +38,7 @@
         "android.permission.SYSTEM_ALERT_WINDOW",
         "android.permission.WAKE_LOCK",
         "android.permission.BLUETOOTH"
-      ],
-      "config": {
-        "googleMaps": {
-          "apiKey": "process.env.GOOGLE_MAPS_API_KEY"
-        }
-      }
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -84,6 +79,13 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "DrX Telehealth requires access to your location to help you find nearby healthcare providers when using the map."
+        }
+      ],
+      [
+        "react-native-maps",
+        {
+          "iosGoogleMapsApiKey": "AIzaSyCh57Sm4slXCcIMFGzvf6vtYSXNSFBDK00",
+          "androidGoogleMapsApiKey": "AIzaSyCOoT1oQt7VeRZDZhAmV51V1aIKC8CeFo8"
         }
       ],
       "expo-web-browser",

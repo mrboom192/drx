@@ -1,16 +1,19 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   LayoutChangeEvent,
   Platform,
+  Touchable,
+  TouchableOpacity,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
 import MapView, {
   Details,
   Marker,
+  MarkerPressEvent,
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
   Region,
@@ -48,14 +51,11 @@ const DoctorMap = () => {
       });
   }, [doctors]);
 
-  const handleRegionChange = useCallback(
-    (newRegion: Region, details: Details): void => {
-      // If OS is android, check if the change is due to a gesture
-      if (Platform.OS === "android" && details?.isGesture) setRegion(newRegion);
-      if (Platform.OS === "ios") setRegion(newRegion); // isGesture is undefined on iOS
-    },
-    []
-  );
+  const handleRegionChange = (newRegion: Region, details: Details): void => {
+    // If OS is android, check if the change is due to a gesture
+    if (Platform.OS === "android" && details?.isGesture) setRegion(newRegion);
+    if (Platform.OS === "ios") setRegion(newRegion); // isGesture is undefined on iOS
+  };
 
   const handleLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
@@ -64,6 +64,7 @@ const DoctorMap = () => {
 
   const renderMarker = (feature: ClusterFeature<any>) => {
     const [lng, lat] = feature.geometry.coordinates;
+    const doctorUID = feature.properties.uid;
 
     const isCluster = !!feature.properties?.cluster;
     // Date.now() fixes disappearing custom markers, albeit hacky
@@ -72,7 +73,11 @@ const DoctorMap = () => {
       : `point-${feature.properties.id}-${Date.now()}`;
 
     return (
-      <Marker key={key} coordinate={{ latitude: lat, longitude: lng }}>
+      <Marker
+        identifier={doctorUID} // Becomes nativeEvent.id
+        key={key}
+        coordinate={{ latitude: lat, longitude: lng }}
+      >
         {isCluster ? (
           <ClusterMarker count={feature.properties.point_count} />
         ) : (
@@ -93,6 +98,7 @@ const DoctorMap = () => {
       {mapDimensions ? (
         <MapView
           paddingAdjustmentBehavior="never"
+          moveOnMarkerPress={false}
           provider={PROVIDER_DEFAULT}
           style={styles.mapView}
           region={region}

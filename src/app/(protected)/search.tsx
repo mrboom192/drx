@@ -1,13 +1,11 @@
-import DoctorList from "@/components/DoctorList/DoctorList";
 import DoctorMap from "@/components/DoctorMap";
 import DoctorsBottomSheet from "@/components/DoctorsBottomSheet";
 import DoctorsHeader from "@/components/DoctorsHeader";
 import MapButton from "@/components/map/MapButton";
-import { TextRegular } from "@/components/StyledText";
 import { useFetchSomeDoctors } from "@/stores/useDoctorSearch";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
 const Page = () => {
@@ -17,6 +15,7 @@ const Page = () => {
   const [mapVisible, setMapVisible] = useState(false);
 
   const showMap = () => {
+    // TODO: Implement a more robust way to toggle the map visibility
     if (mapVisible) {
       bottomSheetRef.current?.expand();
     } else {
@@ -27,6 +26,8 @@ const Page = () => {
   };
 
   useEffect(() => {
+    // Populates the initial doctor list so that filteredDoctors can be used
+    // TODO: Implement actual searching
     fetchSomeDoctors();
   }, []);
 

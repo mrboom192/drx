@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { Image } from "expo-image";

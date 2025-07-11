@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
 import React, { useEffect } from "react";
-import { Image, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { TextSemiBold } from "./StyledText";
+import { Image } from "expo-image";
 
 const Avatar = ({
   presence = null,
@@ -82,7 +83,7 @@ const Avatar = ({
           <Image
             source={{ uri }}
             style={{ width: "100%", height: "100%", borderRadius: 9999 }}
-            resizeMode="cover"
+            contentFit="cover"
           />
           <View
             pointerEvents="none"

@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   },
   bubble: {
     flex: 0,
+
     flexDirection: "row",
     alignSelf: "flex-start",
     gap: 4,

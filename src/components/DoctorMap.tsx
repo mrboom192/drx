@@ -1,14 +1,25 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { View, StyleSheet, Text, LayoutChangeEvent } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  LayoutChangeEvent,
+  Platform,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, {
+  Details,
+  Marker,
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+  Region,
+} from "react-native-maps";
 import { Clusterer } from "react-native-clusterer";
 import ClusterMarker from "./map/ClusterMarker";
 import LoadingScreen from "./LoadingScreen";
 import { ClusterFeature } from "supercluster";
 import { toPointFeature } from "@/utils/mapUtils";
-import { TextSemiBold } from "./StyledText";
 import DoctorMarker from "./map/DoctorMarker";
 import { useFilters } from "@/stores/useFilterStore";
 
@@ -22,7 +33,6 @@ const INITIAL_REGION = {
 const DoctorMap = () => {
   const filters = useFilters();
   const doctors = useFilteredDoctors(filters);
-
   const [region, setRegion] = useState(INITIAL_REGION);
   const [mapDimensions, setMapDimensions] = useState<{
     width: number;
@@ -37,6 +47,15 @@ const DoctorMap = () => {
         return toPointFeature(doctor, [longitude, latitude]);
       });
   }, [doctors]);
+
+  const handleRegionChange = useCallback(
+    (newRegion: Region, details: Details): void => {
+      // If OS is android, check if the change is due to a gesture
+      if (Platform.OS === "android" && details?.isGesture) setRegion(newRegion);
+      if (Platform.OS === "ios") setRegion(newRegion); // isGesture is undefined on iOS
+    },
+    []
+  );
 
   const handleLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
@@ -73,10 +92,11 @@ const DoctorMap = () => {
     <View style={styles.container} onLayout={handleLayout}>
       {mapDimensions ? (
         <MapView
+          paddingAdjustmentBehavior="never"
           provider={PROVIDER_DEFAULT}
           style={styles.mapView}
           region={region}
-          onRegionChangeComplete={setRegion}
+          onRegionChangeComplete={handleRegionChange}
         >
           <Clusterer
             data={doctorPlaces}

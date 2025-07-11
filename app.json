@@ -84,8 +84,8 @@
       [
         "react-native-maps",
         {
-          "iosGoogleMapsApiKey": "AIzaSyCh57Sm4slXCcIMFGzvf6vtYSXNSFBDK00",
-          "androidGoogleMapsApiKey": "AIzaSyCOoT1oQt7VeRZDZhAmV51V1aIKC8CeFo8"
+          "iosGoogleMapsApiKey": "AIzaSyBtkvQ2bSNgB5X8bBZY_7CFnFpRhgxj-3s",
+          "androidGoogleMapsApiKey": "AIzaSyBtkvQ2bSNgB5X8bBZY_7CFnFpRhgxj-3s"
         }
       ],
       "expo-web-browser",

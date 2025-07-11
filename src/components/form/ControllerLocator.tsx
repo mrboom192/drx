@@ -41,7 +41,7 @@ const ControllerLocator = <T extends FieldValues>({
   const TITLE = t("form.place-of-practice-optional");
   const SUBTITLE = t("form.locator-subtitle");
 
-  const userDate = useUserData();
+  const userData = useUserData();
   const [mapDimensions, setMapDimensions] = useState<
     | {
         width: number;
@@ -182,10 +182,10 @@ const ControllerLocator = <T extends FieldValues>({
                 >
                   <Marker coordinate={value}>
                     <DoctorMarker
-                      firstName={userDate?.firstName || "First"}
-                      lastName={userDate?.lastName || "Last"}
-                      image={userDate?.image || ""}
-                      uid={userDate?.uid || ""}
+                      firstName={userData?.firstName || "First"}
+                      lastName={userData?.lastName || "Last"}
+                      image={userData?.image || ""}
+                      uid={userData?.uid || ""}
                       price={consultationPrice}
                       shouldNavigate={false}
                     />

@@ -131,6 +131,7 @@
     "something-went-wrong-saving-your-info": "Something went wrong saving your info."
   },
   "form": {
+    "a-role-is-required": "A role is required",
     "add-attachments": "Add attachments",
     "allergy-name": "Allergy name",
     "allergy-name-is-required": "Allergy name is required",
@@ -230,7 +231,8 @@
     "unavailable": "Unavailable",
     "what-days-are-you-available": "What days are you available?",
     "what-is-the-interval": "What is the interval?",
-    "what-patients-will-see": "What patients will see"
+    "what-patients-will-see": "What patients will see",
+    "which-best-describes-your-role": "Which best describes your role?"
   },
   "gender": {
     "female": "Female",
@@ -335,6 +337,11 @@
     "otp-request": "Enter the 6 digit code we sent to {{internationalPhoneNumber}} to verify your phone number.",
     "verification-code": "Verification Code",
     "verification-disclaimer": "We'll text you a code to verify your phone number. Standard message and data rates apply."
+  },
+  "practitioners": {
+    "medical-intern": "Medical Intern",
+    "nurse-practitioner": "Nurse Practitioner",
+    "physician": "Physician"
   },
   "profile": {
     "change-the-app-settings": "Change the app settings",

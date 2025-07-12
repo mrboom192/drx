@@ -131,6 +131,7 @@
     "something-went-wrong-saving-your-info": "حدث خطأ ما في حفظ معلوماتك."
   },
   "form": {
+    "a-role-is-required": "",
     "add-attachments": "إضافة المرفقات",
     "allergy-name": "اسم الحساسية",
     "allergy-name-is-required": "اسم الحساسية مطلوب",
@@ -230,7 +231,8 @@
     "unavailable": "غير متاح",
     "what-days-are-you-available": "ما هي الأيام المتوفرة؟",
     "what-is-the-interval": "ما هو الفاصل الزمني؟",
-    "what-patients-will-see": "ماذا سيراه المرضى"
+    "what-patients-will-see": "ماذا سيراه المرضى",
+    "which-best-describes-your-role": ""
   },
   "gender": {
     "female": "أنثى",
@@ -269,7 +271,7 @@
     "disclaimer-start": "باستخدامك لتطبيقنا، فإنك توافق على",
     "error": {
       "invalid-credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
-      "please-verify-your-email-before-signing-in": "",
+      "please-verify-your-email-before-signing-in": "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
       "unknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى لاحقًا."
     },
     "header": "مرحبًا بك في DrX",
@@ -302,7 +304,7 @@
     "book-consultation": "استشارة الكتاب",
     "bookmarked-doctors": "مرجعية الأطباء",
     "case-information": "معلومات الحالة",
-    "contact-us": "",
+    "contact-us": "اتصل بنا",
     "create-second-opinion": "إنشاء الرأي الثاني",
     "diseases-and-conditions": "الأمراض",
     "doctor-profile": "ملف تعريف الطبيب",
@@ -336,9 +338,14 @@
     "verification-code": "رمز التحقق",
     "verification-disclaimer": "سنرسل لك رمزًا للتحقق من رقم هاتفك. \nتنطبق معدلات الرسائل والبيانات القياسية."
   },
+  "practitioners": {
+    "medical-intern": "",
+    "nurse-practitioner": "",
+    "physician": ""
+  },
   "profile": {
     "change-the-app-settings": "تغيير إعدادات التطبيق",
-    "contact-support": "",
+    "contact-support": "الاتصال الدعم",
     "how-can-we-help-you-userdata-firstname": "كيف يمكننا مساعدتك ، {{firstName}}؟",
     "manage-your-personal-information": "إدارة معلوماتك الشخصية",
     "view-our-apps-privacy-policy": "عرض سياسة الخصوصية الخاصة بتطبيقنا",
@@ -427,7 +434,7 @@
     "urology": "المسالك البولية"
   },
   "support": {
-    "info": ""
+    "info": "إذا كان لديك أي أسئلة أو مخاوف أو تقارير أخطاء ، فيرجى مراسلتنا عبر البريد الإلكتروني على wassim.radwan@drxonline.com"
   },
   "symptoms": {
     "acne": "حَبُّ الشّبَاب",

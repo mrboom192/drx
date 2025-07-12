@@ -225,7 +225,6 @@ const ChatRoom = () => {
           _id: userData.uid, // Let giftedchat know who is the current user
         }}
         renderAvatar={(props) => {
-          console.log("Rendering avatar for:", props.currentMessage.user.name);
           return (
             <Avatar
               {...props}

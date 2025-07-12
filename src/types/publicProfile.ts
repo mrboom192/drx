@@ -14,6 +14,7 @@ type Availability = {
 };
 
 export type PublicProfile = {
+  doctorLabel: "doctor" | "nurse" | "intern";
   image?: string;
   name?: string;
   firstName?: string;

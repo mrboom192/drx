@@ -15,7 +15,10 @@ import FormPage from "@/components/FormPage";
 import LoadingScreen from "@/components/LoadingScreen";
 import { TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
-import { getSpecializations } from "@/constants/specializations";
+import {
+  getDoctorLabels,
+  getSpecializations,
+} from "@/constants/specializations";
 import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
@@ -34,6 +37,7 @@ const UpdatePublicProfile = () => {
       mode: "onChange",
       defaultValues: async () => {
         const fallback: PublicProfile = {
+          doctorLabel: "doctor",
           coordinates: null,
           specializations: [],
           languages: [],
@@ -106,6 +110,7 @@ const UpdatePublicProfile = () => {
           lastName: userData.lastName,
           image: userData.image || null,
           updatedAt: Timestamp.now(),
+          doctorLabel: formData.doctorLabel || "doctor",
           specializations: formData.specializations || [],
           languages: formData.languages,
           experience: parseInt(formData.experience, 10) || 0,
@@ -174,6 +179,15 @@ const UpdatePublicProfile = () => {
             </TextSemiBold>
           </View>
         </View>
+
+        <ControllerCheckBoxOptions
+          label={t("form.which-best-describes-your-role")}
+          name="doctorLabel"
+          control={control}
+          rules={{ required: t("form.a-role-is-required") }}
+          options={getDoctorLabels(t)}
+          singleSelect
+        />
 
         <ControllerCheckBoxOptions
           label={t("common.languages")}

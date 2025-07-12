@@ -11,6 +11,7 @@ import { TextSemiBold } from "../StyledText";
 import { getSpecializations } from "@/constants/specializations";
 import i18next from "i18next";
 import Pills from "../Pills";
+import DoctorLabel from "./DoctorLabel";
 
 export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
   const specializationMap = Object.fromEntries(
@@ -33,19 +34,19 @@ export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
           />
 
           <View style={styles.info}>
-            <View>
-              <TextSemiBold style={{ fontSize: 16, width: "100%" }}>
-                {item.firstName} {item.lastName}
+            <View style={styles.nameAndLabel}>
+              <TextSemiBold style={{ fontSize: 16 }}>
+                {item.firstName} {item.lastName}{" "}
+                <DoctorLabel label={item.doctorLabel} />
               </TextSemiBold>
-
-              <Pills items={specializations} maxPills={2} />
             </View>
+
+            <Pills items={specializations} maxPills={2} />
           </View>
         </View>
 
         <View style={styles.price}>
           <TextSemiBold style={styles.priceText}>
-            {" "}
             ${item.consultationPrice}
           </TextSemiBold>
         </View>
@@ -68,13 +69,17 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
     gap: 16,
   },
   info: {
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "space-between",
+  },
+  nameAndLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   specializations: {
     textTransform: "capitalize",

@@ -55,6 +55,7 @@ const SignUp = () => {
         name="firstName"
         label={t("signup.first-name")}
         placeholder={t("signup.e-g-john")}
+        shouldRemoveWhitespace
       />
 
       {/* Last Name */}
@@ -66,6 +67,7 @@ const SignUp = () => {
         name="lastName"
         label={t("signup.last-name")}
         placeholder={t("signup.e-g-doe")}
+        shouldRemoveWhitespace
       />
 
       <Divider />

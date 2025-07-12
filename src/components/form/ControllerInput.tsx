@@ -33,6 +33,7 @@ interface ControllerInputProps<TFieldValues extends FieldValues> {
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
   iconLeft?: IconName;
   autoFocus?: boolean;
+  shouldRemoveWhitespace?: boolean;
 }
 
 const ControllerInput = <TFieldValues extends FieldValues>({
@@ -47,6 +48,7 @@ const ControllerInput = <TFieldValues extends FieldValues>({
   keyboardType = "default",
   iconLeft,
   autoFocus = false,
+  shouldRemoveWhitespace = false,
 }: ControllerInputProps<TFieldValues>) => {
   const [showSensitive, setShowSensitive] = useState(false);
 
@@ -92,7 +94,12 @@ const ControllerInput = <TFieldValues extends FieldValues>({
               ]}
               onBlur={onBlur}
               autoFocus={autoFocus}
-              onChangeText={onChange}
+              onChangeText={(text) => {
+                const sanitizedText = shouldRemoveWhitespace
+                  ? text.replace(/\s+/g, "")
+                  : text;
+                onChange(sanitizedText);
+              }}
               value={value}
               placeholder={placeholder}
               placeholderTextColor={Colors.lightText}

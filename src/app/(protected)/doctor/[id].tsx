@@ -113,91 +113,89 @@ const Page = () => {
         </View>
 
         {/* Time zone */}
-        <View style={{ flexDirection: "column", gap: 8 }}>
-          <View
-            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
-          >
-            <CustomIcon name="directions-boat" size={20} color="#000" />
-            <View style={{ flexDirection: "column", gap: 8 }}>
-              <TextSemiBold
-                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
-              >
-                {t("common.time-zone")}
-              </TextSemiBold>
-              <TextRegular
-                style={{
-                  fontSize: 16,
-                  color: Colors.light.grey,
-                  textAlign: "left",
-                }}
-              >
-                {t("doctor.time-zone-description", {
-                  lastName: doctor.lastName,
-                  timeZone: doctor.timeZone,
-                })}
-              </TextRegular>
-            </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: 8,
+          }}
+        >
+          <CustomIcon name="directions-boat" size={20} color="#000" />
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <TextSemiBold
+              style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+            >
+              {t("common.time-zone")}
+            </TextSemiBold>
+            <TextRegular
+              style={{
+                fontSize: 16,
+                color: Colors.light.grey,
+                textAlign: "left",
+              }}
+            >
+              {t("doctor.time-zone-description", {
+                lastName: doctor.lastName,
+                timeZone: doctor.timeZone,
+              })}
+            </TextRegular>
           </View>
         </View>
 
         {/* Languages */}
-        <View style={{ flexDirection: "column", gap: 8 }}>
-          <View
-            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
-          >
-            <Ionicons name="language" size={20} color="#000" />
-            <View style={{ flexDirection: "column", gap: 8 }}>
-              <TextSemiBold
-                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
-              >
-                {t("common.languages")}
-              </TextSemiBold>
-              <TextRegular
-                style={{
-                  fontSize: 16,
-                  color: Colors.light.grey,
-                  textAlign: "left",
-                }}
-              >
-                {t("doctor.doctor-speaks", {
-                  firstName: doctor.firstName,
-                  languages: doctor.languages
-                    ?.map(
-                      (code) =>
-                        getLanguageOptions(t).find((opt) => opt.value === code)
-                          ?.label || code
-                    )
-                    .join(t("common.list-separator")),
-                })}
-              </TextRegular>
-            </View>
+        <View
+          style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
+        >
+          <Ionicons name="language" size={20} color="#000" />
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <TextSemiBold
+              style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+            >
+              {t("common.languages")}
+            </TextSemiBold>
+            <TextRegular
+              style={{
+                fontSize: 16,
+                color: Colors.light.grey,
+                textAlign: "left",
+              }}
+            >
+              {t("doctor.doctor-speaks", {
+                firstName: doctor.firstName,
+                languages: doctor.languages
+                  ?.map(
+                    (code) =>
+                      getLanguageOptions(t).find((opt) => opt.value === code)
+                        ?.label || code
+                  )
+                  .join(t("common.list-separator")),
+              })}
+            </TextRegular>
           </View>
         </View>
 
-        <View style={{ flexDirection: "column", gap: 8 }}>
-          <View
-            style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
-          >
-            <CustomIcon name="briefcase" size={20} color="#000" />
-            <View style={{ flexDirection: "column", gap: 8 }}>
-              <TextSemiBold
-                style={{ fontSize: 16, color: "#000", textAlign: "left" }}
-              >
-                {t("common.experience")}
-              </TextSemiBold>
-              <TextRegular
-                style={{
-                  fontSize: 16,
-                  color: Colors.light.grey,
-                  textAlign: "left",
-                }}
-              >
-                {t("doctor.experience-description", {
-                  lastName: doctor.lastName,
-                  count: Number(doctor.experience),
-                })}
-              </TextRegular>
-            </View>
+        <View
+          style={{ flexDirection: "row", alignItems: "flex-start", gap: 8 }}
+        >
+          <CustomIcon name="briefcase" size={20} color="#000" />
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <TextSemiBold
+              style={{ fontSize: 16, color: "#000", textAlign: "left" }}
+            >
+              {t("common.experience")}
+            </TextSemiBold>
+            <TextRegular
+              style={{
+                fontSize: 16,
+                color: Colors.light.grey,
+                textAlign: "left",
+              }}
+            >
+              {t("doctor.experience-description", {
+                lastName: doctor.lastName,
+                count: Number(doctor.experience),
+              })}
+            </TextRegular>
           </View>
         </View>
 

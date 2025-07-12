@@ -17,6 +17,13 @@ export const getOurServices = (t: TFunction) => [
     href: "/search" as Href,
   },
   {
+    name: t("services.in-egypt-request-in-home-care-today"),
+    buttonText: t("services.discover-in-home-care"),
+    image: require("@/../assets/images/services/home.png"),
+    backgroundColor: "#FFD79F",
+    href: "/search" as Href,
+  },
+  {
     name: t("services.start-your-weight-loss-journey-with-drx"),
     buttonText: t("services.find-a-doctor"),
     image: require("@/../assets/images/services/runners.png"),

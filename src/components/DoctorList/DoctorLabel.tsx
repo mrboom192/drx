@@ -1,8 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getDoctorLabels } from "@/constants/specializations";
 import { TextSemiBold } from "../StyledText";
+import Colors from "@/constants/Colors";
 
 const DoctorLabel = ({ label }: { label: string }) => {
   const { t } = useTranslation();

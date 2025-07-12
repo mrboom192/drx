@@ -1,20 +1,21 @@
 import { TFunction } from "i18next";
+import Colors from "./Colors";
 
 export const getDoctorLabels = (t: TFunction) => [
   {
     value: "doctor",
     label: t("practitioners.physician"),
-    color: "#4CAF50",
+    color: Colors.skyBlue,
   },
   {
     value: "nurse",
-    label: t("practitioners.nurse-practitioner"),
-    color: "#2196F3",
+    label: t("practitioners.nurse"),
+    color: Colors.red,
   },
   {
     value: "intern",
     label: t("practitioners.medical-intern"),
-    color: "#FFC107",
+    color: Colors.magenta,
   },
 ];
 

@@ -339,8 +339,8 @@
     "verification-disclaimer": "We'll text you a code to verify your phone number. Standard message and data rates apply."
   },
   "practitioners": {
-    "medical-intern": "Medical Intern",
-    "nurse-practitioner": "Nurse Practitioner",
+    "medical-intern": "Intern",
+    "nurse": "Nurse",
     "physician": "Physician"
   },
   "profile": {
@@ -379,9 +379,11 @@
     "vaginal": "vaginal"
   },
   "services": {
+    "discover-in-home-care": "Discover in-home care",
     "find-a-doctor": "Find a doctor",
     "get-peace-of-mind-with-an-expert-second-opinion": "Get peace of mind with an expert second opinion",
     "have-a-doctor-review-your-radiology-scans": "Have a doctor review your radiology scans",
+    "in-egypt-request-in-home-care-today": "In Egypt? Request in-home care today!",
     "start-a-request": "Start a request",
     "start-your-weight-loss-journey-with-drx": "Start your weight loss journey with DrX",
     "submit-a-review": "Submit a review"

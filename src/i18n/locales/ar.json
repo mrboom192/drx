@@ -131,7 +131,7 @@
     "something-went-wrong-saving-your-info": "حدث خطأ ما في حفظ معلوماتك."
   },
   "form": {
-    "a-role-is-required": "",
+    "a-role-is-required": "دور مطلوب",
     "add-attachments": "إضافة المرفقات",
     "allergy-name": "اسم الحساسية",
     "allergy-name-is-required": "اسم الحساسية مطلوب",
@@ -232,7 +232,7 @@
     "what-days-are-you-available": "ما هي الأيام المتوفرة؟",
     "what-is-the-interval": "ما هو الفاصل الزمني؟",
     "what-patients-will-see": "ماذا سيراه المرضى",
-    "which-best-describes-your-role": ""
+    "which-best-describes-your-role": "أي أفضل وصف لدورك؟"
   },
   "gender": {
     "female": "أنثى",
@@ -339,9 +339,9 @@
     "verification-disclaimer": "سنرسل لك رمزًا للتحقق من رقم هاتفك. \nتنطبق معدلات الرسائل والبيانات القياسية."
   },
   "practitioners": {
-    "medical-intern": "",
-    "nurse-practitioner": "",
-    "physician": ""
+    "medical-intern": "المتدرب",
+    "nurse": "ممرضة",
+    "physician": "طبيب"
   },
   "profile": {
     "change-the-app-settings": "تغيير إعدادات التطبيق",
@@ -379,9 +379,11 @@
     "vaginal": "مهبلي"
   },
   "services": {
+    "discover-in-home-care": "اكتشف الرعاية في المنزل",
     "find-a-doctor": "ابحث عن طبيب",
     "get-peace-of-mind-with-an-expert-second-opinion": "احصل على راحة البال مع الرأي الثاني الخبير",
     "have-a-doctor-review-your-radiology-scans": "اطلب من الطبيب مراجعة فحوصات الأشعة الخاصة بك",
+    "in-egypt-request-in-home-care-today": "في مصر؟ \nطلب الرعاية في المنزل اليوم!",
     "start-a-request": "ابدأ طلبًا",
     "start-your-weight-loss-journey-with-drx": "ابدأ رحلة فقدان الوزن مع DRX",
     "submit-a-review": "إرسال مراجعة"

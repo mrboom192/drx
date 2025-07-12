@@ -121,14 +121,10 @@ const DayInfo = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 9999,
-                backgroundColor: Colors.secondOpinionBackground,
+                backgroundColor: Colors.lightSkyBlue,
               }}
             >
-              <CustomIcon
-                name="event-chair"
-                size={32}
-                color={Colors.secondOpinion}
-              />
+              <CustomIcon name="event-chair" size={32} color={Colors.skyBlue} />
             </View>
           </TouchableOpacity>
         ))}

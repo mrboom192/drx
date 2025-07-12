@@ -4,8 +4,14 @@ import { TextRegular, TextSemiBold } from "../StyledText";
 import Colors from "@/constants/Colors";
 import Avatar from "../Avatar";
 import { router } from "expo-router";
+import { Marker } from "react-native-maps";
 
 type DoctorMarkerProps = {
+  identifier: string;
+  coordinate: {
+    latitude: number;
+    longitude: number;
+  };
   firstName: string;
   lastName: string;
   image: string;
@@ -15,6 +21,8 @@ type DoctorMarkerProps = {
 };
 
 const DoctorMarker = ({
+  identifier,
+  coordinate,
   firstName,
   lastName,
   image,
@@ -23,8 +31,10 @@ const DoctorMarker = ({
   shouldNavigate = true,
 }: DoctorMarkerProps) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
+    <Marker
+      identifier={identifier} // Becomes nativeEvent.id
+      coordinate={coordinate}
+      style={styles.marker}
       onPress={() =>
         shouldNavigate &&
         router.navigate({
@@ -36,7 +46,7 @@ const DoctorMarker = ({
       <View style={styles.bubble}>
         <Avatar
           initials={`${firstName?.charAt(0)}${lastName?.charAt(0)}`}
-          uri={image}
+          source={image}
           size={28}
         />
         <View style={styles.textContainer}>
@@ -44,12 +54,12 @@ const DoctorMarker = ({
           <TextSemiBold style={styles.price}>${price}</TextSemiBold>
         </View>
       </View>
-    </TouchableOpacity>
+    </Marker>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  marker: {
     flexDirection: "column",
     alignSelf: "flex-start",
   },

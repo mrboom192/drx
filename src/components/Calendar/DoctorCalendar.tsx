@@ -132,7 +132,7 @@ const DoctorCalendar = () => {
             <Avatar
               key={appointment.id}
               size={24}
-              uri={appointment.patient.image}
+              source={appointment.patient.image}
               initials={
                 appointment.patient.firstName[0] +
                 appointment.patient.lastName[0]

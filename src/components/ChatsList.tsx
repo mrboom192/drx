@@ -116,7 +116,7 @@ const ChatRow = ({ chat }: { chat: Chat }) => {
           <View style={styles.imageContainer}>
             <Avatar
               size={64}
-              uri={otherUser.image}
+              source={otherUser.image}
               presence={presence}
               initials={otherUser.firstName[0] + otherUser.lastName[0]}
             />

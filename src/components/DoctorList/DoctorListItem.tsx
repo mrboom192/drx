@@ -27,7 +27,7 @@ export const renderDoctorRow: ListRenderItem<any> = ({ item }) => {
       <TouchableOpacity style={styles.listing}>
         <View style={styles.left}>
           <Avatar
-            uri={item.image}
+            source={item.image}
             size={48}
             initials={item.firstName[0] + item.lastName[0]}
           />

@@ -16,7 +16,7 @@ const Avatar = ({
   pointerEvents = "auto",
   onPress = null,
   size,
-  uri = null,
+  source = null,
   initials = "",
   color = "#ddd",
   loading = false,
@@ -25,7 +25,7 @@ const Avatar = ({
   pointerEvents?: "auto" | "box-none" | "none" | "box-only";
   onPress?: null | (() => void);
   size: number;
-  uri?: string | null;
+  source?: string | number | null;
   initials?: string;
   color?: string;
   loading?: boolean;
@@ -78,10 +78,10 @@ const Avatar = ({
             animatedStyle,
           ]}
         />
-      ) : uri ? (
+      ) : source ? (
         <>
           <Image
-            source={{ uri }}
+            source={typeof source === "string" ? { uri: source } : source}
             style={{ width: "100%", height: "100%", borderRadius: 9999 }}
             contentFit="cover"
           />

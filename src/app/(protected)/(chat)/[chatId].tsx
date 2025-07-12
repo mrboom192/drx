@@ -225,13 +225,14 @@ const ChatRoom = () => {
           _id: userData.uid, // Let giftedchat know who is the current user
         }}
         renderAvatar={(props) => {
+          console.log("Rendering avatar for:", props.currentMessage.user.name);
           return (
             <Avatar
               {...props}
               size={40}
-              uri={
-                props.currentMessage.user.name === "system"
-                  ? ""
+              source={
+                props.currentMessage.user.name.toLowerCase() === "system"
+                  ? require("@/../assets/images/icon.png")
                   : otherUser!.image
               }
               // Gets users initials

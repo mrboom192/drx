@@ -2,19 +2,36 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { TextSemiBold } from "../StyledText";
 import Colors from "@/constants/Colors";
+import { Marker } from "react-native-maps";
 
-const ClusterMarker = ({ count }: { count: number }) => {
+const ClusterMarker = ({
+  identifier,
+  coordinate,
+  count,
+}: {
+  identifier: string;
+  coordinate: {
+    latitude: number;
+    longitude: number;
+  };
+  count: number;
+}) => {
   return (
-    <TouchableOpacity style={style.container}>
+    <Marker
+      identifier={identifier} // Becomes nativeEvent.id
+      coordinate={coordinate}
+      style={style.marker}
+      pointerEvents="none"
+    >
       <View style={style.bubble}>
         <TextSemiBold style={style.count}>{count}</TextSemiBold>
       </View>
-    </TouchableOpacity>
+    </Marker>
   );
 };
 
 const style = StyleSheet.create({
-  container: {
+  marker: {
     flexDirection: "column",
     alignSelf: "flex-start",
   },

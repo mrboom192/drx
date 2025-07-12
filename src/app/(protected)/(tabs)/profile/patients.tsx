@@ -58,7 +58,7 @@ const PatientRow = ({ chat }: { chat: Chat }) => {
       <View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>
         <Avatar
           size={64}
-          uri={patient.image}
+          source={patient.image}
           presence={presence}
           initials={patient.firstName[0] + patient.lastName[0]}
         />

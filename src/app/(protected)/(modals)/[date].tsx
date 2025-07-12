@@ -89,7 +89,7 @@ const DayInfo = () => {
                 style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
               >
                 <Avatar
-                  uri={appointment.patient.image}
+                  source={appointment.patient.image}
                   size={24}
                   initials={
                     appointment.patient.firstName[0] +

@@ -95,7 +95,7 @@ const Page = () => {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
             <Avatar
               size={48}
-              uri={doctor.image || undefined}
+              source={doctor.image || undefined}
               initials={
                 (doctor.firstName?.[0] || "") + (doctor.lastName?.[0] || "")
               }

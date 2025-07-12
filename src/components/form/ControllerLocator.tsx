@@ -180,16 +180,16 @@ const ControllerLocator = <T extends FieldValues>({
                     longitudeDelta: 0.01,
                   }}
                 >
-                  <Marker coordinate={value}>
-                    <DoctorMarker
-                      firstName={userData?.firstName || "First"}
-                      lastName={userData?.lastName || "Last"}
-                      image={userData?.image || ""}
-                      uid={userData?.uid || ""}
-                      price={consultationPrice}
-                      shouldNavigate={false}
-                    />
-                  </Marker>
+                  <DoctorMarker
+                    identifier="user-location"
+                    coordinate={value}
+                    firstName={userData?.firstName || "First"}
+                    lastName={userData?.lastName || "Last"}
+                    image={userData?.image || ""}
+                    uid={userData?.uid || ""}
+                    price={consultationPrice}
+                    shouldNavigate={false}
+                  />
                 </MapView>
                 <TouchableOpacity
                   style={styles.button}

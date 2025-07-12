@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   inputContainer: {
+    borderColor: Colors.faintGrey,
     borderWidth: 1,
     borderRadius: 8,
     flexDirection: "row",
@@ -149,6 +150,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
+    textAlignVertical: "top",
     paddingHorizontal: 16,
     paddingVertical: 14,
     minHeight: 48,

@@ -71,25 +71,27 @@ const DoctorMap = () => {
     const key = isCluster
       ? `cluster-${feature.properties.cluster_id}-${Date.now()}`
       : `point-${feature.properties.id}-${Date.now()}`;
+    const markerProps = {
+      identifier: doctorUID,
+      coordinate: { latitude: lat, longitude: lng },
+    };
 
-    return (
-      <Marker
-        identifier={doctorUID} // Becomes nativeEvent.id
+    return isCluster ? (
+      <ClusterMarker
+        {...markerProps}
         key={key}
-        coordinate={{ latitude: lat, longitude: lng }}
-      >
-        {isCluster ? (
-          <ClusterMarker count={feature.properties.point_count} />
-        ) : (
-          <DoctorMarker
-            firstName={feature.properties.firstName}
-            lastName={feature.properties.lastName}
-            image={feature.properties.image}
-            uid={feature.properties.uid}
-            price={feature.properties.consultationPrice}
-          />
-        )}
-      </Marker>
+        count={feature.properties.point_count}
+      />
+    ) : (
+      <DoctorMarker
+        {...markerProps}
+        key={key}
+        firstName={feature.properties.firstName}
+        lastName={feature.properties.lastName}
+        image={feature.properties.image}
+        uid={feature.properties.uid}
+        price={feature.properties.consultationPrice}
+      />
     );
   };
 

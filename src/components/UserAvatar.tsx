@@ -55,7 +55,7 @@ const UserAvatar = ({
       <Avatar
         size={size}
         initials={`${userData.firstName[0]}${userData.lastName[0]}`}
-        uri={userData.image || null}
+        source={userData.image || null}
         presence={presence}
         onPress={handlePress}
         loading={isUploading || isUpdating}

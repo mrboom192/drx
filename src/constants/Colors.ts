@@ -14,6 +14,21 @@ export default {
   lightText: "#9C9C9C",
   black: "#000000",
 
+  onlineConsultation: "#FF8E43", // orange
+  peach: "#FFECD9", // peach
+
+  secondOpinion: "#43C0FF", // sky blue
+  secondOpinionBackground: "#D9F4FF", // light blue
+
+  radiologyImages: "#FF4346", // red
+  radiologyImagesBackground: "#FFEDEF", // blush pink
+
+  weightManagement: "#D556FF", // magenta
+  lightLavender: "#FBEDFD", // light lavender
+
+  remoteICUManagement: "#998AFF", // periwinkle
+  remoteICUManagementBackground: "#EDEFFE", // soft lilac
+
   orange: "#FF8E43", // orange
   skyBlue: "#43C0FF", // sky blue
   lightSkyBlue: "#E5F6FF", // light sky blue

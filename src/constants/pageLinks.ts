@@ -68,5 +68,10 @@ export const getDoctorPersonalInfoPages = (
       href: "/(protected)/(modals)/doctor-verification",
       icon: verificationIcon,
     },
+    {
+      title: t("page.my-services"),
+      description: t("page.manage-the-services-you-offer-to-patients"),
+      href: "/(protected)/my-services",
+    },
   ];
 };

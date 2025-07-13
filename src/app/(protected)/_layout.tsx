@@ -113,6 +113,13 @@ export default function ProtectedLayout() {
         }}
       />
       <Stack.Screen
+        name="my-services"
+        options={{
+          title: t("page.my-services"),
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name="search-modal"
         options={{
           title: t("page.search-doctors"),

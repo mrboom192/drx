@@ -33,6 +33,7 @@ export type PublicProfile = {
   secondOpinionPrice: string;
   weightLossPrice: string;
   radiologyPrice: string;
+  inHomeCarePrice: string;
   services: string[];
   consultationDuration: string;
   availability: Availability;

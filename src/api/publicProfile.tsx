@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig";
 
-export const fetchPublicProfile = async () => {
+export const fetchUsersPublicProfile = async () => {
   if (!auth.currentUser) return null;
 
   try {

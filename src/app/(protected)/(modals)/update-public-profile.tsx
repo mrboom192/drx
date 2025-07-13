@@ -23,10 +23,9 @@ import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/countryCodes";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
-import { fetchPublicProfile } from "@/api/publicProfile";
+import { fetchUsersPublicProfile } from "@/api/publicProfile";
 import { getCalendars } from "expo-localization";
 import ControllerLocator from "@/components/form/ControllerLocator";
-import { getTimezoneOffset } from "date-fns-tz";
 import offsetAvailabilityTimes from "@/utils/offsetAvailabilityTimes";
 
 const UpdatePublicProfile = () => {
@@ -49,6 +48,7 @@ const UpdatePublicProfile = () => {
           secondOpinionPrice: "",
           radiologyPrice: "",
           weightLossPrice: "",
+          inHomeCarePrice: "",
           consultationDuration: "15",
           timeZone: getCalendars()[0].timeZone,
           availability: {
@@ -62,7 +62,7 @@ const UpdatePublicProfile = () => {
           },
         };
 
-        const res = await fetchPublicProfile();
+        const res = await fetchUsersPublicProfile();
 
         if (!res) return fallback;
 
@@ -118,12 +118,9 @@ const UpdatePublicProfile = () => {
           countries: formData.countries,
           services: formData.services || [],
           consultationPrice: buildPrice("consultation", "consultationPrice"),
-          secondOpinionPrice: buildPrice(
-            "second opinion",
-            "secondOpinionPrice"
-          ),
+          secondOpinionPrice: buildPrice("secondOpinion", "secondOpinionPrice"),
           radiologyPrice: buildPrice("radiology", "radiologyPrice"),
-          weightLossPrice: buildPrice("weight loss", "weightLossPrice"),
+          weightLossPrice: buildPrice("weightLoss", "weightLossPrice"),
           consultationDuration:
             parseInt(formData.consultationDuration, 10) || 15,
           availability: offsetAvailability || {
@@ -250,10 +247,10 @@ const UpdatePublicProfile = () => {
             },
             {
               label: t("appointment-types.second-opinion"),
-              value: "second opinion",
+              value: "secondOpinion",
             },
             { label: t("appointment-types.radiology"), value: "radiology" },
-            { label: t("appointment-types.weight-loss"), value: "weight loss" },
+            { label: t("appointment-types.weight-loss"), value: "weightLoss" },
           ]}
         />
 
@@ -277,7 +274,7 @@ const UpdatePublicProfile = () => {
             textInputStyle={{ width: "100%" }}
           />
         )}
-        {watchedServices.includes("second opinion") && (
+        {watchedServices.includes("secondOpinion") && (
           <ControllerInput
             key="second-opinion"
             label={t("form.service-price", {

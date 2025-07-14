@@ -1,7 +1,7 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import PageListLink from "@/components/PageListLink";
 import PageScrollView from "@/components/PageScrollView";
-import { getMedicalRecordPages } from "@/constants/pageLinks";
+import { getMedicalRecordPages } from "@/constants/options";
 import {
   useIsFetchingMedicalRecords,
   useStartRecordsListener,

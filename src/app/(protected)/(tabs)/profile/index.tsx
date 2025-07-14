@@ -12,10 +12,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SubmitButton from "@/components/SubmitButton";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
-import { getDoctorLinks, getPatientLinks } from "@/constants/profileLinks";
-import { useState } from "react";
+import { getDoctorLinks, getPatientLinks } from "@/constants/options";
+import { useEffect, useState } from "react";
 import CustomIcon from "@/components/CustomIcon";
 import { IconName } from "@/constants/iconsMap";
+import {
+  useIsFetchingPublicProfile,
+  useStartPublicProfileListener,
+} from "@/stores/usePublicProfileStore";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const TOTAL_PADDING = 32;
 const GAP = 8;
@@ -25,6 +30,8 @@ const Profile = () => {
   const insets = useSafeAreaInsets();
   const { signOut } = useSession();
   const userData = useUserData();
+  const startPublicProfileListener = useStartPublicProfileListener();
+  const isFetchingPublicProfile = useIsFetchingPublicProfile();
   const [componentWidth, setComponentWidth] = useState(0);
   const isPatient = userData?.role === "patient";
 
@@ -34,6 +41,14 @@ const Profile = () => {
     const { width } = event.nativeEvent.layout;
     setComponentWidth(width);
   };
+
+  useEffect(() => {
+    if (userData?.role === "doctor") {
+      startPublicProfileListener();
+    }
+  }, []);
+
+  if (isFetchingPublicProfile) return <LoadingScreen />;
 
   const cardWidth = (componentWidth - TOTAL_PADDING) / 2 - GAP / 2;
 

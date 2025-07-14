@@ -4,7 +4,7 @@ import Pills from "@/components/Pills";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
 import SubmitButton from "@/components/SubmitButton";
 import Colors from "@/constants/Colors";
-import { getSpecializations } from "@/constants/specializations";
+import { getSpecializations } from "@/constants/options";
 import { useDoctorById } from "@/stores/useDoctorSearch";
 import { useUserData } from "@/stores/useUserStore";
 import { useStripe } from "@stripe/stripe-react-native";

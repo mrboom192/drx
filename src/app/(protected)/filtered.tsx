@@ -8,7 +8,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { useFetchDoctorsByField } from "@/stores/useDoctorSearch";
 import { renderDoctorRow } from "@/components/DoctorList/DoctorListItem";
 import { useTranslation } from "react-i18next";
-import { getFilterMap } from "@/constants/filterMap";
+import { getFilterMap } from "@/constants/options";
 
 type Content = {
   title: string;

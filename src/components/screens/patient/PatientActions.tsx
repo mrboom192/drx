@@ -7,7 +7,7 @@ import { Href, router } from "expo-router";
 import React, { useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { getPatientActions } from "@/constants/patientActions";
+import { getPatientActions } from "@/constants/options";
 
 type Item = {
   name: string;

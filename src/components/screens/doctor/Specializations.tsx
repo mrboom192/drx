@@ -1,6 +1,6 @@
 import Pills from "@/components/Pills";
 import { TextRegular, TextSemiBold } from "@/components/StyledText";
-import { getSpecializations } from "@/constants/specializations";
+import { getSpecializations } from "@/constants/options";
 import i18next from "i18next";
 import React from "react";
 import { useTranslation } from "react-i18next";

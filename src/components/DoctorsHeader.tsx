@@ -9,7 +9,7 @@ import IconButton from "./IconButton";
 import CustomIcon from "./CustomIcon";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
-import { getSpecializations } from "@/constants/specializations";
+import { getSpecializations } from "@/constants/options";
 import { useSetFilters } from "@/stores/useFilterStore";
 
 const DoctorsHeader = () => {

@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import IconButton from "./IconButton";
 import { TextRegular, TextSemiBold } from "./StyledText";
 import { useTranslation } from "react-i18next";
-import { getTabs } from "@/constants/tabs";
+import { getTabs } from "@/constants/options";
 
 interface Props {
   setFilter: (filter: string) => void;

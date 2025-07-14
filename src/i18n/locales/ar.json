@@ -229,6 +229,7 @@
     "start-typing-to-search-doctors": "ابدأ في الكتابة للبحث عن الأطباء",
     "tell-us-about-yourself": "أخبرنا عن نفسك",
     "unavailable": "غير متاح",
+    "value-must-be-a-number-greater-than-or-equal-to-0": "",
     "what-days-are-you-available": "ما هي الأيام المتوفرة؟",
     "what-is-the-interval": "ما هو الفاصل الزمني؟",
     "what-patients-will-see": "ماذا سيراه المرضى",
@@ -312,6 +313,7 @@
     "edit-allergy": "تحرير الحساسية",
     "edit-public-profile": "تحرير الملف الشخصي العام",
     "filters": "المرشحات",
+    "manage-service": "",
     "manage-the-services-you-offer-to-patients": "",
     "manage-your-personal-account-information": "إدارة معلومات حسابك الشخصي",
     "manage-your-public-facing-profile-which-will-be-visible-to-patients": "إدارة ملفك الشخصي الذي يواجه الجمهور والذي سيكون مرئيًا للمرضى",
@@ -379,6 +381,19 @@
     "subcutaneous": "تحت الجلد",
     "topical": "موضوعي",
     "vaginal": "مهبلي"
+  },
+  "service": {
+    "consultations": "",
+    "form-instructions": "",
+    "in-home-care": "",
+    "interpret-and-provide-insight-on-imaging-results": "",
+    "offer-medical-support-through-home-visits-or-remote-monitoring": "",
+    "provide-general-health-advice-via-virtual-appointments": "",
+    "radiology-review": "",
+    "review-diagnoses-or-treatment-plans-to-offer-expert-insight": "",
+    "second-opinion": "",
+    "support-patients-in-their-weight-loss-journey-with-personalized-plans": "",
+    "weight-loss": ""
   },
   "services": {
     "discover-in-home-care": "اكتشف الرعاية في المنزل",

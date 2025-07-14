@@ -3,7 +3,7 @@ import PageScrollView from "@/components/PageScrollView";
 import {
   getDoctorPersonalInfoPages,
   getPatientPersonalInfoPages,
-} from "@/constants/pageLinks";
+} from "@/constants/options";
 import { useUserData } from "@/stores/useUserStore";
 import { RelativePathString } from "expo-router";
 import React from "react";

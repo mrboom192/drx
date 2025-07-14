@@ -53,6 +53,13 @@ export default function ModalsLayout() {
         }}
       />
       <Stack.Screen
+        name="update-service"
+        options={{
+          presentation: "modal",
+          header: (props) => <PageHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name="add-card"
         options={{
           title: t("page.add-card"),

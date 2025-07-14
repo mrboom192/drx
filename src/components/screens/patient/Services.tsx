@@ -1,5 +1,5 @@
 import { TextSemiBold } from "@/components/StyledText";
-import { getOurServices } from "@/constants/services";
+import { getOurServices } from "@/constants/options";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Href, router } from "expo-router";

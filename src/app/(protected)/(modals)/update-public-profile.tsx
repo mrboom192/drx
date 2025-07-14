@@ -15,27 +15,26 @@ import FormPage from "@/components/FormPage";
 import LoadingScreen from "@/components/LoadingScreen";
 import { TextSemiBold } from "@/components/StyledText";
 import UserAvatar from "@/components/UserAvatar";
-import {
-  getDoctorLabels,
-  getSpecializations,
-} from "@/constants/specializations";
+import { getDoctorLabels, getSpecializations } from "@/constants/options";
 import { useTranslation } from "react-i18next";
-import { getCountryOptions } from "@/constants/countryCodes";
+import { getCountryOptions } from "@/constants/options";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
 import { fetchUsersPublicProfile } from "@/api/publicProfile";
 import { getCalendars } from "expo-localization";
 import ControllerLocator from "@/components/form/ControllerLocator";
 import offsetAvailabilityTimes from "@/utils/offsetAvailabilityTimes";
+import { usePublicProfile } from "@/stores/usePublicProfileStore";
 
 const UpdatePublicProfile = () => {
   const { t } = useTranslation();
+  const publicProfile = usePublicProfile();
   const userData = useUserData();
   const { control, handleSubmit, formState, watch, setValue } =
     useForm<PublicProfile>({
       mode: "onChange",
       defaultValues: async () => {
-        const fallback: PublicProfile = {
+        const fallback: any = {
           doctorLabel: "doctor",
           coordinates: null,
           specializations: [],
@@ -43,12 +42,6 @@ const UpdatePublicProfile = () => {
           experience: "",
           biography: "",
           countries: [],
-          services: [],
-          consultationPrice: "",
-          secondOpinionPrice: "",
-          radiologyPrice: "",
-          weightLossPrice: "",
-          inHomeCarePrice: "",
           consultationDuration: "15",
           timeZone: getCalendars()[0].timeZone,
           availability: {
@@ -62,37 +55,22 @@ const UpdatePublicProfile = () => {
           },
         };
 
-        const res = await fetchUsersPublicProfile();
-
-        if (!res) return fallback;
+        if (!publicProfile) return fallback;
 
         return {
           ...fallback,
-          ...res,
-          experience: res.experience?.toString() || "",
-          consultationPrice: res.consultationPrice?.toString() || "",
-          secondOpinionPrice: res.secondOpinionPrice?.toString() || "",
-          radiologyPrice: res.radiologyPrice?.toString() || "",
-          weightLossPrice: res.weightLossPrice?.toString() || "",
-          consultationDuration: res.consultationDuration?.toString() || "15",
+          ...publicProfile,
+          experience: publicProfile.experience?.toString() || "",
+          consultationDuration:
+            publicProfile.consultationDuration?.toString() || "15",
         };
       },
     });
 
   const { isDirty, isValid, isSubmitting, isLoading } = formState;
-  const watchedServices = useWatch({
-    control,
-    name: "services",
-    defaultValue: [],
-  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
-
-    const buildPrice = (service: string, field: string) =>
-      watchedServices.includes(service)
-        ? parseInt(formData[field], 10) || 0
-        : null;
 
     // Offset the availability times by the user's time zone
     const timeZone = getCalendars()[0].timeZone!;
@@ -105,6 +83,7 @@ const UpdatePublicProfile = () => {
       await setDoc(
         doc(db, "publicProfiles", userData.uid),
         {
+          ...publicProfile,
           uid: userData.uid,
           firstName: userData.firstName,
           lastName: userData.lastName,
@@ -116,11 +95,6 @@ const UpdatePublicProfile = () => {
           experience: parseInt(formData.experience, 10) || 0,
           biography: formData.biography || "",
           countries: formData.countries,
-          services: formData.services || [],
-          consultationPrice: buildPrice("consultation", "consultationPrice"),
-          secondOpinionPrice: buildPrice("secondOpinion", "secondOpinionPrice"),
-          radiologyPrice: buildPrice("radiology", "radiologyPrice"),
-          weightLossPrice: buildPrice("weightLoss", "weightLossPrice"),
           consultationDuration:
             parseInt(formData.consultationDuration, 10) || 15,
           availability: offsetAvailability || {
@@ -232,105 +206,6 @@ const UpdatePublicProfile = () => {
           multiline
           textInputStyle={{ height: 128 }}
         />
-
-        <Divider />
-
-        <ControllerCheckBoxOptions
-          label={t("form.select-services-you-provide")}
-          name="services"
-          control={control}
-          rules={{ required: t("form.at-least-one-service-is-required") }}
-          options={[
-            {
-              label: t("appointment-types.consultation"),
-              value: "consultation",
-            },
-            {
-              label: t("appointment-types.second-opinion"),
-              value: "secondOpinion",
-            },
-            { label: t("appointment-types.radiology"), value: "radiology" },
-            { label: t("appointment-types.weight-loss"), value: "weightLoss" },
-          ]}
-        />
-
-        {watchedServices.includes("consultation") && (
-          <ControllerInput
-            key="consultation"
-            label={t("form.service-price", {
-              service: t("appointment-types.consultation"),
-            })}
-            placeholder={t("form.e-g-50")}
-            name="consultationPrice"
-            control={control}
-            rules={{
-              required: t("form.please-enter-a-price"),
-              // Greater than 0 validation
-              validate: (value) =>
-                (typeof value === "string" && parseInt(value, 10) > 0) ||
-                t("form.price-must-be-greater-than-zero"),
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-        {watchedServices.includes("secondOpinion") && (
-          <ControllerInput
-            key="second-opinion"
-            label={t("form.service-price", {
-              service: t("appointment-types.second-opinion"),
-            })}
-            placeholder={t("form.e-g-50")}
-            name="secondOpinionPrice"
-            control={control}
-            rules={{
-              required: t("form.please-enter-a-price"),
-              validate: (value) =>
-                (typeof value === "string" && parseInt(value, 10) > 0) ||
-                t("form.price-must-be-greater-than-zero"),
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-        {watchedServices.includes("radiology") && (
-          <ControllerInput
-            key="radiology"
-            label={t("form.service-price", {
-              service: t("appointment-types.radiology"),
-            })}
-            placeholder={t("form.e-g-50")}
-            name="radiologyPrice"
-            control={control}
-            rules={{
-              required: t("form.please-enter-a-price"),
-              validate: (value) =>
-                (typeof value === "string" && parseInt(value, 10) > 0) ||
-                t("form.price-must-be-greater-than-zero"),
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
-        {watchedServices.includes("weight loss") && (
-          <ControllerInput
-            key="weight-loss"
-            label={t("form.service-price", {
-              service: t("appointment-types.weight-loss"),
-            })}
-            placeholder={t("form.e-g-50")}
-            name="weightLossPrice"
-            control={control}
-            rules={{
-              required: t("form.please-enter-a-price"),
-              validate: (value) =>
-                (typeof value === "string" && parseInt(value, 10) > 0) ||
-                t("form.price-must-be-greater-than-zero"),
-            }}
-            keyboardType="numeric"
-            textInputStyle={{ width: "100%" }}
-          />
-        )}
 
         <Divider />
 

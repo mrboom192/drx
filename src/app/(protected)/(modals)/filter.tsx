@@ -1,6 +1,6 @@
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import FormPage from "@/components/FormPage";
-import { getLanguageOptions } from "@/constants/languages";
+import { getLanguageOptions } from "@/constants/options";
 import { useFilters, useSetFilters } from "@/stores/useFilterStore";
 import React from "react";
 import { useTranslation } from "react-i18next";

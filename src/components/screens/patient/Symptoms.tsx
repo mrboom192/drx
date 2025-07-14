@@ -1,6 +1,6 @@
 import { TextSemiBold } from "@/components/StyledText";
 import Colors from "@/constants/Colors";
-import { getPatientSymptoms } from "@/constants/symptoms";
+import { getPatientSymptoms } from "@/constants/options";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { router } from "expo-router";

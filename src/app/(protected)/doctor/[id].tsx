@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { getLanguageOptions } from "@/constants/languages";
+import { getLanguageOptions } from "@/constants/options";
 import { PublicProfile } from "@/types/publicProfile";
 
 const Page = () => {

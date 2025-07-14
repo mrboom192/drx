@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Avatar from "../Avatar";
 import { TextSemiBold } from "../StyledText";
-import { getSpecializations } from "@/constants/specializations";
+import { getSpecializations } from "@/constants/options";
 import i18next from "i18next";
 import Pills from "../Pills";
 import DoctorLabel from "./DoctorLabel";

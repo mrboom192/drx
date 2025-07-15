@@ -5,8 +5,6 @@ import { useFilters, useSetFilters } from "@/stores/useFilterStore";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { useForm } from "react-hook-form";
-import { router } from "expo-router";
-import { useEffect } from "react";
 
 interface LanguageFormValues {
   providerLanguages: string[];
@@ -28,18 +26,14 @@ const Page = () => {
 
   const { isDirty, isSubmitting } = formState;
 
-  useEffect(() => {
-    reset({
-      providerLanguages: filters.providerLanguages,
-      services: filters.services,
-    });
-  }, [filters, reset]);
-
   const onSubmit = (data: LanguageFormValues) => {
-    setFilters({
+    const newFilters = {
       providerLanguages: data.providerLanguages,
       services: data.services,
-    });
+    };
+
+    setFilters(newFilters);
+    reset(newFilters);
   };
 
   return (

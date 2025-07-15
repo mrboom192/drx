@@ -26,6 +26,7 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import "../i18n/config";
 import i18next from "i18next";
+import { testUtils } from "@/utils/scheduleUtils";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -66,6 +67,11 @@ export default function RootLayout() {
     DMSans_600SemiBold,
     DMSans_700Bold,
   });
+
+  // REMOVE THIS
+  useEffect(() => {
+    testUtils();
+  }, []);
 
   // Start notifications when the app loads
   useEffect(() => {

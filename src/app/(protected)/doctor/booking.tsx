@@ -20,7 +20,7 @@ import { getCalendars } from "expo-localization";
 import { useEffect, useState } from "react";
 import { TimeSlot } from "@/types/timeSlot";
 import ControllerTimeSlotOptions from "@/components/form/ControllerTimeSlotOptions";
-import { format, utcToZonedTime } from "date-fns-tz";
+import { format, toZonedTime } from "date-fns-tz";
 
 type GetPaymentIntentRequest = {
   amount: number;
@@ -70,7 +70,7 @@ const BookingPage = () => {
         >(functions, "getTimeSlots");
 
         const timeZone = getCalendars()[0].timeZone!;
-        const zonedDate = utcToZonedTime(selectedDate, timeZone);
+        const zonedDate = toZonedTime(selectedDate, timeZone);
         const formatted = format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", {
           timeZone,
         });

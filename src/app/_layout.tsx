@@ -26,7 +26,10 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import "../i18n/config";
 import i18next from "i18next";
-import { getScheduleFromRRule, testUtils } from "@/utils/scheduleUtils";
+import { getScheduleFromRRule } from "@/utils/scheduleUtils";
+import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
+import { format } from "date-fns";
+import { useCalendars } from "expo-localization";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -70,13 +73,11 @@ export default function RootLayout() {
 
   // REMOVE THIS
   useEffect(() => {
-    const schedule = getScheduleFromRRule(new Date().toISOString());
+    const { schedule } = getScheduleFromRRule(new Date().toISOString());
+
     schedule.forEach((date) => {
-      console.log(date.toISOString());
-      // Formatted with Date fns
-      console.log(
-        date.toLocaleString("en-US", { timeZone: "America/Chicago" })
-      );
+      // Use 12 hr format
+      console.log(format(date, "yyyy-MM-dd hh:mm a"));
     });
   }, []);
 

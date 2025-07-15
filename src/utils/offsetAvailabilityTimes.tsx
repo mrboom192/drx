@@ -1,6 +1,5 @@
 import { getTimezoneOffset } from "date-fns-tz";
 import { addMilliseconds, format } from "date-fns";
-import { off } from "firebase/database";
 
 const offsetAvailabilityTimes = (timeZone: string, availability: any) => {
   const now = new Date(); // Any base date is fine; we're only shifting time-of-day

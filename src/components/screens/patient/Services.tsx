@@ -1,5 +1,10 @@
 import { TextSemiBold } from "@/components/StyledText";
-import { getOurServices } from "@/constants/options";
+import { getOurServices, ServiceItem } from "@/constants/options";
+import {
+  FilterState,
+  useClearAndSetFilters,
+  useSetFilters,
+} from "@/stores/useFilterStore";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { Href, router } from "expo-router";
@@ -13,19 +18,14 @@ import {
   View,
 } from "react-native";
 
-type Item = {
-  name: string;
-  image: ImageSourcePropType;
-  buttonText: string;
-  backgroundColor: string;
-  href: Href;
-};
-
 const Services = ({}: {}) => {
   const { t } = useTranslation();
+  const clearAndSetFilters = useClearAndSetFilters();
   const services = useMemo(() => getOurServices(t), [t]);
-  const onPress = (item: Item) => {
+
+  const onPress = (item: ServiceItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    clearAndSetFilters(item.filters);
 
     // Redirect here
     router.navigate(item.href);
@@ -41,7 +41,7 @@ const Services = ({}: {}) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContentContainer}
       >
-        {services.map((item: Item, index: number) => (
+        {services.map((item: ServiceItem, index: number) => (
           <View key={index} style={styles.item}>
             <View
               style={[

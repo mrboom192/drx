@@ -1,14 +1,14 @@
 import Colors from "@/constants/Colors";
 import { useFilteredDoctors } from "@/stores/useDoctorSearch";
-import { Link } from "expo-router";
 import React, { useEffect, useRef } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TextSemiBold } from "../StyledText";
 import { renderDoctorRow } from "./DoctorListItem";
 import { useTranslation } from "react-i18next";
 import {
   BottomSheetFlatList,
   BottomSheetFlatListMethods,
+  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useFilters } from "@/stores/useFilterStore";
 
@@ -28,27 +28,32 @@ const DoctorList = ({ refresh }: Props) => {
     }
   }, [refresh]);
 
-  return doctors.length === 0 ? (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingVertical: 16,
-      }}
-    >
-      <TextSemiBold style={{ fontSize: 16, color: Colors.grey }}>
-        {t("common.no-doctors-found")}
-      </TextSemiBold>
-    </View>
-  ) : (
+  return (
     <BottomSheetFlatList
       renderItem={renderDoctorRow}
       data={doctors}
       ref={listRef}
+      ListEmptyComponent={
+        <TextSemiBold style={styles.emptyListText}>
+          {t("common.no-doctors-found")}
+        </TextSemiBold>
+      }
     />
-    // <FlatList renderItem={renderDoctorRow} data={doctors} ref={listRef} />
   );
 };
 
 export default DoctorList;
+
+const styles = StyleSheet.create({
+  emptyStateContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyListText: {
+    textAlign: "center",
+    marginTop: 48,
+    fontSize: 16,
+    color: Colors.lightText,
+  },
+});

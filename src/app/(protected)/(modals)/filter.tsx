@@ -1,15 +1,16 @@
 import ControllerCheckBoxOptions from "@/components/form/ControllerCheckBoxOptions";
 import FormPage from "@/components/FormPage";
-import { getLanguageOptions } from "@/constants/options";
+import { getLanguageOptions, getServiceOptions } from "@/constants/options";
 import { useFilters, useSetFilters } from "@/stores/useFilterStore";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
+import { useEffect } from "react";
 
 interface LanguageFormValues {
   providerLanguages: string[];
+  services: string[];
 }
 
 const Page = () => {
@@ -17,17 +18,28 @@ const Page = () => {
   const filters = useFilters();
   const setFilters = useSetFilters();
 
-  const { control, formState, handleSubmit } = useForm<LanguageFormValues>({
-    defaultValues: {
-      providerLanguages: filters.providerLanguages,
-    },
-  });
+  const { control, formState, handleSubmit, reset } =
+    useForm<LanguageFormValues>({
+      defaultValues: {
+        providerLanguages: filters.providerLanguages,
+        services: filters.services,
+      },
+    });
 
   const { isDirty, isSubmitting } = formState;
 
+  useEffect(() => {
+    reset({
+      providerLanguages: filters.providerLanguages,
+      services: filters.services,
+    });
+  }, [filters, reset]);
+
   const onSubmit = (data: LanguageFormValues) => {
-    setFilters({ providerLanguages: data.providerLanguages });
-    router.back();
+    setFilters({
+      providerLanguages: data.providerLanguages,
+      services: data.services,
+    });
   };
 
   return (
@@ -41,6 +53,12 @@ const Page = () => {
         control={control}
         name="providerLanguages"
         options={getLanguageOptions(t)}
+      />
+      <ControllerCheckBoxOptions
+        label={"Provider services"}
+        control={control}
+        name="services"
+        options={getServiceOptions(t)}
       />
     </FormPage>
   );

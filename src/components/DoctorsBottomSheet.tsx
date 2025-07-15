@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import React, { Ref, useMemo } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import Colors from "@/constants/Colors";
 import DoctorList from "./DoctorList/DoctorList";
 
@@ -24,9 +24,7 @@ const DoctorsBottomSheet = ({
       handleIndicatorStyle={{ backgroundColor: Colors.light.grey }}
       enablePanDownToClose={false}
     >
-      <View style={{ flex: 1 }}>
-        <DoctorList refresh={refresh} />
-      </View>
+      <DoctorList refresh={refresh} />
     </BottomSheet>
   );
 };

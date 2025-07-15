@@ -4,6 +4,9 @@ import Colors from "./Colors";
 import { VerificationStatus } from "@/types/user";
 import { Href } from "expo-router";
 import { PublicProfile } from "@/types/publicProfile";
+import { fi } from "date-fns/locale";
+import { FilterState } from "@/stores/useFilterStore";
+import { ImageSourcePropType } from "react-native";
 
 export const getMedicalRecordPages = (t: TFunction): PageListLinkProps[] => [
   {
@@ -243,12 +246,14 @@ export const getPatientActions = (t: TFunction) => [
     description: t("actions.browse-and-choose-the-perfect-doctor"),
     icon: "stethoscope",
     href: "/search" as Href,
+    filters: {} as FilterState,
   },
   {
     name: t("actions.update-your-medical-record"),
     description: t("actions.an-up-to-date-record-is-recommended"),
     icon: "ecg-heart",
     href: "/(tabs)/profile/medical-record" as Href,
+    filters: {} as FilterState,
   },
   // {
   //   name: t("actions.view-your-cases"),
@@ -334,13 +339,23 @@ export const getDoctorLinks = (t: TFunction) => [
   },
 ];
 
-export const getOurServices = (t: TFunction) => [
+export type ServiceItem = {
+  name: string;
+  image: ImageSourcePropType;
+  buttonText: string;
+  backgroundColor: string;
+  href: Href;
+  filters: FilterState;
+};
+
+export const getOurServices = (t: TFunction): ServiceItem[] => [
   {
     name: t("services.get-peace-of-mind-with-an-expert-second-opinion"),
     buttonText: t("services.start-a-request"),
     image: require("@/../assets/images/services/relax.png"),
     backgroundColor: "#F4BCFF",
     href: "/(protected)/(modals)/create-second-opinion" as Href,
+    filters: {},
   },
   {
     name: t("services.have-a-doctor-review-your-radiology-scans"),
@@ -348,6 +363,9 @@ export const getOurServices = (t: TFunction) => [
     image: require("@/../assets/images/services/radiology.png"),
     backgroundColor: "#CDEAFB",
     href: "/search" as Href,
+    filters: {
+      services: ["radiology"],
+    },
   },
   {
     name: t("services.in-egypt-request-in-home-care-today"),
@@ -355,6 +373,9 @@ export const getOurServices = (t: TFunction) => [
     image: require("@/../assets/images/services/home.png"),
     backgroundColor: "#FFD79F",
     href: "/search" as Href,
+    filters: {
+      services: ["inHomeCare"],
+    },
   },
   {
     name: t("services.start-your-weight-loss-journey-with-drx"),
@@ -362,6 +383,9 @@ export const getOurServices = (t: TFunction) => [
     image: require("@/../assets/images/services/runners.png"),
     backgroundColor: "#B0C1BF",
     href: "/search" as Href,
+    filters: {
+      services: ["weightLoss"],
+    },
   },
 ];
 
@@ -528,6 +552,14 @@ export const getTabs = (t: TFunction) => [
   { name: t("common.ongoing"), id: "ongoing" },
   { name: t("common.finished"), id: "finished" },
   { name: t("common.pending"), id: "pending" },
+];
+
+export const getServiceOptions = (t: TFunction) => [
+  { label: t("service.consultations"), value: "consultation" },
+  { label: t("service.radiology-review"), value: "radiology" },
+  { label: t("service.second-opinion"), value: "secondOpinion" },
+  { label: t("service.weight-loss"), value: "weightLoss" },
+  { label: t("service.in-home-care"), value: "inHomeCare" },
 ];
 
 export const getServicesList = (

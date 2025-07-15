@@ -107,11 +107,14 @@ export const useFetchSomeDoctors = () =>
 // Filtered doctors list
 export const useFilteredDoctors = (filters: FilterState) => {
   const doctors = useDoctors();
-  const { specialty, providerLanguages } = filters;
+  const { specialty, providerLanguages, services } = filters;
 
   const normalizedSpecialty = specialty?.toLowerCase();
   const normalizedLanguages = Array.isArray(providerLanguages)
     ? providerLanguages.map((lang) => lang.toLowerCase())
+    : [];
+  const normalizedServices = Array.isArray(services)
+    ? services.map((service) => service.toLowerCase())
     : [];
 
   let filteredDoctors = doctors;
@@ -130,6 +133,15 @@ export const useFilteredDoctors = (filters: FilterState) => {
     filteredDoctors = filteredDoctors.filter((doctor) =>
       doctor.languages?.some((lang: string) =>
         normalizedLanguages.includes(lang.toLowerCase())
+      )
+    );
+  }
+
+  // Filter by provided services
+  if (normalizedServices.length > 0) {
+    filteredDoctors = filteredDoctors.filter((doctor) =>
+      doctor.services?.some((service: string) =>
+        normalizedServices.includes(service.toLowerCase())
       )
     );
   }

@@ -69,7 +69,8 @@ const ControllerTimePicker = ({
               onConfirm={(date) => {
                 setShowTimePicker(false);
                 const timeString = format(date, "HH:mm"); // Store as "HH:mm"
-                onChange(timeString);
+                console.log("Selected time:", timeString, date);
+                onChange(date);
               }}
               onCancel={() => setShowTimePicker(false)}
             />

@@ -8,19 +8,28 @@ import React, { useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { getPatientActions } from "@/constants/options";
+import {
+  FilterState,
+  useClearAndSetFilters,
+  useSetFilters,
+} from "@/stores/useFilterStore";
 
-type Item = {
+type PatientActionButton = {
   name: string;
   description: string;
   icon: string;
   href: Href;
+  filters: FilterState;
 };
 
 const PatientActions = ({}: {}) => {
   const { t } = useTranslation();
+  const clearAndSetFilters = useClearAndSetFilters();
   const patientActions = useMemo(() => getPatientActions(t), [t]);
-  const onPress = (href: Href) => {
+
+  const onPress = (href: Href, filters: FilterState) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    clearAndSetFilters(filters);
 
     // Redirect here
     router.navigate(href, { withAnchor: true });
@@ -31,10 +40,10 @@ const PatientActions = ({}: {}) => {
       <TextSemiBold style={styles.header}>
         {t("home.patient-actions")}
       </TextSemiBold>
-      {patientActions.map((item: Item, index: number) => (
+      {patientActions.map((item: PatientActionButton, index: number) => (
         <TouchableOpacity
           key={index}
-          onPress={() => onPress(item.href)}
+          onPress={() => onPress(item.href, item.filters)}
           style={styles.action}
         >
           <CustomIcon

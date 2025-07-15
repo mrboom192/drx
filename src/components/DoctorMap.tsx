@@ -43,10 +43,18 @@ const DoctorMap = () => {
   } | null>(null);
 
   const doctorPlaces = useMemo(() => {
+    if (!doctors) return [];
+
     return doctors
-      .filter((doctor) => doctor.coordinates) // skip doctors without coordinates
+      .filter(
+        (
+          doctor
+        ): doctor is typeof doctor & {
+          coordinates: { longitude: number; latitude: number };
+        } => !!doctor.coordinates
+      )
       .map((doctor) => {
-        const { longitude, latitude } = doctor.coordinates!;
+        const { longitude, latitude } = doctor.coordinates;
         return toPointFeature(doctor, [longitude, latitude]);
       });
   }, [doctors]);
@@ -64,7 +72,7 @@ const DoctorMap = () => {
 
   const renderMarker = (feature: ClusterFeature<any>) => {
     const [lng, lat] = feature.geometry.coordinates;
-    const doctorUID = feature.properties.uid;
+    const doctorUID = feature.properties?.uid;
 
     const isCluster = !!feature.properties?.cluster;
     // Date.now() fixes disappearing custom markers, albeit hacky
@@ -72,7 +80,7 @@ const DoctorMap = () => {
       ? `cluster-${feature.properties.cluster_id}-${Date.now()}`
       : `point-${feature.properties.id}-${Date.now()}`;
     const markerProps = {
-      identifier: doctorUID,
+      identifier: isCluster ? doctorUID : key,
       coordinate: { latitude: lat, longitude: lng },
     };
 

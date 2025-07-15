@@ -26,7 +26,7 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import "../i18n/config";
 import i18next from "i18next";
-import { testUtils } from "@/utils/scheduleUtils";
+import { getScheduleFromRRule, testUtils } from "@/utils/scheduleUtils";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -70,7 +70,14 @@ export default function RootLayout() {
 
   // REMOVE THIS
   useEffect(() => {
-    testUtils();
+    const schedule = getScheduleFromRRule(new Date().toISOString());
+    schedule.forEach((date) => {
+      console.log(date.toISOString());
+      // Formatted with Date fns
+      console.log(
+        date.toLocaleString("en-US", { timeZone: "America/Chicago" })
+      );
+    });
   }, []);
 
   // Start notifications when the app loads

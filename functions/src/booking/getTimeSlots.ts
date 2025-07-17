@@ -1,23 +1,26 @@
 import { endOfDay, startOfDay } from "date-fns";
 import { admin } from "../lib/admin";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { datetime, RRule } from "rrule";
+import { fromZonedTime } from "date-fns-tz";
 
-type TimeSlot = {
-  date: Date;
-  duration: number;
+type Time = {
+  hour: number;
+  minute: number;
 };
 
-const DAYS = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-] as const;
+type TimeSlot = {
+  start: Time;
+  end: Time;
+};
 
-const getTimeSlots = onCall(async (request): Promise<TimeSlot[]> => {
+type GetTimeSlotsPayload = {
+  dates: string[]; // Array of date strings in ISO-8601 format
+  duration: number; // Duration of each slot in minutes
+  timezone: string; // Timezone of the doctor
+};
+
+const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
   const { doctorId, date } = request.data;
 
   if (!doctorId || !date) {
@@ -26,7 +29,10 @@ const getTimeSlots = onCall(async (request): Promise<TimeSlot[]> => {
 
   const requestedDate = new Date(date);
   const doctorData = await getDoctorPublicProfile(doctorId);
-  const dayOfWeek = DAYS[requestedDate.getDay()];
+  // If we just leave it as is, the timeslots may be wrong.
+  // If the user is in Oklahoma requesting timeslots at 9:00pm local time, the UTC date that comes in will be 2:00am the next day UTC time.
+  // So we would actually be getting the wrong day.
+  const dayOfWeek = requestedDate.getDay();
 
   if (
     !doctorData ||
@@ -39,18 +45,19 @@ const getTimeSlots = onCall(async (request): Promise<TimeSlot[]> => {
     );
   }
 
-  const timeSlots = doctorData.availability[dayOfWeek]?.flatMap(
-    (interval: any) =>
-      getTimeSlotOptions({
+  // Result returns dates in UTC time which are based off of the doctor's timezone
+  const potentialDates = doctorData.availability[dayOfWeek]?.flatMap(
+    (timeSlot: any) =>
+      getDatesFromTimeSlot({
         date: requestedDate,
-        start: interval.start,
-        end: interval.end,
-        duration: doctorData.consultationDuration,
+        timeSlot,
+        tzid: doctorData.timezone,
+        interval: doctorData.consultationDuration,
       })
   );
 
-  if (!timeSlots || timeSlots.length === 0) {
-    return [];
+  if (!potentialDates || potentialDates.length === 0) {
+    return { dates: [], duration: 0, timezone: "UTC" };
   }
 
   const appointments = await getAppointmentsByDoctorAndDate(
@@ -59,9 +66,9 @@ const getTimeSlots = onCall(async (request): Promise<TimeSlot[]> => {
   );
 
   // Filter out time slots that overlap with existing appointments
-  const filteredTimeSlots = timeSlots.filter((slot: TimeSlot) => {
-    const slotStart = slot.date.getTime();
-    const slotEnd = slotStart + slot.duration * 60000;
+  const nonOverlappingDates = potentialDates.filter((date: Date) => {
+    const slotStart = date.getTime();
+    const slotEnd = slotStart + doctorData.consultationDuration * 60000;
 
     return !appointments.some((appointment) => {
       const appointmentStart = appointment.date.toDate().getTime();
@@ -70,10 +77,17 @@ const getTimeSlots = onCall(async (request): Promise<TimeSlot[]> => {
     });
   });
 
-  return filteredTimeSlots.map((slot: TimeSlot) => ({
-    date: slot.date.toISOString(), // Convert to string
-    duration: slot.duration,
-  }));
+  // Filter out time slots that are past the current time
+  const now = new Date();
+  const bookableDates = nonOverlappingDates.filter((date: Date) => {
+    return date.getTime() > now.getTime();
+  });
+
+  return {
+    dates: bookableDates.map((date: Date) => date.toISOString()),
+    duration: doctorData.consultationDuration, // Duration is the same for all slots
+    timezone: doctorData.timezone,
+  };
 });
 
 export { getTimeSlots };
@@ -120,59 +134,60 @@ const getDoctorPublicProfile = async (doctorId: string) => {
   return doctorDoc.data();
 };
 
-const getTimeSlotOptions = ({
+// Returns the dates in UTC time based on the doctor's timezone (the UTC date aligns with the doctor's local time)
+export const getDatesFromTimeSlot = ({
   date,
-  start,
-  end,
-  duration,
+  timeSlot,
+  tzid,
+  interval, // Consultation duration
 }: {
   date: Date;
-  start: string; // "HH:mm"
-  end: string;
-  duration: number; // in minutes
-}): TimeSlot[] => {
-  if (!date || !start || !end || !duration) {
-    throw new HttpsError(
-      "invalid-argument",
-      "Missing date, start time, end time, or duration."
-    );
-  }
+  timeSlot: TimeSlot;
+  tzid: string; // Timezone of the doctor
+  interval: number; // in minutes
+}): Date[] => {
+  // Extract year, month, and day from the requested date
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1; // RRULE uses 1-based months
+  const day = date.getUTCDate();
 
-  const [startHours, startMinutes] = start.split(":").map(Number);
-  const [endHours, endMinutes] = end.split(":").map(Number);
-
-  const startTime = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    startHours,
-    startMinutes
+  // Construct dtstart
+  const dtstart = datetime(
+    year,
+    month,
+    day,
+    timeSlot.start.hour,
+    timeSlot.start.minute
   );
-  const endTime = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    endHours,
-    endMinutes
+  const until = datetime(
+    year,
+    month,
+    day,
+    timeSlot.end.hour,
+    timeSlot.end.minute
   );
 
-  const slots: TimeSlot[] = [];
-  const now = new Date();
+  const schedule = new RRule({
+    freq: RRule.MINUTELY,
+    dtstart,
+    tzid,
+    until,
+    interval,
+  })
+    .all()
+    .map((date) => {
+      // Even though the given offset is `Z` (UTC), these dates are already
+      // converted to our system time (from the doctor's timezone to ours)
+      // So we'll treat them as local dates
+      const localDate = date.toISOString().replace(/Z$/, "");
+      const serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  for (
-    let time = new Date(startTime);
-    time <= endTime;
-    time.setMinutes(time.getMinutes() + duration)
-  ) {
-    const slotEnd = time.getTime() + duration * 60000;
+      // If we pass in the raw date, date-fns will interpret the 'Z' as
+      // UTC time, not local time.
+      const utcDate = fromZonedTime(localDate, serverTimezone);
 
-    if (slotEnd <= endTime.getTime() && time >= now) {
-      slots.push({
-        date: new Date(time), // clone to avoid mutation
-        duration,
-      });
-    }
-  }
+      return utcDate;
+    });
 
-  return slots; // Returns { date: Date, duration: number }[]
+  return schedule;
 };

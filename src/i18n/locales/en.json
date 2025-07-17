@@ -51,6 +51,7 @@
     "consultations": "Consultations",
     "continue": "Continue",
     "doctor": "Doctor",
+    "doctor-title": "Dr. {{firstName}} {{lastName}}",
     "edit": "Edit",
     "email": "Email",
     "email-invalid": "Please enter a valid email address.",

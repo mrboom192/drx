@@ -6,7 +6,6 @@ import UserAvatar from "@/components/UserAvatar";
 import Colors from "@/constants/Colors";
 import { useSession } from "@/contexts/AuthContext";
 import { useUserData } from "@/stores/useUserStore";
-import { Ionicons } from "@expo/vector-icons";
 import { Link, RelativePathString } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SubmitButton from "@/components/SubmitButton";

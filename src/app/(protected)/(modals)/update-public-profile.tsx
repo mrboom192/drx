@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import React from "react";
-import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -20,10 +20,8 @@ import { useTranslation } from "react-i18next";
 import { getCountryOptions } from "@/constants/options";
 import ControllerAvailability from "@/components/form/ControllerAvailability";
 import { PublicProfile } from "@/types/publicProfile";
-import { fetchUsersPublicProfile } from "@/api/publicProfile";
 import { getCalendars } from "expo-localization";
 import ControllerLocator from "@/components/form/ControllerLocator";
-import offsetAvailabilityTimes from "@/utils/offsetAvailabilityTimes";
 import { usePublicProfile } from "@/stores/usePublicProfileStore";
 
 const UpdatePublicProfile = () => {
@@ -45,13 +43,13 @@ const UpdatePublicProfile = () => {
           consultationDuration: "15",
           timeZone: getCalendars()[0].timeZone,
           availability: {
-            sunday: [],
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [],
-            friday: [],
-            saturday: [],
+            "0": [],
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
           },
         };
 
@@ -59,10 +57,7 @@ const UpdatePublicProfile = () => {
 
         return {
           ...fallback,
-          ...publicProfile,
-          experience: publicProfile.experience?.toString() || "",
-          consultationDuration:
-            publicProfile.consultationDuration?.toString() || "15",
+          ...publicProfile, // This takes precedence over fallback, overwriting any defaults
         };
       },
     });
@@ -71,43 +66,17 @@ const UpdatePublicProfile = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (!userData) return;
-
-    // Offset the availability times by the user's time zone
-    const timeZone = getCalendars()[0].timeZone!;
-    const offsetAvailability = offsetAvailabilityTimes(
-      timeZone,
-      formData.availability
-    );
-
     try {
       await setDoc(
         doc(db, "publicProfiles", userData.uid),
         {
           ...publicProfile,
+          ...formData,
           uid: userData.uid,
           firstName: userData.firstName,
           lastName: userData.lastName,
           image: userData.image || null,
           updatedAt: Timestamp.now(),
-          doctorLabel: formData.doctorLabel || "doctor",
-          specializations: formData.specializations || [],
-          languages: formData.languages,
-          experience: parseInt(formData.experience, 10) || 0,
-          biography: formData.biography || "",
-          countries: formData.countries,
-          consultationDuration:
-            parseInt(formData.consultationDuration, 10) || 15,
-          availability: offsetAvailability || {
-            sunday: [],
-            monday: [],
-            tuesday: [],
-            wednesday: [],
-            thursday: [],
-            friday: [],
-            saturday: [],
-          },
-          timeZone: formData.timeZone,
-          coordinates: formData.coordinates || null,
         },
         {
           merge: true,
@@ -143,7 +112,10 @@ const UpdatePublicProfile = () => {
           <UserAvatar size={48} />
           <View>
             <TextSemiBold style={styles.nameText}>
-              Dr. {userData?.firstName} {userData?.lastName}
+              {t("common.doctor-title", {
+                firstName: userData?.firstName,
+                lastName: userData?.lastName,
+              })}
             </TextSemiBold>
             <TextSemiBold style={styles.roleText}>
               {t("common.doctor")}

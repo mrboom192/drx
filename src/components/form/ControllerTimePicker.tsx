@@ -32,14 +32,16 @@ const ControllerTimePicker = ({
       name={name}
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        // Convert internal "HH:mm" value to Date for display and picker
-        const dateValue = value ? timeStringToDate(value) : new Date();
-        const displayValue = value
+        //Convert {hour, minute} into a Date objectq
+        const dateValue = value
+          ? new Date(0, 0, 0, value.hour, value.minute)
+          : new Date();
+        const displayValue = dateValue
           ? format(dateValue, "h:mm a", { locale: locales[i18next.language] })
           : "";
 
         return (
-          <View style={{ flex: 1 }}>
+          <View style={styles.container}>
             <View style={styles.labelContainer}>
               {label && <TextRegular style={styles.label}>{label}</TextRegular>}
               {error && (
@@ -68,9 +70,10 @@ const ControllerTimePicker = ({
               date={dateValue}
               onConfirm={(date) => {
                 setShowTimePicker(false);
-                const timeString = format(date, "HH:mm"); // Store as "HH:mm"
-                console.log("Selected time:", timeString, date);
-                onChange(date);
+                onChange({
+                  hour: date.getHours(),
+                  minute: date.getMinutes(),
+                });
               }}
               onCancel={() => setShowTimePicker(false)}
             />
@@ -81,17 +84,12 @@ const ControllerTimePicker = ({
   );
 };
 
-// Converts "HH:mm" string to Date object
-const timeStringToDate = (timeStr: string) => {
-  const [hour, minute] = timeStr.split(":").map(Number);
-  const date = new Date();
-  date.setHours(hour, minute, 0, 0);
-  return date;
-};
-
 export default ControllerTimePicker;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   labelContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",

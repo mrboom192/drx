@@ -20,7 +20,12 @@ import { getCalendars } from "expo-localization";
 import { useEffect, useState } from "react";
 import { TimeSlot } from "@/types/timeSlot";
 import ControllerTimeSlotOptions from "@/components/form/ControllerTimeSlotOptions";
-import { format, toZonedTime } from "date-fns-tz";
+import {
+  format,
+  formatInTimeZone,
+  fromZonedTime,
+  toZonedTime,
+} from "date-fns-tz";
 
 type GetPaymentIntentRequest = {
   amount: number;
@@ -69,18 +74,13 @@ const BookingPage = () => {
           TimeSlot[]
         >(functions, "getTimeSlots");
 
-        const timeZone = getCalendars()[0].timeZone!;
-        const zonedDate = toZonedTime(selectedDate, timeZone);
-        const formatted = format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", {
-          timeZone,
-        });
-
-        console.log(new Date(formatted).getDay());
+        // Convert the date we want to the doctor's local time
+        console.log(toZonedTime(selectedDate, "Africa/Cairo"));
 
         const res = await getTimeSlots({
           doctorId: doctor.uid,
           // Convert date to local
-          date: formatted,
+          date: selectedDate, // In UTC
         });
 
         setTimeSlots(res.data);

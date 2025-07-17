@@ -56,6 +56,7 @@ export const getDoctorPersonalInfoPages = (
       title: t("page.account-info"),
       description: t("page.manage-your-personal-account-information"),
       href: "/(protected)/(tabs)/profile/account-info",
+      icon: undefined,
     },
     {
       title: t("page.public-profile"),
@@ -69,6 +70,7 @@ export const getDoctorPersonalInfoPages = (
       title: t("page.my-services"),
       description: t("page.manage-the-services-you-offer-to-patients"),
       href: "/(protected)/my-services",
+      icon: undefined,
     },
     {
       title: t("page.verification"),

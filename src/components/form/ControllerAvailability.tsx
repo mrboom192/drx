@@ -25,23 +25,20 @@ interface ControllerAvailabilityProps<TFieldValues extends FieldValues> {
   watch: UseFormWatch<TFieldValues>;
 }
 
-const WEEK_DAYS = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-const WEEK_DAYS_MAP: Record<string, string> = {
-  sunday: "Sun",
-  monday: "Mon",
-  tuesday: "Tue",
-  wednesday: "Wed",
-  thursday: "Thu",
-  friday: "Fri",
-  saturday: "Sat",
+const WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const WEEK_DAYS_MAP: Record<number, string> = {
+  0: "sunday",
+  1: "monday",
+  2: "tuesday",
+  3: "wednesday",
+  4: "thursday",
+  5: "friday",
+  6: "saturday",
+};
+
+const newTimeSlot = {
+  start: null,
+  end: null,
 };
 
 const ControllerAvailability = <TFieldValues extends FieldValues>({
@@ -75,11 +72,13 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
         </View>
       </View>
 
-      {WEEK_DAYS.map((day) => {
-        const dayName = `${name}.${day}` as const;
+      {WEEK.map((day, dayIdx) => {
+        // availability.day
+        const formName = `${name}.${dayIdx}` as const;
+        const dayName = WEEK[dayIdx];
         const { fields, append, remove } = useFieldArray({
           control,
-          name: dayName as any,
+          name: formName as any,
         });
 
         return (
@@ -87,7 +86,7 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
             {fields.length === 0 ? (
               <View style={styles.timeSlotRow}>
                 <TextRegular style={styles.dayLabel}>
-                  {t(`weekdays.${WEEK_DAYS_MAP[day]}`)}
+                  {t(`weekdays.${dayName}`)}
                 </TextRegular>
                 <TextRegular style={styles.noSlotsText}>
                   {t("form.unavailable")}
@@ -97,30 +96,34 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
                   <IconButton
                     name="add"
                     size={BUTTON_SIZE}
-                    onPress={() => append({ start: "", end: "" })}
+                    onPress={() => append(newTimeSlot)}
                   />
                 </View>
               </View>
             ) : (
-              fields.map((field, index) => (
+              fields.map((field, timeSlotIdx) => (
                 <View key={field.id} style={[styles.timeSlotRow]}>
-                  {index === 0 ? (
+                  {timeSlotIdx === 0 ? (
                     <TextRegular style={styles.dayLabel}>
-                      {t(`weekdays.${WEEK_DAYS_MAP[day]}`)}
+                      {t(`weekdays.${dayName}`)}
                     </TextRegular>
                   ) : (
                     <View style={styles.dayLabel} />
                   )}
                   <View style={styles.inlineSlot}>
                     <ControllerTimePicker
-                      name={`${dayName}.${index}.start` as Path<TFieldValues>}
+                      name={
+                        `${formName}.${timeSlotIdx}.start` as Path<TFieldValues>
+                      }
                       placeholder={t("form.start-time")}
                       control={control}
                       rules={{ required: t("form.start-time-is-required") }}
                     />
                     <TextSemiBold>-</TextSemiBold>
                     <ControllerTimePicker
-                      name={`${dayName}.${index}.end` as Path<TFieldValues>}
+                      name={
+                        `${formName}.${timeSlotIdx}.end` as Path<TFieldValues>
+                      }
                       placeholder={t("form.end-time")}
                       control={control}
                       rules={{ required: t("form.end-time-is-required") }}
@@ -130,13 +133,13 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
                     <IconButton
                       name="close"
                       size={BUTTON_SIZE}
-                      onPress={() => remove(index)}
+                      onPress={() => remove(timeSlotIdx)}
                     />
-                    {index === 0 ? (
+                    {timeSlotIdx === 0 ? (
                       <IconButton
                         name="add"
                         size={BUTTON_SIZE}
-                        onPress={() => append({ start: "", end: "" })}
+                        onPress={() => append(newTimeSlot)}
                       />
                     ) : (
                       <View style={styles.empty} />
@@ -153,11 +156,6 @@ const ControllerAvailability = <TFieldValues extends FieldValues>({
 };
 
 export default ControllerAvailability;
-
-export const getMinutesFromTime = (time: string): number => {
-  const [hours, minutes] = time.split(":").map(Number);
-  return hours * 60 + minutes;
-};
 
 const styles = StyleSheet.create({
   empty: {

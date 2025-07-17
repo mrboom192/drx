@@ -2,27 +2,9 @@ import { parse } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
 import { datetime, RRule, RRuleSet, rrulestr } from "rrule";
 
-type Schedule = {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  dayOfWeek: number; // 0-6 for Sunday-Saturday
-};
-
-const rule = new RRule({
-  freq: RRule.MINUTELY,
-  interval: 5, // consultation duration
-  dtstart: datetime(2012, 2, 1, 10, 30),
-  until: datetime(2012, 12, 31),
-});
-// Result is in UTC time
-
-//getScheduleFromRRule(new Date().toISOString());
-
 export const getScheduleFromRRule = (requestedDate: string) => {
   // Get these from publicProfile
-  const doctorTimezone = "America/Chicago"; // Example timezone
+  const doctorTimezone = "UTC"; // Example timezone
   const hourStart = 13; // Example hour 13 = 1pm
   const hourEnd = 19; // Example end hour 19 = 7pm
 
@@ -59,6 +41,7 @@ export const getScheduleFromRRule = (requestedDate: string) => {
       // If we pass in the raw date, date-fns will interpret the 'Z' as
       // UTC time, not local time.
       const utcDate = fromZonedTime(localDate, serverTimezone);
+      console.log(date);
 
       return utcDate;
     });

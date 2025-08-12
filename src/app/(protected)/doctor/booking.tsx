@@ -162,8 +162,6 @@ const BookingPage = () => {
     }
   };
 
-  if (loading) return <LoadingScreen />;
-
   return (
     <View
       style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
@@ -204,23 +202,30 @@ const BookingPage = () => {
           rules={{ required: t("form.please-select-a-date") }}
         />
 
-        <ControllerTimeSlotOptions
-          label={t("form.select-a-time-slot")}
-          name="timeSlot"
-          control={control}
-          timeSlots={timeSlots.dates}
-          rules={{ required: t("form.please-select-a-time-slot") }}
-        />
-        {timeSlots.dates.length === 0 && (
-          <TextSemiBold
-            style={{
-              color: Colors.lightText,
-              fontSize: 14,
-              textAlign: "center",
-            }}
-          >
-            {t("form.no-available-time-slots-for-this-date")}
-          </TextSemiBold>
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            <ControllerTimeSlotOptions
+              label={t("form.select-a-time-slot")}
+              name="timeSlot"
+              control={control}
+              timeSlots={timeSlots.dates}
+              rules={{ required: t("form.please-select-a-time-slot") }}
+            />
+
+            {timeSlots.dates.length === 0 && (
+              <TextSemiBold
+                style={{
+                  color: Colors.lightText,
+                  fontSize: 14,
+                  textAlign: "center",
+                }}
+              >
+                {t("form.no-available-time-slots-for-this-date")}
+              </TextSemiBold>
+            )}
+          </>
         )}
       </ScrollView>
 

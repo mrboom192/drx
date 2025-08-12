@@ -8,6 +8,7 @@ import Services from "./patient/Services";
 import Symptoms from "./patient/Symptoms";
 import UserRow from "../UserRow";
 import { View } from "react-native";
+import DoctorCarousel from "./patient/DoctorCarousel";
 
 const PatientHomeScreen = () => {
   return (
@@ -15,6 +16,7 @@ const PatientHomeScreen = () => {
       <Symptoms />
       <Services />
       <InternationalDoctors />
+      <DoctorCarousel />
       <PatientActions />
       <Footer />
     </PageScrollView>

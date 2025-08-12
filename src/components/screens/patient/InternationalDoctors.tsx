@@ -82,6 +82,7 @@ const InternationalDoctors = ({}: {}) => {
 };
 
 export default InternationalDoctors;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -149,7 +149,7 @@ const BookingPage = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       await initializePaymentSheet({
-        amount: doctor?.consultationPrice,
+        amount: Number(doctor?.consultationPrice),
         date: data.date,
         timeZone: getCalendars()[0].timeZone || "UTC",
       });

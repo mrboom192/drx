@@ -4,14 +4,13 @@ import { Control, Controller, RegisterOptions } from "react-hook-form";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextRegular } from "../StyledText";
 import CustomIcon from "../CustomIcon";
-import { TimeSlot } from "@/types/timeSlot";
 
 interface Props {
   label: string;
   control: Control<any>;
   rules?: RegisterOptions;
   name: string;
-  timeSlots?: TimeSlot[];
+  timeSlots?: string[];
 }
 
 const ControllerTimeSlotOptions: React.FC<Props> = ({

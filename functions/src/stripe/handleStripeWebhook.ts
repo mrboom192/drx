@@ -5,7 +5,7 @@ import { defineSecret } from "firebase-functions/params";
 import { log } from "firebase-functions/logger";
 import { nanoid } from "nanoid";
 import { admin } from "../lib/admin";
-import { utcToZonedTime, format as formatTz } from "date-fns-tz";
+import { toZonedTime, format as formatTz } from "date-fns-tz";
 import sgMail from "@sendgrid/mail";
 
 import Stripe from "stripe";
@@ -112,7 +112,7 @@ async function handleSuccessfulBooking(paymentIntent: any, res: any) {
       return;
     }
 
-    const zonedDate = utcToZonedTime(appointmentDate, timeZone);
+    const zonedDate = toZonedTime(appointmentDate, timeZone);
 
     const formattedDate = formatTz(zonedDate, "MMMM d, yyyy", { timeZone });
     const timeString = formatTz(zonedDate, "h:mm a zzz", { timeZone });

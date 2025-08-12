@@ -18,14 +18,9 @@ import { Alert, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getCalendars } from "expo-localization";
 import { useEffect, useState } from "react";
-import { TimeSlot } from "@/types/timeSlot";
+import { TimeSlotInfo } from "@/types/timeSlot";
 import ControllerTimeSlotOptions from "@/components/form/ControllerTimeSlotOptions";
-import {
-  format,
-  formatInTimeZone,
-  fromZonedTime,
-  toZonedTime,
-} from "date-fns-tz";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type GetPaymentIntentRequest = {
   amount: number;
@@ -58,7 +53,12 @@ const BookingPage = () => {
   const userData = useUserData();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const insets = useSafeAreaInsets();
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [timeSlots, setTimeSlots] = useState<TimeSlotInfo>({
+    dates: [],
+    duration: 0,
+    timezone: "UTC",
+  });
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit, watch, formState } = useForm<FieldValues>({
     defaultValues: { selectedDate: new Date(), timeSlot: null },
   });
@@ -67,29 +67,30 @@ const BookingPage = () => {
 
   useEffect(() => {
     const fetchTimeSlots = async () => {
+      setLoading(true);
       if (!doctor?.uid) return;
       try {
         const getTimeSlots = httpsCallable<
-          { doctorId: string; date: string },
-          TimeSlot[]
+          { doctorId: string; date: string; timezone: string },
+          TimeSlotInfo
         >(functions, "getTimeSlots");
-
-        // Convert the date we want to the doctor's local time
-        console.log(toZonedTime(selectedDate, "Africa/Cairo"));
 
         const res = await getTimeSlots({
           doctorId: doctor.uid,
-          // Convert date to local
-          date: selectedDate, // In UTC
+          date: selectedDate.toISOString(),
+          timezone: getCalendars()[0].timeZone || "UTC",
         });
 
         setTimeSlots(res.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching time slots:", error);
+        setLoading(false);
       }
     };
 
     fetchTimeSlots();
+    console.log(selectedDate);
   }, [doctor?.uid, selectedDate]);
 
   const specializationMap = Object.fromEntries(
@@ -161,6 +162,8 @@ const BookingPage = () => {
     }
   };
 
+  if (loading) return <LoadingScreen />;
+
   return (
     <View
       style={{ flex: 1, backgroundColor: "#fff", paddingBottom: insets.bottom }}
@@ -205,10 +208,10 @@ const BookingPage = () => {
           label={t("form.select-a-time-slot")}
           name="timeSlot"
           control={control}
-          timeSlots={timeSlots}
+          timeSlots={timeSlots.dates}
           rules={{ required: t("form.please-select-a-time-slot") }}
         />
-        {timeSlots.length === 0 && (
+        {timeSlots.dates.length === 0 && (
           <TextSemiBold
             style={{
               color: Colors.lightText,

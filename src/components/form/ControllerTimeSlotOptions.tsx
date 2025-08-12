@@ -50,16 +50,16 @@ const ControllerTimeSlotOptions: React.FC<Props> = ({
                   style={[
                     styles.option,
                     {
-                      borderColor: isSelected(option.date)
+                      borderColor: isSelected(option)
                         ? Colors.black
                         : Colors.faintGrey,
                     },
                   ]}
-                  onPress={() => toggleOption(option.date)}
+                  onPress={() => toggleOption(option)}
                 >
                   <CustomIcon
                     name={
-                      isSelected(option.date)
+                      isSelected(option)
                         ? "radio-button-checked"
                         : "radio-button-unchecked"
                     }
@@ -67,7 +67,7 @@ const ControllerTimeSlotOptions: React.FC<Props> = ({
                     color={Colors.black}
                   />
                   <TextRegular style={styles.optionValue}>
-                    {new Date(option.date).toLocaleTimeString([], {
+                    {new Date(option).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}

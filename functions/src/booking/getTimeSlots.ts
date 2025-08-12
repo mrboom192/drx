@@ -1,15 +1,20 @@
-import { endOfDay, startOfDay } from "date-fns";
+import {
+  eachDayOfInterval,
+  endOfDay,
+  startOfDay,
+  addMinutes,
+  isWithinInterval,
+} from "date-fns";
 import { admin } from "../lib/admin";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import { datetime, RRule } from "rrule";
-import { fromZonedTime } from "date-fns-tz";
+import { TZDate } from "@date-fns/tz";
 
 type Time = {
   hour: number;
   minute: number;
 };
 
-type TimeSlot = {
+type Availability = {
   start: Time;
   end: Time;
 };
@@ -21,18 +26,19 @@ type GetTimeSlotsPayload = {
 };
 
 const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
-  const { doctorId, date } = request.data;
+  const { doctorId, date, timezone } = request.data;
 
-  if (!doctorId || !date) {
-    throw new HttpsError("invalid-argument", "Missing doctorId or date.");
+  if (!doctorId || !date || !timezone) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Missing doctorId, date or timezone."
+    );
   }
 
-  const requestedDate = new Date(date);
   const doctorData = await getDoctorPublicProfile(doctorId);
-  // If we just leave it as is, the timeslots may be wrong.
-  // If the user is in Oklahoma requesting timeslots at 9:00pm local time, the UTC date that comes in will be 2:00am the next day UTC time.
-  // So we would actually be getting the wrong day.
-  const dayOfWeek = requestedDate.getDay();
+  const now = new TZDate(date, timezone);
+  const start = startOfDay(now);
+  const end = endOfDay(now);
 
   if (
     !doctorData ||
@@ -45,28 +51,47 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
     );
   }
 
-  // Result returns dates in UTC time which are based off of the doctor's timezone
-  const potentialDates = doctorData.availability[dayOfWeek]?.flatMap(
-    (timeSlot: any) =>
-      getDatesFromTimeSlot({
-        date: requestedDate,
-        timeSlot,
-        tzid: doctorData.timezone,
-        interval: doctorData.consultationDuration,
-      })
-  );
+  const dayDates = eachDayOfInterval({
+    start: start.withTimeZone(doctorData.timezone),
+    end: end.withTimeZone(doctorData.timezone),
+  });
+  let slots: Date[] = [];
 
-  if (!potentialDates || potentialDates.length === 0) {
-    return { dates: [], duration: 0, timezone: "UTC" };
+  // Result returns dates in UTC time which are based off of the doctor's timezone
+  dayDates.forEach((day) => {
+    const availabilitySlots = doctorData.availability[day.getDay()];
+    if (!availabilitySlots) return;
+
+    const potentialDates = availabilitySlots.flatMap(
+      (availability: Availability) =>
+        generateTimeSlots(
+          day,
+          availability,
+          doctorData.timezone,
+          doctorData.consultationDuration
+        ).filter((potentialDate) =>
+          isWithinInterval(potentialDate, {
+            start: now,
+            end: end,
+          })
+        )
+    );
+
+    slots.push(...potentialDates);
+  });
+
+  if (!slots || slots.length === 0) {
+    return {
+      dates: [],
+      duration: doctorData.consultationDuration,
+      timezone: doctorData.timezone,
+    };
   }
 
-  const appointments = await getAppointmentsByDoctorAndDate(
-    doctorId,
-    requestedDate
-  );
+  const appointments = await getAppointmentsByDoctorAndDate(doctorId, start);
 
   // Filter out time slots that overlap with existing appointments
-  const nonOverlappingDates = potentialDates.filter((date: Date) => {
+  const nonOverlappingDates = slots.filter((date: Date) => {
     const slotStart = date.getTime();
     const slotEnd = slotStart + doctorData.consultationDuration * 60000;
 
@@ -77,14 +102,8 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
     });
   });
 
-  // Filter out time slots that are past the current time
-  const now = new Date();
-  const bookableDates = nonOverlappingDates.filter((date: Date) => {
-    return date.getTime() > now.getTime();
-  });
-
   return {
-    dates: bookableDates.map((date: Date) => date.toISOString()),
+    dates: nonOverlappingDates.map((date: Date) => date.toISOString()),
     duration: doctorData.consultationDuration, // Duration is the same for all slots
     timezone: doctorData.timezone,
   };
@@ -134,60 +153,38 @@ const getDoctorPublicProfile = async (doctorId: string) => {
   return doctorDoc.data();
 };
 
-// Returns the dates in UTC time based on the doctor's timezone (the UTC date aligns with the doctor's local time)
-export const getDatesFromTimeSlot = ({
-  date,
-  timeSlot,
-  tzid,
-  interval, // Consultation duration
-}: {
-  date: Date;
-  timeSlot: TimeSlot;
-  tzid: string; // Timezone of the doctor
-  interval: number; // in minutes
-}): Date[] => {
-  // Extract year, month, and day from the requested date
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth() + 1; // RRULE uses 1-based months
-  const day = date.getUTCDate();
+const generateTimeSlots = (
+  date: TZDate,
+  availability: Availability,
+  doctorTimezone: string,
+  duration: number
+) => {
+  const slots: Date[] = [];
 
-  // Construct dtstart
-  const dtstart = datetime(
-    year,
-    month,
-    day,
-    timeSlot.start.hour,
-    timeSlot.start.minute
-  );
-  const until = datetime(
-    year,
-    month,
-    day,
-    timeSlot.end.hour,
-    timeSlot.end.minute
+  const doctorAvailabilityStart = new TZDate(date, doctorTimezone);
+  doctorAvailabilityStart.setDate(date.getDate());
+  doctorAvailabilityStart.setHours(
+    availability.start.hour,
+    availability.start.minute,
+    0,
+    0
   );
 
-  const schedule = new RRule({
-    freq: RRule.MINUTELY,
-    dtstart,
-    tzid,
-    until,
-    interval,
-  })
-    .all()
-    .map((date) => {
-      // Even though the given offset is `Z` (UTC), these dates are already
-      // converted to our system time (from the doctor's timezone to ours)
-      // So we'll treat them as local dates
-      const localDate = date.toISOString().replace(/Z$/, "");
-      const serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const doctorAvailabilityEnd = new TZDate(date, doctorTimezone);
+  doctorAvailabilityEnd.setDate(date.getDate());
+  doctorAvailabilityEnd.setHours(
+    availability.end.hour,
+    availability.end.minute,
+    0,
+    0
+  );
 
-      // If we pass in the raw date, date-fns will interpret the 'Z' as
-      // UTC time, not local time.
-      const utcDate = fromZonedTime(localDate, serverTimezone);
+  let current = new TZDate(doctorAvailabilityStart);
 
-      return utcDate;
-    });
+  while (current < doctorAvailabilityEnd) {
+    slots.push(new TZDate(current, doctorTimezone));
+    current = addMinutes(current, duration);
+  }
 
-  return schedule;
+  return slots;
 };

@@ -19,9 +19,10 @@ export interface Availability {
   };
 }
 
-export type TimeSlot = {
-  date: string;
+export type TimeSlotInfo = {
+  dates: string[];
   duration: number;
+  timezone: string;
 };
 
 // For patients, this is the time they can book

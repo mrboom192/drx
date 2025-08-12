@@ -4,6 +4,7 @@ import {
   startOfDay,
   addMinutes,
   isWithinInterval,
+  areIntervalsOverlapping,
 } from "date-fns";
 import { admin } from "../lib/admin";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
@@ -22,13 +23,13 @@ type Availability = {
 type GetTimeSlotsPayload = {
   dates: string[]; // Array of date strings in ISO-8601 format
   duration: number; // Duration of each slot in minutes
-  timezone: string; // Timezone of the doctor
+  timeZone: string; // Timezone of the doctor
 };
 
 const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
-  const { doctorId, date, timezone } = request.data;
+  const { doctorId, date, timeZone } = request.data;
 
-  if (!doctorId || !date || !timezone) {
+  if (!doctorId || !date || !timeZone) {
     throw new HttpsError(
       "invalid-argument",
       "Missing doctorId, date or timezone."
@@ -36,9 +37,10 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
   }
 
   const doctorData = await getDoctorPublicProfile(doctorId);
-  const now = new TZDate(date, timezone);
-  const start = startOfDay(now);
-  const end = endOfDay(now);
+  const now = new TZDate(Date.now(), timeZone);
+  const selectedDate = new TZDate(date, timeZone);
+  const start = startOfDay(selectedDate);
+  const end = endOfDay(selectedDate);
 
   if (
     !doctorData ||
@@ -52,10 +54,10 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
   }
 
   const dayDates = eachDayOfInterval({
-    start: start.withTimeZone(doctorData.timezone),
-    end: end.withTimeZone(doctorData.timezone),
+    start: start.withTimeZone(doctorData.timeZone),
+    end: end.withTimeZone(doctorData.timeZone),
   });
-  let slots: Date[] = [];
+  let slots: TZDate[] = [];
 
   // Result returns dates in UTC time which are based off of the doctor's timezone
   dayDates.forEach((day) => {
@@ -67,11 +69,11 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
         generateTimeSlots(
           day,
           availability,
-          doctorData.timezone,
+          doctorData.timeZone,
           doctorData.consultationDuration
         ).filter((potentialDate) =>
           isWithinInterval(potentialDate, {
-            start: now,
+            start: now > start ? now : start,
             end: end,
           })
         )
@@ -84,28 +86,34 @@ const getTimeSlots = onCall(async (request): Promise<GetTimeSlotsPayload> => {
     return {
       dates: [],
       duration: doctorData.consultationDuration,
-      timezone: doctorData.timezone,
+      timeZone: doctorData.timeZone,
     };
   }
 
   const appointments = await getAppointmentsByDoctorAndDate(doctorId, start);
 
   // Filter out time slots that overlap with existing appointments
-  const nonOverlappingDates = slots.filter((date: Date) => {
-    const slotStart = date.getTime();
-    const slotEnd = slotStart + doctorData.consultationDuration * 60000;
+  const nonOverlappingDates = slots.filter((date) => {
+    const slotStart = date;
+    const slotEnd = addMinutes(date, doctorData.consultationDuration);
 
     return !appointments.some((appointment) => {
-      const appointmentStart = appointment.date.toDate().getTime();
-      const appointmentEnd = appointmentStart + appointment.duration * 60000;
-      return slotStart < appointmentEnd && slotEnd > appointmentStart;
+      const appointmentStart = new TZDate(
+        appointment.date.toDate(),
+        doctorData.timeZone
+      );
+      const appointmentEnd = addMinutes(appointmentStart, appointment.duration);
+      return areIntervalsOverlapping(
+        { start: slotStart, end: slotEnd },
+        { start: appointmentStart, end: appointmentEnd }
+      );
     });
   });
 
   return {
-    dates: nonOverlappingDates.map((date: Date) => date.toISOString()),
+    dates: nonOverlappingDates.map((date: TZDate) => date.toISOString()),
     duration: doctorData.consultationDuration, // Duration is the same for all slots
-    timezone: doctorData.timezone,
+    timeZone: doctorData.timeZone,
   };
 });
 
@@ -156,12 +164,12 @@ const getDoctorPublicProfile = async (doctorId: string) => {
 const generateTimeSlots = (
   date: TZDate,
   availability: Availability,
-  doctorTimezone: string,
+  doctorTimeZone: string,
   duration: number
 ) => {
   const slots: Date[] = [];
 
-  const doctorAvailabilityStart = new TZDate(date, doctorTimezone);
+  const doctorAvailabilityStart = new TZDate(date, doctorTimeZone);
   doctorAvailabilityStart.setDate(date.getDate());
   doctorAvailabilityStart.setHours(
     availability.start.hour,
@@ -170,7 +178,7 @@ const generateTimeSlots = (
     0
   );
 
-  const doctorAvailabilityEnd = new TZDate(date, doctorTimezone);
+  const doctorAvailabilityEnd = new TZDate(date, doctorTimeZone);
   doctorAvailabilityEnd.setDate(date.getDate());
   doctorAvailabilityEnd.setHours(
     availability.end.hour,
@@ -182,7 +190,7 @@ const generateTimeSlots = (
   let current = new TZDate(doctorAvailabilityStart);
 
   while (current < doctorAvailabilityEnd) {
-    slots.push(new TZDate(current, doctorTimezone));
+    slots.push(new TZDate(current, doctorTimeZone));
     current = addMinutes(current, duration);
   }
 

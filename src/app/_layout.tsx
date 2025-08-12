@@ -26,8 +26,6 @@ import { auth } from "../../firebaseConfig";
 import { SessionProvider } from "../contexts/AuthContext";
 import "../i18n/config";
 import i18next from "i18next";
-import { getScheduleFromRRule } from "@/utils/scheduleUtils";
-import { format } from "date-fns";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

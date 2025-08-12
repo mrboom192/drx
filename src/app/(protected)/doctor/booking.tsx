@@ -71,14 +71,14 @@ const BookingPage = () => {
       if (!doctor?.uid) return;
       try {
         const getTimeSlots = httpsCallable<
-          { doctorId: string; date: string; timezone: string },
+          { doctorId: string; date: string; timeZone: string },
           TimeSlotInfo
         >(functions, "getTimeSlots");
 
         const res = await getTimeSlots({
           doctorId: doctor.uid,
           date: selectedDate.toISOString(),
-          timezone: getCalendars()[0].timeZone || "UTC",
+          timeZone: getCalendars()[0].timeZone || "UTC",
         });
 
         setTimeSlots(res.data);

@@ -13,7 +13,13 @@ export { getTurnCredentials } from "./turn/index.js";
 export { sendMessage } from "./chat/index.js";
 
 // Functions for managing user events
-export { cleanupUserData, syncUser, createUser } from "./users/index.js";
+export {
+  cleanupUserData,
+  syncUser,
+  createUser,
+  deleteUser,
+  listUsers,
+} from "./users/index.js";
 
 // Handle Stripe payments and webhooks
 export {
@@ -30,3 +36,5 @@ export { getTimeSlots } from "./booking/index.js";
 
 // Utility functions
 export { forceQue } from "./utils/index.js";
+
+export { updateVerificationStatus } from "./utils/index.js";

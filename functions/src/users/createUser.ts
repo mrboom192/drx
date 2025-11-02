@@ -61,7 +61,7 @@ const createUser = onCall({ secrets: [sgApiKey] }, async (request) => {
     const newActivity: Activity = {
       uid: userRecord.uid,
       type: "userSignup",
-      firstName: `${userData.firstName} ${userData.lastName}`,
+      firstName: userData.firstName,
       lastName: userData.lastName,
       role: userData.role,
       email: userRecord.email!,

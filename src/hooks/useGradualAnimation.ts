@@ -12,6 +12,10 @@ const useGradualAnimation = () => {
         "worklet";
         height.value = Math.max(event.height, 0);
       },
+      onEnd: (event) => {
+        "worklet";
+        height.value = Math.max(event.height, 0);
+      },
     },
     []
   );

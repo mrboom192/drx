@@ -5,6 +5,7 @@ import { getAuth } from "firebase-admin/auth";
 import { defineSecret } from "firebase-functions/params";
 import sgMail from "@sendgrid/mail";
 import { Activity } from "../types/Activity";
+import axios from "axios";
 
 export interface User {
   uid: string;
@@ -92,6 +93,7 @@ const createUser = onCall({ secrets: [sgApiKey] }, async (request) => {
     await batch.commit();
 
     // Verification email
+    await sendNotificationToAdmins();
     const link = await getAuth().generateEmailVerificationLink(email);
     await sendCustomVerificationEmail(email, link, sgApiKey.value());
 
@@ -147,4 +149,73 @@ const sendCustomVerificationEmail = async (
 
   sgMail.setApiKey(apiKey);
   await sgMail.send(email);
+};
+
+/**
+ * Sends a broadcast notification to all admin devices.
+ * Looks up tokens from Firestore: admin/globals.adminExpoPushTokens
+ */
+export const sendNotificationToAdmins = async (): Promise<void> => {
+  try {
+    const globalsRef = admin.firestore().doc("admin/globals");
+    const globalsSnap = await globalsRef.get();
+    const data = globalsSnap.data();
+
+    if (
+      !data ||
+      !Array.isArray(data.adminExpoPushTokens) ||
+      data.adminExpoPushTokens.length === 0
+    ) {
+      console.log("No admin Expo push tokens found in admin/globals.");
+      return;
+    }
+
+    const tokens: string[] = data.adminExpoPushTokens;
+
+    const title = "DrX Admin";
+    const body = "A new user has signed up!";
+    const dataPayload = {
+      type: "admin_alert",
+      timestamp: Date.now(),
+    };
+
+    // 3️⃣ Build the messages payload for Expo
+    const messages = tokens.map((token) => ({
+      to: token,
+      sound: "default",
+      title,
+      body,
+      data: dataPayload,
+      priority: "high",
+    }));
+
+    // 4️⃣ Send to Expo push service
+    const response = await axios.post(
+      "https://exp.host/--/api/v2/push/send",
+      messages,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    // Handle invalid tokens
+    const tickets = response.data?.data ?? [];
+    for (const ticket of tickets) {
+      if (
+        ticket.status === "error" &&
+        ticket.details?.error === "DeviceNotRegistered"
+      ) {
+        await globalsRef.update({
+          adminExpoPushTokens: admin.firestore.FieldValue.arrayRemove(
+            ticket.to
+          ),
+        });
+        console.log(`Removed unregistered token: ${ticket.to}`);
+      }
+    }
+
+    console.log(`Sent admin notification to ${tokens.length} devices.`);
+  } catch (error) {
+    console.error("Error sending admin notification:", error);
+  }
 };
